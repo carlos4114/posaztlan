@@ -1,0 +1,29 @@
+<div class="modal fade" tabindex="-1" role="dialog" id="aviso">
+<meta charset="utf-8" />
+
+	<div class="modal-dialog " role="document">
+		<div class="modal-content">
+			<div class="modal-header  bg-red-thunderbird bg-font-red-thunderbird">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+			</div>
+
+			<div class="modal-body" id="modal-body">
+				<div class="container">
+					<div class="icono">
+						<span class="glyphicon glyphicon-info-sign"></span>
+					</div>
+					<div class="mensaje">
+						<label>{{message}}</label>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<div class="container">
+					<button class="btn btn-circle btn-danger" type="button"
+						ng-click="close(true)" data-dismiss="modal">Aceptar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

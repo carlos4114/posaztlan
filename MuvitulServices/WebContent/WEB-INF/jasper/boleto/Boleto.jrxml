@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Tiket" pageWidth="198" pageHeight="992" columnWidth="198" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="7c1bdacc-8bc4-4274-bca6-c26dbb4debea">
+	<property name="ireport.zoom" value="3.0052592036063106"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="164"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+			<style backcolor="#EFF7FF"/>
+		</conditionalStyle>
+	</style>
+	<subDataset name="ventaDataSet" uuid="196cbc7b-faab-485e-8d6d-9cd078d9e8ea">
+		<field name="cantidad" class="java.lang.Integer"/>
+		<field name="descripcion" class="java.lang.String"/>
+		<field name="precio" class="java.math.BigDecimal"/>
+		<field name="subtotal" class="java.math.BigDecimal"/>
+	</subDataset>
+	<parameter name="recordDataSource" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="agradecimiento" class="java.lang.String"/>
+	<parameter name="slogan" class="java.lang.String"/>
+	<parameter name="tituloPelicula" class="java.lang.String"/>
+	<parameter name="horarioFuncion" class="java.lang.String"/>
+	<parameter name="numeroSala" class="java.lang.String"/>
+	<parameter name="fecha" class="java.lang.String"/>
+	<parameter name="butaca" class="java.lang.String"/>
+	<parameter name="tipoBoleto" class="java.lang.String"/>
+	<parameter name="cine" class="java.lang.String"/>
+	<parameter name="clasificacion" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="7" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="74" y="11" width="109" height="16" uuid="67b7a200-882c-45e6-b064-a57423df3c54"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fecha}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="-3" width="195" height="15" uuid="69ac6c27-260c-44f1-8c8c-68e8977ac263"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="186" splitType="Stretch">
+			<textField>
+				<reportElement x="66" y="105" width="125" height="20" uuid="a17401c1-2120-4be8-8ea8-50c4c7555814"/>
+				<textElement>
+					<font fontName="Courier New" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numeroSala}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToBandHeight" x="67" y="85" width="124" height="20" uuid="68676143-b10d-4dfe-8e8c-8540b63b999d"/>
+				<textElement>
+					<font fontName="Courier New" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{horarioFuncion}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="7" y="41" width="184" height="38" uuid="0814153f-70b9-4340-b220-59a4aed6aa9e"/>
+				<textElement textAlignment="Center">
+					<font fontName="Courier New" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tituloPelicula}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="66" y="125" width="125" height="20" uuid="e1ad7299-2141-43fc-8f86-e45cfb69ea14"/>
+				<textElement>
+					<font fontName="Courier New" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tipoBoleto}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="66" y="145" width="125" height="20" uuid="33a74438-c9d9-4da6-902f-2de2d6292e2c"/>
+				<textElement>
+					<font fontName="Courier New" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{butaca}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="66" y="27" width="54" height="14" uuid="1e2870ff-ddaa-483b-84d5-152d4feb7cee"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PELÍCULA ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="85" width="55" height="20" uuid="e9749d5c-db0e-44c3-bbea-d331fa5f0d13"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[HORARIO :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="105" width="55" height="20" uuid="d8a8bc3a-83a2-4313-ad6a-88f88b03bbe9"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SALA :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="125" width="55" height="20" uuid="b4328bdc-ee30-4a84-bcff-cd71b7e7796f"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TIPO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="165" width="55" height="20" uuid="87c4f496-995e-4ef5-bb29-3ae92566494c"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLASIF :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="66" y="165" width="125" height="20" uuid="e7f82b54-1ff5-475c-9a30-0e3b211f1664"/>
+				<textElement>
+					<font fontName="Courier New" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{clasificacion}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="7" y="0" width="185" height="27" uuid="c4b9969b-dd31-490b-8d90-e7f0fcbcdc39"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cine}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="145" width="55" height="20" uuid="32fbdc4f-d97e-4125-b328-104745dcd53f"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ASIENTO :]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="17" splitType="Stretch">
+			<staticText>
+				<reportElement x="7" y="0" width="195" height="15" uuid="7b066aca-ccd6-4f79-a969-9adc82be239c"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="22" splitType="Stretch">
+			<textField>
+				<reportElement positionType="Float" x="17" y="0" width="166" height="12" uuid="eee4f599-dece-4b86-98c7-a20f3f63b841"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font fontName="Courier New" size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["¡ GRACIAS POR SU PRFERENCIA !"]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

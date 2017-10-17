@@ -8,6 +8,10 @@
 	<modules>
 
 	<module>MuvitulInfraServices</module>
+	<module>MuvitulServices</module>
+	<module>SeguridadServices</module>
+	<module>MuvitulEA</module>
+	<module>MuvitulWeb</module>
 	</modules>
 
 	<build>

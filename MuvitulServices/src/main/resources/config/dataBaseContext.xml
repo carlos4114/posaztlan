@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+
+	<!-- Estas propiedades para conectarse a la base de datos -->
+	<bean id="negocioDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:jboss/datasources/MuvitulDS" />
+	</bean>
+
+	<!-- Estas propiedades son utilizadas en la definicion del SessionFactory 
+		de Hibernate -->
+	<bean id="hibernateProperties" class="java.util.Properties">
+		<constructor-arg>
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">${show.sql}</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
+				<prop key="hibernate.cach.use_second_level_cache">true</prop>
+				<prop key="hibernate.cache.use_query_cache">true</prop>
+			</props>
+		</constructor-arg>
+	</bean>
+
+	<!-- Configuracion de sesion y conexion a base de datos con hibernate -->
+	<bean id="hibernateSessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="negocioDataSource" />
+		<property name="hibernateProperties" ref="hibernateProperties" />
+		<property name="annotatedClasses">
+			<list>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Articulo
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ArticulosXProducto
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ArticulosXProductoId
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ArticulosXPuntoVenta
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ArticulosXPuntoVentaId
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Autorizacion
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.AutorizacionMovimiento
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.AutorizacionMovimientoId
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.BoletosXTicketId
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.BoletosXTicket
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.CancelacionPago
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Cine
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ClasificacionArt
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Contacto
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.CupoXSala
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.DetallePromocion
+				</value>
+<!-- 				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.DetallePromoXPromo -->
+<!-- 				</value> -->
+<!-- 				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.DetallePromoXPromoId -->
+<!-- 				</value> -->
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Devolucion
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.DevolucionXProducto
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Distribuidora
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Empresa
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Estado
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.EstadoProducto
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.EstatusEmpresa
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.EstatusPago
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.EstatusUsuario
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ExistenciaBoletos
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.FormaPago
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Formato
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ImpuestoBoleto
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ImpuestosXTicketPaquete
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ImpuestosXTicketProducto
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ImpuestosXTicketProductoId
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ImpuestosXTicketTaquilla
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ImpuestosXTicketTaquillaId
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ImpuestoXProducto
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.MateriaPrima
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Menu
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.MotivoCancelacion
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.MotivoDevolucion
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.MovimientoInventario
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Pago
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Pais
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Paquete
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.PaquetesXPuntoVenta
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.PaquetesXPuntoVentaId
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.PaquetesXTicket
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.PaquetesXTicketId
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Pelicula
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Perfil
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.PerfilesXUsuario
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.PerfilesXUsuarioId
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.PrecioXFormato
+				</value>
+<!-- 				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.PrecioXPaquete -->
+<!-- 				</value> -->
+<!-- 				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.PrecioXProducto -->
+<!-- 				</value> -->
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Producto
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ProductosXPaquete
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ProductosXTicketId
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ProductosXPuntoVenta
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ProductosXPuntoVentaId
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ProductosXTicket
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ProductosXTicketId
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Programacion
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Promocion
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.PromocionesXTicket
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.PromocionesXTicketId
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.PromocionPara
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.PropiedadConfig
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Proveedor
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.PuntoVenta
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Recurso
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.RecursosXPerfil
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.RecursosXPerfilId
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Regalo
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Sala
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.TicketVenta
+				</value>
+<!-- 				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.TipoAutorizacionMov -->
+<!-- 				</value> -->
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.TipoAutorizacion
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.TipoAutorizacionXPerfil
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.TipoAutorizacionXPerfilId
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.TipoCliente
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.TipoDevolucion
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.TipoMovimientoInv
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.TipoPromocion
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.TipoPuntoVenta
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.UnidadMedida
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Usuario
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Version
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Documento
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ArticulosCorte
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Inventario
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ArticulosCorteAjuste
+				</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- CONFIGURACION JASYPT PARA ENCRIPTAR TIPOS DE DATOS CON HIBERNATE -->
+	<bean id="stringEncryptor" class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor"
+		lazy-init="false">
+		<property name="algorithm" value="PBEWithMD5AndDES" />
+		<property name="password" value="${jasypt.password}" />
+	</bean>
+
+	<bean id="hibernateEncryptor"
+		class="org.jasypt.hibernate4.encryptor.HibernatePBEStringEncryptor"
+		lazy-init="false">
+		<!-- This property value must match "encryptorRegisteredName" used when 
+			defining hibernate user types -->
+		<property name="registeredName" value="jasyptHibernateEncryptor" />
+		<property name="encryptor" ref="stringEncryptor" />
+	</bean>
+
+	<!-- CONFIGURACION PARA PODER UTILIZAR IBATIS -->
+	<bean id="ibatisSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="negocioDataSource" />
+	</bean>
+	<!-- TERMINA CONFIGURACION DE IBATIS -->
+
+
+	<!-- Este interceptor sirve para manejar (i.e. abrir y cerrar) una sesion -->
+	<!-- de Hibernate cuando algÃºn servicio no es invocado desde un http -->
+	<!-- request. Es una especie de patron "open session in view". -->
+	<bean id="hibernateInterceptor"
+		class="mx.com.tecnetia.muvitul.infraservices.negocio.auditoria.business.HibernateInterceptorBO">
+		<property name="sessionFactory" ref="hibernateSessionFactory" />
+	</bean>
+
+</beans>

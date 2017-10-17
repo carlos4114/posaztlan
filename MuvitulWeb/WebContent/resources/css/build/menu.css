@@ -1,0 +1,45 @@
+ul.opcion_menu
+{
+  left:100%;
+  top:0;
+  width:210px;
+  z-index:4000;
+}
+
+ul.opcion_menu li a
+{
+  color:rgba(255,255,255,0.75);
+  font-size:12px;	
+}
+
+ul.opcion_menu li
+{
+  height:40px;
+  
+  /* older webkit */
+    display: -webkit-box;
+    -webkit-box-align: center;
+
+    /* older firefox */
+    display: -moz-box;
+    -moz-box-align: center;
+    -moz-box-pack: center;
+
+    /* IE10*/
+    display: -ms-flexbox;
+    -ms-flex-align: center;
+    -ms-flex-pack: center;
+
+    /* newer webkit */
+    display: -webkit-flex;
+    -webkit-align-items: center;
+    -webkit-box-pack: center;
+
+    /* Standard Form - IE 11+, FF 22+, Chrome 29+, Opera 17+ */
+    display: flex;
+    align-items: center;
+}
+
+ul.opcion_menu li:hover {
+   background:#3E5367;
+}

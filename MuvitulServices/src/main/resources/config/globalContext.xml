@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xmlns:tx="http://www.springframework.org/schema/tx"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:dwr="http://www.directwebremoting.org/schema/spring-dwr"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xmlns:mvc="http://www.springframework.org/schema/mvc"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+			http://www.directwebremoting.org/schema/spring-dwr http://www.directwebremoting.org/schema/spring-dwr-3.0.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+			http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+			">
+
+			
+			
+	<!-- Se autoconfigura la aplicacion dependiendo del ambiente en el que se encuentre (Desarrollo o Produccion)     -->
+	<context:property-placeholder location="
+											classpath:config/${ENV_VAR}/global.properties,
+											classpath:config/aplicacion/aplicacion.properties
+											" />	
+	
+	<!-- ConfiguraciÃ³n para inicializar Aspectos por anotaciones -->
+  	 <aop:aspectj-autoproxy /> 
+	
+	<!-- Configuracion de anotaciones para spring     -->	
+	 <context:annotation-config/>	
+	 <context:spring-configured/>
+	
+	  <!-- Configuracion de transacciones para hibernate con spring     -->
+	  <tx:annotation-driven transaction-manager="txManager" />
+	  <bean id="txManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+			<property name="sessionFactory" ref="hibernateSessionFactory" />
+	  </bean>
+	  
+	<bean id="correoElectronicoLoggerBO" class="mx.com.tecnetia.muvitul.infraservices.servicios.CorreroElectronicoBO">
+		  <property name="mailSender" ref="appMailSender"/>
+		  <property name="to">
+				<list>
+					<value>${exception.mail}</value>
+				</list>
+		  </property>
+		  <property name="from"><value>${mailAccountUsername}</value></property>
+		  <property name="fromName"><value>${mailFromName}</value></property>												  
+		  <property name="subject"><value>${exception.mail.subject}</value></property>
+  	</bean>
+		
+	<!-- Para instanciar RestTemplate para clientes de WebServices. Para que ademas se pueda alambrar con Autowired -->
+	<context:component-scan base-package="org.springframework.web.client" /> 
+	<bean id="restTemplate" class="org.springframework.web.client.RestTemplate" />
+		
+	<!-- MANEJADOR DE ERRORES -->
+	<bean id="exceptionLoggerBO" class="mx.com.tecnetia.muvitul.infraservices.servicios.ExceptionLoggerBO">
+	      <property name="correoElectronicoLoggerBO" ref="correoElectronicoLoggerBO" />
+	</bean>		
+	<aop:config>
+		<aop:aspect id="infraExceptionLoggerAspect" ref="exceptionLoggerBO">
+    		<aop:pointcut id="infraExceptionLoggerPointcut" 
+    			expression="execution(* mx.com.tecnetia.muvitul.infraservices.servicios.*.controller.*Controller*.*(..))" />
+    		<aop:after-throwing method="handleException" throwing="throwable" pointcut-ref="infraExceptionLoggerPointcut"  />			
+		</aop:aspect>
+		<aop:aspect id="exceptionLoggerAspect" ref="exceptionLoggerBO">
+    		<aop:pointcut id="exceptionLoggerPointcut" 
+    			expression="execution(* mx.com.tecnetia.muvitul.servicios.*.controller.*Controller*.*(..))" />
+    		<aop:after-throwing method="handleException" throwing="throwable" pointcut-ref="exceptionLoggerPointcut"  />			
+		</aop:aspect>
+	</aop:config>
+		
+</beans>

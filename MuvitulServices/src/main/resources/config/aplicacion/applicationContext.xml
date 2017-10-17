@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:ws="http://jax-ws.dev.java.net/spring/core"
+       xmlns:wss="http://jax-ws.dev.java.net/spring/servlet"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://jax-ws.dev.java.net/spring/core http://jax-ws.java.net/spring/core.xsd
+        http://jax-ws.dev.java.net/spring/servlet http://jax-ws.java.net/spring/servlet.xsd"
+       default-autowire="byName">
+  
+	<!-- CONFIGURACION PARA DAOS DE REPOSITORIO -->
+     <context:component-scan base-package="mx.com.tecnetia.muvitul.servicios.facade" />
+     <context:component-scan base-package="mx.com.tecnetia.muvitul.servicios.ventas.controller" /> 	
+     <context:component-scan base-package="mx.com.tecnetia.muvitul.servicios.taquilla.controller" /> 
+     <context:component-scan base-package="mx.com.tecnetia.muvitul.servicios.dulceria.controller" />
+     <context:component-scan base-package="mx.com.tecnetia.muvitul.servicios.configuracion.controller" />
+     <context:component-scan base-package="mx.com.tecnetia.muvitul.servicios.devolucion.controller" />
+     <context:component-scan base-package="mx.com.tecnetia.muvitul.servicios.cancelacion.controller" />
+     <context:component-scan base-package="mx.com.tecnetia.muvitul.servicios.inventarios.controller" />
+     <context:component-scan base-package="mx.com.tecnetia.muvitul.servicios.dashboard.controller" />
+     <context:component-scan base-package="mx.com.tecnetia.muvitul.servicios.reportes.controller" />
+     
+      
+     <context:component-scan base-package="mx.com.tecnetia.muvitul.negocio.ventas.business" />
+     <context:component-scan base-package="mx.com.tecnetia.muvitul.negocio.taquilla.business" />
+     <context:component-scan base-package="mx.com.tecnetia.muvitul.negocio.dulceria.business" />
+     <context:component-scan base-package="mx.com.tecnetia.muvitul.negocio.configuracion.business" />
+     <context:component-scan base-package="mx.com.tecnetia.muvitul.negocio.devolucion.business" />
+     <context:component-scan base-package="mx.com.tecnetia.muvitul.negocio.cancelacion.business" />
+     <context:component-scan base-package="mx.com.tecnetia.muvitul.negocio.dashboard.business" /> 
+     <context:component-scan base-package="mx.com.tecnetia.muvitul.negocio.inventarios.business" />
+     <context:component-scan base-package="mx.com.tecnetia.muvitul.negocio.reportes.business" />
+     
+     
+     <context:component-scan base-package="mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao" />  
+ 
+ </beans>

@@ -1,0 +1,46 @@
+<div class="modal fade" id="modalPrintTicket" role="dialog">
+	<meta charset="utf-8" />
+
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header bg-red-thunderbird bg-font-red-thunderbird">
+				<a class="close" data-dismiss="modal" aria-label="Close"><span
+					style="color: #FFF !important;" aria-hidden="true">&times;</span></a>
+				<h4 class="modal-title text-center">Impresión</h4>
+			</div>
+			<div class="modal-body">
+ 
+				<div class="row">
+					<div class="col-md-12">
+						<div class="">
+							<div class="x_content">
+								<div class="row">
+
+									<div ng-repeat="impresion in listaImpresiones"  
+										class="animated flipInY col-lg-6 col-md-6 col-sm-12 col-xs-12"
+										ng-click="generaArchivo(impresion.nombre, impresion.archivo,'application/pdf')"  >
+										<div class="tile-stats">
+											<div class="icon">
+												<i class="fa fa-print"></i>
+											</div>
+											<div class="count">Imprimir</div>
+											<h3>{{impresion.nombre |  limitTo : 8}}</h3>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<div class="col-md-12 text-center">
+					<button class="btn btn-danger center-block"	ng-click="actionModal()" data-dismiss="modal">Cerrar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+

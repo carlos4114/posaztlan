@@ -1,0 +1,85 @@
+<div id="modalAutorizacion" class="modal fade" role="dialog" tabindex="-1" 	data-keyboard="false" data-backdrop="static">
+	<meta charset="utf-8" />
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-header  bg-red-thunderbird bg-font-red-thunderbird">
+				<h4 class="modal-title">Autorización</h4>
+
+			</div>
+			<div class="modal-body" id="modal-body">
+				<form name="form" novalidate>
+					<div class="row" ng-if="respuesta.idAutorizacion ==null && respuesta.status==0">
+						<div class="alert alert-error">{{respuesta.descripcion}}</div>
+					</div>
+
+					<div class="row">
+
+						<div class="col-xs-12 col-md-12">
+							<div class="form-group"
+								ng-class="{ 'has-error' : form.user.$invalid && !form.user.$pristine }">
+								<label>*Usuario:</label>
+								<div class="input-group">
+									<span class="input-group-addon"> <i
+										class="glyphicon glyphicon-user"></i>
+									</span> <input maxlength="100" type="text" name="user"
+										class="form-control" ng-model="athorization.correo" required>
+								</div>
+								<span ng-if="form.user.$invalid && !form.user.$pristine"
+									class="help-block">El usuario es requerido</span>
+							</div>
+						</div>
+
+					</div>
+					<div class="row">
+
+						<div class="col-xs-12 col-md-12">
+							<div class="form-group"
+								ng-class="{ 'has-error' : form.password.$invalid && !form.password.$pristine }">
+								<label>*Contraseña:</label>
+								<div class="input-group">
+									<span class="input-group-addon"> <i
+										class="glyphicon glyphicon-th"></i>
+									</span> <input type="password" name="password" class="form-control"
+										ng-model="athorization.contrasenia" required>
+								</div>
+								<span ng-if="form.password.$invalid && !form.password.$pristine"
+									class="help-block">La contraseña es requerida</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+							<div class="form-group"
+								ng-class="{ 'has-error' : form.comentarios.$invalid && !form.comentarios.$pristine }">
+								<label>Comentarios</label>
+								<div class="input-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+ 										<textarea id="comentarios" required class="form-control col-lg-12 col-md-12 col-sm-12 col-xs-12"
+											name="comentarios" maxlength="200"
+											ng-model="athorization.comentarios"></textarea>
+ 									<span
+										ng-if="form.comentarios.$invalid && !form.comentarios.$pristine"
+										class="help-block">Los Comentarios son requeridos</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+
+			</div>
+			<div class="modal-footer">
+				<div class="container">
+					<div class="row">
+						<div class="col-xs-12">
+							<button class="btn btn-round btn-danger" data-dismiss="modal">Cancelar</button>
+							<button class="btn btn-round btn-danger" ng-click="authorize(athorization)">Autorizar</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+

@@ -1,0 +1,74 @@
+
+#aviso .modal-header, #confirmacion .modal-header, #error .modal-header {
+    padding: 8px;
+    border-bottom: 1px solid #e5e5e5;
+    background: #2a3f54;
+}
+
+#aviso .modal-body, #confirmacion .modal-body, #error .modal-body {
+    padding:10px 0px 0px 15px;
+    align-content: center;
+}
+
+#aviso .modal-footer, #confirmacion .modal-footer, #error .modal-footer {
+    padding: 10px 15px 10px 15px;
+    border-bottom: 1px solid #e5e5e5;
+    text-align: center;
+}
+
+#aviso .container, #confirmacion .container, #error .container {
+    width:100%;
+    height:auto;
+    margin:0 auto;
+    padding:0;
+}
+
+
+#aviso .icono, #confirmacion .icono, #error .icono {
+    padding: 10px 15px 10px 15px;
+    margin:1%;
+    height: 50px;
+    width: 10%;
+    display: block;
+    float: left;
+ 
+    
+}
+
+#aviso .mensaje, #confirmacion .mensaje, #error .mensaje {
+    padding: 10px 15px 10px 15px;  
+    margin:1%;
+    height: 50px;
+    width: 70%;
+    display: block;
+    float: left;
+    position: initial;
+    text-align: center;
+
+}
+
+#aviso .boton, #confirmacion .boton, #error .boton{
+    padding: 10px 15px 10px 15px;
+    margin:1%;
+    height:50px;
+    width:10%;
+    display: initial;
+}
+
+.glyphicon-info-sign {
+    color:#0849CC;
+    font-size: 30px;
+}
+
+.glyphicon-warning-sign {
+    color: #E7EE10;
+    font-size: 30px;
+    
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+}
+
+.glyphicon-exclamation-sign {
+    color: #CF090C;
+    font-size: 30px;
+}

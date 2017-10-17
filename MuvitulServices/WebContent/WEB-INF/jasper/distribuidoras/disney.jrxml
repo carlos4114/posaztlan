@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1excel" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c7f4f4f1-fd4f-46cd-b0bf-8705ec49107b">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="62"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#FFBFBF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="DisneySony 1" uuid="21c56f52-e002-472e-a0b2-aea2e8734571">
+		<queryString>
+			<![CDATA[select fecha_exhibicion,form.nombre,ver.nombre,cli.nombre,sum(bol.cantidad) as admision,pre.precio,sum(bol.importe) as entrada,
+(sum(bol.importe) * (imp.porcentaje/100)) as IVA, (sum(bol.importe) - sum(bol.importe) * (imp.porcentaje/100)) as neto
+from boletos_x_ticket bol
+join programacion pro on pro.id_programacion = bol.id_programacion
+join sala sal on sal.id_sala = pro.id_sala
+join cine cin on cin.id_cine = sal.id_cine
+join pelicula pel on pel.id_pelicula = pro.id_pelicula
+join version ver on ver.id_version = pro.id_version
+join formato form on form.id_formato = pro.id_formato
+join precio_x_formato pre on pre.id_formato = pro.id_formato
+join impuesto_boleto imp on imp.id_cine = cin.id_cine and imp.activo = 1
+join tipo_cliente cli on cli.id_tipo_cliente = bol.id_tipo_cliente
+where pel.id_cine = 1 and pel.id_distribuidora = 2 and bol.activo = 0
+group by bol.id_programacion,pro.id_formato,pro.id_version,bol.id_tipo_cliente,fecha_exhibicion;]]>
+		</queryString>
+		<field name="fecha_exhibicion" class="java.sql.Date">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="nombre" class="java.lang.String">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="admision" class="java.math.BigDecimal"/>
+		<field name="precio" class="java.math.BigDecimal">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="entrada" class="java.math.BigDecimal"/>
+		<field name="IVA" class="java.math.BigDecimal"/>
+		<field name="neto" class="java.math.BigDecimal"/>
+	</subDataset>
+	<queryString>
+		<![CDATA[select fecha_exhibicion,form.nombre,ver.nombre,cli.nombre,sum(bol.cantidad) as admision,pre.precio,sum(bol.importe) as entrada,
+(sum(bol.importe) * (imp.porcentaje/100)) as IVA, (sum(bol.importe) - sum(bol.importe) * (imp.porcentaje/100)) as neto
+from boletos_x_ticket bol
+join programacion pro on pro.id_programacion = bol.id_programacion
+join sala sal on sal.id_sala = pro.id_sala
+join cine cin on cin.id_cine = sal.id_cine
+join pelicula pel on pel.id_pelicula = pro.id_pelicula
+join version ver on ver.id_version = pro.id_version
+join formato form on form.id_formato = pro.id_formato
+join precio_x_formato pre on pre.id_formato = pro.id_formato
+join impuesto_boleto imp on imp.id_cine = cin.id_cine and imp.activo = 1
+join tipo_cliente cli on cli.id_tipo_cliente = bol.id_tipo_cliente
+where pel.id_cine = 1 and pel.id_distribuidora = 2 and bol.activo = 0
+group by bol.id_programacion,pro.id_formato,pro.id_version,bol.id_tipo_cliente,fecha_exhibicion;]]>
+	</queryString>
+	<field name="fecha_exhibicion" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="admision" class="java.math.BigDecimal"/>
+	<field name="precio" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="entrada" class="java.math.BigDecimal"/>
+	<field name="IVA" class="java.math.BigDecimal"/>
+	<field name="neto" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<componentElement>
+				<reportElement key="table 1" style="table 1" x="31" y="14" width="738" height="88" uuid="d0af4d1f-02f4-4edf-855f-e92246688c51"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="DisneySony 1" uuid="327c233f-04ba-409d-aac4-1449dee4e95f">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="90" uuid="fe1b3509-31ec-4098-886e-10da266deb9b">
+						<jr:columnHeader style="table 1_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="90" height="30" uuid="7b747f44-f6a2-495c-a77d-1a07179c5179"/>
+								<text><![CDATA[fecha_exhibicion]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 1_TD" height="30" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="90" height="20" uuid="86689881-83d5-49a7-8b47-7d77b7fc423f"/>
+								<textFieldExpression><![CDATA[$F{fecha_exhibicion}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="2bdfc1e8-44f0-4497-9151-5a7d1ce950d9">
+						<jr:columnHeader style="table 1_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="90" height="30" uuid="985b97fa-ca87-46af-96fe-709a5b80cf66"/>
+								<text><![CDATA[nombre]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 1_TD" height="30" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="90" height="20" uuid="a1bd3401-63c3-4fd8-85c2-36bd8da27d8b"/>
+								<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="e7e6a1f0-1ff1-4e53-8ab9-6555c351b446">
+						<jr:columnHeader style="table 1_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="90" height="30" uuid="e8c23e9b-3039-4793-9693-34f75973e057"/>
+								<text><![CDATA[admision]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 1_TD" height="30" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="90" height="20" uuid="24c15d3c-3636-480a-9aac-6741210a0459"/>
+								<textFieldExpression><![CDATA[$F{admision}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="855c464b-4774-4d6f-a5f1-0082ba3f84ec">
+						<jr:columnHeader style="table 1_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="90" height="30" uuid="a2b4e430-20eb-4de6-a8a6-5b3af710bff4"/>
+								<text><![CDATA[precio]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 1_TD" height="30" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="90" height="20" uuid="0da67498-0d39-4423-9608-5e33d0302cad"/>
+								<textFieldExpression><![CDATA[$F{precio}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="467e0471-9acf-4089-bb18-9a19e84051a3">
+						<jr:columnHeader style="table 1_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="90" height="30" uuid="53e10554-1d60-41e2-88b8-f39843a303cc"/>
+								<text><![CDATA[entrada]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 1_TD" height="30" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="90" height="20" uuid="1596573a-e183-44e8-888b-d4332bbd7976"/>
+								<textFieldExpression><![CDATA[$F{entrada}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="f47a7719-dd1c-437c-b8b6-80c416ee88b2">
+						<jr:columnHeader style="table 1_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="90" height="30" uuid="7487b894-2060-47a7-917d-9816dad4fda2"/>
+								<text><![CDATA[IVA]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 1_TD" height="30" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="90" height="20" uuid="91cc8210-ac79-4522-a3b7-7c03c7dccbf6"/>
+								<textFieldExpression><![CDATA[$F{IVA}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="90" uuid="8f16565e-36a3-4996-902d-31ba23345ea8">
+						<jr:columnHeader style="table 1_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="90" height="30" uuid="4ee296b1-c758-4587-b3ff-99c7df7e797e"/>
+								<text><![CDATA[neto]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 1_TD" height="30" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="90" height="20" uuid="549e4ef2-a998-43d0-913b-f83e998efc85"/>
+								<textFieldExpression><![CDATA[$F{neto}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

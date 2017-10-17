@@ -1,0 +1,19 @@
+
+/* SwitchCheck -- CSS para los checbox activo e inactivo */
+@import url('build/custom/switchCheck.css');
+
+.vcenter{
+  text-align: center !important;
+}
+
+.my-disabled{
+  opacity: 0.7;
+  pointer-events: none;
+
+  > * {
+    opacity: 0.7;
+    pointer-events: none;
+  }
+}
+
+ 

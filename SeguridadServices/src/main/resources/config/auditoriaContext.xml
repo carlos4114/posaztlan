@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:p="http://www.springframework.org/schema/p"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd	
+        ">	
+		
+	<!-- *** *BEANS PARA CONFIGURACION DEL PRODUCTOR DE MENSAJES PARA AUDITORIA DE METODOS *********************************-->	
+<!-- 	<bean id="auditoriaConfigMetodoDAO" class="mx.com.tecnetia.muvitul.infraservices.persistencia.auditoria.dao.AuditoriaConfigMetodoDAO" parent="globalHibernateDAO" />
+	
+	<bean id="auditoriaAtributoObjetoDAO" class="mx.com.tecnetia.muvitul.infraservices.persistencia.auditoria.dao.AuditoriaAtributoObjetoDAO" parent="globalHibernateDAO" />
+	
+	<bean id="auditoriaObjetoDAO" class="mx.com.tecnetia.muvitul.infraservices.persistencia.auditoria.dao.AuditoriaObjetoDAO" parent="globalHibernateDAO" />
+	
+	<bean id="globalHibernateDAO" abstract="true" class="mx.com.tecnetia.muvitul.infraservices.persistencia.GlobalHibernateDAO" >
+		<property name="sessionFactory">
+			<ref bean="hibernateSessionFactory" />
+		</property>
+	</bean> 
+	
+	<bean id="auditAppCacheManager" class="net.sf.ehcache.CacheManager">
+		<constructor-arg index="0" type="java.net.URL" 
+		value="classpath:META-INF/ehcache/config/log/log-ehcache.xml" />
+	</bean>	
+	
+	<bean id="businessServiceInterceptor" class="mx.com.tecnetia.muvitul.infraservices.negocio.auditoria.business.BusinessServiceInterceptorBO">
+		<property name="auditMessageValidationBO" ref="auditMessageValidationBO" />
+		<property name="messageSenderBO" ref="messageSenderBO" />
+		<property name="sessionVO" ref="sessionVO" />	
+	</bean>
+
+	 	 
+	<bean id="auditMessageValidationBO" class="mx.com.tecnetia.muvitul.infraservices.negocio.auditoria.business.AuditMessageValidationBO">
+		<property name="auditCacheConfiguration" ref="auditCacheConfiguration" />
+	</bean>
+
+	<bean id="auditCacheConfiguration" class="mx.com.tecnetia.muvitul.infraservices.negocio.auditoria.business.AuditCacheConfigurationBO">
+	    <property name="cacheManager" ref="auditAppCacheManager"/>
+	    <property name="auditoriaConfigMetodoDAO" ref="auditoriaConfigMetodoDAO"/>
+	</bean> 
+	
+	
+	<aop:config>
+		<aop:advisor advice-ref="businessServiceInterceptor" pointcut="execution(* mx.com.tecnetia.muvitul.seguridadservices.servicios.*.controller.*Controller*.*(..))" order="1" />
+	</aop:config>
+	
+	<aop:config>
+		<aop:advisor advice-ref="hibernateInterceptor" order="1"
+			pointcut="execution(* mx.com.tecnetia.muvitul.infraservices.persistencia.auditoria.dao.*DAO*.*(..))" />
+  	</aop:config>	
+  	
+  	<context:component-scan base-package="mx.com.tecnetia.muvitul.infraservices.servicios.auditoria.controller" /> 
+	<context:component-scan base-package="org.springframework.web.client" /> 
+ -->  	 
+	 
+</beans>
