@@ -132,10 +132,8 @@ public class DashboardBO {
 		List<BigDecimal> totalesAnterior = new ArrayList<BigDecimal>();
 
 		for (String pelicula : peliculas) {
-			totalesActuales
-					.add(mapIngresosActual.containsKey(pelicula) ? mapIngresosActual.get(pelicula) : new BigDecimal(0));
-			totalesAnterior.add(mapIngresosAnteriores.containsKey(pelicula) ? mapIngresosAnteriores.get(pelicula)
-					: new BigDecimal(0));
+			totalesActuales.add(mapIngresosActual.containsKey(pelicula) ? mapIngresosActual.get(pelicula) : new BigDecimal(0));
+			totalesAnterior.add(mapIngresosAnteriores.containsKey(pelicula) ? mapIngresosAnteriores.get(pelicula): new BigDecimal(0));
 		}
 
 		ingresoActual.setTotales(totalesActuales);
