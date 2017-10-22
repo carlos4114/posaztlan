@@ -3,19 +3,19 @@
   <display-name>MuvitulEA</display-name>
   <module>
     <web>
-      <web-uri>SeguridadServices.war</web-uri>
+      <web-uri>SeguridadServices-0.0.1-SNAPSHOT.war</web-uri>
       <context-root>SeguridadServices</context-root>
     </web>
   </module>
   <module>
     <web>
-      <web-uri>MuvitulServices.war</web-uri>
+      <web-uri>MuvitulServices-0.0.1-SNAPSHOT.war</web-uri>
       <context-root>MuvitulServices</context-root>
     </web>
   </module>
 	<module>
 		<web>
-			<web-uri>MuvitulWeb.war</web-uri>
+			<web-uri>MuvitulWeb-0.0.1-SNAPSHOT.war</web-uri>
 			<context-root>MuvitulWeb</context-root>
 		</web>
 	</module>

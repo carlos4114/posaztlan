@@ -17,7 +17,6 @@
 
 	<properties>
 		<!-- <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> -->
-		    <failOnMissingWebXml>false</failOnMissingWebXml>
 	</properties>
 
 
@@ -304,8 +303,16 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<warSourceDirectory>${basedir}/WebContent</warSourceDirectory>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
-
 
 </project>
