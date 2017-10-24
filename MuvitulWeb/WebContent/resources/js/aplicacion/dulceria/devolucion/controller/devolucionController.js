@@ -51,7 +51,8 @@ var devolucionDulceriaController = angular.module('indexModule').controller('dev
 //	 			 if(paquete.paqueteVO.selected == true )
 //	 				 value.productoVO.selected = true;  
 //	 			 else
-	 				 value.productoVO.selected = $scope.ticket.seleccionarPaquetes;  
+	 				// value.productoVO.selected = $scope.ticket.seleccionarPaquetes;  
+	 			value.productoVO.selected = paquete.paqueteVO.selected;  
 	 	   	});	
 
   	}

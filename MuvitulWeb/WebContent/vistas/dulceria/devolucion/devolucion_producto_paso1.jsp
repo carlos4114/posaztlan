@@ -55,7 +55,7 @@
 				<div class="row">
 
 					<p>
-						<input type="checkbox" class="flat"
+						<input type="checkbox" class="flat" ng-disabled="ticket.devolucionesVO.length > 0"
 							ng-model="ticket.seleccionarPaquetes"
 							ng-click="seleccionarTodosPaquetes(ticket.paquetesXTicketVO)">Seleccionar Paquetes
 					</p>
