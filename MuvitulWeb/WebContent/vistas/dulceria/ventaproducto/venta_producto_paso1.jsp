@@ -61,8 +61,8 @@
 						<div class="row">
 
 							<div dir-paginate="paquete in paquetes | filter : searchText | itemsPerPage: 10" class="col-lg-4 col-md-4 col-sm-6 col-xs-6 ">
-								 
-									<a href="javascript:void(0)" ng-click="agregarPaquete(paquete)">
+								<div ng-class="{'my-disabled' : paquete.deshabilitado}">
+									<a href="javascript:void(0)" ng-click="agregarPaquete(paquete)"  >
 										<div class="tile-stats" style="background-color: #FFFF">
 											<div style="position: absolute; top: 10px; right: 10px">
 												<img class="img-responsive avatar-view"
@@ -81,9 +81,10 @@
 												<h2>{{paquete.precio | currency }}</h2>
 											</div>
 										</div>
-									</a>
-							 
-							</div>
+									</a>								
+								</div>
+								</div>
+
 							<dir-pagination-controls></dir-pagination-controls>
 						</div>
 						<!-- /row -->

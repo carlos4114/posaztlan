@@ -155,13 +155,13 @@ var VentaProductoPaso1Controller = angular.module('indexModule').controller("ven
 	}
 	
 	
-	$scope.consultar();
-	$scope.consultarIngresosPeliculas();
-	$scope.consultarAsistencia();
-	$scope.consultarCinesEmpresa();
-	$scope.consultarRentables();
-	$scope.consultarVendidos();
-	$scope.consultarRentabilidad();
+	//$scope.consultar();
+//	$scope.consultarIngresosPeliculas();
+//	$scope.consultarAsistencia();
+//	$scope.consultarCinesEmpresa();
+//	$scope.consultarRentables();
+//	$scope.consultarVendidos();
+//	$scope.consultarRentabilidad();
 	
 	
 });

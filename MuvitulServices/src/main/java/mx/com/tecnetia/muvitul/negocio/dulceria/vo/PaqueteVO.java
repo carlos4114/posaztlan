@@ -18,6 +18,8 @@ public class PaqueteVO {
 	private String color;
 	private int cantidad;
 	private BigDecimal importe;
+	private boolean deshabilitado;
+	
 //	private Set<PuntoVenta> puntoVentas = new HashSet<PuntoVenta>(0);
 //	private Set<PaquetesXTicket> paquetesXTickets = new HashSet<PaquetesXTicket>(0);
 	
@@ -87,5 +89,12 @@ public class PaqueteVO {
 	}
 	public void setImporte(BigDecimal importe) {
 		this.importe = importe;
+	}
+	
+	public boolean isDeshabilitado() {
+		return deshabilitado;
+	}
+	public void setDeshabilitado(boolean deshabilitado) {
+		this.deshabilitado = deshabilitado;
 	}
 }

@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.ArticuloDAO;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.CineDAO;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.ImpuestoXProductoDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.ImpuestosXTicketPaqueteDAOI;
@@ -32,6 +33,8 @@ import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.ProductoXP
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.ProductoXTicketDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.TicketVentaDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.TipoMovimientoInvDAOI;
+import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Articulo;
+import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ArticulosXProducto;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Cine;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ImpuestoXProducto;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ImpuestosXTicketPaquete;
@@ -40,6 +43,7 @@ import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Movimiento
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Pago;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.PaquetesXPuntoVenta;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.PaquetesXTicket;
+import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Producto;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ProductosXPuntoVenta;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ProductosXTicket;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.TicketVenta;
@@ -108,13 +112,16 @@ public class VentaProductoBO {
 
 	@Autowired
 	private TipoMovimientoInvDAOI tipoMovimientoInvDAO;
-	
+
 	@Autowired
 	private CineDAO cineDAO;
 
 	@Autowired
+	private ArticuloDAO articuloDAO;
+
+	@Autowired
 	private InventarioBO inventarioBO;
-	
+
 	@Autowired
 	private ServletContext context;
 
@@ -130,6 +137,32 @@ public class VentaProductoBO {
 
 		if (productosXPuntoVenta != null && !productosXPuntoVenta.isEmpty()) {
 			paquetesVO.addAll(PaqueteAssembler.getPaquetesVOXProducto(productosXPuntoVenta));
+		}
+
+		Map<Integer, Articulo> mapArticulosDisp = new HashMap<Integer, Articulo>();
+		List<Articulo> articulos = articuloDAO.getDisponible(idPuntoVenta);
+		
+		for (Articulo articulo : articulos)
+			mapArticulosDisp.put(articulo.getIdArticulo(), articulo);
+
+		
+		Map<Integer, Producto> mapProductosAgotados = new HashMap<Integer, Producto>();
+
+		for (ProductosXPuntoVenta productoXPuntoVenta : productosXPuntoVenta) {
+			for (ArticulosXProducto articuloXProducto : productoXPuntoVenta.getProducto().getArticulosXProductos()) {
+				if (!mapArticulosDisp.containsKey(articuloXProducto.getArticulo().getIdArticulo())) {
+					mapProductosAgotados.put(productoXPuntoVenta.getProducto().getIdProducto(),
+							productoXPuntoVenta.getProducto());
+				}
+			}
+		}
+
+		for (PaqueteVO paqueteVO : paquetesVO) {
+			for (ProductoXPaqueteVO productoXPaqueteVO : paqueteVO.getProductosXPaqueteVO()) {
+				if (mapProductosAgotados.containsKey(productoXPaqueteVO.getProductoVO().getIdProducto())) {
+					paqueteVO.setDeshabilitado(true);
+				}
+			}
 		}
 
 		return paquetesVO;
@@ -160,7 +193,9 @@ public class VentaProductoBO {
 					}
 
 					MovimientoInventario movimientoInventario = mapMovimientoInventario.get(articuloKey);
-					movimientoInventario.setCantidad(movimientoInventario.getCantidad() + (articuloXProductoVO.getCantidad()*productoXPaqueteVO.getCantidad()*paqueteVO.getCantidad()));
+					movimientoInventario
+							.setCantidad(movimientoInventario.getCantidad() + (articuloXProductoVO.getCantidad()
+									* productoXPaqueteVO.getCantidad() * paqueteVO.getCantidad()));
 
 				}
 			}
@@ -177,8 +212,8 @@ public class VentaProductoBO {
 
 		for (ProductosXTicket productoXTicket : productosXTicket) {
 
-			List<ImpuestoXProducto> impuestosXProducto = impuestoXProductoDAO.findByIdCineAndIdProducto(ventaVO.getIdCine(), 
-					productoXTicket.getProducto().getIdProducto());
+			List<ImpuestoXProducto> impuestosXProducto = impuestoXProductoDAO
+					.findByIdCineAndIdProducto(ventaVO.getIdCine(), productoXTicket.getProducto().getIdProducto());
 
 			for (ImpuestoXProducto impuestoXProducto : impuestosXProducto) {
 
@@ -195,10 +230,10 @@ public class VentaProductoBO {
 				importeImpProducto = importeImpProducto.add(productoXTicket.getImporte());
 				importeImpProducto = importeImpProducto.subtract(subtotalProducto);
 
-				importeImpuestos= importeImpuestos.add(importeImpProducto);
+				importeImpuestos = importeImpuestos.add(importeImpProducto);
 
-				ImpuestosXTicketProducto impuestoXTicketProducto = ImpuestosXTicketProductoAssembler.getImpuestosXTicketProducto(
-						ticketVenta, impuestoXProducto, importeImpProducto);
+				ImpuestosXTicketProducto impuestoXTicketProducto = ImpuestosXTicketProductoAssembler
+						.getImpuestosXTicketProducto(ticketVenta, impuestoXProducto, importeImpProducto);
 
 				impuestosXTicketProductoDAO.save(impuestoXTicketProducto);
 			}
@@ -233,33 +268,42 @@ public class VentaProductoBO {
 			pagoDAO.save(pago);
 		}
 
-		TipoMovimientoInv tipoMovimientoInvOut= tipoMovimientoInvDAO.findByClave(MovimientoInvType.VENTA_OUT.getType());
+		TipoMovimientoInv tipoMovimientoInvOut = tipoMovimientoInvDAO
+				.findByClave(MovimientoInvType.VENTA_OUT.getType());
 
 		for (Entry<Integer, MovimientoInventario> entryMovInventario : mapMovimientoInventario.entrySet()) {
 
-//			MovimientoInventario movInventarioActual = movimientoInventarioDAO.getLastMovement(
-//					ventaVO.getIdCine(), entryMovInventario.getKey());
-//
-//			BigDecimal importe = new BigDecimal(0);
-//			importe = importe.add(movInventarioActual.getImporte());
-//			importe = importe.divide(new BigDecimal(movInventarioActual.getCantidad()), 3, BigDecimal.ROUND_HALF_EVEN);
-//			importe = importe.multiply(new BigDecimal(entryMovInventario.getValue().getCantidad()));
-//
-//			long existenciaActual = movInventarioActual.getExistenciaActual()
-//					- entryMovInventario.getValue().getCantidad();
+			// MovimientoInventario movInventarioActual =
+			// movimientoInventarioDAO.getLastMovement(
+			// ventaVO.getIdCine(), entryMovInventario.getKey());
+			//
+			// BigDecimal importe = new BigDecimal(0);
+			// importe = importe.add(movInventarioActual.getImporte());
+			// importe = importe.divide(new
+			// BigDecimal(movInventarioActual.getCantidad()), 3,
+			// BigDecimal.ROUND_HALF_EVEN);
+			// importe = importe.multiply(new
+			// BigDecimal(entryMovInventario.getValue().getCantidad()));
+			//
+			// long existenciaActual = movInventarioActual.getExistenciaActual()
+			// - entryMovInventario.getValue().getCantidad();
 
-//			movimientoInventarioDAO.save(MovimientoInventarioAssembler.getMovimientoInventario(
-//					entryMovInventario.getKey(), movInventarioActual.getProveedor(), tipoMovimientoInvOut,
-//					ventaVO.getIdUsuario(), entryMovInventario.getValue().getCantidad(), importe, 
-//					existenciaActual,ventaVO.getIdPuntoVenta(), ventaVO.getIdPuntoVenta(),null));
-			
-			ParametrosInventarioVO inventarioVO= new ParametrosInventarioVO();
+			// movimientoInventarioDAO.save(MovimientoInventarioAssembler.getMovimientoInventario(
+			// entryMovInventario.getKey(), movInventarioActual.getProveedor(),
+			// tipoMovimientoInvOut,
+			// ventaVO.getIdUsuario(),
+			// entryMovInventario.getValue().getCantidad(), importe,
+			// existenciaActual,ventaVO.getIdPuntoVenta(),
+			// ventaVO.getIdPuntoVenta(),null));
+
+			ParametrosInventarioVO inventarioVO = new ParametrosInventarioVO();
 			inventarioVO.setIdArticulo(entryMovInventario.getKey());
 			inventarioVO.setCantidad((int) entryMovInventario.getValue().getCantidad());
 			inventarioVO.setIdTipoMovimiento(tipoMovimientoInvOut.getIdTipoMovimientoInv());
 			inventarioVO.setClaveTipoMovimiento(tipoMovimientoInvOut.getClave());
-			
-			inventarioBO.createSalida(inventarioVO, ventaVO.getIdCine(), ventaVO.getIdPuntoVenta(), ventaVO.getIdUsuario());
+
+			inventarioBO.createSalida(inventarioVO, ventaVO.getIdCine(), ventaVO.getIdPuntoVenta(),
+					ventaVO.getIdUsuario());
 		}
 
 		subtotal = subtotal.add(total);
@@ -270,20 +314,21 @@ public class VentaProductoBO {
 		return TicketVentaAssembler.getTicketVentaVO(ticketVenta);
 	}
 
-	public List<ArchivoPdfVO> generarTicketPdf(Integer idUsuario, Integer idTicket, BigDecimal pagoCon, BigDecimal cambio) throws BusinessGlobalException {
+	public List<ArchivoPdfVO> generarTicketPdf(Integer idUsuario, Integer idTicket, BigDecimal pagoCon,
+			BigDecimal cambio) throws BusinessGlobalException {
 		ResourceBundle cfg = ResourceBundle.getBundle("config");
 		String rutaJasper = cfg.getString("dulceria.ticket.jasper");
 		SimpleDateFormat sdf = new SimpleDateFormat(Constantes.FORMAT_DDMMYYYYHHMMSSSSS);
 		String fecha = sdf.format(new Date());
-		List<ArchivoPdfVO> archivosPdfVO= new ArrayList<ArchivoPdfVO>();
-		
+		List<ArchivoPdfVO> archivosPdfVO = new ArrayList<ArchivoPdfVO>();
+
 		pagoCon = pagoCon.setScale(2, RoundingMode.CEILING);
 		cambio = cambio.setScale(2, RoundingMode.CEILING);
-		
+
 		Cine cine = cineDAO.findById(idUsuario);
 		TicketVenta ticketVenta = ticketVentaDAO.findById(idTicket);
-		List<Pago>  pagos = pagoDAO.findByTicketAndCta(idTicket);
-		
+		List<Pago> pagos = pagoDAO.findByTicketAndCta(idTicket);
+
 		TicketPdfVO ticketPdfVO = TicketVentaAssembler.getTicketPdfVO(cine, ticketVenta, pagoCon, cambio);
 
 		List<DetalleTicketPdfVO> detallesTicketPdfVO = new ArrayList<DetalleTicketPdfVO>();
@@ -291,27 +336,30 @@ public class VentaProductoBO {
 		if (ticketVenta.getPaquetesXTickets() != null && !ticketVenta.getPaquetesXTickets().isEmpty()) {
 			detallesTicketPdfVO.addAll(PaqueteXTicketAssembler.getDetallesTicketVO(ticketVenta.getPaquetesXTickets()));
 		}
-		
+
 		if (ticketVenta.getProductosXTickets() != null && !ticketVenta.getProductosXTickets().isEmpty()) {
-			detallesTicketPdfVO.addAll(ProductoXTicketAssembler.getDetallesTicketPdfVO(ticketVenta.getProductosXTickets()));
+			detallesTicketPdfVO
+					.addAll(ProductoXTicketAssembler.getDetallesTicketPdfVO(ticketVenta.getProductosXTickets()));
 		}
-		
+
 		List<DetallePagoPdfVO> detallesPagoPdfVO = PagoAssembler.getDetallesPagoPdfVO(pagos);
-		
+
 		List<DetalleImpuestoPdfVO> detallesImpPdfVO = new ArrayList<DetalleImpuestoPdfVO>();
-		
-		List<DetalleImpuestoPdfVO> detallesImpProductoPdfVO = ImpuestosXTicketProductoAssembler.getDetallesImpuestoPdfVO(ticketVenta.getImpuestosXTicketProductos());
-		
-		if (detallesImpProductoPdfVO!=null){
+
+		List<DetalleImpuestoPdfVO> detallesImpProductoPdfVO = ImpuestosXTicketProductoAssembler
+				.getDetallesImpuestoPdfVO(ticketVenta.getImpuestosXTicketProductos());
+
+		if (detallesImpProductoPdfVO != null) {
 			detallesImpPdfVO.addAll(detallesImpProductoPdfVO);
 		}
-		
-		List<DetalleImpuestoPdfVO> detallesImpPaquetePdfVO = ImpuestoXTicketPaqueteAssembler.getDetallesImpuestoPdfVO(ticketVenta.getImpuestosXTicketPaquetes());
-		
-		if (detallesImpPaquetePdfVO!=null){
+
+		List<DetalleImpuestoPdfVO> detallesImpPaquetePdfVO = ImpuestoXTicketPaqueteAssembler
+				.getDetallesImpuestoPdfVO(ticketVenta.getImpuestosXTicketPaquetes());
+
+		if (detallesImpPaquetePdfVO != null) {
 			detallesImpPdfVO.addAll(detallesImpPaquetePdfVO);
 		}
-		
+
 		Map<String, Object> parametros = new HashMap<String, Object>();
 		parametros.put("logo", new ByteArrayInputStream(cine.getEmpresa().getIcono()));
 		parametros.put("razonSocial", ticketPdfVO.getRazonSocial());
@@ -338,9 +386,9 @@ public class VentaProductoBO {
 
 		JRBeanCollectionDataSource impuestos = new JRBeanCollectionDataSource(detallesImpPdfVO);
 		parametros.put("recordDataSourceImpuestos", impuestos);
-		
+
 		try {
-			ArchivoPdfVO  archivoPdfVO= new ArchivoPdfVO(Constantes.TICKET);
+			ArchivoPdfVO archivoPdfVO = new ArchivoPdfVO(Constantes.TICKET);
 			String rutaArchivo = context.getRealPath(rutaJasper);
 			archivoPdfVO.setArchivo(JasperRunManager.runReportToPdf(rutaArchivo, parametros, new JREmptyDataSource()));
 			archivosPdfVO.add(archivoPdfVO);
@@ -349,7 +397,7 @@ public class VentaProductoBO {
 			e.printStackTrace();
 			logger.error("Error al generar pdf para el ticket[{}]", idTicket);
 		}
-		
+
 		return archivosPdfVO;
 	}
 
