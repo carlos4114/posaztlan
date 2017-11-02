@@ -30,9 +30,9 @@
 
 
 		<dependency>
-			<groupId>${project.groupId}</groupId>
+			<groupId>appgroupid</groupId>
 			<artifactId>MuvitulInfraServices</artifactId>
-			<version>${project.version}</version>
+			<version>0.0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 

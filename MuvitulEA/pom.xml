@@ -12,29 +12,29 @@
 	<dependencies>
 		<!-- LIBRERIAS "IN HOUSE" -->
 		<dependency>
-			<groupId>${project.groupId}</groupId>
+			<groupId>appgroupid</groupId>
 			<artifactId>MuvitulInfraServices</artifactId>
-			<version>${project.version}</version>
+			<version>0.0.1-SNAPSHOT</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>${project.groupId}</groupId>
+			<groupId>appgroupid</groupId>
 			<artifactId>MuvitulServices</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<type>war</type>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>${project.groupId}</groupId>
+			<groupId>appgroupid</groupId>
 			<artifactId>MuvitulWeb</artifactId>
-			<version>${project.version}</version>
+			<version>0.0.1-SNAPSHOT</version>
 			<type>war</type>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>${project.groupId}</groupId>
+			<groupId>appgroupid</groupId>
 			<artifactId>SeguridadServices</artifactId>
-			<version>${project.version}</version>
+			<version>0.0.1-SNAPSHOT</version>
 			<type>war</type>
 			<scope>runtime</scope>
 		</dependency>
