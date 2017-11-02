@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>appgroupid</groupId>
 		<artifactId>Muvitul</artifactId>
-		<version>${project.version}</version>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>MuvitulEA</artifactId>
 	<packaging>ear</packaging>
