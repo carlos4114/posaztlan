@@ -5,7 +5,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Devolucion Productos</title>
+<title>Devolución Productos</title>
 </head>
 
 <body>
@@ -33,7 +33,7 @@
 					<li><a href=""
 						ng-class="status.numeroPaso < 3 ?  'disabled' : status.paso3">
 							<span class="step_no">3</span> <span class="step_descr">
-								Resúmen devolución<br />
+								Resumen devolución<br />
 						</span>
 					</a></li>
 

@@ -1,7 +1,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Alta de Infracción</title>
+<title>Confirmar Venta</title>
 </head>
 <body>
 	<!-- bloque de PASO 5 de wizard - CANTIDAD -->

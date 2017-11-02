@@ -94,7 +94,7 @@
 
 					<!-- empieza sidebar - resumen de venta -->
 					<div class="table-responsive col-lg-5 col-md-5 col-sm-5 col-xs-12">
-						<h3 class="text-center">Resúmen de Venta</h3>
+						<h3 class="text-center">Resumen de Venta</h3>
 						<table class="table table-striped jambo_table bulk_action">
 							<thead>
 								<tr class="headings">

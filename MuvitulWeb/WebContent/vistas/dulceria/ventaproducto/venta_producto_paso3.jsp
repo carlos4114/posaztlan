@@ -58,7 +58,7 @@
 							</div>
 							<div
 								class="table-responsive col-lg-6 col-md-6 col-sm-6 col-xs-12">
-								<h3 class="text-center">Resúmen de Venta</h3>
+								<h3 class="text-center">Resumen de Venta</h3>
 								<table class="table table-striped jambo_table bulk_action">
 									<thead>
 										<tr class="headings">

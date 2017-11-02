@@ -62,7 +62,7 @@
 				<div class="alert alert-danger text-center  "
 					ng-if="ticket.exhibicionVencida == true && ticket.devolucionesVO.length == 0">
 					<strong>El número de ticket {{ticket.idTicket}} contiene
-						boletos con exhibicion vencida el  : {{ticket.fechaExhibicion}}</strong>
+						boletos con exhibición vencida el  : {{ticket.fechaExhibicion}}</strong>
 				</div>
 			</div>
 

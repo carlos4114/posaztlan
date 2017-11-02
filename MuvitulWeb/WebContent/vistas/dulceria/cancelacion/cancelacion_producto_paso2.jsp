@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Cancelacion</title>
+<title>Cancelación</title>
 
 </head>
 <body>
@@ -151,7 +151,7 @@
 											<div
 												ng-show="pago.importe > pago.pagoCon &&  pago.pagoCon > 0"
 												ng-style="{color:'red'}">El importe {{pago.importe}}
-												es mayor a lo que esta recibiendo ! .</div>
+												es mayor a lo que está recibiendo ! .</div>
 										</div>
 										<div class="form-group"
 											ng-if="!pago.formaPagoVO.requiereNumCuenta ">
@@ -232,7 +232,7 @@
 										<div class="row  col-lg-5 col-md-5 col-sm-6 col-xs-12">
 											<div class="form-group col-md-12 col-sm-12 col-xs-12"
 												ng-class="{'has-error': formCancelacions.motivoCancelacion.$invalid && formCancelacions.motivoCancelacion.$dirty}">
-												<label>Motivo de Cancelacion<span class="required">*</span>
+												<label>Motivo de Cancelación<span class="required">*</span>
 												</label> <select class="select2_single form-control"
 													name="motivoCancelacion" required
 													ng-options="motivoCancelacion as motivoCancelacion.nombre for motivoCancelacion in listaMotivosCancelacion"

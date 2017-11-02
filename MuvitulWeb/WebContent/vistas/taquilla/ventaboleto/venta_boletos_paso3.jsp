@@ -146,7 +146,7 @@
 										<h3 class="text-center">{{objetosVenta.promocion.nombre}}</h3>
 										<p class="text-center">{{objetosVenta.promocion.descripcion}}</p>
 										<p class="text-center"
-											ng-if="promocion.cantidad ==0 || promocion== null">No	seleccionó Promoción</p>
+											ng-if="promocion.cantidad ==0 || promocion== null">No seleccionó Promoción</p>
 									</div>
 
 								</div>

@@ -14,7 +14,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Consulta de Expediente</title>
+<title>Programaciones</title>
 </head>
 <body>
 <div class="x_panel">

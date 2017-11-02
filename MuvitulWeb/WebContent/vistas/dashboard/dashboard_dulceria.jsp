@@ -1,7 +1,7 @@
 <div class="x_panel">
 	<div class="x_title">
 		<h2>
-			<i class="fa fa-cog"></i> Reportes Dulceria
+			<i class="fa fa-cog"></i> Reportes Dulcería
 		</h2>
 		<div class="clearfix"></div>
 	</div>
@@ -39,7 +39,7 @@
 				<div class="col-xs-12 col-md-12 col-sm-12 col-lg-12" ng-show="cine">
 					<div class="x_panel">
 						<div class="x_title">
-							<h2>Ingresos Dulceria</h2>
+							<h2>Ingresos Dulcería</h2>
 
 							<div class="clearfix"></div>
 						</div>

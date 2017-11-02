@@ -2,7 +2,7 @@
 
 <html>
 <head>
-<title>Consulta de Expediente</title>
+<title>Promociones Taquilla</title>
 </head>
 <body>
 	<div class="x_panel">

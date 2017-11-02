@@ -152,7 +152,7 @@
 											<div
 												ng-show="pago.importe > pago.pagoCon &&  pago.pagoCon > 0"
 												ng-style="{color:'red'}">El importe {{pago.importe}}
-												es mayor a lo que esta recibiendo ! .</div>
+												es mayor a lo que está recibiendo ! .</div>
 										</div>
 										<div class="form-group"
 											ng-if="!pago.formaPagoVO.requiereNumCuenta ">

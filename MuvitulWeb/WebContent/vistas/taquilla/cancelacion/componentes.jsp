@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Devolucion Boleto</title>
+<title>Devolución Boleto</title>
 </head>
 <body>
 	<!-- Bootstrap -->
@@ -18,7 +18,7 @@
 				<div class="x_panel">
 					<div class="x_title">
 						<h2>
-							<i class="fa fa-align-left"></i>Productos Devolucion</small>
+							<i class="fa fa-align-left"></i>Productos Devolución</small>
 						</h2>
 
 						<div class="clearfix"></div>
@@ -82,7 +82,7 @@
 				<div class="x_panel">
 					<div class="x_title">
 						<h2>
-							<i class="fa fa-align-left"></i>Productos Devolucion</small>
+							<i class="fa fa-align-left"></i>Productos Devolución</small>
 						</h2>
 
 						<div class="clearfix"></div>
