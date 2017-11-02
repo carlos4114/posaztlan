@@ -64,7 +64,7 @@ public class VentaBoletoFacade implements VentaBoletoFacadeI {
 		logger.info("GetPeliculasByCine:::IdCine[{}]:::FechaExhibicion[{}]", idCine, fechaExhibicion);
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		Date fecha = formatter.parse(fechaExhibicion);
-		List<PeliculaVO> peliculas = ventaBoletoController.getPeliculasByCine(idCine, Fecha.getDayOfWeek(fecha), fecha);
+		List<PeliculaVO> peliculas = ventaBoletoController.getPeliculasByCine(idCine, Fecha.getDayOfWeekShort(fecha), fecha);
 
 		if (peliculas == null || peliculas.isEmpty()) {
 			throw new NotFoundException("No encontrado");

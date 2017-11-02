@@ -80,10 +80,21 @@ public class DashboardBO {
 		int count = 0;
 		for (int j = 1; j <= semanas; j++) {
 			IngresoSemanalVO ingresoSemanalVO = new IngresoSemanalVO();
+			
+			SimpleDateFormat formatt = new SimpleDateFormat("MMM/dd");
+			
+			Calendar cali = Calendar.getInstance();
+			cali.setTime(fechaInicial);
+			cali.add(Calendar.DAY_OF_YEAR, count+1);
 
-			ingresoSemanalVO.setDescripcion("Semana-" + j);
+			Calendar calf = Calendar.getInstance();
+			calf.setTime(fechaInicial);
+			calf.add(Calendar.DAY_OF_YEAR, count+7);
+			
+			ingresoSemanalVO.setDescripcion(formatt.format(cali.getTime()).toUpperCase()+ " - "+formatt.format(calf.getTime()).toUpperCase());
 			List<BigDecimal> totales = new ArrayList<BigDecimal>();
-
+			
+			
 			for (int k = 1; k <= 7; k++) {
 				Calendar cal = Calendar.getInstance();
 				cal.setTime(fechaInicial);
@@ -123,12 +134,30 @@ public class DashboardBO {
 		IngresoPeliculaGraficaVO ingresoPeliculaGraficaVO = new IngresoPeliculaGraficaVO();
 		List<IngresoPeliculaVO> ingresosPeliculaVO = new ArrayList<IngresoPeliculaVO>();
 
+		
+		
+		SimpleDateFormat formatt = new SimpleDateFormat("MMM/dd");
+		Calendar calfsc = Calendar.getInstance();
+		calfsc.setTime(new Date());
+		
+		Calendar calisc = Calendar.getInstance();
+		calisc.setTime(new Date());
+		calisc.add(Calendar.DAY_OF_YEAR, -7);
+		
 		IngresoPeliculaVO ingresoActual = new IngresoPeliculaVO();
-		ingresoActual.setDescripcion("Actual");
+		ingresoActual.setDescripcion("ACTUAL::"+ formatt.format(calisc.getTime()).toUpperCase()+ " - "+formatt.format(calfsc.getTime()).toUpperCase());
 		List<BigDecimal> totalesActuales = new ArrayList<BigDecimal>();
 
+		Calendar calfsa = Calendar.getInstance();
+		calfsa.setTime(new Date());
+		calfsa.add(Calendar.DAY_OF_YEAR, -8);
+		
+		Calendar calisa = Calendar.getInstance();
+		calisa.setTime(new Date());
+		calisa.add(Calendar.DAY_OF_YEAR, -14);
+		
 		IngresoPeliculaVO ingresoAnterior = new IngresoPeliculaVO();
-		ingresoAnterior.setDescripcion("Anterior");
+		ingresoAnterior.setDescripcion("ANTERIOR::"+ formatt.format(calisa.getTime()).toUpperCase()+ " - "+formatt.format(calfsa.getTime()).toUpperCase());
 		List<BigDecimal> totalesAnterior = new ArrayList<BigDecimal>();
 
 		for (String pelicula : peliculas) {
@@ -165,7 +194,7 @@ public class DashboardBO {
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(fechaInicial);
 			cal.add(Calendar.DAY_OF_YEAR, +i);
-			dias.add(Fecha.getDayOfWeek(cal.getTime()));
+			dias.add(Fecha.getDayOfWeekShort(cal.getTime()));
 		}
 
 		List<BigDecimal> totales = new ArrayList<BigDecimal>();
@@ -174,8 +203,17 @@ public class DashboardBO {
 			totales.add(mapAsistencia.containsKey(dia) ? mapAsistencia.get(dia) : new BigDecimal(0));
 		}
 
+		List<String> diasSemana = new ArrayList<String>();
+
+		for (int i = 1; i <= 7; i++) {
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(fechaInicial);
+			cal.add(Calendar.DAY_OF_YEAR, +i);
+			diasSemana.add(Fecha.getDayOfWeek(cal.getTime()));
+		}
+		
 		AsistenciaGraficaVO asistenciaGraficaVO = new AsistenciaGraficaVO();
-		asistenciaGraficaVO.setDias(dias);
+		asistenciaGraficaVO.setDias(diasSemana);
 		asistenciaGraficaVO.setTotales(totales);
 
 		return asistenciaGraficaVO;
@@ -205,7 +243,7 @@ public class DashboardBO {
 			cal.add(Calendar.DAY_OF_YEAR, +i);
 			String formattedDate = new SimpleDateFormat("dd/MM/yyyy").format(cal.getTime());
 			fechas.add(formattedDate);
-
+			
 			RentabilidadVO rentabilidadVO = new RentabilidadVO();
 			rentabilidadVO.setX(formattedDate);
 			rentabilidadVO.setY(new BigDecimal(0));

@@ -52,7 +52,7 @@
 				<div class="col-xs-12 col-md-12 col-sm-12 col-lg-12"  >
 					<div class="x_panel">
 						<div class="x_title">
-							<h2>Rentabilidad</h2>
+							<h2>Rentabilidad últimos 30 días</h2>
 
 							<div class="clearfix"></div>
 						</div>

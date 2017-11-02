@@ -71,7 +71,7 @@
               data: {
                   labels: data.dias,
                   datasets: [{
-                      label: 'Promedio ',
+                      label: 'Últimas 4 Semanas ',
                       backgroundColor: "#26B99A",
                       data: data.totales
                   }]
@@ -172,7 +172,7 @@
 
       //INICIO CONFIGURACION Asistencia promedio
       $scope.consultarAsistenciaPromedio = function(idCine) {
-    	  dashboardTaquillaService.consultarAsistenciaPromedio(idCine, $scope.fechaActual, 12).success(function(data) {
+    	  dashboardTaquillaService.consultarAsistenciaPromedio(idCine, $scope.fechaActual, 4).success(function(data) {
     		  graficaAsistenciaPromedio(data)
     		  }).error(function(data) {
         	  

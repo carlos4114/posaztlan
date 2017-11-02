@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class Fecha {
 
-	public static String getDayOfWeek(Date date) {
+	public static String getDayOfWeekShort(Date date) {
 		String[] days = { "DO", "LU", "MA", "MI", "JU", "VI", "SA" };
 		int numberDay = 0;
 		Calendar cal = Calendar.getInstance();
@@ -17,6 +17,16 @@ public class Fecha {
 		numberDay = cal.get(Calendar.DAY_OF_WEEK);
 		return days[numberDay - 1];
 	}
+	
+	public static String getDayOfWeek(Date date) {
+		String[] days = { "DOMINGO", "LUNES", "MARTES", "MIERCOLES", "JUEVES", "VIERNES", "SABADO" };
+		int numberDay = 0;
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		numberDay = cal.get(Calendar.DAY_OF_WEEK);
+		return days[numberDay - 1];
+	}
+	
 
 	public static String getBeforeDay(String dia) {
 		Map<String,String> map=new HashMap<String,String>();
