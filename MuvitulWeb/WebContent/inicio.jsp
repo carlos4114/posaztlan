@@ -316,6 +316,9 @@
             <script src="<c:url value='/resources/js/comun/directivas/data-util.service.js' />"></script>
             <script src="<c:url value='/resources/js/comun/directivas/fileUploadDirective.js' />"></script>
 
+            <!-- Select 2 -->
+            <script src="<c:url value='/resources/js/comun/directivas/directivaSelect2.js' />"></script>
+
             <!-- Autorizacion -->
             <script src="<c:url value='/resources/js/comun/dialog/service/autorizacionService.js' />"></script>
             <script src="<c:url value='/resources/js/comun/dialog/autorizacionModalController.js' />"></script>
