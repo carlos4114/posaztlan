@@ -19,4 +19,14 @@ public class DistribuidoraAssembler {
 		return distribuidoraVO;
 	}
 	
+	public static Distribuidora getDistribuidora(Integer idDistribuidora){
+		
+		if(idDistribuidora==null)
+			return null;
+		
+		Distribuidora distribuidora = new Distribuidora();
+		distribuidora.setIdDistribuidora(idDistribuidora);
+
+		return distribuidora;
+	}
 }

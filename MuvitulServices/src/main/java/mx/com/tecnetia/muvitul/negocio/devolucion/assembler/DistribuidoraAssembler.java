@@ -1,5 +1,6 @@
 package mx.com.tecnetia.muvitul.negocio.devolucion.assembler;
 
+import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Cine;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Distribuidora;
 import mx.com.tecnetia.muvitul.negocio.devolucion.vo.DistribuidoraVO;
 

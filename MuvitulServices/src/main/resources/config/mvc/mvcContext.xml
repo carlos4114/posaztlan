@@ -16,8 +16,9 @@
 			">
 
 	<!-- Escanea Spring todas las anotaciones que viven en estos paquetes: para realizar el Autowiring para los servicios REST-->
-		<mvc:annotation-driven />
 		<context:component-scan base-package="mx.com.tecnetia.muvitul.servicios" /> 
+		<mvc:annotation-driven />
+		<mvc:default-servlet-handler/>
 		<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix">
 				<value>/rest/</value>

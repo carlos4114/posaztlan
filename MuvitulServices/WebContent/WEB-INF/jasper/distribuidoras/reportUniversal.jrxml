@@ -1,0 +1,680 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1excel" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c7f4f4f1-fd4f-46cd-b0bf-8705ec49107b">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#FFBFBF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<subDataset name="Consulta Reporte" uuid="21c56f52-e002-472e-a0b2-aea2e8734571">
+		<parameter name="idCine" class="java.lang.Integer" isForPrompting="false">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<parameter name="idDistribuidora" class="java.lang.Integer" isForPrompting="false">
+			<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+		</parameter>
+		<parameter name="idPelicula" class="java.lang.Integer" isForPrompting="false"/>
+		<parameter name="fechaInicial" class="java.lang.String" isForPrompting="false">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<parameter name="fechaFinal" class="java.lang.String" isForPrompting="false">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<parameter name="totalAdmisiones" class="java.math.BigDecimal" isForPrompting="false">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<parameter name="precioPromedio" class="java.lang.String" isForPrompting="false">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<parameter name="entradaBruta" class="java.lang.String" isForPrompting="false">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<parameter name="entradaIVA" class="java.lang.String" isForPrompting="false">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<parameter name="entradaNeta" class="java.lang.String" isForPrompting="false">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<queryString>
+			<![CDATA[select DATE_FORMAT(fecha_exhibicion, "%d-%m-%Y") as fecha_exhibicion,
+'000' as rentrak,pel.titulo as pelicula,DATE_FORMAT(pro.horario,"%H:%i") as funcion,
+form.nombre as formato,ver.nombre as version,sal.nombre as sala,
+cli.nombre as boleto,sum(bol.cantidad) as admision,'' as promocion,
+FORMAT(bol.importe/bol.cantidad,2) as precio,
+FORMAT(sum(bol.importe),2) as entrada,
+FORMAT(sum(bol.importe) * (imp.porcentaje/100),2) as iva,
+FORMAT(sum(bol.importe) - sum(bol.importe) * (imp.porcentaje/100),2) as neto
+from boletos_x_ticket bol
+join programacion pro on pro.id_programacion = bol.id_programacion
+join sala sal on sal.id_sala = pro.id_sala
+join cine cin on cin.id_cine = sal.id_cine
+join pelicula pel on pel.id_pelicula = pro.id_pelicula
+join version ver on ver.id_version = pro.id_version
+join formato form on form.id_formato = pro.id_formato
+join precio_x_formato pre on pre.id_formato = pro.id_formato and pre.id_tipo_cliente = bol.id_tipo_cliente
+join impuesto_boleto imp on imp.id_cine = cin.id_cine and imp.activo = 1 and clave='iva'
+join tipo_cliente cli on cli.id_tipo_cliente = bol.id_tipo_cliente
+join derechos_autor_x_pelicula dap on dap.id_pelicula = pro.id_pelicula
+join derechos_distribuidora_x_pelicula ddp on ddp.id_pelicula = pro.id_pelicula
+where pel.id_cine = $P{idCine} and pel.id_distribuidora = $P{idDistribuidora} and pel.id_pelicula = $P{idPelicula} and bol.activo = 0 and DATE(fecha_exhibicion) between DATE($P{fechaInicial}) and DATE($P{fechaFinal})
+group by bol.id_programacion,pro.id_formato,pro.id_version,bol.id_tipo_cliente,fecha_exhibicion
+order by fecha_exhibicion asc;]]>
+		</queryString>
+		<field name="fecha_exhibicion" class="java.lang.String">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="rentrak" class="java.lang.String"/>
+		<field name="pelicula" class="java.lang.String"/>
+		<field name="funcion" class="java.lang.String"/>
+		<field name="formato" class="java.lang.String"/>
+		<field name="version" class="java.lang.String"/>
+		<field name="sala" class="java.lang.String"/>
+		<field name="boleto" class="java.lang.String"/>
+		<field name="admision" class="java.math.BigDecimal"/>
+		<field name="promocion" class="java.lang.String"/>
+		<field name="precio" class="java.lang.String">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="entrada" class="java.lang.String"/>
+		<field name="iva" class="java.lang.String"/>
+		<field name="neto" class="java.lang.String"/>
+	</subDataset>
+	<parameter name="idCine" class="java.lang.Integer"/>
+	<parameter name="idDistribuidora" class="java.lang.Integer"/>
+	<parameter name="idPelicula" class="java.lang.Integer"/>
+	<parameter name="fechaInicial" class="java.lang.String"/>
+	<parameter name="fechaFinal" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select emp.nombre as razon_social,'' as plaza, '' as rentak,cin.nombre as cine,
+concat(cin.domicilio,'. ',cin.colonia,'. ',cin.municipio, '. CP. ',cin.cp) as direccion,
+concat(cin.municipio,', ',cin.estado) as municipio_estado,cin.ciudad,
+cin.cp,cin.telefono,cin.municipio,cin.estado,
+sal.nombre as sala,pel.titulo as programa,dis.nombre as distribuidora,
+ddp.porcentaje + ' %' as porcentaje,
+sum(bol.cantidad) as total_admisiones,
+(select FORMAT(sum(importe_boleto)/count(1),2) from(
+select sum(bol_2.importe)/sum(bol_2.cantidad) as importe_boleto
+    from boletos_x_ticket bol_2
+	join programacion prot2 on prot2.id_programacion = bol_2.id_programacion
+	join pelicula pelt2 on pelt2.id_pelicula = prot2.id_pelicula
+    where pelt2.id_cine = $P{idCine} and pelt2.id_distribuidora = $P{idDistribuidora} and pelt2.id_pelicula = $P{idPelicula}
+	and bol_2.activo = 0 and DATE(fecha_exhibicion) between DATE($P{fechaInicial}) and DATE($P{fechaFinal})
+	group by pelt2.id_pelicula,bol_2.id_programacion,prot2.id_formato,prot2.id_version,bol_2.id_tipo_cliente
+) as tabla_precio_promedio) as precio_promedio,
+FORMAT(sum(bol.importe) * (imp.porcentaje/100),2) as entrada_iva,
+FORMAT(sum(bol.importe) - (sum(bol.importe) * (imp.porcentaje/100)),2) as entrada_sin_iva,
+FORMAT(sum(bol.importe),2) as entrada_bruta,
+FORMAT(sum(bol.importe) * (dap.porcentaje/100),2) as derechos_Autor,
+FORMAT(sum(bol.importe) - (sum(bol.importe) * (dap.porcentaje/100)),2) as entrada_neta,
+FORMAT((sum(bol.importe) -
+	(sum(bol.importe) * (dap.porcentaje/100))) * (ddp.porcentaje/100),2) as distribuidora_entrada,
+FORMAT(((sum(bol.importe) - (sum(bol.importe) * (dap.porcentaje/100)))
+	* (ddp.porcentaje/100)) * (imp.porcentaje/100),2)  as distribuidora_iva,
+FORMAT(((sum(bol.importe) - (sum(bol.importe) * (dap.porcentaje/100))) * (ddp.porcentaje/100))
+	- (((sum(bol.importe) - (sum(bol.importe) * (dap.porcentaje/100))) * (ddp.porcentaje/100)) * (imp.porcentaje/100)),2) as distribuidora_ent_sin_iva,
+FORMAT(((sum(bol.importe) - (sum(bol.importe) * (dap.porcentaje/100))) * (ddp.porcentaje/100))
+		+
+	    (((sum(bol.importe) - (sum(bol.importe) * (dap.porcentaje/100))) *
+			(ddp.porcentaje/100)) * (imp.porcentaje/100))
+,2) as distribuidora_total,
+FORMAT((sum(bol.importe) -
+	(sum(bol.importe) * (dap.porcentaje/100))) * ((100-ddp.porcentaje)/100),2) as cine_entrada
+from boletos_x_ticket bol
+join programacion pro on pro.id_programacion = bol.id_programacion
+join sala sal on sal.id_sala = pro.id_sala
+join cine cin on cin.id_cine = sal.id_cine
+join empresa emp on emp.id_empresa = cin.id_empresa
+join pelicula pel on pel.id_pelicula = pro.id_pelicula
+join distribuidora dis on dis.id_distribuidora = pel.id_distribuidora
+join version ver on ver.id_version = pro.id_version
+join formato form on form.id_formato = pro.id_formato
+join precio_x_formato pre on pre.id_formato = pro.id_formato and pre.id_tipo_cliente = bol.id_tipo_cliente
+join impuesto_boleto imp on imp.id_cine = cin.id_cine and imp.activo = 1 and clave='iva'
+join tipo_cliente cli on cli.id_tipo_cliente = bol.id_tipo_cliente
+join derechos_autor_x_pelicula dap on dap.id_pelicula = pro.id_pelicula
+join derechos_distribuidora_x_pelicula ddp on ddp.id_pelicula = pro.id_pelicula
+where pel.id_cine = $P{idCine} and pel.id_distribuidora = $P{idDistribuidora} and pel.id_pelicula = $P{idPelicula}
+and bol.activo = 0 and DATE(fecha_exhibicion) between DATE($P{fechaInicial}) and DATE($P{fechaFinal})
+group by pel.id_pelicula;]]>
+	</queryString>
+	<field name="razon_social" class="java.lang.String"/>
+	<field name="plaza" class="java.lang.String"/>
+	<field name="rentak" class="java.lang.String"/>
+	<field name="cine" class="java.lang.String"/>
+	<field name="direccion" class="java.lang.String"/>
+	<field name="municipio_estado" class="java.lang.String"/>
+	<field name="ciudad" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cp" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="telefono" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="municipio" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="estado" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sala" class="java.lang.String"/>
+	<field name="programa" class="java.lang.String"/>
+	<field name="distribuidora" class="java.lang.String"/>
+	<field name="porcentaje" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total_admisiones" class="java.math.BigDecimal"/>
+	<field name="precio_promedio" class="java.lang.String"/>
+	<field name="entrada_iva" class="java.lang.String"/>
+	<field name="entrada_sin_iva" class="java.lang.String"/>
+	<field name="entrada_bruta" class="java.lang.String"/>
+	<field name="derechos_Autor" class="java.lang.String"/>
+	<field name="entrada_neta" class="java.lang.String"/>
+	<field name="distribuidora_entrada" class="java.lang.String"/>
+	<field name="distribuidora_iva" class="java.lang.String"/>
+	<field name="distribuidora_ent_sin_iva" class="java.lang.String"/>
+	<field name="distribuidora_total" class="java.lang.String"/>
+	<field name="cine_entrada" class="java.lang.String"/>
+	<title>
+		<band height="25" splitType="Stretch">
+			<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="87" splitType="Stretch">
+			<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
+			<textField>
+				<reportElement x="609" y="2" width="193" height="20" uuid="587b7898-c317-47dc-812d-a8ea867e39e9"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{cine}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="6" y="62" width="130" height="20" uuid="ef9f10c1-85db-4948-8e89-d9aba62d1e7c"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<text><![CDATA[SEMANA DE EXHIBICION:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="282" y="62" width="24" height="20" uuid="97d1c823-064a-4912-a97b-6100af8f6182"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[AL]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="172" y="62" width="65" height="20" uuid="2e4bc16d-f945-4fe1-ab83-ac001de0bb36"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{fechaInicial}.substring(5,7).equals("01")?"ENERO":
+$P{fechaInicial}.substring(5,7).equals("02")?"FEBRERO":
+$P{fechaInicial}.substring(5,7).equals("03")?"MARZO":
+$P{fechaInicial}.substring(5,7).equals("04")?"ABRIL":
+$P{fechaInicial}.substring(5,7).equals("05")?"MAYO":
+$P{fechaInicial}.substring(5,7).equals("06")?"JUNIO":
+$P{fechaInicial}.substring(5,7).equals("07")?"JULIO":
+$P{fechaInicial}.substring(5,7).equals("08")?"AGOSTO":
+$P{fechaInicial}.substring(5,7).equals("09")?"SEPTIEMBRE":
+$P{fechaInicial}.substring(5,7).equals("10")?"OCTUBRE":
+$P{fechaInicial}.substring(5,7).equals("11")?"NOVIEMBRE":"DICIEMBRE"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="547" y="2" width="51" height="20" uuid="29fbd5a1-a7a8-4d1d-bf15-c82ddcefc840"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[CINE:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="547" y="22" width="51" height="20" uuid="609c3b5d-aa50-45d6-adc3-286378784cff"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[CLIENTE:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="609" y="22" width="193" height="20" uuid="1ecfc143-b712-4624-855a-90992ec7e494"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{razon_social}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="547" y="42" width="51" height="20" uuid="5a0f32e8-1cd0-4439-82fc-d5129a33db5d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[CIUDAD:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="147" y="62" width="25" height="20" uuid="2d8cf726-31d5-4475-9619-f2e165ada2da"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{fechaInicial}.substring(8,10)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="237" y="62" width="32" height="20" uuid="657b29c3-5c76-41cf-be07-e56f86ecb0cf"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{fechaInicial}.substring(0,4)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="341" y="62" width="65" height="20" uuid="5f6afcb4-846f-45b0-8ab3-e2ea2d876b9b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{fechaFinal}.substring(5,7).equals("01")?"ENERO":
+$P{fechaFinal}.substring(5,7).equals("02")?"FEBRERO":
+$P{fechaFinal}.substring(5,7).equals("03")?"MARZO":
+$P{fechaFinal}.substring(5,7).equals("04")?"ABRIL":
+$P{fechaFinal}.substring(5,7).equals("05")?"MAYO":
+$P{fechaFinal}.substring(5,7).equals("06")?"JUNIO":
+$P{fechaFinal}.substring(5,7).equals("07")?"JULIO":
+$P{fechaFinal}.substring(5,7).equals("08")?"AGOSTO":
+$P{fechaFinal}.substring(5,7).equals("09")?"SEPTIEMBRE":
+$P{fechaFinal}.substring(5,7).equals("10")?"OCTUBRE":
+$P{fechaFinal}.substring(5,7).equals("11")?"NOVIEMBRE":"DICIEMBRE"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="316" y="62" width="25" height="20" uuid="c7cb8457-496e-4a0c-9411-8a63c257c4d5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{fechaFinal}.substring(8,10)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="406" y="62" width="33" height="20" uuid="14d0d1d7-33a5-46b7-9e09-b62d87345529"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{fechaFinal}.substring(0,4)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="609" y="42" width="193" height="20" uuid="5bd405d4-e1e3-4646-80f1-a59cf2f6405f"/>
+				<textFieldExpression><![CDATA[$F{ciudad}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="271" splitType="Stretch">
+			<componentElement>
+				<reportElement key="table 2" style="table" positionType="Float" isPrintRepeatedValues="false" x="0" y="0" width="802" height="182" isPrintInFirstWholeBand="true" uuid="53ee8956-7303-42d4-acd8-3359cd3b76b7"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="Consulta Reporte" uuid="934e1cc8-ef2f-4e6b-9efb-703cc743c632">
+						<datasetParameter name="idCine">
+							<datasetParameterExpression><![CDATA[$P{idCine}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="idDistribuidora">
+							<datasetParameterExpression><![CDATA[$P{idDistribuidora}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="idPelicula">
+							<datasetParameterExpression><![CDATA[$P{idPelicula}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="fechaInicial">
+							<datasetParameterExpression><![CDATA[$P{fechaInicial}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="fechaFinal">
+							<datasetParameterExpression><![CDATA[$P{fechaFinal}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="totalAdmisiones">
+							<datasetParameterExpression><![CDATA[$F{total_admisiones}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="precioPromedio">
+							<datasetParameterExpression><![CDATA[$F{precio_promedio}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="entradaBruta">
+							<datasetParameterExpression><![CDATA[$F{entrada_bruta}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="entradaIVA">
+							<datasetParameterExpression><![CDATA[$F{entrada_iva}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="entradaNeta">
+							<datasetParameterExpression><![CDATA[$F{entrada_sin_iva}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="79" uuid="810580da-0322-4c0a-b02d-eaf16db08684">
+						<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement isPrintRepeatedValues="false" x="0" y="0" width="79" height="30" uuid="e0517af0-fd3a-48c2-aa64-bfde557564f6">
+									<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[FECHA]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="79" height="20" uuid="2d5b92f3-8654-4ecd-92b9-b89b7ed6ec9a"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{fecha_exhibicion}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="55" uuid="88ba26ef-385a-4f9e-83b1-658127c8ffb1">
+						<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement isPrintRepeatedValues="false" x="0" y="0" width="55" height="30" uuid="9591f732-f237-4799-8e90-528e1c7d4c07">
+									<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[RENTRAK]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="55" height="20" uuid="2bded913-0b4c-47f5-ad72-650fe5d47262"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{rentrak}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="139" uuid="ac512d27-406b-4862-82aa-983fe78f5a63">
+						<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement isPrintRepeatedValues="false" x="0" y="0" width="139" height="30" uuid="25951e2a-008e-472a-b131-42de5f50da27">
+									<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[PELICULA]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="139" height="20" uuid="be016398-ca23-4b8e-a7da-81b474d72549"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{pelicula}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="51" uuid="d3bd42d7-b21e-4dd9-8b61-309d6f0e28ce">
+						<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement isPrintRepeatedValues="false" x="0" y="0" width="51" height="30" uuid="f074325c-7054-4d8b-82bc-364f3ab0f551">
+									<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[FUNCION]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="51" height="20" uuid="4f3c4914-da49-48cf-b19b-f56763f60dba"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{funcion}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="62" uuid="7078d779-4e9e-4794-ac3c-0ad4e3e97789">
+						<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement isPrintRepeatedValues="false" x="0" y="0" width="62" height="30" uuid="06bfb05a-84d0-4775-ac55-05312e1dc3f5">
+									<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[FORMATO]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="62" height="20" uuid="9b228a9b-7108-4252-bce9-409cd09366af"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{formato}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="44" uuid="90bdba83-847c-4d1d-903b-8a3568c5dc38">
+						<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement isPrintRepeatedValues="false" x="0" y="0" width="44" height="30" uuid="f3542314-204a-4a2f-bfc9-17af19ac73ad">
+									<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[SALA]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="44" height="20" uuid="31a225c5-94a3-459d-8cf9-934c333c7e4d"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{sala}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="76" uuid="e2115650-786e-4aa1-bb69-df8187e102ba">
+						<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement isPrintRepeatedValues="false" x="0" y="0" width="76" height="30" uuid="e3c42cf7-5f1c-45e0-b97c-693dcd053fea">
+									<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[TIPO BOLETO]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="76" height="20" uuid="8818d21c-6a17-4684-ace7-9c7d1b524778"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{boleto}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="146" uuid="ca4721f6-db69-4a5c-8247-00581a8426aa">
+						<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement isPrintRepeatedValues="false" x="0" y="0" width="146" height="30" uuid="8decd223-7a6a-46bd-926a-be53d42c02b9">
+									<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[DETALLE DE   PROCOMOCION / CORTESIA]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="146" height="20" uuid="01ac2a81-a5bf-428e-9caa-f9d15a6f75d0"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{promocion}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="67" uuid="68f44ee8-662e-4def-bfe0-326a44d5b28c">
+						<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
+						<jr:tableHeader height="30" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="67" height="30" uuid="0125fdd1-d7cf-46e4-832c-4c94bc6a0220"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$P{totalAdmisiones}]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement isPrintRepeatedValues="false" x="0" y="0" width="67" height="30" uuid="6e563211-8c8b-4021-b2ae-5cc158236d36">
+									<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="9"/>
+								</textElement>
+								<text><![CDATA[ADMISIONES]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="67" height="20" uuid="691a7431-91d2-4841-b494-aa4891ed329d"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="9"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{admision}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="65" uuid="9c8afc02-4c1b-4c81-ab10-7d1b8716634b">
+						<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
+						<jr:tableHeader height="30" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="65" height="30" uuid="8fe7c371-0870-4f65-b7cb-e28415e7f42a"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$P{precioPromedio}]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement isPrintRepeatedValues="false" x="0" y="0" width="65" height="30" uuid="7168178e-42ad-49b8-9006-3bb6760942e6">
+									<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="9"/>
+								</textElement>
+								<text><![CDATA[PRECIO DE BOLETO]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="65" height="20" uuid="85d8a705-fd69-4992-a3af-5d0d0bd7d301"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="9"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{precio}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="89" uuid="d25d8a09-30e1-4687-a043-e2f4b599749c">
+						<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
+						<jr:tableHeader height="30" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="89" height="30" uuid="b306f99a-5ba6-4491-8212-f244b7e82f7e"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$P{entradaBruta}]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement isPrintRepeatedValues="false" x="0" y="0" width="89" height="30" uuid="dec2655a-3138-4206-a14c-ab29c34d1b90">
+									<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="9"/>
+								</textElement>
+								<text><![CDATA[INGRESOS]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="89" height="20" uuid="5c248333-ef68-4bf1-86b1-9767ae70e625"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="9"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{entrada}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="92" uuid="9b424471-133a-41cc-89ec-a2609136a3db">
+						<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
+						<jr:tableHeader height="30" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="92" height="30" uuid="aeca2072-979a-4efe-a60f-13dc12097ad7"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$P{entradaIVA}]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement isPrintRepeatedValues="false" x="0" y="0" width="92" height="30" uuid="0113c128-1e09-4eb6-abfd-9cf4dfb6d878">
+									<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="9"/>
+								</textElement>
+								<text><![CDATA[IVA]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="92" height="20" uuid="84ae308f-54da-464d-8550-b644c1c67e8b"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="9"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{iva}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="87" uuid="a6bbe7b7-80a4-4684-a676-c66cbfcc9046">
+						<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
+						<jr:tableHeader height="30" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="87" height="30" uuid="1a71fe1f-4ec0-4e7f-8f30-f070ee784dc7"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$P{entradaNeta}]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement isPrintRepeatedValues="false" x="0" y="0" width="87" height="30" uuid="a7aa4624-15ae-40f2-baf7-7735178eda1e">
+									<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="9"/>
+								</textElement>
+								<text><![CDATA[NETO]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="87" height="20" uuid="a48dccfd-ae8b-43e7-ac49-eba52d29af32"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="9"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{neto}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+	</detail>
+</jasperReport>

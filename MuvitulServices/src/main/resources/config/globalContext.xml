@@ -31,7 +31,7 @@
 	 <context:spring-configured/>
 	
 	  <!-- Configuracion de transacciones para hibernate con spring     -->
-	  <tx:annotation-driven transaction-manager="txManager" />
+	  <tx:annotation-driven transaction-manager="txManager" proxy-target-class="true"/>
 	  <bean id="txManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 			<property name="sessionFactory" ref="hibernateSessionFactory" />
 	  </bean>

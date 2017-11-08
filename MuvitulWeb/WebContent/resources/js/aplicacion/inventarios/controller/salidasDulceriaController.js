@@ -102,7 +102,9 @@ var SalidasDulceriaController = angular.module('indexModule').controller("Salida
 					$scope.showAviso("No fue posible realizar movimiento.");
 				});
 		}else{
-			$scope.showAviso(autorizacion.descripcion);
+			if(autorizacion.descripcion != undefined){
+				$scope.showAviso(autorizacion.descripcion);
+			}
 		}
 	}
 	

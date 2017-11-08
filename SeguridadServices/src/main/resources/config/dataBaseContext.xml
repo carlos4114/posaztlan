@@ -219,6 +219,8 @@
 				</value>
 				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ArticulosCorteAjuste
 				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ReportesCineXDistribuidora
+				</value>
 			</list>
 		</property>
 	</bean>

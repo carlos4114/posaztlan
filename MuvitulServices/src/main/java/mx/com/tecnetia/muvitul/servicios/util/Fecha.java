@@ -74,4 +74,26 @@ public class Fecha {
 		return output;
 	}
 	
+	// Suma los días recibidos a la fecha  
+	public static Date sumarRestarDiasFecha(Date fecha, int dias){
+	    Calendar calendar = Calendar.getInstance();
+	    calendar.setTime(fecha); // Configuramos la fecha que se recibe
+	    calendar.add(Calendar.DAY_OF_YEAR, dias);  // numero de días a añadir, o restar en caso de días<0
+	    return calendar.getTime(); // Devuelve el objeto Date con los nuevos días añadidos
+	}
+
+	// Suma o resta las horas recibidos a la fecha  
+	public static Date sumarRestarHorasFecha(Date fecha, int horas){
+	    Calendar calendar = Calendar.getInstance();
+	    calendar.setTime(fecha); // Configuramos la fecha que se recibe
+	    calendar.add(Calendar.HOUR, horas);  // numero de horas a añadir, o restar en caso de horas<0
+	    return calendar.getTime(); // Devuelve el objeto Date con las nuevas horas añadidas
+	}
+	 
+	public static Integer diferenciaDias(Date fechaInicio,Date fachaFin){
+		final long MILLSECS_PER_DAY = 24 * 60 * 60 * 1000; //Milisegundos al día 86400000
+		int dias=(int) ((fechaInicio.getTime()-fachaFin.getTime())/MILLSECS_PER_DAY);
+		return dias;
+	}
+	 
 }

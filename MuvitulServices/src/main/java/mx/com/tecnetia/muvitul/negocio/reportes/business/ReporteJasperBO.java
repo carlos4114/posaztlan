@@ -14,6 +14,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.internal.SessionImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +37,7 @@ public class ReporteJasperBO {
 	final static Log log = LogFactory.getLog(ReporteJasperBO.class);
 	
 	@Autowired
+    @Qualifier("hibernateSessionFactory")
     protected SessionFactory sessionFactory;
 
 	@Autowired
@@ -43,11 +45,7 @@ public class ReporteJasperBO {
 	
 	@Transactional(readOnly=true)
 	public JasperPrint getReporte(ReporteJasperVO reporteVO) throws BusinessGlobalException, NotFoundException, IOException, HibernateException, JRException{
-//			ResourceBundle cfg = ResourceBundle.getBundle("config");
-//			String rutaDisneyJasper = cfg.getString("reporte.distribuidora.disney.jasper");
-		   // Se corre el reporte y se obtiene		
-//		   ClassPathResource cpr = new ClassPathResource(reporteVO.getRutaReporte());
-//		   InputStream is = cpr.getInputStream();			
+		
 		String rutaArchivo = context.getRealPath(reporteVO.getRutaReporte());
 
 		   return (JasperPrint) JasperFillManager.fillReport(rutaArchivo, reporteVO.getParametros(), 

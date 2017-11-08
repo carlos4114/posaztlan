@@ -3,6 +3,7 @@ package mx.com.tecnetia.muvitul.infraservices.servicios;
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -243,15 +244,9 @@ public class CorreroElectronicoBO extends GlobalService{
             {
                 mailAttachments = new File[attachments.length];
                 for(int i = 0; i < attachments.length; i++)
-                {
-                    URL url = getClass().getResource(attachments[i]);
-                    if(url==null){
-                    	url = new URL(attachments[i]);
-                    }
-                    File f = new File(url.getFile().substring(url.getFile().lastIndexOf("/") + 1));
-                    f.deleteOnExit();
-                    InputStream is = url.openStream();
-                    writeToFile(is, f);
+                {                    
+                    File f = new File(attachments[i]);
+                    InputStream is = new FileInputStream(f);
                     mailAttachments[i] = f;
                     is.close();
                 }
