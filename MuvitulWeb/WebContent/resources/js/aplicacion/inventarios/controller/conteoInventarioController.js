@@ -12,23 +12,26 @@ var ConteoInventarioController = angular.module('indexModule').controller("Conte
 	$scope.movimientoInventario = {};
 	$scope.conteoArticuloTmp = {};
 	$scope.nombreArticulo = "";
+	$scope.unidadMedida = "";
 	$scope.resultado = "";		
 	$scope.isNew = false;
 	$scope.parametrosInventario = {};
+	$scope.showFormConteoArticuloCreate = false;
 	
 	$scope.limpiarParametrosMovimiento = function() {
 			$scope.tipoSalida = {};				
 			$scope.movimientoInventario = {};
 			$scope.nombreArticulo = "";
+			$scope.unidadMedida = "";
 			$scope.resultado = "";
 			$scope.conteoArticuloTmp = {};
 			$scope.isNew = false;
+			$scope.showFormConteoArticuloCreate = false;
 	}
 	
 	$scope.consultarTiposMovimiento = function() {
 		inventarioService.consultarTiposMovimientosAjuste().success(function(data) {
 			$scope.listaTiposMovimientosAjuste = data;
-			console.log($scope.listaTiposMovimientosAjuste);
 		}).error(function(data) {
 
 			
@@ -38,6 +41,7 @@ var ConteoInventarioController = angular.module('indexModule').controller("Conte
 	$scope.buscarArticulos = function() {
 		inventarioService.busquedaArticulosSinConteo($scope.parametroBusqueda.articulo).success(function(data) {
 			$scope.listaArticulos = data;
+			$scope.showFormConteoArticuloCreate = false;
 		}).error(function(data) {
 
 		});
@@ -55,9 +59,11 @@ var ConteoInventarioController = angular.module('indexModule').controller("Conte
 	$scope.setDatosConteoArticuloCreate = function(movimientoInventarioVO){
 		$scope.movimientoInventario = movimientoInventarioVO;
 		$scope.nombreArticulo = $scope.movimientoInventario.articulo.nombre;
+		$scope.unidadMedida =  $scope.movimientoInventario.articulo.unidadMedidaVO.nombre;
 		$scope.parametrosInventario.idArticulo = movimientoInventarioVO.articulo.idArticulo;
 		$scope.parametrosInventario.existenciaFisica = null;
 		$scope.isNew = true;
+		$scope.showFormConteoArticuloCreate = true;
 		$scope.formConteo.$setPristine();		
 	}
 	
@@ -65,6 +71,8 @@ var ConteoInventarioController = angular.module('indexModule').controller("Conte
 		$scope.parametrosInventario.existenciaFisica = conteoArticulo.existenciaFisica;
 		$scope.conteoArticuloTmp = conteoArticulo;
 		$scope.nombreArticulo = conteoArticulo.articulo.nombre;
+		$scope.unidadMedida =  conteoArticulo.articulo.unidadMedidaVO.nombre;
+		$scope.showFormConteoArticuloCreate = true;
 		$scope.isNew = false;
 	}
 	
@@ -149,13 +157,11 @@ var ConteoInventarioController = angular.module('indexModule').controller("Conte
 				  movimientoInventario: $scope.movimientoInventario
 				 };
 
-			console.log(conteoArticulo);
 			if($scope.validaFormConteo()){
 				inventarioService.registrarConteo(conteoArticulo).success(function(data) {					
 					$scope.resultado = data;
 						if($scope.resultado > 0){
-							$scope.buscarConteoArticulos();
-							$scope.cerrar();
+							$scope.buscarConteoArticulos();							
 						}else{
 							$scope.showAviso("No fue posible guardar la información.");							
 						}
@@ -171,8 +177,7 @@ var ConteoInventarioController = angular.module('indexModule').controller("Conte
 				inventarioService.actualizarConteo($scope.conteoArticuloTmp).success(function(data) {					
 					$scope.resultado = data;
 						if($scope.resultado > 0){
-							$scope.buscarConteoArticulos();
-							$scope.cerrar();
+							$scope.buscarConteoArticulos();							
 						}else{
 							$scope.showAviso("No fue posible guardar la información.");							
 						}

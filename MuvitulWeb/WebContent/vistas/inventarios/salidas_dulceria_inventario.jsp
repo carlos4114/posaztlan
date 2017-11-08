@@ -137,15 +137,18 @@
 							<div class="col-sm-6">
 								<div class="form-group">
 									<label class="control-label col-md-3 col-sm-3 col-xs-12"
-										for="existencia">Existencia actual</label>
-									<div class="col-md-6 col-sm-6 col-xs-12">
+										for="existencia">Existencia Actual</label>
+									<div class="col-md-7 col-sm-7 col-xs-12">
 										<div class="input-group">
 											<span class="input-group-addon"><i class="fa fa-cubes"></i></span>
 											<input type="text" id="existencia" readonly="readonly"
 												class="form-control col-md-7 col-xs-12" placeholder="0"
 												ng-model="movimientoInventario.existenciaActual">
+											<span class="input-group-btn">
+												&nbsp; {{movimientoInventario.articulo.unidadMedidaVO.nombre}}.
+											</span>
 										</div>		
-									</div>
+									</div>									
 								</div>
 								<br />
 							</div>
@@ -160,18 +163,22 @@
 									<label class="control-label col-md-3 col-sm-3 col-xs-12"
 										for="cantidadSalida">Cantidad de Salida<span class="required">*</span>
 									</label>
-									<div class="col-md-6 col-sm-6 col-xs-12">
+									<div class="col-md-7 col-sm-7 col-xs-12">
 										<div class="input-group">
 											<span class="input-group-addon"><i class="fa fa-cubes"></i></span>
 											<input type="number" id="cantidadSalida" name="cantidadSalida"
 												ng-required="true" class="form-control col-md-7 col-xs-12"
 												placeholder="0" ng-model="parametrosInventario.cantidad">
+											<span class="input-group-btn">
+												&nbsp; {{movimientoInventario.articulo.unidadMedidaVO.nombre}}.
+											</span>
 										 </div>		
 										<div
 											ng-show="formSalidas.cantidadSalida.$invalid && formSalidas.cantidadSalida.$dirty"
 											ng-style="{color:'red'}">La cantidad de salida es
 											requerida.</div>
 									</div>
+									
 								</div>
 
 								<br />
@@ -212,42 +219,42 @@
 
 		<!-- Modal content-->
 		<div class="modal-content"
-			style="width: 80%; min-width: 280px; margin: auto;">
+			style="width: 100%; min-width: 280px; margin: auto;">
 
 			<div class="modal-header bg-red-active">
 				<div class="box-header text-center">
 					<button type="button" class="close" data-dismiss="modal"
 						ng-click="reset()" style="color: blue;">&times;</button>
 					<h3 class="box-title">Seleccione</h3>
+				</div>
+			</div>
+			<div class="box-body table-responsive no-padding">
+				<div class="col-xs-12">
+					<div style="display: block; overflow: auto;">
+						<table id="datatable-productos" class="table table-hover"
+							cellspacing="0" width="100%">
+							<thead>
+								<tr>
+									<th class="text-center">Id</th>
+									<th class="text-center">Articulo</th>
+								</tr>
+							</thead>
 
-					<div class="box-body table-responsive no-padding">
-						<div class="col-xs-12">
-							<div style="display: block; overflow: auto;">
-								<table id="datatable-productos" class="table table-hover"
-									cellspacing="0" width="100%">
-									<thead>
-										<tr>
-											<th class="text-center">Id</th>
-											<th class="text-center">Articulo</th>
-										</tr>
-									</thead>
-
-									<tbody>
-										<tr
-											dir-paginate="movimientoInventarioVO in listaArticulos |  filter: filterSearch |itemsPerPage: listaArticulos.length  "
-											ng-click="setDatosDeArticulo(movimientoInventarioVO)"
-											style="cursor: pointer; cursor: hand;" data-dismiss="modal">
-											<td>{{movimientoInventarioVO.articulo.idArticulo}}</td>
-											<td>{{movimientoInventarioVO.articulo.nombre}}</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-						</div>
+							<tbody>
+								<tr
+									dir-paginate="movimientoInventarioVO in listaArticulos |  filter: filterSearch |itemsPerPage: listaArticulos.length  "
+									ng-click="setDatosDeArticulo(movimientoInventarioVO)"
+									style="cursor: pointer; cursor: hand;" data-dismiss="modal">
+									<td class="text-center">{{movimientoInventarioVO.articulo.idArticulo}}</td>
+									<td class="text-center">{{movimientoInventarioVO.articulo.nombre}}</td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
 				</div>
 			</div>
 		</div>
+
 	</div>
 </div>
 <!-- modal -->
