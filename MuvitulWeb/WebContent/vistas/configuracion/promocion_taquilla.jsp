@@ -279,7 +279,8 @@
 									<th class="text-center">Nombre Promoción</th>
 									<th class="text-center">Para</th>
 									<th class="text-center">Tipo Promoción</th>
-									<th class="text-center">Vigencia</th>
+									<th class="text-center">Fecha Inicio</th>
+									<th class="text-center">Fecha Fin</th>
 									<th class="text-center">varN</th>
 									<th class="text-center">varM</th>
 									<th class="text-center">Precio</th>
@@ -294,6 +295,7 @@
 									<td>{{promocion.nombre}}</td>
 									<td>{{promocion.promocionParaVO.nombre}}</td>
 									<td>{{promocion.tipoPromocionVO.nombre}}</td>
+									<td>{{promocion.fechaInicio}}</td>
 									<td>{{promocion.fechaFin}}</td>
 									<td>{{promocion.detallePromocionVO.varN}}</td>
 									<td>{{promocion.detallePromocionVO.varM}}</td>
