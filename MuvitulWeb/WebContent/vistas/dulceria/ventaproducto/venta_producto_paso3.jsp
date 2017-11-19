@@ -42,7 +42,9 @@
 							
 							<div
 								class="col-lg-2col-md-2 col-sm-2 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-offset-5 col-xs-offset-0">
-								<a href="#/ventaProducto"><button type="button" class="btn btn-success  col-xs-12" ng-click="resetVenta();asignarPaso(1)">Nueva Venta</button></a>
+								<a href="#/ventaProducto">
+									<button type="button" class="btn btn-success  col-xs-12" ng-disabled="isImpreso==false"  ng-click="resetVenta();asignarPaso(1)">Nueva Venta</button>
+								</a>
 							</div> 
 							
 						</div>

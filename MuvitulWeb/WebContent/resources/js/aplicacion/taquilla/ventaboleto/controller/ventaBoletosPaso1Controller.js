@@ -23,6 +23,7 @@ var VentaBoletosPaso1Controller = angular.module('indexModule').controller('vent
  	 	$scope.pago				    	= {subtotalAux:0,subtotal:0, porPagar:0, pagado:0,estatusPagoVO:$scope.estatusPagoVO};
  		$scope.cambioTotal 				= 0.00;
  		$scope.pagoConTotal				= 0.00;
+ 		$scope.isImpreso				=false;
  		$scope.objetosVenta.promocion	= null;
  		$scope.promocionBoletoVO.promocionVO = null;
  		$scope.promocion					= null;

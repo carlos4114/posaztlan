@@ -6,6 +6,7 @@ var VentaBoletosPaso5Controller = angular.module('indexModule').controller("Vent
     $scope.ticketVenta={};
 	$scope.cambioTotal 		=0.00;
 	$scope.pagoConTotal		=0.00;
+	$scope.isImpreso		=false;
  
  	$scope.modalPrinter = function() {
       ModalService.showModal({
@@ -18,9 +19,11 @@ var VentaBoletosPaso5Controller = angular.module('indexModule').controller("Vent
 	};
 	
 	$scope.imprimirBoleto =function(){
+			$scope.isImpreso=true;
  		taquillaService.imprimirTickets($scope.ticketVenta.idTicket,$scope.pagoConTotal, $scope.cambioTotal).success(function(data,status,headers) {
  			$scope.listaImpresiones=data;
  			$scope.modalPrinter ();
+
 		}).error(function(data) {
 		  });
 	}

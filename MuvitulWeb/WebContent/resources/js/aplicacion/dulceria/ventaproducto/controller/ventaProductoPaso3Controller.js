@@ -4,8 +4,9 @@ var VentaProductoPaso3Controller = angular.module('indexModule').controller("Ven
     $controller('modalController',{$scope : $scope });
 	$scope.cambioTotal 			=0.00;
 	$scope.pagoConTotal			=0.00;
+	$scope.isImpreso			=false;
     $scope.ticketVenta={};
-	
+
     
     $scope.modalPrinter = function() {
         ModalService.showModal({
@@ -20,7 +21,7 @@ var VentaProductoPaso3Controller = angular.module('indexModule').controller("Ven
     
     
 	$scope.imprimirTicket =function(){
- 		
+		$scope.isImpreso =true;
 		dulceriaService.imprimirTicket($scope.ticketVenta.idTicket,$scope.pagoConTotal, $scope.cambioTotal).success(function(data,status,headers) {	 		 
 			$scope.listaImpresiones=data;
  			$scope.modalPrinter ();
@@ -33,8 +34,8 @@ var VentaProductoPaso3Controller = angular.module('indexModule').controller("Ven
 	}
  	
 	function generaArchivo(nombre, archivo, extension) {
-		 
-	 	var blob = new base64toBlob(archivo, extension);
+
+	 	 var blob = new base64toBlob(archivo, extension);
 		 var url = window.URL || window.webkitURL;
 		 var blobUrl = url.createObjectURL(blob);
 //		 var a         = document.createElement('a');
@@ -46,6 +47,7 @@ var VentaProductoPaso3Controller = angular.module('indexModule').controller("Ven
 //		 setTimeout("printWindow.window.print()", 1000);    
 //		 document.body.appendChild(a);
 //		 a.click();
+		 
 
 	}
 
@@ -79,6 +81,7 @@ var VentaProductoPaso3Controller = angular.module('indexModule').controller("Ven
 		$scope.pagoConTotal			=0.00;
 	 	$scope.pago				    ={pagoCon:0.00, cambio:0.00, subtotalAux:0,subtotal:0, porPagar:0, pagado:0,estatusPagoVO:$scope.estatusPagoVO};
 		$scope.listaPagos			=[];
+		$scope.isImpreso			=false;
 	}
 	
 	

@@ -41,6 +41,7 @@
 								class="col-lg-2col-md-2 col-sm-2 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-offset-5 col-xs-offset-0">
 								<a href="#/ventaBoletos"><button type="button"
 										class="btn btn-success  col-xs-12"
+										ng-disabled="isImpreso==false"
 										ng-click="asignarPaso(1);consultarPeliculas(param.fechaExhibicion);">Nueva
 										Venta</button></a>
 							</div>
