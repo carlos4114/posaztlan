@@ -19,7 +19,7 @@
 					<label>Cine<span class="required">*</span>
 					</label>
 					<div class="input-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-						<select class="select2_single form-control" name="cine" required
+						<select class="form-control" name="cine"  directiva-select2  required
 							ng-change="consultarGraficas(cine.idCine)"
 							ng-options="cine as cine.nombre for cine in listaCines"
 							ng-model="cine">

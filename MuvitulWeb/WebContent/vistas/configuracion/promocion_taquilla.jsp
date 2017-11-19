@@ -109,9 +109,9 @@
 										<div class="input-group">
 											<span class="input-group-addon"><i
 												class="fa fa-long-arrow-up"></i></span><select class="form-control"
-												name="producto"
+												name="producto" directiva-select2 required
 												ng-options="producto  as producto.nombre for producto  in listaProductos"
-												required ng-model="promocion.detallePromocionVO.productoVO">
+												ng-model="promocion.detallePromocionVO.productoVO">
 												<option value="" selected="selected">Selecciona
 													Producto</option>
 											</select>
@@ -128,7 +128,7 @@
 										</label>
 										<div class="input-group">
 											<span class="input-group-addon"><i class="fa fa-gift"></i></span><select
-												class="form-control" name="regalo" required
+												class="form-control" name="regalo" directiva-select2 required
 												ng-options="regalo as regalo.nombre for regalo  in listaRegalos"
 												ng-model="promocion.detallePromocionVO.regaloVO">
 												<option value="" selected="selected">Selecciona
