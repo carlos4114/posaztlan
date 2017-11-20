@@ -17,7 +17,6 @@ var VentaBoletosPaso1Controller = angular.module('indexModule').controller('vent
 	$controller('VentaBoletosPaso5Controller',{$scope : $scope });
     $controller('modalController',{$scope : $scope });
 
-	
  	$scope.seleccionarPelicula =function(pelicula,programacion){
  		$scope.listaPagos				= [];
  	 	$scope.pago				    	= {subtotalAux:0,subtotal:0, porPagar:0, pagado:0,estatusPagoVO:$scope.estatusPagoVO};
@@ -40,23 +39,61 @@ var VentaBoletosPaso1Controller = angular.module('indexModule').controller('vent
 	}
 	
 	$scope.seleccionarPromocion =function(promocion){
-		
+		var keepGoing = true;
 		angular.forEach($scope.listaPromociones, function(value, key){
-			value.check = false;
+		  if(keepGoing) {
+		    if(value.check == true){
+		    	value.check=false;
+		    	if (value==promocion){
+			    	keepGoing = false;
+		    	}
+		    }
+		  }
 		});
-		promocion.check 						= true;
- 		$scope.objetosVenta.promocion			= promocion;
-		$scope.promocionBoletoVO.promocionVO = promocion;
 		
-		$scope.promocion={ cantidad:1, tipoCliente:PropertiesFactory.getTipoPromocion('promo'), subtotal:0, precio:0,promocionVO :promocion, importe:0 };
-        angular.forEach($scope.boletos, function(value, key){
-			value.fechaExhibicion =$scope.param.fechaExhibicion ;
+		if (keepGoing){
+			
+//			angular.forEach($scope.listaPromociones, function(value, key){
+//			value.check = false;
+//		});
+//		
+			promocion.check 						= true;
+	 		$scope.objetosVenta.promocion			= promocion;
+			$scope.promocionBoletoVO.promocionVO 	= promocion;
+			
+			$scope.promocion={ cantidad:1, tipoCliente:PropertiesFactory.getTipoPromocion('promo'), subtotal:0, precio:0,promocionVO :promocion, importe:0 };
+	        angular.forEach($scope.boletos, function(value, key){
+				value.fechaExhibicion =$scope.param.fechaExhibicion ;
 
-        	if(value.tipoCliente ==  PropertiesFactory.getTipoPromocion('promo') ){
-        		$scope.eliminar( $scope.boletos, key );
-        	}
-		});
-        $scope.boletos.push($scope.promocion); 
+	        	if(value.tipoCliente ==  PropertiesFactory.getTipoPromocion('promo') ){
+	        		$scope.eliminar( $scope.boletos, key );
+	        	}
+			});
+	        $scope.boletos.push($scope.promocion); 
+	        
+		}else{
+			
+	        angular.forEach($scope.boletos, function(value, key){
+				value.fechaExhibicion =$scope.param.fechaExhibicion ;
+
+	        	if(value.tipoCliente ==  PropertiesFactory.getTipoPromocion('promo') ){
+	        		$scope.eliminar( $scope.boletos, key );
+	        	}
+			});
+
+	 		$scope.objetosVenta.promocion	= null;
+	 		$scope.promocionBoletoVO.promocionVO = null;
+	 		$scope.promocion					= null;
+	 		
+	 		$scope.pago.subtotal =0;
+		 		angular.forEach($scope.boletos, function(value, key){
+		  			value.subtotal =calculosFactory.calcularSubtotal(value.cantidad,value.precio);
+		  			value.importe = calculosFactory.calcularSubtotal(value.cantidad,value.precio);
+		  			$scope.pago.subtotal += value.subtotal;
+		  		}); 
+
+		}
+		
     }
 	
 	$scope.quitarBoleto = function(boleto) { 

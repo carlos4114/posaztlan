@@ -14,7 +14,10 @@ public class PromocionVO {
 	private boolean activo;
 	private DetallePromocionVO detallePromocionVO;
 	
-//	private Set<DetallePromocion> detallePromocions = new HashSet<DetallePromocion>(0);
+	//Adicionales
+	private boolean check;
+	
+	//	private Set<DetallePromocion> detallePromocions = new HashSet<DetallePromocion>(0);
 //	private Set<PromocionesXTicket> promocionesXTickets = new HashSet<PromocionesXTicket>(0);
 //	
 	public Integer getIdPromocion() {
@@ -76,5 +79,12 @@ public class PromocionVO {
 	}
 	public void setDetallePromocionVO(DetallePromocionVO detallePromocionVO) {
 		this.detallePromocionVO = detallePromocionVO;
+	}
+	
+	public boolean isCheck() {
+		return check;
+	}
+	public void setCheck(boolean check) {
+		this.check = check;
 	}
 }
