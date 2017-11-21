@@ -64,6 +64,7 @@
 										<th class="column-title text-center">Forma de Pago</th>
 										<th class="column-title text-center">Importe</th>
 										<th class="column-title text-center">Cuenta</th>
+										<th class="column-title text-center">Acción</th>
 									</tr>
 								</thead>
 
@@ -72,6 +73,8 @@
 										<td class=" ">{{pago.formaPagoVO.nombre}}</td>
 										<td class="text-center">{{pago.importe | currency}}</td>
 										<td class="text-center">{{pago.noCuenta}}</td>
+										<td class="text-center"><button type="button"
+												class="btn  btn-danger btn-xs " ng-click="cancelar(listaPagos,$index)">Quitar</button></td>
 									</tr>
 									<tr ng-if="listaPagos.length==0">
 										<td class="text-center" colspan="4">No existen

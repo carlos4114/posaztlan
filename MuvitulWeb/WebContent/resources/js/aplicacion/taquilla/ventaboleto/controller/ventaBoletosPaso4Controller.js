@@ -132,5 +132,16 @@ var VentaBoletosPaso4Controller = angular.module('indexModule').controller("Vent
 		  });
 	}
 	
+	
+	$scope.cancelar = function(array,index){
+		var valueAtIndex = array[index];
+		if (valueAtIndex.formaPagoVO.requiereNumCuenta ==false){
+			$scope.cambioTotal = $scope.cambioTotal - (valueAtIndex.pagoCon - valueAtIndex.importe);
+			$scope.pagoConTotal	= $scope.pagoConTotal - valueAtIndex.pagoCon;
+		}
+		console.log(valueAtIndex);
+		array.splice(index,1);
+		$scope.calcularTotalPagado($scope.listaPagos);
+	}
 	 
 });
