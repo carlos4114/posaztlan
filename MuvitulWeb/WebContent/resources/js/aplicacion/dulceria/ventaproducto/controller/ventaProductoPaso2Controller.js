@@ -31,6 +31,7 @@ var VentaProductoPaso2Controller = angular.module('indexModule').controller("Ven
  			 $scope.pago.pagado  = calculosFactory.suma($scope.pago.pagado, data.importe);
 		 });
 		 $scope.pago.porPagar =calculosFactory.resta($scope.pago.subtotal,$scope.pago.pagado);
+		 $scope.pago.importe=$scope.pago.porPagar;
 	}
 	
 	
@@ -79,7 +80,7 @@ var VentaProductoPaso2Controller = angular.module('indexModule').controller("Ven
 	
 	$scope.resetObjetoPago =function( ){
 //		$scope.pago.formaPagoVO = null;
-		$scope.pago.importe = 0.00;
+		//$scope.pago.importe = 0.00;
 		$scope.pago.pagoCon = 0.00;
 		$scope.pago.cambio = 0.00;
 		$scope.pago.noCuenta=' ';

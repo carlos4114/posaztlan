@@ -68,7 +68,7 @@ var VentaBoletosPaso4Controller = angular.module('indexModule').controller("Vent
 	
 	$scope.resetObjetoPago =function( ){
 //  		$scope.pago.formaPagoVO = null;
-  		$scope.pago.importe = 0.00;
+  		//$scope.pago.importe = 0.00;
   		$scope.pago.pagoCon = 0.00;
   		$scope.pago.cambio = 0.00;
   		$scope.pago.noCuenta=' ';
@@ -80,6 +80,7 @@ var VentaBoletosPaso4Controller = angular.module('indexModule').controller("Vent
  			 $scope.pago.pagado  = calculosFactory.suma($scope.pago.pagado, data.importe);
 		 });
 		 $scope.pago.porPagar =calculosFactory.resta($scope.pago.subtotal,$scope.pago.pagado);
+		 $scope.pago.importe=$scope.pago.porPagar;
 	}
  
 	
