@@ -4,22 +4,18 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import mx.com.tecnetia.muvitul.infraservices.servicios.BusinessGlobalException;
-import mx.com.tecnetia.muvitul.infraservices.servicios.NotFoundException;
-import mx.com.tecnetia.muvitul.negocio.configuracion.vo.EstatusAutorizacionVO;
-import mx.com.tecnetia.muvitul.negocio.reportes.vo.ReporteJasperVO;
+import mx.com.tecnetia.muvitul.negocio.reportes.vo.ArchivoExcelVO;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/reportes")
 public interface ReporteVentaFacadeI {
-	@RequestMapping(value = "/ventas", method = RequestMethod.POST)
-	public ResponseEntity<Integer> reporteVentaDulceriaTaquilla(HttpServletRequest request,
-			 @RequestBody ReporteJasperVO reporteVO) throws  Exception;
+	@RequestMapping(value = "/ventas", method = RequestMethod.GET)
+	public ResponseEntity<ArchivoExcelVO> reporteVentaDulceriaTaquilla(HttpServletRequest request,@RequestParam(value = "codigoReporte")String codigoReporte,@RequestParam(value = "fechaInicio")String fechaInicio,@RequestParam(value = "fechaFin")String fechaFin) throws  Exception;
 
 }

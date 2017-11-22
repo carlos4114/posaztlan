@@ -30,7 +30,7 @@
 										<div class="input-group col-xs-12 ">
 											<select class="form-control" id="tipoReporte"
 												ng-options="reporte as reporte.nombre for reporte  in listaTipoReporte"
-												ng-model="reporte.tipoReporte" required name="tipoReporte">
+												ng-model="reporteVO.tipoReporte" required name="tipoReporte">
 												<option value="" selected="selected">Selecciona
 													Reporte</option>
 											</select>
@@ -54,8 +54,8 @@
 										<div class="input-group">
 											<span class="input-group-addon"><i
 												class="fa fa-calendar"></i></span><input type="text"
-												date-range-picker-dos required  id="fechaInicio" name="fechaInicio"
-												 ng-model="reporte.fechaInicio"
+												fecha required  id="fechaInicio" name="fechaInicio"
+												 ng-model="reporteVO.fechaInicio"
 												class="form-control col-md-7 col-xs-12">
 										</div>
 										<div
@@ -72,8 +72,8 @@
 										<div class="input-group">
 											<span class="input-group-addon"><i
 												class="fa fa-calendar"></i></span> <input type="text"
-												date-range-picker-dos required  id="fechaFin" name="fechaFin"
-												ng-model="reporte.fechaFin" 
+												fecha required  id="fechaFin" name="fechaFin"
+												ng-model="reporteVO.fechaFin" 
 												class="form-control col-md-7 col-xs-12">
 										</div>
 										<div

@@ -1,7 +1,5 @@
 package mx.com.tecnetia.muvitul.servicios.facade;
 
-import java.util.ResourceBundle;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -11,29 +9,34 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import mx.com.tecnetia.muvitul.infraservices.servicios.BusinessGlobalException;
+import io.jsonwebtoken.Claims;
+import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.enumeration.ClaimsEnum;
 import mx.com.tecnetia.muvitul.infraservices.servicios.NotFoundException;
-import mx.com.tecnetia.muvitul.negocio.reportes.vo.ReporteJasperVO;
-import mx.com.tecnetia.muvitul.servicios.reportes.controller.ReporteJasperController;
+import mx.com.tecnetia.muvitul.negocio.reportes.vo.ArchivoExcelVO;
+import mx.com.tecnetia.muvitul.servicios.reportes.controller.ReporteVentasTaquillaController;
 
 @Service
 public class ReporteVentaFacade implements ReporteVentaFacadeI {
 	private static final Logger logger = LoggerFactory.getLogger(ReporteVentaFacade.class);
 
 	@Autowired
-	private ReporteJasperController reporteJasperController;
+	private ReporteVentasTaquillaController reporteJasperController;
 
 	@Override
-	public ResponseEntity<Integer> reporteVentaDulceriaTaquilla(HttpServletRequest request, ReporteJasperVO reporteVO) throws Exception {
-		ResourceBundle cfg = ResourceBundle.getBundle("config");
-		String rutaVentasJasper = cfg.getString("reporte.ventas.taquilla-dulceria.jasper");
-		int response = 1;
-		ReporteJasperVO reporte  = new ReporteJasperVO();
-		reporte.setRutaXls("WEB-INF/jasper/ventas");
-		reporte.setRutaReporte(rutaVentasJasper);
-		this.reporteJasperController.crearReporteXls(reporte);
+	public ResponseEntity<ArchivoExcelVO> reporteVentaDulceriaTaquilla(HttpServletRequest request,String codigoReporte,String fechaInicio,String fechaFin) throws Exception {
+		Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
+		Integer idCine = (Integer) claims.get(ClaimsEnum.CINE);
+		Integer idUsuario = (Integer) claims.get(ClaimsEnum.USUARIO);
+		ArchivoExcelVO archivoExcelVO=null;
+		if (codigoReporte.equals("KARDEX"))
+			archivoExcelVO= reporteJasperController.crearReporteXls(idCine,idUsuario);
+		else if(codigoReporte.equals("VENTAS-DIA"))
+			archivoExcelVO= reporteJasperController.generarReporteVentas(idCine,idUsuario);
 
-		return new ResponseEntity<Integer>(response, HttpStatus.OK);
+		if (archivoExcelVO == null ) {
+			throw new NotFoundException("No encontrado");
+		}
+		return new ResponseEntity<ArchivoExcelVO>(archivoExcelVO, HttpStatus.OK);
 	}
 
 }
