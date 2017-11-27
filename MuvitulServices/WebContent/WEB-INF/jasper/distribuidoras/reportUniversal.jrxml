@@ -250,7 +250,7 @@ group by pel.id_pelicula;]]>
 			<staticText>
 				<reportElement x="6" y="62" width="130" height="20" uuid="ef9f10c1-85db-4948-8e89-d9aba62d1e7c"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<text><![CDATA[SEMANA DE EXHIBICION:]]></text>
+				<text><![CDATA[SEMANA DE EXHIBICIÓN:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="282" y="62" width="24" height="20" uuid="97d1c823-064a-4912-a97b-6100af8f6182"/>
@@ -329,6 +329,7 @@ $P{fechaFinal}.substring(5,7).equals("11")?"NOVIEMBRE":"DICIEMBRE"]]></textField
 			</textField>
 			<textField>
 				<reportElement x="609" y="42" width="193" height="20" uuid="5bd405d4-e1e3-4646-80f1-a59cf2f6405f"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{ciudad}]]></textFieldExpression>
 			</textField>
 		</band>
@@ -504,20 +505,20 @@ $P{fechaFinal}.substring(5,7).equals("11")?"NOVIEMBRE":"DICIEMBRE"]]></textField
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="146" uuid="ca4721f6-db69-4a5c-8247-00581a8426aa">
+					<jr:column width="126" uuid="ca4721f6-db69-4a5c-8247-00581a8426aa">
 						<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
 						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement isPrintRepeatedValues="false" x="0" y="0" width="146" height="30" uuid="8decd223-7a6a-46bd-926a-be53d42c02b9">
+								<reportElement isPrintRepeatedValues="false" x="0" y="0" width="126" height="30" uuid="8decd223-7a6a-46bd-926a-be53d42c02b9">
 									<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
 								</reportElement>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<text><![CDATA[DETALLE DE   PROCOMOCION / CORTESIA]]></text>
+								<text><![CDATA[DETALLE DE   PROMOCIÓN / CORTESIA]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell height="20" rowSpan="1">
 							<textField>
-								<reportElement x="0" y="0" width="146" height="20" uuid="01ac2a81-a5bf-428e-9caa-f9d15a6f75d0"/>
+								<reportElement x="0" y="0" width="126" height="20" uuid="01ac2a81-a5bf-428e-9caa-f9d15a6f75d0"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{promocion}]]></textFieldExpression>
 							</textField>

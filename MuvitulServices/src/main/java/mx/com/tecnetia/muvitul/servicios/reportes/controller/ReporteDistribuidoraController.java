@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.mail.MessagingException;
 
@@ -51,7 +53,7 @@ public class ReporteDistribuidoraController {
 		reporteJasperVO.setRutaReporte(reporteDistribuidoraBO.getRutaReporteJasper());
 		reporteJasperVO.setRutaPdf(reporteDistribuidoraBO.getRutaReporteXls());
 		reporteJasperVO.setParametros(reporteDistribuidoraBO.getParametros());
-		reporteJasperBO.crearReporteXls(reporteJasperVO);
+		reporteJasperBO.crearReporteXls(reporteJasperVO);		
 		
 		//ENVIAR EL REPORTE POR EMAIL		
 		correroElectronicoBO.setMailSender(mailSender);
@@ -65,7 +67,7 @@ public class ReporteDistribuidoraController {
 		try {
 			correroElectronicoBO.sendVelocityMail();			
 			
-		} catch (MessagingException e) {
+		} catch (MessagingException e) {			
 			e.printStackTrace();
 		}
 		
@@ -76,7 +78,7 @@ public class ReporteDistribuidoraController {
 		
 	}
 	
-	public void enviarErrorEmail(ReportesCineXDistribuidoraVO reporte) throws BusinessGlobalException, NotFoundException, HibernateException,IOException, JRException{ 
+	public void enviarErrorEmail(ReportesCineXDistribuidoraVO reporte,Map<String, String> model) throws BusinessGlobalException, NotFoundException, HibernateException,IOException, JRException{ 
 		//GENERA REPORTE
 		reporteDistribuidoraBO.generarParametrosError(reporte);
 		
@@ -88,7 +90,7 @@ public class ReporteDistribuidoraController {
 		correroElectronicoBO.setSubject(reporteDistribuidoraBO.getAsunto());
 		correroElectronicoBO.setBody(reporteDistribuidoraBO.getCuerpo());
 		correroElectronicoBO.setAttachments(reporteDistribuidoraBO.getRutasArchivoAjuntos());
-		
+		correroElectronicoBO.setVelAttributes(model);
 		try {
 			correroElectronicoBO.sendVelocityMail();			
 			
@@ -117,11 +119,28 @@ public class ReporteDistribuidoraController {
 				}
 				
 			} catch (Exception e) {
+				
 				try {
-					enviarErrorEmail(reporte);
+					
+					Map<String, String> model = new HashMap<String, String>();            
+					
+					StringBuilder error = new StringBuilder();
+						error.append(e.getClass()).append(" ").
+							  append(e.getMessage()).append("<br> Cause: ").
+							  append(e.getCause()).append("<br>");
+					
+						for(StackTraceElement stack: e.getStackTrace()){
+							error = error.append(stack.toString().replace(" ","<br>")).append("<br>");
+						}
+					
+					model.put("error",error.toString());
+					
+					enviarErrorEmail(reporte,model);
+					
 				}catch (Exception ei) {
 					ei.printStackTrace();
-				}
+				}	
+				
 				e.printStackTrace();
 			} 
 			

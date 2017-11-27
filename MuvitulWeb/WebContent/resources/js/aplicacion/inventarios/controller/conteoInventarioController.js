@@ -222,8 +222,11 @@ var ConteoInventarioController = angular.module('indexModule').controller("Conte
 			    });
 			};			
 			
-			$scope.showConfirmacion ("Est\u00e1 seguro de finalizar el conteo de inventario?");
-			
+			if($scope.validaFinalizarConteo()){
+				$scope.showConfirmacion ("Est\u00e1 seguro de finalizar el conteo de inventario?");
+			}else{
+				$scope.showAviso("No es posible finalizar el conteo, existen ajustes de inventario pendientes de realizar.");
+			}
 	};
 	
 	$scope.validaFormConteo = function(){		
@@ -249,6 +252,18 @@ var ConteoInventarioController = angular.module('indexModule').controller("Conte
 		}else{
 			return true;
 		}
+	}
+	
+	$scope.validaFinalizarConteo = function(){		
+		var bandera =  true;
+		 
+		angular.forEach($scope.listaConteoArticulos, function (conteo, key){
+		    if (conteo.existenciaSistema != conteo.existenciaFisica) {
+		    	bandera = false;
+		     }
+		});
+		              
+        return bandera;
 	}
 
 	$scope.cerrar = function(){

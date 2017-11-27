@@ -1,8 +1,11 @@
 <html>
 	<body>
-		<h3>A quien corresponda</h3>
+		<h3>Contacte al administrador</h3>
 		<p>
-			Lo sentimos no fue posible enviar el reporte, por favor contacte al administrador.
+			Error:
+			<br><br>
+			$error
+			<br>
 		</p>
 	</body>
 </html>

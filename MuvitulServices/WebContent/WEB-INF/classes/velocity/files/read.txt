@@ -1,0 +1,1 @@
+#En esta carpeta se crean temporalmente los reportes de las distribuidoras para su posterior envio por email. 

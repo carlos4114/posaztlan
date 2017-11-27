@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1excel" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c7f4f4f1-fd4f-46cd-b0bf-8705ec49107b">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="62"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -252,67 +252,133 @@ group by pel.id_pelicula;]]>
 			<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
 			<staticText>
 				<reportElement x="12" y="40" width="67" height="20" uuid="1e96f0f4-3494-43a7-b7c1-411182a76975"/>
+				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[PROGRAMA:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="12" y="0" width="29" height="20" uuid="1a436c43-1456-4c2e-9632-68d473fa7b56"/>
+				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[CINE:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="194" y="0" width="33" height="20" uuid="34b6efd5-ebb3-4d9b-8be7-7cd238b2d15e"/>
+				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[SALA:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="293" y="0" width="95" height="20" uuid="cd55a9a3-775b-4074-a1df-430b2121ed6b"/>
+				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[RAZÓN SOCIAL:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="12" y="60" width="92" height="20" uuid="468e6e6a-bcc5-4c9b-9164-46e6395e481c"/>
+				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[DISTRIBUIDORA:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="293" y="40" width="40" height="20" uuid="fcc6afaf-89b5-4bbd-9292-8f8c3619e68f"/>
+				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[DEL:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="446" y="40" width="30" height="20" uuid="4141fbd3-70de-4a41-8c6b-7b064a95faf1"/>
+				<reportElement x="463" y="40" width="30" height="20" uuid="4141fbd3-70de-4a41-8c6b-7b064a95faf1"/>
+				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[AL:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="293" y="20" width="40" height="20" uuid="9ab52293-e9b7-4536-a5c7-4800d3d314f6"/>
+				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[PLAZA:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="446" y="20" width="53" height="20" uuid="b8b9f963-8969-4d7a-a3b3-ec94130ff4c5"/>
+				<reportElement x="463" y="20" width="53" height="20" uuid="b8b9f963-8969-4d7a-a3b3-ec94130ff4c5"/>
+				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[RENTRAK:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="41" y="0" width="153" height="20" uuid="587b7898-c317-47dc-812d-a8ea867e39e9"/>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{cine}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="227" y="0" width="66" height="20" uuid="3918fc3b-76d6-4313-b072-c6c95da781a4"/>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{sala}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="388" y="0" width="211" height="20" uuid="d62ef28f-b58b-4ef8-9042-8cb152d511c3"/>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{razon_social}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="333" y="20" width="113" height="20" uuid="0ebe8d80-5da0-4ac5-8c6b-1beeb79658a0"/>
+				<reportElement x="333" y="20" width="130" height="20" uuid="0ebe8d80-5da0-4ac5-8c6b-1beeb79658a0"/>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{plaza}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="499" y="20" width="100" height="20" uuid="7af63331-4d58-4ad0-a244-3cbf8a9f66a1"/>
+				<reportElement x="516" y="20" width="100" height="20" uuid="7af63331-4d58-4ad0-a244-3cbf8a9f66a1"/>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{rentak}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="79" y="40" width="214" height="20" uuid="786b5b8f-c6a5-40d8-af44-24bbc5f6a13f"/>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{programa}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="104" y="60" width="189" height="20" uuid="ab659f12-ee57-472f-b5bb-f2d92f9e098b"/>
+				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{distribuidora}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="583" y="40" width="33" height="20" uuid="d630dfb6-cf9c-4e84-aec1-c2fde05e5158"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{fechaFinal}.substring(0,4)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="358" y="40" width="65" height="20" uuid="c61efc02-9347-4010-a53c-ae4cffc0a83e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{fechaInicial}.substring(5,7).equals("01")?"ENERO":
+$P{fechaInicial}.substring(5,7).equals("02")?"FEBRERO":
+$P{fechaInicial}.substring(5,7).equals("03")?"MARZO":
+$P{fechaInicial}.substring(5,7).equals("04")?"ABRIL":
+$P{fechaInicial}.substring(5,7).equals("05")?"MAYO":
+$P{fechaInicial}.substring(5,7).equals("06")?"JUNIO":
+$P{fechaInicial}.substring(5,7).equals("07")?"JULIO":
+$P{fechaInicial}.substring(5,7).equals("08")?"AGOSTO":
+$P{fechaInicial}.substring(5,7).equals("09")?"SEPTIEMBRE":
+$P{fechaInicial}.substring(5,7).equals("10")?"OCTUBRE":
+$P{fechaInicial}.substring(5,7).equals("11")?"NOVIEMBRE":"DICIEMBRE"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="333" y="40" width="25" height="20" uuid="3722c1c4-b0df-4c8d-8c44-4552e31c150a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{fechaInicial}.substring(8,10)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="423" y="40" width="32" height="20" uuid="d98450a3-4d58-48b8-965a-a99d2fefab31"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{fechaInicial}.substring(0,4)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="518" y="40" width="65" height="20" uuid="52023015-46ac-4bcc-916b-9086e5d428e6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{fechaFinal}.substring(5,7).equals("01")?"ENERO":
+$P{fechaFinal}.substring(5,7).equals("02")?"FEBRERO":
+$P{fechaFinal}.substring(5,7).equals("03")?"MARZO":
+$P{fechaFinal}.substring(5,7).equals("04")?"ABRIL":
+$P{fechaFinal}.substring(5,7).equals("05")?"MAYO":
+$P{fechaFinal}.substring(5,7).equals("06")?"JUNIO":
+$P{fechaFinal}.substring(5,7).equals("07")?"JULIO":
+$P{fechaFinal}.substring(5,7).equals("08")?"AGOSTO":
+$P{fechaFinal}.substring(5,7).equals("09")?"SEPTIEMBRE":
+$P{fechaFinal}.substring(5,7).equals("10")?"OCTUBRE":
+$P{fechaFinal}.substring(5,7).equals("11")?"NOVIEMBRE":"DICIEMBRE"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="493" y="40" width="25" height="20" uuid="0eb555df-69e0-423e-87ab-61a7879b476f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{fechaFinal}.substring(8,10)]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
@@ -436,7 +502,7 @@ group by pel.id_pelicula;]]>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="9"/>
 								</textElement>
-								<text><![CDATA[ADMISION]]></text>
+								<text><![CDATA[ADMISIÓN]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell height="20" rowSpan="1">

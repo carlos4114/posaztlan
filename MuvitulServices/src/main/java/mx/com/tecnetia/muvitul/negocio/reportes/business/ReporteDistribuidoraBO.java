@@ -56,8 +56,13 @@ public class ReporteDistribuidoraBO {
 		rutaReporteXls = context.getRealPath(cfg.getString(reporte.getRutaReporteXls()));
 		 rutaPlantillaVm = cfg.getString(reporte.getRutaPlantillaVm());
 		String[] rutasArchivoAjuntos = {rutaReporteXls};
-		String[] destinatarios = reporte.getDestinatarios().split(",");
-		asunto = reporte.getAsunto();
+		String[] destinatarios = reporte.getDestinatarios().split(",");		
+		asunto = reporte.getAsunto() + " - " +  reporte.getCine().getNombre();
+		
+		if(!reporte.getRutaReporteJasper().contains("comscore")){
+			asunto = asunto + " - " + reporte.getPelicula().getTitulo();
+		}
+		
 		cuerpo = "";
 		
 		this.parametros = parametros;
@@ -77,7 +82,12 @@ public class ReporteDistribuidoraBO {
 		rutaPlantillaVm = cfg.getString(reporte.getRutaPlantillaVmError());
 		String[] rutasArchivoAjuntos = {};
 		String[] destinatarios = reporte.getEmailError().split(",");
-		asunto = MSG_ERROR+" "+reporte.getAsunto()+" - Fecha de envío: "+ fecha.format(reporte.getFechaEnvio());
+		asunto = MSG_ERROR+" "+reporte.getAsunto()+" - Fecha de envío: "+ fecha.format(reporte.getFechaEnvio()) + " - " +  reporte.getCine().getNombre();
+		
+		if(!reporte.getRutaReporteJasper().contains("comscore")){
+			asunto = asunto + " - " + reporte.getPelicula().getTitulo();
+		}
+		
 		cuerpo = "";
 		
 		this.rutaPlantillaVm = rutaPlantillaVm;

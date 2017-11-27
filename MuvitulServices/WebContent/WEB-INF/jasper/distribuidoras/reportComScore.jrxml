@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1excel" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c7f4f4f1-fd4f-46cd-b0bf-8705ec49107b">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="192"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -301,20 +301,20 @@ $P{fechaInicial}.substring(5,7).equals("11")?"NOVIEMBRE":"DICIEMBRE"]]></textFie
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="76" uuid="88ba26ef-385a-4f9e-83b1-658127c8ffb1">
+					<jr:column width="87" uuid="88ba26ef-385a-4f9e-83b1-658127c8ffb1">
 						<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
 						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement isPrintRepeatedValues="false" x="0" y="0" width="76" height="30" uuid="9591f732-f237-4799-8e90-528e1c7d4c07">
+								<reportElement isPrintRepeatedValues="false" x="0" y="0" width="87" height="30" uuid="9591f732-f237-4799-8e90-528e1c7d4c07">
 									<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
 								</reportElement>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<text><![CDATA[Show / Horario]]></text>
+								<text><![CDATA[SHOW / HORARIO]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell height="20" rowSpan="1">
 							<textField>
-								<reportElement x="0" y="0" width="76" height="20" uuid="596100ce-a633-48d8-96c7-b848f70e1670"/>
+								<reportElement x="0" y="0" width="87" height="20" uuid="596100ce-a633-48d8-96c7-b848f70e1670"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{funcion}]]></textFieldExpression>
 							</textField>
