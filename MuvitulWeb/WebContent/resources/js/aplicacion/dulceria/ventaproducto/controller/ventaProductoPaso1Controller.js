@@ -109,6 +109,13 @@ var VentaProductoPaso1Controller = angular.module('indexModule').controller("ven
 		});
 	}
 	
+	$scope.consultarArticulos = function() {
+		dulceriaService.consultarArticulos().success(function(data) {
+			console.log(data);
+		}).error(function(data) {
+		});
+	}
+	
 	$scope.consultarIngresosPeliculas = function() {
 		dulceriaService.consultarIngresoPelicula(1).success(function(data) {
 			console.log(data);
@@ -156,6 +163,7 @@ var VentaProductoPaso1Controller = angular.module('indexModule').controller("ven
 	
 	
 	//$scope.consultar();
+	$scope.consultarArticulos();
 //	$scope.consultarIngresosPeliculas();
 //	$scope.consultarAsistencia();
 //	$scope.consultarCinesEmpresa();

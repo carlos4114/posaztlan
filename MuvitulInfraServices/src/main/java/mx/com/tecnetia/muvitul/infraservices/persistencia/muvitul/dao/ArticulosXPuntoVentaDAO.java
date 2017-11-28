@@ -15,8 +15,8 @@ public class ArticulosXPuntoVentaDAO extends GlobalHibernateDAO<ArticulosXPuntoV
 	public List<ArticulosXPuntoVenta> findByIdCineAndIdPuntoVenta(Integer idCine,Integer idPuntoVenta) {
 		StringBuilder hql = new StringBuilder();
 		hql.append("select axpv from ArticulosXPuntoVenta axpv join axpv.puntoVenta pv ");
-		hql.append("where pv.cine.idCine=:idCine and pv.idPuntoVenta=:idPuntoVenta");
-		hql.append("order by pv.cine.nombre,pv.nombre,axpv.articulo.nombre ");
+		hql.append("where pv.cine.idCine=:idCine and pv.idPuntoVenta=:idPuntoVenta ");
+		hql.append("order by pv.cine.nombre,pv.nombre,axpv.articulo.nombre asc ");
 		
 		Query query = getSession().createQuery(hql.toString());
 		query.setParameter("idCine", idCine);

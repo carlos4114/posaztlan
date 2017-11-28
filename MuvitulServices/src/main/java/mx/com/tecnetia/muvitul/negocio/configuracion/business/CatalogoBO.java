@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.ArticulosXPuntoVentaDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.CineDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.EstadoProductoDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.FormaPagoDAOI;
@@ -15,6 +16,7 @@ import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.PuntoVenta
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.TipoDevolucionDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Cine;
 import mx.com.tecnetia.muvitul.infraservices.servicios.BusinessGlobalException;
+import mx.com.tecnetia.muvitul.negocio.configuracion.assembler.ArticuloAssembler;
 import mx.com.tecnetia.muvitul.negocio.configuracion.assembler.CineAssembler;
 import mx.com.tecnetia.muvitul.negocio.configuracion.assembler.EstadoProductoAssembler;
 import mx.com.tecnetia.muvitul.negocio.configuracion.assembler.FormaPagoAssembler;
@@ -22,6 +24,7 @@ import mx.com.tecnetia.muvitul.negocio.configuracion.assembler.MotivoCancelacion
 import mx.com.tecnetia.muvitul.negocio.configuracion.assembler.MotivoDevolucionAssembler;
 import mx.com.tecnetia.muvitul.negocio.configuracion.assembler.PuntoVentaAssembler;
 import mx.com.tecnetia.muvitul.negocio.configuracion.assembler.TipoDevolucionAssembler;
+import mx.com.tecnetia.muvitul.negocio.configuracion.vo.ArticuloVO;
 import mx.com.tecnetia.muvitul.negocio.configuracion.vo.CineVO;
 import mx.com.tecnetia.muvitul.negocio.configuracion.vo.EstadoProductoVO;
 import mx.com.tecnetia.muvitul.negocio.configuracion.vo.FormaPagoVO;
@@ -52,12 +55,19 @@ public class CatalogoBO {
 	private MotivoCancelacionDAOI motivoCancelacionDAO;
 	
 	@Autowired
+	private ArticulosXPuntoVentaDAOI articulosXPuntoVentaDAO;
+	
+	@Autowired
 	private CineDAOI cineDAO;
 	
 	public List<FormaPagoVO> getFormasPagos() throws BusinessGlobalException {
 		return FormaPagoAssembler.getFormasPagosVO(formaPagoDAO.findAll());
 	}
 
+	public List<ArticuloVO> getArticulos(Integer idCine, Integer idPuntoVenta) throws BusinessGlobalException {
+		return ArticuloAssembler.getArticulosVO(articulosXPuntoVentaDAO.findByIdCineAndIdPuntoVenta(idCine, idPuntoVenta));
+	}
+	
 	public List<PuntoVentaVO> findByCinePuntosVenta(Integer idCine) throws BusinessGlobalException  {
 		return PuntoVentaAssembler.getPuntosVentaVO(puntoVentaDAO.findByIdCine(idCine));
 	}

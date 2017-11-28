@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import mx.com.tecnetia.muvitul.infraservices.servicios.BusinessGlobalException;
 import mx.com.tecnetia.muvitul.negocio.configuracion.business.CatalogoBO;
+import mx.com.tecnetia.muvitul.negocio.configuracion.vo.ArticuloVO;
 import mx.com.tecnetia.muvitul.negocio.configuracion.vo.CineVO;
 import mx.com.tecnetia.muvitul.negocio.configuracion.vo.EstadoProductoVO;
 import mx.com.tecnetia.muvitul.negocio.configuracion.vo.FormaPagoVO;
@@ -28,6 +29,10 @@ public class CatalogoController {
 	
 	public List<FormaPagoVO> getFormasPagos() throws BusinessGlobalException {
 		return catalogoBO.getFormasPagos();
+	}
+	
+	public List<ArticuloVO> getArticulos( Integer idCine, Integer idPuntoVenta) throws BusinessGlobalException {
+		return catalogoBO.getArticulos( idCine, idPuntoVenta);
 	}
 
 	public List<PuntoVentaVO> getPuntosVenta(Integer idCine)  throws BusinessGlobalException{

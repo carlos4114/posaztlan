@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import mx.com.tecnetia.muvitul.infraservices.servicios.BusinessGlobalException;
 import mx.com.tecnetia.muvitul.infraservices.servicios.NotFoundException;
+import mx.com.tecnetia.muvitul.negocio.configuracion.vo.ArticuloVO;
 import mx.com.tecnetia.muvitul.negocio.configuracion.vo.CineVO;
 import mx.com.tecnetia.muvitul.negocio.configuracion.vo.EstadoProductoVO;
 import mx.com.tecnetia.muvitul.negocio.configuracion.vo.FormaPagoVO;
@@ -28,6 +29,10 @@ public interface CatalogoFacadeI {
 
 	@RequestMapping(value = "/formaspago", method = RequestMethod.GET)
 	public ResponseEntity<List<FormaPagoVO>> getFormasPago(HttpServletRequest request)
+			throws BusinessGlobalException, NotFoundException;
+
+	@RequestMapping(value = "/articulos", method = RequestMethod.GET)
+	public ResponseEntity<List<ArticuloVO>> getArticulos(HttpServletRequest request)
 			throws BusinessGlobalException, NotFoundException;
 
 	@RequestMapping(value = "/puntosVenta", method = RequestMethod.GET)

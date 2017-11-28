@@ -16,6 +16,7 @@ import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.enumeration.Cl
 import mx.com.tecnetia.muvitul.infraservices.presentacion.seguridad.frontcontroller.UsuarioFirmadoBean;
 import mx.com.tecnetia.muvitul.infraservices.servicios.BusinessGlobalException;
 import mx.com.tecnetia.muvitul.infraservices.servicios.NotFoundException;
+import mx.com.tecnetia.muvitul.negocio.configuracion.vo.ArticuloVO;
 import mx.com.tecnetia.muvitul.negocio.configuracion.vo.CineVO;
 import mx.com.tecnetia.muvitul.negocio.configuracion.vo.EstadoProductoVO;
 import mx.com.tecnetia.muvitul.negocio.configuracion.vo.FormaPagoVO;
@@ -56,6 +57,28 @@ public class CatalogoFacade implements CatalogoFacadeI {
 		return new ResponseEntity<List<FormaPagoVO>>(formasPago, HttpStatus.OK);
 	}
 
+	@Override
+	public ResponseEntity<List<ArticuloVO>> getArticulos(HttpServletRequest request)
+			throws BusinessGlobalException, NotFoundException {
+		
+
+		Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
+		Integer idUsuario = (Integer) claims.get(ClaimsEnum.USUARIO);
+		Integer idCine = (Integer) claims.get(ClaimsEnum.CINE);
+		Integer idPuntoVenta = (Integer) claims.get(ClaimsEnum.PUNTO_VENTA);
+
+		logger.info("GetArticulos:::IdUsuario[{}]:::IdCine[{}]:::IdPuntoVenta[{}]", idUsuario, idCine, idPuntoVenta);
+
+		List<ArticuloVO> articulos = catalogoController.getArticulos( idCine, idPuntoVenta);
+		
+		if (articulos == null || articulos.isEmpty()) {
+			throw new NotFoundException("No encontrado");
+		}
+
+		return new ResponseEntity<List<ArticuloVO>>(articulos, HttpStatus.OK);
+	}
+	
+	
 	@Override
 	public ResponseEntity<List<PuntoVentaVO>> getPuntosVenta(HttpServletRequest request)
 			throws BusinessGlobalException, NotFoundException {

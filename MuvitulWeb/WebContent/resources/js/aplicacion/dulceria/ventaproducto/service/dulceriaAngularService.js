@@ -12,6 +12,13 @@ angular.module('indexModule').service('dulceriaService', ['$http','GlobalFactory
 		 return $http.get(config.baseUrl+"/catalogo/formaspago");
 	 }
 	 
+	 
+	 this.consultarArticulos = function(){
+			console.log("consultar Articulos");
+		 return $http.get(config.baseUrl+"/catalogo/articulos");
+	 }
+	 
+	 
 	 this.procesarVenta = function(ventaVO ){
 		 return $http.post(config.baseUrl + "/ventaProducto/ventas",ventaVO  );
 	 }
