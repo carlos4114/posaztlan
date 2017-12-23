@@ -43,31 +43,37 @@
         <link href="<c:url value='/resources/css/modals/modals.css' />" rel="stylesheet">
         <!-- Print Js -->
         <link href="<c:url value='/resources/js/vendors/printJs/print.min.css' />" rel="stylesheet">
-
+		<!-- Menu Styles -->
+	    <link href="<c:url value='/resources/css/build/menu.css' />" rel="stylesheet">
 
         </head>
-
-        <body class="nav-md" ng-app="indexModule">
-            <div class="container body">
+        
+        <body class="nav-md" ng-app="indexModule" >
+            <div ng-controller="IndexController" class="container body">
                 <div class="main_container">
                     <div class="col-md-3 left_col">
 
                         <!-- AQUÃ VA EL MENÃ DE LA APLICACIÃN -->
                         <div class="left_col scroll-view">
-                            <div class="navbar nav_title" style="border: 0;">
-                                <a href="inicio.jsp" class="site_title"><i class="fa "></i> <span>MUVITUL</span></a>
-                            </div>
+				            <div class="navbar nav_title" align="center" style="border: 0; background-color: white;"  class="text-center">
+				              <a href="inicio.jsp" class="site_title">
+				                <img  
+				                     ng-src="data:image/png;base64,{{logoEmpresa}}"
+				                     height="50px" width="100px" class="img-responsive" alt="" 
+				                 />
+				               </a>
+				            </div>
 
                             <div class="clearfix"></div>
 
                             <!-- menu profile quick info -->
                             <div class="profile">
                                 <div class="profile_pic">
-                                    <img src="<c:url value='/resources/img/img.jpg' />" alt="..." class="img-circle profile_img">
+                                    <img src="<c:url value='/resources/img/default_pic.png' />" alt="..." class="img-circle profile_img">
                                 </div>
                                 <div class="profile_info">
-                                    <span>Bienvenido,</span>
-                                    <h2>Aldo Hernández</h2>
+                                    <span>Bienvenid@,</span>
+                                    <h2>{{nombreUsuario}}</h2>
                                 </div>
                             </div>
                             <!-- /menu profile quick info -->
@@ -76,70 +82,24 @@
                             <!-- sidebar menu -->
                             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
 
-                                <div class="menu_section">
-                                    <h3>General</h3>
-                                    <ul class="nav side-menu">
-                                        <li><a href="inicio.jsp"><i class="fa fa-home"></i>
-										Inicio </a></li>
-                                        <li><a><i class="fa fa-ticket"></i> Taquilla <span
-										class="fa fa-chevron-down"></span></a>
-                                            <ul class="nav child_menu">
-                                                <li><a href="#/ventaBoletos">Venta de Boletos</a></li>
-                                                <li><a href="#/devolucion_boleto">Devoluciones</a></li>
-                                                <li><a href="#/cancelacion_boleto">Cancelaciones Pagos</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a><i class="fa fa-cutlery"></i> Dulcería/Cafetería
-										<span class="fa fa-chevron-down"></span></a>
-                                            <ul class="nav child_menu">
-                                                <li><a href="#/ventaProducto">Venta de Producto</a></li>
-                                                <li><a href="#/devolucion_producto">Devoluciones</a></li>
-                                                <li><a href="#/cancelacion_producto">Cancelaciones Pagos</a></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                                <div class="menu_section">
-                                    <h3>Administración</h3>
-                                    <ul class="nav side-menu">
-                                        <li><a><i class="fa fa-line-chart"></i>
-										Reportes/Estadísticas <span class="fa fa-chevron-down"></span></a>
-                                            <ul class="nav child_menu">
-                                                <li><a href="#/dashboardDulceria">Dashboard Dulceria</a></li>
-                                                <li><a href="#/dashboardTaquilla">Dashboard Taquilla</a></li>
-                                                <li><a href="#/reportesExcel">Reportes Excel</a></li>
-
-                                                <li><a href="#">Reporte de COMSCORE</a></li>
-                                                <li><a href="#">Reporte de Distribuidoras</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a><i class="fa fa-barcode"></i> Inventarios <span
-										class="fa fa-chevron-down"></span></a>
-                                            <ul class="nav child_menu">
-                                                <li><a href="#/entradasInventario">Entradas en Inventario</a></li>
-                                                <li><a href="#/salidasInventario">Salidas en Inventario</a></li>
-                                                <li><a href="#/conteoInventario">Conteo de Inventario</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a><i class="fa fa-cogs"></i> Configuraciones <span
-										class="fa fa-chevron-down"></span></a>
-                                            <ul class="nav child_menu">
-                                                <li><a href="#/cupoSala">Cupo por Sala</a></li>
-                                                <li><a href="#/preciosVenta">Precios de Venta</a></li>
-                                                <li><a href="#/peliculas">Películas</a></li>
-                                                <li><a href="#/programacion">Programación</a></li>
-                                                <li><a href="#/productosDulceria">Productos de
-												Dulcería</a></li>
-                                                <li><a href="#/menusDulceria">Paquetes de Dulcería</a></li>
-                                                <li><a href="#/promocionesTaquilla">Promociones
-												Taquilla</a></li>
-
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </div>
-
+								<div class="menu_section">
+					                <h3>General</h3>
+					                <ul class="nav side-menu">
+					                  <li><a href="inicio.jsp"><i class="fa fa-home"></i> Inicio </a></li>                                   
+					                </ul>
+					              </div>
+					              <div class="menu_section" ng-repeat="seccion in menu" >
+								   	  <h3>{{seccion.nombre}}</h3>		             
+						              <ul class="nav side-menu">
+							              <li ng-repeat="submenu in seccion.submenus" ng-click="showChilds(submenu)">
+							                <a><i class="{{submenu.icono}}"></i> {{submenu.nombre}} <span class="fa fa-chevron-down"></span></a>
+						                    <ul class="opcion_menu">
+						                      <li ng-repeat="opcion in submenu.submenus"  ng-show="submenu.active"><a href="{{opcion.liga}}">{{opcion.nombre}}</a></li>
+						                    </ul>
+						                  </li> 		        
+						              </ul>              	
+						          </div>
+                                
                             </div>
                             <!-- /sidebar menu -->
 
@@ -158,72 +118,19 @@
                                 </div>
 
                                 <ul class="nav navbar-nav navbar-right">
-                                    <li class=""><a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <img
-									src="<c:url value='/resources/img/img.jpg' />" alt="">Aldo
-									Hernández <span class=" fa fa-angle-down"></span>
-							</a>
+                                    <li class="">
+                                      <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> 
+                                        <img src="<c:url value='/resources/img/default_pic.png' />" alt="">{{nombreUsuario}}<span class=" fa fa-angle-down"></span>
+									  </a>
                                         <ul class="dropdown-menu dropdown-usermenu pull-right">
                                             <li><a href="#/cambiarContrasenia"> <span>Cambiar
 												Contrase&ntilde;a</span>
 									</a></li>
-                                            <li><a href="/muvitul-web"><i
+                                            <li><a href="login.jsp"><i
 											class="fa fa-sign-out pull-right"></i> Cerrar Sesión </a></li>
                                         </ul>
                                     </li>
-                                    <!--  
-                <li role="presentation" class="dropdown">
-                  <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
-                    <i class="fa fa-envelope-o"></i>
-                    <span class="badge bg-green">8</span>
-                  </a>
-                  <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
-                    <li>
-                      <a>
-                        <span class="image"><img src="resources/images/img.jpg" alt="Profile Image" /></span>
-                        <span>
-                          <span>Aldo H.</span>
-                          <span class="time">Hace 3 min.</span>
-                        </span>
-                        <span class="message">
-                          Ojo! EstÃÂ¡s por superar el lÃ­mite de Merma mensual en...
-                        </span>
-                      </a>
-                    </li>
-                    <li>
-                      <a>
-                        <span class="image"><img src="resources/images/img.jpg" alt="Profile Image" /></span>
-                        <span>
-                          <span>Aldo H.</span>
-                          <span class="time">Hace 1 hr.</span>
-                        </span>
-                        <span class="message">
-                          MaÃÂ±ana empieza promociÃÂ³n NIÃâOS GRATIS en la compra de...
-                        </span>
-                      </a>
-                    </li>
-                    <li>
-                      <a>
-                        <span class="image"><img src="resources/images/img.jpg" alt="Profile Image" /></span>
-                        <span>
-                          <span>Aldo H.</span>
-                          <span class="time">Hace 3 dÃÂ­as</span>
-                        </span>
-                        <span class="message">
-                          Ojo! Tu inventario de SALCHICHAS estÃÂ¡ prÃÂ³ximo a terminarse...
-                        </span>
-                      </a>
-                    </li>
-                    <li>
-                      <div class="text-center">
-                        <a>
-                          <strong>Ver todos...</strong>
-                          <i class="fa fa-angle-right"></i>
-                        </a>
-                      </div>
-                    </li>
-                  </ul>
-                </li>
-                -->
+ 
                                 </ul>
                             </nav>
                         </div>
@@ -242,7 +149,7 @@
                     <footer>
                         <!-- AQUÃ VA EL FOOTER DE LA APLICACIÃN -->
                         <div class="pull-right">
-                            2017. Grupo Tecnetia SA de CV. <a href="http://tecnetia.com.mx/aviso-de-privacidad/" target="_blank">Aviso
+                            2018. Grupo Tecnetia SA de CV. <a href="http://tecnetia.com.mx/aviso-de-privacidad/" target="_blank">Aviso
 						de Privacidad.</a>
                         </div>
                         <div class="clearfix"></div>
@@ -306,11 +213,15 @@
             <!-- Custom Theme Scripts -->
             <script src="<c:url value='/resources/js/build/custom.min.js' />"></script>
             <script src="<c:url value='/resources/js/comun/global.js' />"></script>
-            <script src="<c:url value='/resources/js/comun/service/globalService.js' />"></script>
+            <script src="<c:url value='/resources/js/comun/service/globalService.js' />"></script>            
+            <script src="<c:url value='/resources/js/comun/service/errorService.js' />"></script>
+            
 
             <!---------- LIBRERIAS DEL MODULO DE INDEX PARA LA APLICACION ------------>
             <script src="<c:url value='/resources/js/aplicacion/comun/index.js' />"></script>
-            <script src="<c:url value='/resources/js/aplicacion/comun/controller/indexController.js' />"></script>
+            <script src="<c:url value='/resources/js/aplicacion/comun/service/indexService.js' />"></script>             
+            <script src="<c:url value='/resources/js/aplicacion/comun/controller/indexController.js' />"></script>            
+            
             <script src="<c:url value='/resources/js/comun/constantes/constanteConfig.js'/>"></script>
 
             <script src="<c:url value='/resources/js/comun/directivas/data-util.service.js' />"></script>
@@ -417,7 +328,16 @@
             <script src="<c:url value='/resources/js/aplicacion/configuracion/service/promocionesTaquillaService.js' />"></script>
 
             <!-- Controller del modulo de cambio de contraseÃ±a -->
+			<script src="<c:url value='/resources/js/aplicacion/configuracion/service/cambiarContraseniaService.js' />"></script> 
             <script src="<c:url value='/resources/js/aplicacion/configuracion/controller/cambiarContraseniaController.js' />"></script>
+
+            <!-- Controller del modulo de usuarios -->
+			<script src="<c:url value='/resources/js/aplicacion/configuracion/service/usuariosService.js' />"></script> 
+            <script src="<c:url value='/resources/js/aplicacion/configuracion/controller/usuariosController.js' />"></script>
+			
+			<!-- Controller del modulo de corte de caja -->
+			<script src="<c:url value='/resources/js/aplicacion/administracion/service/corteCaja.js' />"></script> 
+            <script src="<c:url value='/resources/js/aplicacion/administracion/controller/corteCaja.js' />"></script>
 
             <!-- Controller para modales -->
             <script src="<c:url value='/resources/js/comun/dialog/mensajeModalController.js'/>"></script>
