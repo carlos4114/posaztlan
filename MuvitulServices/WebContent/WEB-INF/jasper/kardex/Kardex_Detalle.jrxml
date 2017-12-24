@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Kardex_Detalle" pageWidth="792" pageHeight="802" columnWidth="792" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="4815966c-7afa-4609-b2f7-0f8d601971d2">
+	<property name="ireport.zoom" value="1.100000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="id_articulo" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[select mi.id_movimiento as id,mi.fecha as fecha, m.nombre as tipo, m.nombre  as movimiento, mi.cantidad as piezas, mi.importe as punitario, mi.importe as total, mi.cantidad as existenciaFinal from movimiento_inventario mi inner join tipo_movimiento_inv m on m.id_tipo_movimiento_inv = mi.id_tipo_movimiento
+where mi.id_articulo=$P{id_articulo};]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="fecha" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tipo" class="java.lang.String"/>
+	<field name="movimiento" class="java.lang.String"/>
+	<field name="piezas" class="java.lang.Long"/>
+	<field name="punitario" class="java.math.BigDecimal"/>
+	<field name="total" class="java.math.BigDecimal"/>
+	<field name="existenciaFinal" class="java.lang.Long"/>
+	<columnHeader>
+		<band height="21">
+			<staticText>
+				<reportElement x="6" y="1" width="100" height="20" uuid="6caac561-0301-4be0-b8a3-f832a1279a86"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="109" y="1" width="100" height="20" uuid="40f4f77f-1dc6-491c-bd7f-afa86a89483b"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="214" y="1" width="100" height="20" uuid="a9800071-790a-4eb7-9de6-b3a1aab1ba0f"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Movimiento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="320" y="1" width="100" height="20" uuid="da33b82e-02c4-4b82-a548-316b821fa445"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Piezas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="425" y="1" width="100" height="20" uuid="ce2066be-5431-4ddc-97e0-0fc641015f59"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[P. Unitario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="530" y="1" width="100" height="20" uuid="1c43b03a-6d86-4069-bddb-d42c2e5d405b"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="635" y="1" width="100" height="20" uuid="cca59d15-ff79-4b36-83af-b352600067b8"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Existencia Final]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="25" splitType="Stretch">
+			<textField>
+				<reportElement x="6" y="4" width="100" height="20" uuid="aae759fe-9533-46ed-b1c1-a24802b1166d"/>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="109" y="4" width="100" height="20" uuid="20c4011d-ab0b-489f-b56d-71585b4f63ed"/>
+				<textFieldExpression><![CDATA[$F{tipo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="214" y="4" width="100" height="20" uuid="e6e676c1-2c6d-44c9-809b-2ee20d41e7a3"/>
+				<textFieldExpression><![CDATA[$F{movimiento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="320" y="4" width="100" height="20" uuid="bf7b613c-e45b-4d1c-82ea-0dfd6fec87d8"/>
+				<textFieldExpression><![CDATA[$F{piezas}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="425" y="4" width="100" height="20" uuid="10fd8861-eb3c-40ba-b5de-940b0bd75c72"/>
+				<textFieldExpression><![CDATA[$F{punitario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="530" y="4" width="100" height="20" uuid="8a4e3861-fa61-43da-ae8d-9f1be79a2ad5"/>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="635" y="4" width="100" height="20" uuid="aa7b11a5-fd0c-4bf1-96f0-f86c977f9fa8"/>
+				<textFieldExpression><![CDATA[$F{existenciaFinal}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

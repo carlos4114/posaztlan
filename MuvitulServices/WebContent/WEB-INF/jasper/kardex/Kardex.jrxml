@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Kardex" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c6c5e7c9-e5da-4d9e-a492-200fcb39e97f">
+	<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.columns" value="false"/>
+	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.rows" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.wrap.text" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.white.page.background" value="true"/>
+	<property name="ireport.zoom" value="0.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
+	<parameter name="id_articulo" class="java.lang.Integer"/>
+	<parameter name="emision" class="java.lang.String"/>
+	<parameter name="periodo" class="java.lang.String"/>
+	<parameter name="id_cine" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[select a.id_articulo, a.id_articulo as cantidad,  a.id_articulo as total,a.nombre,um.nombre as umedida from articulo a inner join unidad_medida um on a.id_unidad_medida = um.id_unidad_medida where id_articulo = $P{id_articulo};]]>
+	</queryString>
+	<field name="id_articulo" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cantidad" class="java.lang.Integer"/>
+	<field name="total" class="java.lang.Integer"/>
+	<field name="nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="umedida" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="134" splitType="Stretch">
+			<staticText>
+				<reportElement x="355" y="15" width="100" height="20" uuid="6a56a80b-6a4f-48c5-9eaa-09c6f148333d"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Kardex]]></text>
+			</staticText>
+			<subreport>
+				<reportElement x="33" y="54" width="639" height="66" uuid="8770b6cf-56fb-4197-8f7d-a0f139b10a4a"/>
+				<subreportParameter name="id_cine">
+					<subreportParameterExpression><![CDATA[$P{id_cine}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="periodo">
+					<subreportParameterExpression><![CDATA[$P{periodo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="emision">
+					<subreportParameterExpression><![CDATA[$P{emision}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "Kardex_Header.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="40" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="33" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="175" splitType="Stretch">
+			<subreport>
+				<reportElement x="16" y="73" width="786" height="100" uuid="fe65766c-48a2-4016-8aeb-6b88951e292b"/>
+				<subreportParameter name="id_articulo">
+					<subreportParameterExpression><![CDATA[$F{id_articulo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "Kardex_Detalle.jasper"]]></subreportExpression>
+			</subreport>
+			<textField>
+				<reportElement x="0" y="0" width="136" height="20" uuid="7aba5ba3-1529-4118-a399-88175cb085c4"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="77" y="20" width="123" height="20" uuid="b5123732-9ff0-4a5c-974e-8ea8fa1a6237"/>
+				<textFieldExpression><![CDATA[$F{umedida}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="20" width="77" height="20" uuid="960301df-9171-47f1-ab4e-13979fa14dab"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[U Medida:]]></text>
+			</staticText>
+			<frame>
+				<reportElement x="0" y="40" width="802" height="12" uuid="cfb333fc-2e9d-4dc7-a33d-90a6b57992ef"/>
+			</frame>
+			<staticText>
+				<reportElement x="16" y="52" width="120" height="20" uuid="76ed3cb4-eb21-4f7f-955f-994c55e98159"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Inventario Inicial
+]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="236" y="52" width="100" height="20" uuid="774222c6-0f0d-4d51-ac1a-ecce2de57431"/>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="136" y="52" width="100" height="20" uuid="656bf23a-7ee7-49e1-ba36-bf2f8f13f2b6"/>
+				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
