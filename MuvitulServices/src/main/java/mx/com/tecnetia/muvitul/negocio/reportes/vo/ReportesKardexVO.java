@@ -15,20 +15,15 @@ public class ReportesKardexVO implements Serializable {
 	private String periodo;
 	private Double valorInventarioInicial;
 	private Double valorInventarioFinal;
-	private String nombreProducto;
-	private String medida;
-	private String tipo;
-	private Integer invCantidad;
-	private Double invTotal;
 
-	private List<DetalleInventarioKardexVO> listDetalleInventarioKardexVO;
+	private List<ProductoVO> listProductosVO;
 
-
+	public ReportesKardexVO() {
+		super();
+	}
 
 	public ReportesKardexVO(CineVO cineVO, EmpresaVO empresaVO, String emision, String periodo,
-			Double valorInventarioInicial, Double valorInventarioFinal, String nombreProducto, String medida,
-			String tipo, Integer invCantidad, Double invTotal,
-			List<DetalleInventarioKardexVO> listDetalleInventarioKardexVO) {
+			Double valorInventarioInicial, Double valorInventarioFinal ) {
 		super();
 		this.cineVO = cineVO;
 		this.empresaVO = empresaVO;
@@ -36,13 +31,7 @@ public class ReportesKardexVO implements Serializable {
 		this.periodo = periodo;
 		this.valorInventarioInicial = valorInventarioInicial;
 		this.valorInventarioFinal = valorInventarioFinal;
-		this.nombreProducto = nombreProducto;
-		this.medida = medida;
-		this.tipo = tipo;
-		this.invCantidad = invCantidad;
-		this.invTotal = invTotal;
-		this.listDetalleInventarioKardexVO = listDetalleInventarioKardexVO;
-	}
+ 	}
 
 	public CineVO getCineVO() {
 		return cineVO;
@@ -76,7 +65,7 @@ public class ReportesKardexVO implements Serializable {
 		this.periodo = periodo;
 	}
 
-	public Double getValorInventarioInicial() {
+	public Double rutaKardex() {
 		return valorInventarioInicial;
 	}
 
@@ -92,52 +81,12 @@ public class ReportesKardexVO implements Serializable {
 		this.valorInventarioFinal = valorInventarioFinal;
 	}
 
-	public String getNombreProducto() {
-		return nombreProducto;
+	public List<ProductoVO> getListProductosVO() {
+		return listProductosVO;
 	}
 
-	public void setNombreProducto(String nombreProducto) {
-		this.nombreProducto = nombreProducto;
-	}
-
-	public String getMedida() {
-		return medida;
-	}
-
-	public void setMedida(String medida) {
-		this.medida = medida;
-	}
-
-	public String getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
-	}
-
-	public List<DetalleInventarioKardexVO> getListDetalleInventarioKardexVO() {
-		return listDetalleInventarioKardexVO;
-	}
-
-	public void setListDetalleInventarioKardexVO(List<DetalleInventarioKardexVO> listDetalleInventarioKardexVO) {
-		this.listDetalleInventarioKardexVO = listDetalleInventarioKardexVO;
-	}
-
-	public Integer getInvCantidad() {
-		return invCantidad;
-	}
-
-	public void setInvCantidad(Integer invCantidad) {
-		this.invCantidad = invCantidad;
-	}
-
-	public Double getInvTotal() {
-		return invTotal;
-	}
-
-	public void setInvTotal(Double invTotal) {
-		this.invTotal = invTotal;
+	public void setListProductosVO(List<ProductoVO> listProductosVO) {
+		this.listProductosVO = listProductosVO;
 	}
 
 }

@@ -12,7 +12,9 @@
 			<div class="title_right">
 				<div class="row pull-right">
 
-					<button type="button" ng-click="asignarPaso(2);determinarTipoDevolucion()" ng-disabled="" class="btn btn-success">
+					<button type="button"
+						ng-click="asignarPaso(2);determinarTipoDevolucion()"
+						ng-disabled="" class="btn btn-success">
 						Registrar Devolución <i class="fa fa-credit-card"></i>
 					</button>
 
@@ -55,9 +57,11 @@
 				<div class="row">
 
 					<p>
-						<input type="checkbox" class="flat" ng-disabled="ticket.devolucionesVO.length > 0"
+						<input type="checkbox" class="flat"
+							ng-disabled="ticket.devolucionesVO.length > 0"
 							ng-model="ticket.seleccionarPaquetes"
-							ng-click="seleccionarTodosPaquetes(ticket.paquetesXTicketVO)">Seleccionar Paquetes
+							ng-click="seleccionarTodosPaquetes(ticket.paquetesXTicketVO)">Seleccionar
+						Paquetes
 					</p>
 				</div>
 				<div class="row">
@@ -129,10 +133,15 @@
 								</div>
 							</div>
 						</fieldset>
+					</div>
+
+				</div>
+				<div class="row ">
+					<div
+						class="col-lg-5 col-md-4 col-sm-5  col-xs-12  col-lg-offset-3 col-md-offset-3  col-sm-offset-3 ">
 						<dir-pagination-controls></dir-pagination-controls>
 					</div>
 				</div>
-
 			</div>
 		</div>
 

@@ -165,8 +165,25 @@
 						<div class="row">
 							<div class="col-sm-6">
 								<div class="form-group"
+									ng-class="{'has-error': formProgramaciones.fechaInicio.$invalid && formProgramaciones.fechaInicio.$dirty}">
+									<label>Fecha Inicio <span class="required">*</span>
+									</label>
+									<div class="input-group">
+										<span class="input-group-addon"><i
+											class="fa fa-calendar"></i></span><input type="text" calendar
+											required name="fechaInicio"
+											ng-model="programacion.fechaInicio" id="fechaInicio"
+											class="form-control col-md-7 col-xs-12">
+									</div>
+									<div
+										ng-show="formProgramaciones.fechaInicio.$invalid && formProgramaciones.fechaInicio.$dirty"
+										ng-style="{color:'red'}">El campo es requerido.</div>
+								</div>
+							</div>
+								<div class="col-sm-6">
+								<div class="form-group"
 									ng-class="{'has-error': formProgramaciones.fechaVigencia.$invalid && formProgramaciones.fechaVigencia.$dirty}">
-									<label>Vigencia <span class="required">*</span>
+									<label>Fecha Vigencia <span class="required">*</span>
 									</label>
 									<div class="input-group">
 										<span class="input-group-addon"><i

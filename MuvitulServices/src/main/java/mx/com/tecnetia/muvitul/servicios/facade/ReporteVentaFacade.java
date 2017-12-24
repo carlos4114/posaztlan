@@ -23,15 +23,19 @@ public class ReporteVentaFacade implements ReporteVentaFacadeI {
 	private ReporteVentasTaquillaController reporteJasperController;
 
 	@Override
-	public ResponseEntity<ArchivoExcelVO> reporteVentaDulceriaTaquilla(HttpServletRequest request,String codigoReporte,String fechaInicio,String fechaFin) throws Exception {
+	public ResponseEntity<ArchivoExcelVO> reporteVentaDulceriaTaquilla(HttpServletRequest request,String codigoReporte,String fechaInicio,String fechaFin,String idArticulo) throws Exception {
 		Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
 		Integer idCine = (Integer) claims.get(ClaimsEnum.CINE);
 		Integer idUsuario = (Integer) claims.get(ClaimsEnum.USUARIO);
 		ArchivoExcelVO archivoExcelVO=null;
 		if (codigoReporte.equals("KARDEX"))
-			archivoExcelVO= reporteJasperController.crearReporteXls(idCine,idUsuario);
+			archivoExcelVO= reporteJasperController.crearReporteXls(idCine,idUsuario,  fechaInicio,  fechaFin,  idArticulo);
 		else if(codigoReporte.equals("VENTAS-DIA"))
-			archivoExcelVO= reporteJasperController.generarReporteVentas(idCine,idUsuario);
+			archivoExcelVO= reporteJasperController.generarReporteVentas(idCine,idUsuario,  fechaInicio,  fechaFin);
+		else if(codigoReporte.equals("VENTAS-SEMANA"))
+			archivoExcelVO= reporteJasperController.generarReporteVentas(idCine,idUsuario,  fechaInicio,  fechaFin);
+		else if(codigoReporte.equals("VENTAS-MENSUAL"))
+			archivoExcelVO= reporteJasperController.generarReporteVentas(idCine,idUsuario,  fechaInicio,  fechaFin);
 
 		if (archivoExcelVO == null ) {
 			throw new NotFoundException("No encontrado");

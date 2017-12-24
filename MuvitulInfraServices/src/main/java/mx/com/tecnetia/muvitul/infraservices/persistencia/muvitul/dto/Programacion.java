@@ -31,6 +31,7 @@ public class Programacion implements java.io.Serializable {
 	private Version version;
 	private String diaSemana;
 	private Date horario;
+	private Date fechaInicio;
 	private Date fechaVigencia;
 	private boolean activo;
 	private Date horarioFin;
@@ -150,6 +151,16 @@ public class Programacion implements java.io.Serializable {
 		this.fechaVigencia = fechaVigencia;
 	}
 
+	@Temporal(TemporalType.DATE)
+	@Column(name = "fecha_inicio", nullable = false, length = 10)
+	public Date getFechaInicio() {
+		return this.fechaInicio;
+	}
+
+	public void setFechaInicio(Date fechaInicio) {
+		this.fechaInicio = fechaInicio;
+	}
+	
 	@Column(name = "activo", nullable = false)
 	public boolean isActivo() {
 		return this.activo;

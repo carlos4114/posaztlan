@@ -26,6 +26,7 @@ public class ProgramacionAssembler {
 		programacionVO.setHorario(hourFormat.format(programacion.getHorario()));
 		programacionVO.setHorarioFin(hourFormat.format(programacion.getHorarioFin()));
 		programacionVO.setFechaVigencia(programacion.getFechaVigencia());
+		programacionVO.setFechaInicio(programacion.getFechaInicio());
 		programacionVO.setActivo(programacion.isActivo());
 		programacionVO.setNuevo(nuevo);
 		
@@ -46,6 +47,7 @@ public class ProgramacionAssembler {
 		programacion.setVersion(VersionAssembler.getVersion(programacionVO.getVersionVO().getIdVersion()));
 		programacion.setHorario(Fecha.getTime(programacionVO.getHorario()));
 		programacion.setFechaVigencia(programacionVO.getFechaVigencia());
+		programacion.setFechaInicio(programacionVO.getFechaInicio());
 		programacion.setActivo(programacionVO.isActivo());
 
 		Calendar calHorario = Calendar.getInstance();

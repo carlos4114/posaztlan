@@ -20,6 +20,9 @@ public class ProgramacionVO {
 	@JsonDeserialize(using = DateStringToDateDeserializer.class)
 	@JsonSerialize(using = DateToDateStringSerializer.class)
 	private Date fechaVigencia;
+	@JsonDeserialize(using = DateStringToDateDeserializer.class)
+	@JsonSerialize(using = DateToDateStringSerializer.class)
+	private Date fechaInicio;
 	private boolean activo;
 	private boolean nuevo;
 	
@@ -82,6 +85,12 @@ public class ProgramacionVO {
 	}
 	public void setFechaVigencia(Date fechaVigencia) {
 		this.fechaVigencia = fechaVigencia;
+	}
+	public Date getFechaInicio() {
+		return fechaInicio;
+	}
+	public void setFechaInicio(Date fechaInicio) {
+		this.fechaInicio = fechaInicio;
 	}
 	public boolean isActivo() {
 		return activo;

@@ -1,7 +1,8 @@
 angular.module('indexModule').controller("reportesController", function($scope, $controller, $filter, statusFactory, reportesService) {
 
     $controller('modalController',{$scope : $scope });
-
+    $scope.listaArticulos = null;
+    
     $scope.consultarReporte = function(reporte) {
 
         if ($scope.formReportes.$invalid) {
@@ -12,34 +13,43 @@ angular.module('indexModule').controller("reportesController", function($scope, 
             });
             $scope.showAviso("Es necesario llenar los campos obligatorios ");
         } else {
-			 console.log(reporte);
-			 $scope.reporteVO= {rutaPdf:"sadasdsadsd"};
         	reportesService.consultarReportes($scope.reporteVO).success(function(data,status,headers) {
      			 console.log(data);
-     			$scope.save(new Blob([data.archivo],
-     				    { type: 'application/vnd.openxmlformat-officedocument.spreadsheetml.sheet;'}), data.nombre);
-//     			$scope.downloadfile (data.archivo,data.nombre)
+     			$scope.save(data.archivo,data.nombre);   			 
     		}).error(function(data) {
     		  });
         }
     }
-
-    $scope.downloadfile = function(file, fileName) {
-    	var urlCreator = window.URL || window.webkitURL || window.mozURL || window.msURL;
-        if (urlCreator) {
-            var blob = new Blob([file], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
-            var url = urlCreator.createObjectURL(blob);
-            var a = document.createElement("a");
-            document.body.appendChild(a);
-            a.style = "display: none";
-            a.href = url;
-            a.download = "download.xls"; //you may assign this value from header as well 
-            a.click();
-            window.URL.revokeObjectURL(url);
-        }
-	}
     
-    $scope.save=function(blob, fileName) {
+  
+	function base64toBlob(base64Data, contentType) {
+	    contentType = contentType || '';
+	    var sliceSize = 1024;
+	    var byteCharacters = atob(base64Data);
+	    var bytesLength = byteCharacters.length;
+	    var slicesCount = Math.ceil(bytesLength / sliceSize);
+	    var byteArrays = new Array(slicesCount);
+
+	    for (var sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
+	        var begin = sliceIndex * sliceSize;
+	        var end = Math.min(begin + sliceSize, bytesLength);
+
+	        var bytes = new Array(end - begin);
+	        for (var offset = begin, i = 0 ; offset < end; ++i, ++offset) {
+	            bytes[i] = byteCharacters[offset].charCodeAt(0);
+	        }
+	        byteArrays[sliceIndex] = new Uint8Array(bytes);
+	    }
+
+	    var blob = new Blob(byteArrays, {type: contentType});
+	    return blob;
+	}
+	
+    
+    
+    $scope.save=function(data, fileName) {
+	 	var blob = new base64toBlob(data, "application/vnd.ms-excel" );
+ 
         if (window.navigator.msSaveOrOpenBlob) { // For IE:
             navigator.msSaveBlob(blob, fileName);
         } else { // For other browsers:
@@ -59,20 +69,41 @@ angular.module('indexModule').controller("reportesController", function($scope, 
      		
         $scope.listaTipoReporte = [{
         	id: 1,
-            nombre: "Tipo Reporte 1",
+            nombre: "Kardex",
             codigo: "KARDEX"
         }, {
         	id: 2,
-            nombre: "Tipo Reporte 2",
+            nombre: "Ventas por  Dia",
             codigo: "VENTAS-DIA"
         },{
         	id: 3,
-            nombre: "Tipo Reporte 3",
+            nombre: "Ventas Semanal",
             codigo: "VENTAS-SEMANA"
+        },{
+        	id: 3,
+            nombre: "Ventas Mensual",
+            codigo: "VENTAS-MENSUAL"
         }
+        
         ];
       
     }
+    $scope.resetFormulario = function(){
+		$scope.formReportes.$setPristine();
+		$scope.reporteVO.fechaInicio=null;
+		$scope.reporteVO.fechaFin=null;
+		$scope.reporteVO.articulo=null;
+
+		
+		$scope.consultarArticulos();
+	 }
+    
+    $scope.consultarArticulos = function(){
+    	reportesService.consultarArticulos().success(function(data,status,headers) {
+			 $scope.listaArticulos=data;
+		}).error(function(data) {
+		  });
+	 }
     
     $scope.consultarTiposReportes();
 });
