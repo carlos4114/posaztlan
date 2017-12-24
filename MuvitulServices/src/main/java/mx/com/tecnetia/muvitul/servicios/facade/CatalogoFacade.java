@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import io.jsonwebtoken.Claims;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.enumeration.ClaimsEnum;
@@ -36,7 +37,17 @@ public class CatalogoFacade implements CatalogoFacadeI {
 	UsuarioFirmadoBean usuarioFirmadoBean;
 	@Autowired
 	CatalogoController catalogoController;
-
+	
+	@Override
+	public ResponseEntity<List<CineVO>> getCinesEmpresa(@PathVariable("idEmpresa") Integer idEmpresa) throws BusinessGlobalException, NotFoundException {
+		return new ResponseEntity<List<CineVO>>(this.catalogoController.getCines(idEmpresa), HttpStatus.OK);		
+	}
+	
+	@Override
+	public ResponseEntity<List<PuntoVentaVO>> getPuntosVenta(@PathVariable("idCine") Integer idCine) throws BusinessGlobalException, NotFoundException {
+		return new ResponseEntity<List<PuntoVentaVO>>(this.catalogoController.getPuntosVenta(idCine), HttpStatus.OK);		
+	}
+	
 	@Override
 	public ResponseEntity<List<FormaPagoVO>> getFormasPago(HttpServletRequest request)
 			throws BusinessGlobalException, NotFoundException {

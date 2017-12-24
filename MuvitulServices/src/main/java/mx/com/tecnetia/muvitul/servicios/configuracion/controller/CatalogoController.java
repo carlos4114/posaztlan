@@ -62,6 +62,9 @@ public class CatalogoController {
 	public List<CineVO> getCinesEmpresa(Integer idCine) throws BusinessGlobalException {
 		return catalogoBO.getCinesEmpresa(idCine);
 	}
-
+	
+	public List<CineVO> getCines(Integer idEmpresa) throws BusinessGlobalException {
+		return catalogoBO.getCinesEmpresa(idEmpresa);
+	}
 
 }

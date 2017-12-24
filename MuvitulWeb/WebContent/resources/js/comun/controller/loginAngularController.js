@@ -2,12 +2,14 @@
 
 angular.module('loginModule').controller('LoginController', ['LoginService','$scope','GlobalFactory','ErrorFactory','$window',
         function(loginService, $scope, GlobalFactory,ErrorFactory,$window) {
-            $scope.greeting = 'Aplicaci\u00F3n de Referencia';
             $scope.userName = '';
             $scope.password = '';
             $scope.token = null;            	
             $scope.error = '';
             GlobalFactory.setAuthHeader('');
+            GlobalFactory.setUserName('');
+            GlobalFactory.setLogoEmpresa('');
+            GlobalFactory.setIdEmpresa('');
             
             var MAIN_PAGE = GlobalFactory.getProperty('mainPage');
             var CONTEXT_PATH = GlobalFactory.getProperty('contextPath');
@@ -18,7 +20,10 @@ angular.module('loginModule').controller('LoginController', ['LoginService','$sc
                 $scope.token = null;            	
                 $scope.error = '';
                 GlobalFactory.setAuthHeader('');
-            }
+                GlobalFactory.setUserName('');
+                GlobalFactory.setLogoEmpresa('');
+                GlobalFactory.setIdEmpresa('');
+             }
             
             $scope.login = function() {
                 
@@ -29,16 +34,19 @@ angular.module('loginModule').controller('LoginController', ['LoginService','$sc
                         $scope.resetValues();
                 		$scope.error = ErrorFactory.getErrorSecurityMessage(responseLogin.errorCode);
                 	}else{
-
+                		console.log(responseLogin);
                     	$scope.token = responseLogin.token;
                     	GlobalFactory.setAuthHeader('Bearer ' + responseLogin.token);
+                    	GlobalFactory.setCompleteUserName(responseLogin.nombreCompletoUsuario);
+                    	GlobalFactory.setUserName(responseLogin.userName);
+                        GlobalFactory.setLogoEmpresa(responseLogin.logoEmpresa);
+                        GlobalFactory.setIdEmpresa(responseLogin.idEmpresa);
             			$window.location.href = '/'+CONTEXT_PATH+"/"+MAIN_PAGE;
                 	}
                 },
-                function(error){
-                	console.error('Error en login: ',error);
+                function(error){                	
                     $scope.resetValues();
-                    $scope.error = "No se pudieron validar los datos. "+error.status+":"+ErrorFactory.getErrorMessage(error.status);
+                    $scope.error = "No se pudieron validar los datos. "+ErrorFactory.getErrorMessage(error.status);
                 });
                 
             }

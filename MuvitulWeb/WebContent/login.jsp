@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html ng-app="loginModule">
@@ -18,15 +18,15 @@
     
     <div class="col-md-4">
       <section class="login-form">
-		<form ng-submit="login()" role="login">
-          <img src="resources/img/tecnetia.png" class="img-responsive" alt="" />
+		<form ng-submit="login()" name="myForm" role="login">
+          <img src="<c:url value='/resources/img/MuvitulT.png' />" class="img-responsive" alt="" />
 
-          <input type="email" ng-model="userName" placeholder="Correo ElectrÃ³nico" required="required" class="form-control input-lg" value="" />     
-          <input type="password" ng-model="password" placeholder="ContraseÃ±a" required="required" class="form-control input-lg" value="" />          
+          <input type="email" ng-model="userName" placeholder="Correo Electrónico" required="required" class="form-control input-lg" value="" />     
+          <input type="password" ng-model="password" placeholder="Contraseña" required="required" class="form-control input-lg" value="" ng-minlength="3" />          
           
           <div class="pwstrength_viewport_progress"></div>
 
-          <input type="submit" value="Entrar" class="btn btn-lg btn-primary btn-block">
+          <input type="submit" value="Entrar" class="btn btn-lg btn-primary btn-block" ng-disabled="myForm.$invalid">
 		  
 		  <div class="alert alert-danger" role="alert" ng-show="error">	  
 		  	<span  class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -34,15 +34,15 @@
           </div>
           <br/>
 		  <div class="text-center">
-		  	    <a class="reset_pass" href="vistas/configuracion/recuperar_contrasenia.jsp"><u>Olvidaste tu contraseÃ±a?</u></a>
+		  	    <a class="reset_pass" href="vistas/configuracion/recuperar_contrasenia.jsp"><u>Olvidaste tu contraseña?</u></a>
 		  </div>  
 		  <br/>
           
         </form>
         
         <div class="text-center">
-             <img src="resources/img/tecnetia.png" height="75px" width="150px" class="center-block" alt="" >
-             <h6>2017. Grupo Tecnetia SA de CV. <a href="http://tecnetia.com.mx/aviso-de-privacidad/" target="_blank"><u>Aviso de Privacidad.</u></a></h6>
+              <!--  <img src="<c:url value='/resources/img/tecnetia.png' />" height="75px" width="150px" class="center-block" alt="" >-->
+             <h6>2018. Grupo Tecnetia SA de CV. <a href="http://tecnetia.com.mx/aviso-de-privacidad/" target="_blank"><u>Aviso de Privacidad.</u></a></h6>
  		</div>
       </section>  
       </div>

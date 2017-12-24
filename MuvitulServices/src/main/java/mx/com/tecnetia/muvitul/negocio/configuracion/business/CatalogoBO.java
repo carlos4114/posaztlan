@@ -98,4 +98,9 @@ public class CatalogoBO {
 		}
 		return cinesVO;
 	}
+	
+	public List<CineVO> getCines(Integer idEmpresa) throws BusinessGlobalException {
+		 List<CineVO> cinesVO= CineAssembler.getCinesVO(cineDAO.findByEmpresa(idEmpresa));
+		return cinesVO;
+	}
 }

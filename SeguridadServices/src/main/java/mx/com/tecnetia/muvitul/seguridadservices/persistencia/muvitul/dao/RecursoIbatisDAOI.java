@@ -18,11 +18,11 @@ public interface RecursoIbatisDAOI {
 			        " rtrim(recurso_url),length(recurso_url)-1,2 "+
 			    " ) = '**' "+
 			     " then convert( "+                  
-			                  " instr( "+ 
+			                  " instr( "
+			                  + " #{url}, "+ 
 					             " substring( "+
-						                   " rtrim(recurso_url),1,length(recurso_url)-1 "+
-							       " ) "+
-			                       " ,#{url} "+
+						                   " rtrim(recurso_url),1,length(recurso_url)-2 "+
+							       " ) "+			                       
 						       " ), "+
 			                   " char(200) "+
 				       " ) "+

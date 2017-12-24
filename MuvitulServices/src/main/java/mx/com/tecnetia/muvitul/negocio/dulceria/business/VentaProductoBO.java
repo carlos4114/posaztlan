@@ -314,8 +314,8 @@ public class VentaProductoBO {
 		return TicketVentaAssembler.getTicketVentaVO(ticketVenta);
 	}
 
-	public List<ArchivoPdfVO> generarTicketPdf(Integer idUsuario, Integer idTicket, BigDecimal pagoCon,
-			BigDecimal cambio) throws BusinessGlobalException {
+	public List<ArchivoPdfVO> generarTicketPdf(Integer idTicket, BigDecimal pagoCon,
+			BigDecimal cambio, Integer idCine) throws BusinessGlobalException {
 		ResourceBundle cfg = ResourceBundle.getBundle("config");
 		String rutaJasper = cfg.getString("dulceria.ticket.jasper");
 		SimpleDateFormat sdf = new SimpleDateFormat(Constantes.FORMAT_DDMMYYYYHHMMSSSSS);
@@ -325,7 +325,7 @@ public class VentaProductoBO {
 		pagoCon = pagoCon.setScale(2, RoundingMode.CEILING);
 		cambio = cambio.setScale(2, RoundingMode.CEILING);
 
-		Cine cine = cineDAO.findById(idUsuario);
+		Cine cine = cineDAO.findById(idCine);
 		TicketVenta ticketVenta = ticketVentaDAO.findById(idTicket);
 		List<Pago> pagos = pagoDAO.findByTicketAndCta(idTicket);
 

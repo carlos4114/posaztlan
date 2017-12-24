@@ -45,6 +45,9 @@ public class Cine implements java.io.Serializable {
 	public Cine() {
 	}
 
+	public Cine(Integer idCine) {
+		this.idCine = idCine;
+	}
 	public Cine(Contacto contacto, Empresa empresa, String nombre, boolean activo) {
 		this.contacto = contacto;
 		this.empresa = empresa;

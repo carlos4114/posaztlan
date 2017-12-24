@@ -7,4 +7,5 @@ import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Cine;
 
 public interface CineDAOI extends GlobalHibernateDAOI<Cine>{
 	List<Cine> findByEmpresa(Integer idEmpresa);
+	List<Cine> findActivos();
 }

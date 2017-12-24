@@ -235,7 +235,7 @@ public class VentaBoletoBO {
 		return TicketVentaAssembler.getTicketVentaVO(ticketVenta);
 	}
 
-	public List<ArchivoPdfVO> generarTicketsPdf(Integer idUsuario, Integer idTicket, BigDecimal pagoCon, BigDecimal cambio) throws BusinessGlobalException {
+	public List<ArchivoPdfVO> generarTicketsPdf(Integer idCine, Integer idTicket, BigDecimal pagoCon, BigDecimal cambio) throws BusinessGlobalException {
 		// String rutaImg = cfg.getString("taquilla.ticket.img") ;
 		// String rutaJrxml = cfg.getString("taquilla.ticket.jrxml");
 		ResourceBundle cfg = ResourceBundle.getBundle("config");
@@ -247,7 +247,7 @@ public class VentaBoletoBO {
 		pagoCon = pagoCon.setScale(2, RoundingMode.CEILING);
 		cambio = cambio.setScale(2, RoundingMode.CEILING);
 		
-		Cine cine= cineDAO.findById(idUsuario);
+		Cine cine= cineDAO.findById(idCine);
 		TicketVenta ticketVenta =ticketVentaDAO.getById(idTicket);
 		List<Pago>  pagos = pagoDAO.findByTicketAndCta(idTicket);
 		

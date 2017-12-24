@@ -49,8 +49,8 @@ public class ReporteDistribuidoraBO {
 		parametros.put("fechaInicial",fecha.format(reporte.getFechaInicio()));
 		parametros.put("fechaFinal",fecha.format(reporte.getFechaFin()));
 		parametros.put("idCine", reporte.getCine().getIdCine());
-		parametros.put("idPelicula",reporte.getPelicula().getIdPelicula());
-		parametros.put("idDistribuidora",reporte.getDistribuidora().getIdDistribuidora());
+		parametros.put("idPelicula",reporte.getPelicula()==null?null:reporte.getPelicula().getIdPelicula());
+		parametros.put("idDistribuidora",reporte.getDistribuidora()==null?null:reporte.getDistribuidora().getIdDistribuidora());
 				
 		rutaReporteJasper = cfg.getString(reporte.getRutaReporteJasper());	
 		rutaReporteXls = context.getRealPath(cfg.getString(reporte.getRutaReporteXls()));

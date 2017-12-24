@@ -9,6 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -21,11 +23,16 @@ public class Perfil implements java.io.Serializable {
 
 	private Integer idPerfil;
 	private String nombre;
+	private Empresa empresa;
 	private Set<PerfilesXUsuario> perfilesXUsuarios = new HashSet<PerfilesXUsuario>(0);
 	private Set<RecursosXPerfil> recursosXPerfils = new HashSet<RecursosXPerfil>(0);
 	private Set<TipoAutorizacionXPerfil> tipoAutorizacionXPerfils = new HashSet<TipoAutorizacionXPerfil>(0);
 
 	public Perfil() {
+	}
+	
+	public Perfil(Integer idPerfil) {
+		this.idPerfil = idPerfil;
 	}
 
 	public Perfil(String nombre) {
@@ -86,6 +93,16 @@ public class Perfil implements java.io.Serializable {
 
 	public void setTipoAutorizacionXPerfils(Set<TipoAutorizacionXPerfil> tipoAutorizacionXPerfils) {
 		this.tipoAutorizacionXPerfils = tipoAutorizacionXPerfils;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_empresa", nullable = false)
+	public Empresa getEmpresa() {
+		return this.empresa;
+	}
+
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
 	}
 
 }

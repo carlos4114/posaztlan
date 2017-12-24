@@ -6,10 +6,10 @@ import org.apache.commons.logging.LogFactory;
 public class ExceptionLoggerBO {
 	private static final Log logger = LogFactory.getLog(ExceptionLoggerBO.class);
 	
-	private CorreroElectronicoBO correoElectronicoLoggerBO;
+	private CorreoElectronicoBO correoElectronicoLoggerBO;
 
 	public void handleException(Throwable throwable) {
-		if (!(throwable instanceof BusinessGlobalException)) {
+		if (!(throwable instanceof BusinessGlobalException) && !(throwable instanceof NotFoundException)) {
 			logger.error("*********** Interceptando excepción dentro de la aplicación: -------> " + new java.util.Date());
 			logger.error("\n*********** ERROR **************: ---->" + throwable.getMessage());
 
@@ -39,7 +39,7 @@ public class ExceptionLoggerBO {
 		}
 	}
 
-	public void setCorreoElectronicoLoggerBO(CorreroElectronicoBO correoElectronicoLoggerBO) {
+	public void setCorreoElectronicoLoggerBO(CorreoElectronicoBO correoElectronicoLoggerBO) {
 		this.correoElectronicoLoggerBO = correoElectronicoLoggerBO;
 	}
 	

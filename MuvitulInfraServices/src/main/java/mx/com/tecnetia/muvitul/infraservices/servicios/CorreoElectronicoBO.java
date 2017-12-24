@@ -25,7 +25,7 @@ import org.springframework.ui.velocity.VelocityEngineUtils;
 
 
 @SuppressWarnings("deprecation")
-public class CorreroElectronicoBO extends GlobalService{
+public class CorreoElectronicoBO extends GlobalService{
 	
     private JavaMailSenderImpl mailSender;
     private VelocityEngine velocityEngine;

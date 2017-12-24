@@ -36,8 +36,8 @@ public class DevolucionController {
 		return devolucionBO.generarCortesiaPdf(idUsuario,idTicket, idDevolucion);
 	}
 
-	public DevolucionResponseVO createDevolucionProducto(Integer idUsuario, DevolucionProductoVO devolucionProductoVO) throws BusinessGlobalException {
-		return devolucionBO.createDevolucionProducto(idUsuario, devolucionProductoVO);
+	public DevolucionResponseVO createDevolucionProducto(Integer idUsuario,Integer idCine, DevolucionProductoVO devolucionProductoVO) throws BusinessGlobalException {
+		return devolucionBO.createDevolucionProducto(idUsuario, idCine, devolucionProductoVO);
 	}
 
 }

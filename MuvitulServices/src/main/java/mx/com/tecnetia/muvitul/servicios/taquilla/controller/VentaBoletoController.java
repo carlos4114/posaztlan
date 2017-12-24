@@ -5,8 +5,10 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.BoletosIbatisDAOI;
 import mx.com.tecnetia.muvitul.infraservices.servicios.BusinessGlobalException;
 import mx.com.tecnetia.muvitul.negocio.taquilla.business.ExistenciaBoletoBO;
 import mx.com.tecnetia.muvitul.negocio.taquilla.business.PromocionBO;
@@ -24,12 +26,19 @@ import mx.com.tecnetia.muvitul.negocio.taquilla.vo.VentaVO;
 public class VentaBoletoController {
 	
 	@Autowired
+	BoletosIbatisDAOI boletosIbatisDAO;			
+	@Autowired
 	private PromocionBO promocionBO;
 	@Autowired
 	private VentaBoletoBO ventaBoletoBO;
 	@Autowired
 	private ExistenciaBoletoBO existenciaBoletoBO;
 	
+    @Scheduled(fixedDelayString = "${fixedDelay.limpieza.boletos}")
+	public void limpiarBoletosReservados() throws BusinessGlobalException{
+    	this.boletosIbatisDAO.borrarBoletosReservados();
+	}
+
 	
 	public List<PeliculaVO> getPeliculasByCine(Integer idCine,String diaSemana, Date fechaExhibicion ) throws BusinessGlobalException {
 		return ventaBoletoBO.findByCineDiaAndExhibicion(idCine,diaSemana, fechaExhibicion);
@@ -60,7 +69,7 @@ public class VentaBoletoController {
 		return ventaBoletoBO.createVenta(ventaVO);
 	}
 	
-	public  List<ArchivoPdfVO> getTicketsPdf(Integer idUsuario, Integer idTicket ,BigDecimal pagoCon, BigDecimal cambio)throws BusinessGlobalException{
-		return ventaBoletoBO.generarTicketsPdf(idUsuario, idTicket, pagoCon, cambio);
+	public  List<ArchivoPdfVO> getTicketsPdf(Integer idCine, Integer idTicket ,BigDecimal pagoCon, BigDecimal cambio)throws BusinessGlobalException{
+		return ventaBoletoBO.generarTicketsPdf(idCine, idTicket, pagoCon, cambio);
 	}
 }

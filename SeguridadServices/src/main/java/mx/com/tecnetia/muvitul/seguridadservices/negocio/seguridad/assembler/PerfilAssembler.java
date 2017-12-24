@@ -6,36 +6,48 @@ import java.util.Set;
 
 import mx.com.tecnetia.muvitul.infraservices.negocio.seguridad.vo.PerfilVO;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Perfil;
-import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.PerfilesXUsuario;
 
 public class PerfilAssembler {
 
-	public static List<PerfilVO> getPerfilesVO(Set<PerfilesXUsuario> perfilesXUsuario) {
 
-		if(perfilesXUsuario==null)
+	public static List<PerfilVO> getPerfilesVO(Set<Perfil> perfiles) {
+
+		if(perfiles==null)
 			return null;
 
 		List<PerfilVO> perfilesVO = new ArrayList<PerfilVO>();
-		for(PerfilesXUsuario perfilXUsuario : perfilesXUsuario){
-			perfilesVO.add(getPerfilVO(perfilXUsuario.getPerfil()));
+		for(Perfil perfil : perfiles){
+			perfilesVO.add(getPerfilVO(perfil));
 		}
 		
 		return perfilesVO;
 	}
 	
-	public static List<Integer> getPerfilesId(Set<PerfilesXUsuario> perfilesXUsuario) {
+	public static List<Integer> getPerfilesId(Set<Perfil> perfiles) {
 
-		if(perfilesXUsuario==null)
+		if(perfiles==null)
 			return null;
 
 		List<Integer> perfilesInt = new ArrayList<Integer>();
-		for(PerfilesXUsuario perfileXUsuario : perfilesXUsuario){
-			perfilesInt.add(perfileXUsuario.getPerfil().getIdPerfil());
+		for(Perfil perfil : perfiles){
+			perfilesInt.add(perfil.getIdPerfil());
 		}
 		
 		return perfilesInt;
 	}
 	
+	public static List<PerfilVO> getPerfilesVO(List<Perfil> perfiles) {
+
+		if(perfiles==null)
+			return null;
+
+		List<PerfilVO> perfilesVO = new ArrayList<PerfilVO>();
+		for(Perfil perfil : perfiles){
+			perfilesVO.add(getPerfilVO(perfil));
+		}
+		
+		return perfilesVO;
+	}
 
 
 	public static PerfilVO getPerfilVO(Perfil perfil) {

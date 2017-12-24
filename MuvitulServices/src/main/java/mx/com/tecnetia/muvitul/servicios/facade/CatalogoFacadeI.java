@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,6 +40,10 @@ public interface CatalogoFacadeI {
 	public ResponseEntity<List<PuntoVentaVO>> getPuntosVenta(HttpServletRequest request)
 			throws BusinessGlobalException, NotFoundException;
 	
+	@RequestMapping(value = "/puntosVenta/{idCine}", method = RequestMethod.GET)
+	public ResponseEntity<List<PuntoVentaVO>> getPuntosVenta(@PathVariable("idCine") Integer idCine) 
+			throws BusinessGlobalException, NotFoundException;
+	
 	@RequestMapping(value = "/proveedor", method = RequestMethod.GET)
 	public ResponseEntity<List<ProveedorVO>> getProveedor(HttpServletRequest request)
 			throws BusinessGlobalException, NotFoundException;
@@ -61,5 +66,9 @@ public interface CatalogoFacadeI {
 	
 	@RequestMapping(value = "/cinesEmpresa", method = RequestMethod.GET)
 	public ResponseEntity<List<CineVO>> getCinesEmpresa(HttpServletRequest request)
+			throws BusinessGlobalException, NotFoundException;
+	
+	@RequestMapping(value = "/cinesEmpresa/{idEmpresa}", method = RequestMethod.GET)
+	public ResponseEntity<List<CineVO>> getCinesEmpresa(@PathVariable("idEmpresa") Integer idEmpresa)
 			throws BusinessGlobalException, NotFoundException;
 }

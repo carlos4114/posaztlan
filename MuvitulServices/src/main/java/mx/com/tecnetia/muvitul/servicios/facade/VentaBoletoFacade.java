@@ -53,6 +53,7 @@ public class VentaBoletoFacade implements VentaBoletoFacadeI {
 	private VentaBoletoController ventaBoletoController;
     @Autowired
     private ServletContext servletContext;
+    
 	@Override
 	@Transactional(readOnly = true)
 	public ResponseEntity<List<PeliculaVO>> getPeliculasByCine(HttpServletRequest request, String fechaExhibicion)
@@ -201,7 +202,7 @@ public class VentaBoletoFacade implements VentaBoletoFacadeI {
 		
 		logger.info("GetTicketsPdf:::IdUsuario[{}]:::IdCine[{}]", idUsuario, idCine);
 
-		List<ArchivoPdfVO> archivosPdfVO = ventaBoletoController.getTicketsPdf(idUsuario,idTicket,pagoCon, cambio);
+		List<ArchivoPdfVO> archivosPdfVO = ventaBoletoController.getTicketsPdf(idCine,idTicket,pagoCon, cambio);
 		
 		if (archivosPdfVO == null || archivosPdfVO.isEmpty()) {
 			throw new NotFoundException("No encontrado");

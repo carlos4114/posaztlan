@@ -33,6 +33,10 @@ public class PuntoVenta implements java.io.Serializable {
 
 	public PuntoVenta() {
 	}
+	
+	public PuntoVenta(Integer idPuntoVenta) {
+		this.idPuntoVenta = idPuntoVenta;
+	}
 
 	public PuntoVenta(Cine cine, TipoPuntoVenta tipoPuntoVenta, String nombre) {
 		this.cine = cine;

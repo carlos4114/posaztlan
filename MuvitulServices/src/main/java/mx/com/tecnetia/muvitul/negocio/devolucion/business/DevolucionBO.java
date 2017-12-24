@@ -286,8 +286,8 @@ public class DevolucionBO {
 		return archivosPdfVO;
 	}
 
-	public DevolucionResponseVO createDevolucionProducto(Integer idUsuario, DevolucionProductoVO devolucionProductoVO) throws BusinessGlobalException {
-		Cine cine = cineDAO.findById(idUsuario);
+	public DevolucionResponseVO createDevolucionProducto(Integer idUsuario, Integer idCine, DevolucionProductoVO devolucionProductoVO) throws BusinessGlobalException {
+		Cine cine = cineDAO.findById(idCine);
 		TipoMovimientoInv devolucionClienteIn = tipoMovimientoInvDAO.findByClave(MovimientoInvType.DEVOLUCION_CLIENTE_IN.getType());
 		TipoMovimientoInv cortesiaOut = tipoMovimientoInvDAO.findByClave(MovimientoInvType.CORTESIA_OUT.getType());
 		TipoMovimientoInv mermaOut = tipoMovimientoInvDAO.findByClave(MovimientoInvType.MERMA_OUT.getType());

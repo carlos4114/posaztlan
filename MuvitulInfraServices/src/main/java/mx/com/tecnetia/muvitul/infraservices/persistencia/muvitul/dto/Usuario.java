@@ -10,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -37,6 +39,7 @@ public class Usuario implements java.io.Serializable {
 	private Set<CancelacionPago> cancelacionPagos = new HashSet<CancelacionPago>(0);
 	private Set<Autorizacion> autorizacions = new HashSet<Autorizacion>(0);
 	private Set<MovimientoInventario> movimientoInventarios = new HashSet<MovimientoInventario>(0);
+	private Set<Perfil> perfils = new HashSet<Perfil>(0);
 
 	public Usuario() {
 	}
@@ -220,6 +223,18 @@ public class Usuario implements java.io.Serializable {
 
 	public void setMovimientoInventarios(Set<MovimientoInventario> movimientoInventarios) {
 		this.movimientoInventarios = movimientoInventarios;
+	}
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "perfiles_x_usuario", catalog = "muvitul", joinColumns = {
+			@JoinColumn(name = "id_usuario", nullable = false, updatable = false) }, inverseJoinColumns = {
+					@JoinColumn(name = "id_perfil", nullable = false, updatable = false) })
+	public Set<Perfil> getPerfils() {
+		return this.perfils;
+	}
+
+	public void setPerfils(Set<Perfil> perfils) {
+		this.perfils = perfils;
 	}
 
 }

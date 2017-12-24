@@ -52,7 +52,9 @@ angular.module('globalModule').factory('ErrorFactory',[function(){
 	listaErroresSeguridad[1]     = {codigo: 1, mensaje: 'El usuario no existe. Verifica tu informaci\u00F3n.'};
 	listaErroresSeguridad[2]     = {codigo: 2, mensaje: 'Contrase\u00F1a incorrecta. Verifica tu informaci\u00F3n.'};
 	listaErroresSeguridad[3]     = {codigo: 3, mensaje: 'El usuario no se encuentra activo. Consulta al administrador.'};
-
+	listaErroresSeguridad[4]     = {codigo: 4, mensaje: 'La contrase\u00F1a actual no es correcta. Verifica tu informaci\u00F3n.'};
+	listaErroresSeguridad[5]     = {codigo: 5, mensaje: 'La empresa presenta un adeudo. Contacta a tu administrador.'};
+	listaErroresSeguridad[6]     = {codigo: 6, mensaje: 'La empresa se encuentra inactiva. Contacta a tu administrador.'};
 	
     var interfaz = {       
         getErrorMessage: function(errCode){

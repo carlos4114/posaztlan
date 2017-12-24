@@ -32,6 +32,7 @@ public class Contacto implements java.io.Serializable {
 	private String correo;
 	private String texto;
 	private String sugerencia;
+	private String correoNotificacionInv;
 	private Set<Empresa> empresas = new HashSet<Empresa>(0);
 	private Set<Cine> cines = new HashSet<Cine>(0);
 
@@ -164,6 +165,15 @@ public class Contacto implements java.io.Serializable {
 	@Column(name = "sugerencia", nullable = false, length = 200)
 	public String getSugerencia() {
 		return this.sugerencia;
+	}
+
+	public void setCorreoNotificacionInv(String correoNotificacionInv) {
+		this.correoNotificacionInv = correoNotificacionInv;
+	}
+	
+	@Column(name = "correo_notificacion_inv", nullable = false, length = 300)
+	public String getCorreoNotificacionInv() {
+		return this.correoNotificacionInv;
 	}
 
 	public void setSugerencia(String sugerencia) {

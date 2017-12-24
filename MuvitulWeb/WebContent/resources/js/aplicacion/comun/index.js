@@ -51,6 +51,8 @@ angular.module('indexModule').config(function($routeProvider){
             
              /******FIN VENTA DE PRODUCTO*****/
 
+             /******CONFIGURACIONES*****/
+            
             .when("/cupoSala", {
                 controller: "CupoSalaController",
                 controllerAs: "vm",
@@ -80,13 +82,33 @@ angular.module('indexModule').config(function($routeProvider){
                 controller: "MenusDulceriaController",
                 controllerAs: "vm",
                 templateUrl: "vistas/configuracion/menus_dulceria.jsp"
-            })
-            
+            })            
              .when("/promocionesTaquilla", {
                 controller: "PromocionesTaquillaController",
                 controllerAs: "vm",
                 templateUrl: "vistas/configuracion/promocion_taquilla.jsp"
             })
+            .when("/cambiarContrasenia", {
+                controller: "CambiarContraseniaController",
+                controllerAs: "vm",
+                templateUrl: "vistas/configuracion/cambiar_contrasenia.jsp"
+            }).when("/usuarios", {
+                controller: "UsuariosController",
+                controllerAs: "vm",
+                templateUrl: "vistas/configuracion/usuarios.jsp"
+            })
+
+            /******FIN CONFIGURACIONES*****/
+            
+            /******ADMINISTRACION*****/
+            .when("/corteCaja", {
+                controller: "CorteCajaController",
+                controllerAs: "vm",
+                templateUrl: "vistas/administracion/corte_caja.jsp"
+            })
+            /********* FIN ADMINISTRACION***********/
+
+            /******INVENTARIOS*****/            
             .when("/entradasInventario", {
                 controller: "EntradasDulceriaController",
                 controllerAs: "vm",
@@ -102,13 +124,10 @@ angular.module('indexModule').config(function($routeProvider){
                 controllerAs: "vm",
                 templateUrl: "vistas/inventarios/conteo_inventario.jsp"
             })
-            .when("/cambiarContrasenia", {
-                controller: "CambiarContraseniaController",
-                controllerAs: "vm",
-                templateUrl: "vistas/configuracion/cambiar_contrasenia.jsp"
-            }) 
-       
-	        .when("/dashboardDulceria", {
+            /******FIN INVENTARIOS*****/            
+            
+            /******ESTADISTICAS*****/            
+            .when("/dashboardDulceria", {
 	            controller: "dashboardDulceriaController",
  	            templateUrl: "vistas/dashboard/dashboard_dulceria.jsp"
 	        })
@@ -120,5 +139,7 @@ angular.module('indexModule').config(function($routeProvider){
 	            controller: "reportesController",
  	            templateUrl: "vistas/reportes/reportes_excel.jsp"
 	        });
+            /******FIN ESTADISTICAS*****/            
+        
     });
 

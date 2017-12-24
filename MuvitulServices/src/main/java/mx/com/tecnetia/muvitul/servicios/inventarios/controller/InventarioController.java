@@ -3,15 +3,12 @@ package mx.com.tecnetia.muvitul.servicios.inventarios.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ArticulosCorteAjuste;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Inventario;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.MovimientoInventario;
-import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.TipoMovimientoInv;
 import mx.com.tecnetia.muvitul.infraservices.servicios.BusinessGlobalException;
-import mx.com.tecnetia.muvitul.negocio.dulceria.assembler.TipoMovimientoInvAssembler;
-import mx.com.tecnetia.muvitul.negocio.dulceria.vo.MovimientoInventarioVO;
 import mx.com.tecnetia.muvitul.negocio.dulceria.vo.TipoMovimientoInvVO;
 import mx.com.tecnetia.muvitul.negocio.inventarios.business.ArticulosCorteBO;
 import mx.com.tecnetia.muvitul.negocio.inventarios.business.CatalogoTipoMovimientoInvBO;
@@ -33,6 +30,11 @@ public class InventarioController {
 	
 	@Autowired
 	private CatalogoTipoMovimientoInvBO catalogoTipoMovimientoInvBO;
+	
+	@Scheduled(fixedDelayString = "${fixedDelay.notifica.punto.reorden}")
+	public void notificarPuntosReordenInventario() throws BusinessGlobalException, Exception{
+    	this.inventarioBO.enviarNotificacionesPuntoReorden();
+	}
 	
 	public List<ArticulosXPuntoVentaVO> getArticulosPuntoVenta(Integer idPuntoVenta, String nombreArticulo) throws BusinessGlobalException {
 		return inventarioBO.getArticulosPuntoVenta(idPuntoVenta,nombreArticulo);

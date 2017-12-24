@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 /**
@@ -107,6 +108,7 @@ public class Recurso implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "recursoByIdRecursoPadre")
+	@OrderBy("idMenu")
 	public Set<Menu> getMenusForIdRecursoPadre() {
 		return this.menusForIdRecursoPadre;
 	}

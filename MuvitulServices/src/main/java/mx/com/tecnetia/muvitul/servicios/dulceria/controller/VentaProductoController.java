@@ -27,8 +27,8 @@ public class VentaProductoController {
 		return ventaProductoBO.createVenta(ventaVO);
 	}
 	
-	public  List<ArchivoPdfVO> getTicketPdf(Integer idUsuario, Integer idTicket, BigDecimal pagoCon, BigDecimal cambio)throws BusinessGlobalException{
-		return ventaProductoBO.generarTicketPdf(idUsuario, idTicket,pagoCon, cambio);
+	public  List<ArchivoPdfVO> getTicketPdf(Integer idTicket, BigDecimal pagoCon, BigDecimal cambio, Integer idCine)throws BusinessGlobalException{
+		return ventaProductoBO.generarTicketPdf(idTicket,pagoCon, cambio, idCine);
 		
 	}
 }

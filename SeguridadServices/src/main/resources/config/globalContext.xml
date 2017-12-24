@@ -36,7 +36,7 @@
 			<property name="sessionFactory" ref="hibernateSessionFactory" />
 	  </bean>
 	  
-	<bean id="correoElectronicoLoggerBO" class="mx.com.tecnetia.muvitul.infraservices.servicios.CorreroElectronicoBO">
+	<bean id="correoElectronicoLoggerBO" class="mx.com.tecnetia.muvitul.infraservices.servicios.CorreoElectronicoBO">
 		  <property name="mailSender" ref="appMailSender"/>
 		  <property name="to">
 				<list>
@@ -46,6 +46,13 @@
 		  <property name="from"><value>${mailAccountUsername}</value></property>
 		  <property name="fromName"><value>${mailFromName}</value></property>												  
 		  <property name="subject"><value>${exception.mail.subject}</value></property>
+  	</bean>
+  	
+  	<bean id="correoElectronicoBO" class="mx.com.tecnetia.muvitul.infraservices.servicios.CorreoElectronicoBO" scope="prototype">
+		  <property name="mailSender" ref="appMailSender"/>
+		  <property name="velocityEngine" ref="velocityEngine"/>
+		  <property name="from"><value>${mailAccountUsername}</value></property>
+		  <property name="fromName"><value>${mailFromName}</value></property>												  
   	</bean>
 	
 	<!-- Escanea Spring todas las anotaciones que viven en estos paquetes: para realizar el Autowiring -->

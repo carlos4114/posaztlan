@@ -14,6 +14,19 @@ import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Usuario;
 @Transactional
 public class UsuarioDAO extends GlobalHibernateDAO<Usuario> implements UsuarioDAOI{
 	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Usuario> getUsuarios(Integer idCine) throws Exception {
+
+		Criteria criteria = getSession().createCriteria(Usuario.class);
+		
+		criteria.add(Restrictions.eq("cine.idCine", idCine));
+		
+		
+		return criteria.list();
+	}
+	
+	
 	@Override
 	public Usuario getUsuario(String correo) throws Exception {
 

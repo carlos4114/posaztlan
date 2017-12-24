@@ -17,6 +17,7 @@ import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Perfil;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Usuario;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.enumeration.ClaimsEnum;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.enumeration.ErroresSeguridadEnum;
+import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.enumeration.EstatusEmpresaEnum;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.enumeration.UsuarioEstatusEnum;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.utileria.business.FechasUtilsBO;
 import mx.com.tecnetia.muvitul.infraservices.servicios.BusinessGlobalException;
@@ -110,32 +111,40 @@ public class UsuarioBO extends GlobalService{
 		 //Este metodo asume que la contrasenia viene encriptada con SHA1
 		 if(!usuarioVO.getContrasenia().equals(usuario.getContrasenia()))
 		        return new LoginResponseVO(ErroresSeguridadEnum.CONTRASENIA_INCORRECTA);	
-	
+
+		 // Validamos que la empresa a la que pertenece el usuario esté en un estatus válido para entrar
+		 if (EstatusEmpresaEnum.EN_DEUDA == usuario.getCine().getEmpresa().getEstatusEmpresa().getIdEstatus())
+		        return new LoginResponseVO(ErroresSeguridadEnum.EMPRESA_EN_DEUDA);	
+		 if (EstatusEmpresaEnum.BAJA_DECISION_PROPIA == usuario.getCine().getEmpresa().getEstatusEmpresa().getIdEstatus())
+		        return new LoginResponseVO(ErroresSeguridadEnum.EMPRESA_INACTIVA);	
+		 
+		 // Validamos que el usuario esté activo
 		 if (UsuarioEstatusEnum.INACTIVO == usuario.getEstatusUsuario().getIdEstatus())
 		        return new LoginResponseVO(ErroresSeguridadEnum.USUARIO_INACTIVO);	
 		 
-		 List<Integer> roles = PerfilAssembler.getPerfilesId(usuario.getPerfilesXUsuarios());
+		 List<Integer> roles = PerfilAssembler.getPerfilesId(usuario.getPerfils());
 		 
 		 String pwdEncryptor = env.getProperty("jwt.password");
 		 Integer expirationMinutes = new Integer(env.getProperty("jwt.expiration.minutes"));
 		 
 		 Date fechaActual = FechasUtilsBO.getCurrentDate();
 		 Date fechaExpriacion = FechasUtilsBO.addMinutesToDate(fechaActual, expirationMinutes);
-		 
-		 //Map<String,Object> claims = new HashMap<String,Object>();
-		 //claims.put(ClaimsEnum.ROLES, roles);
-		 //claims.put(ClaimsEnum.CINE, usuario.getIdCine());
-		 
+		 		 
 		 return new LoginResponseVO(
+				       usuario.getCine().getEmpresa().getIdEmpresa(),
+			       	   usuario.getNombre(),
 				       Jwts.builder().setSubject(usuarioVO.getUsuario())
 				       	  			 .claim(ClaimsEnum.ROLES, roles)
 				       	  			 .claim(ClaimsEnum.USUARIO, usuario.getIdUsuario())
 				       	  			 .claim(ClaimsEnum.CINE, usuario.getCine().getIdCine())
 				       	  			 .claim(ClaimsEnum.PUNTO_VENTA, usuario.getPuntoVenta()==null?null:usuario.getPuntoVenta().getIdPuntoVenta())
+				       	  			 .claim(ClaimsEnum.NOMBRE_COMPLETO_USR, usuario.getNombre())
 				       	  			 .setIssuedAt(fechaActual)
 				       	  			 .setExpiration(fechaExpriacion)
 				       	  			 .signWith(SignatureAlgorithm.HS256, pwdEncryptor)
-				       	  			 .compact());
+				       	  			 .compact()
+				       ,usuario.getCine().getEmpresa().getIcono()
+				 );
 	}
 	
 	@Transactional(readOnly = true)

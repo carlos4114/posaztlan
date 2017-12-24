@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import mx.com.tecnetia.muvitul.infraservices.servicios.BusinessGlobalException;
-import mx.com.tecnetia.muvitul.infraservices.servicios.CorreroElectronicoBO;
+import mx.com.tecnetia.muvitul.infraservices.servicios.CorreoElectronicoBO;
 import mx.com.tecnetia.muvitul.infraservices.servicios.NotFoundException;
 import mx.com.tecnetia.muvitul.negocio.reportes.business.ReporteDistribuidoraBO;
 import mx.com.tecnetia.muvitul.negocio.reportes.business.ReporteJasperBO;
@@ -37,7 +37,7 @@ public class ReporteDistribuidoraController {
 	@Autowired
 	private ReporteDistribuidoraBO reporteDistribuidoraBO;
 	@Autowired
-	private CorreroElectronicoBO correroElectronicoBO;
+	private CorreoElectronicoBO correroElectronicoBO;
 	@Autowired
 	private ReporteJasperBO reporteJasperBO;
 	@Autowired

@@ -14,6 +14,14 @@ public class UsuarioLoginVO implements Serializable {
 	private String usuario;
 	private String contrasenia;
 	
+	public UsuarioLoginVO(){
+		
+	}
+	public UsuarioLoginVO(String usuario, String contrasenia){
+		this.usuario = usuario;
+		this.contrasenia = contrasenia;
+	}
+	
 	public String getUsuario() {
 		return usuario;
 	}

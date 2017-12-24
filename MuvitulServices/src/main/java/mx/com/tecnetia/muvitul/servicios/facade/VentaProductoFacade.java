@@ -78,7 +78,7 @@ public class VentaProductoFacade implements VentaProductoFacadeI {
 		
 		logger.info("GetTicketPdf:::IdUsuario[{}]:::IdCine[{}]", idUsuario, idCine);
 
-		List<ArchivoPdfVO> archivosPdfVO = ventaProductoController.getTicketPdf(idUsuario,idTicket, pagoCon, cambio);
+		List<ArchivoPdfVO> archivosPdfVO = ventaProductoController.getTicketPdf(idTicket, pagoCon, cambio,idCine);
 		
 		if (archivosPdfVO == null || archivosPdfVO.isEmpty()) {
 			throw new NotFoundException("No encontrado");

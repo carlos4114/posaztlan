@@ -1,11 +1,14 @@
 'use strict';
 
 //para declarar fabrica de servicios globales de la aplicacion
-angular.module('globalModule').factory('GlobalFactory',['$window','$location','$http','$q', function($window,$location,$http, $q){
+angular.module('globalModule').factory('GlobalFactory',['$window','$location','$http','$q', 
+    function($window,$location,$http, $q){
 	
+	var ambiente = "desarrollo";
 	var paginaLogin = "login.jsp";    
 	var paginaPrincipal = "inicio.jsp";    
 	var pathArray = $location.path("/").absUrl().substr(1).split('/'); 
+	var location=$location.path("/").absUrl(); 
 	var contextPath = pathArray[3];    
     var httpProtocol = $location.protocol();    
     var appProperties = {
@@ -15,10 +18,22 @@ angular.module('globalModule').factory('GlobalFactory',['$window','$location','$
 			    		 contextPath: contextPath,
 			    		 mainPage: paginaPrincipal
 			    		}
+    var appPropertiesProduccion = {
+			 servicesPath : 'http://localhost:8080/MuvitulServices/rest/',
+   		 securityPath : 'http://localhost:8080/SeguridadServices/rest/',
+   		 httpProtocol: httpProtocol,
+   		 contextPath: contextPath,
+   		 mainPage: paginaPrincipal
+   		}
+    
+    var paginasSinSeguridad=[
+         'vistas/configuracion/recuperar_contrasenia.jsp'
+    ];
+    
 	
 	// SE INICIALIZA EL HEADER DE AUTENTICACIÓN (TOKEN) Y SE REVISA SI ESTÁ FIRMADO EL USUARIO,
     // DE LO CONTRARIO SE DIRECCIONA AL LOGIN.
-    if(pathArray[4].indexOf(paginaLogin) == -1){
+    if(pathArray[4].indexOf(paginaLogin) == -1 && !sinSeguridad()){
 	    var token = $http.defaults.headers.common.Authorization;
 		if(!token)
 			token = $http.defaults.headers.common.Authorization = localStorage.getItem("Authorization")
@@ -29,7 +44,11 @@ angular.module('globalModule').factory('GlobalFactory',['$window','$location','$
 	
     var interfaz = {       
         getProperty: function(name){
-            return appProperties[name];
+        	if(ambiente=="desarrollo")
+          		return appProperties[name];
+          	else
+          		return appPropertiesProduccion[name];
+            
         },
         setAuthHeader: function(header){        	
             $http.defaults.headers.common.Authorization = header;
@@ -48,6 +67,36 @@ angular.module('globalModule').factory('GlobalFactory',['$window','$location','$
         		$http.defaults.headers.common.Authorization = localStorage.getItem("Authorization");
         	}
         },
+        setUserName: function(userName){        	
+            localStorage.setItem("userNameApp", userName);
+        },
+        getUserName: function(){        		        	
+            return localStorage.getItem("userNameApp");
+        },
+        setLogoEmpresa: function(logoEmpresa){        	
+            localStorage.setItem("logoEmpresa", logoEmpresa);
+        },
+        getLogoEmpresa: function(){        		        	
+            return localStorage.getItem("logoEmpresa");
+        }, 
+        setIdEmpresa: function(idEmpresa){        	
+            localStorage.setItem("idEmpresa", idEmpresa);
+        },
+        getIdEmpresa: function(){        		        	
+            return localStorage.getItem("idEmpresa");
+        }, 
+        setFotoUsuario: function(fotoUsuario){        	
+            localStorage.setItem("fotoUsuario", fotoUsuario);
+        },
+        getFotoUsuario: function(){        		        	
+            return localStorage.getItem("fotoUsuario");
+        },  
+        setCompleteUserName: function(completeUserName){        	
+            localStorage.setItem("completeUserNameApp", completeUserName);
+        },
+        getCompleteUserName: function(){        		        	
+            return localStorage.getItem("completeUserNameApp");
+        },
         actualizarToken: function(){
             var deferred = $q.defer();
             var actualizarTkService = appProperties['securityPath'] + 'seguridad/actualizarTk';
@@ -62,16 +111,35 @@ angular.module('globalModule').factory('GlobalFactory',['$window','$location','$
                 }
             );
             return deferred.promise;
+        },
+        logout: function(){
+          	 delete $localStorage.token;
+       		delete $rootScope.menuDinamico;		
+       		$q.when();
         }
     }
     return interfaz;
+    
+    function sinSeguridad(){
+  	  for(var i=0; i<paginasSinSeguridad.length;i++ ){
+  		  if(location.indexOf(paginasSinSeguridad[i]) > -1){
+  			  return true;
+  		  }
+  	  }
+  	  return false;
+    }
     
 }]);
 
 
 //interceptores de cada response del sistema
-angular.module('globalModule').factory('ResponseInterceptorFactory', ['$q', '$injector', function($q, $injector) {  
-    var responseInterceptor = {
+angular.module('globalModule').factory('ResponseInterceptorFactory', ['$window','$location','$q', '$injector', 
+ function($window,$location,$q, $injector) {  
+    var paginaLogin = "login.jsp";  
+    var pathArray = $location.path("/").absUrl().substr(1).split('/'); 
+	var contextPath = pathArray[3];    
+	
+	var responseInterceptor = {
         response: function(response) {
         	var GlobalFactory = $injector.get('GlobalFactory');
         	var token = GlobalFactory.getAuthHeader();
@@ -105,9 +173,13 @@ angular.module('globalModule').factory('ResponseInterceptorFactory', ['$q', '$in
                 var $http = $injector.get('$http');
                 var deferred = $q.defer();
             }*/
-            
-            var deferred = $q.defer();
-            return $q.reject(response);
+        	var error = response.data;
+        	if(error.indexOf("ExpiredJwtException") !== -1){
+    			$window.location.href = '/'+contextPath+"/"+paginaLogin;
+        	}else{	            
+	            var deferred = $q.defer();
+	            return $q.reject(response);
+        	}
         }
     };
     

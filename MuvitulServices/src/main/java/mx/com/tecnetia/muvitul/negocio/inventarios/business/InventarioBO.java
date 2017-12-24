@@ -3,31 +3,43 @@ package mx.com.tecnetia.muvitul.negocio.inventarios.business;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.ArticuloIbatisDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.ArticulosXPuntoVentaDAO;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.AutorizacionMovimientoDAOI;
+import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.CineDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.DocumentoDAO;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.InventarioDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.MovimientoInventarioDAOI;
+import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.PropiedadConfigDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.ProveedorDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.TipoMovimientoInvDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ArticulosXPuntoVenta;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Autorizacion;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.AutorizacionMovimiento;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.AutorizacionMovimientoId;
+import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Cine;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Documento;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Inventario;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.MovimientoInventario;
+import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.PropiedadConfig;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Proveedor;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.TipoMovimientoInv;
+import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.enumeration.PropiedadConfigEnum;
 import mx.com.tecnetia.muvitul.infraservices.servicios.BusinessGlobalException;
+import mx.com.tecnetia.muvitul.infraservices.servicios.CorreoElectronicoBO;
 import mx.com.tecnetia.muvitul.negocio.dulceria.assembler.MovimientoInventarioAssembler;
 import mx.com.tecnetia.muvitul.negocio.dulceria.assembler.TipoMovimientoInvAssembler;
 import mx.com.tecnetia.muvitul.negocio.dulceria.assembler.UsuarioAssembler;
@@ -65,6 +77,66 @@ public class InventarioBO {
 
 	@Autowired
 	private ArticulosXPuntoVentaDAO articulosXPuntoVentaDAO;
+	
+	@Autowired
+	ArticuloIbatisDAOI articuloIbatisDAO;	
+	
+	@Autowired
+	private CineDAOI cineDAO;
+	
+	@Autowired
+	CorreoElectronicoBO correoElectronicoBO;
+	
+	@Autowired
+    PropiedadConfigDAOI propiedadConfigDAO;	
+	
+	@Autowired
+	@Qualifier("appMailSender")
+    private JavaMailSenderImpl mailSender;
+    @Autowired
+    private VelocityEngine velocityEngine;
+	
+	/**
+     * Servicio para enviar correo electrónico 
+     */
+	@Transactional (readOnly=true)
+	private void enviarMailAvisoPuntoReorden(String cine, String articulos, String destinatariosStr) throws Exception{
+		final String asuntoCorreo = "MUVITUL - Avisos de Inventario";
+		String[] destinatarios = destinatariosStr.split(",");
+		
+		Map<String,String> velAttrs = new HashMap<String,String>();
+   	  	velAttrs.put("nombreCine", cine);
+   	  	velAttrs.put("detalleArticulos", articulos);
+
+   	    this.correoElectronicoBO.setMailSender(mailSender);
+   	    this.correoElectronicoBO.setVelocityEngine(velocityEngine);
+   	  	this.correoElectronicoBO.setTemplate("mx/com/tecnetia/muvitul/negocio/inventarios/business/PuntoReordenMail.vm");
+		this.correoElectronicoBO.setVelAttributes(velAttrs);
+		this.correoElectronicoBO.setTo(destinatarios);
+		this.correoElectronicoBO.setSubject(asuntoCorreo);	
+		
+		PropiedadConfig urlLogo = this.propiedadConfigDAO.findById(PropiedadConfigEnum.URL_LOGO.getValue());		
+		if(urlLogo!=null)
+ 		  	this.correoElectronicoBO.setAttachments(new String[]{urlLogo.getValor()});
+		
+		this.correoElectronicoBO.sendVelocityMail();
+	}
+	
+	@Transactional(readOnly=true)
+	public void enviarNotificacionesPuntoReorden() throws Exception{
+		
+		List<Cine> cines = this.cineDAO.findActivos();
+		for(Cine cine:cines){
+			List<String> articulos = this.articuloIbatisDAO.obtenerArticulosParaPuntoReorden(cine.getIdCine());
+			if(articulos.size()>0){
+				String articulosStr = "";
+				for(String articulo : articulos){
+					articulosStr=articulosStr+articulo;
+				}
+				this.enviarMailAvisoPuntoReorden(cine.getNombre(), articulosStr, cine.getEmpresa().getContacto().getCorreoNotificacionInv());				
+			}			
+		}
+	}
 
 	public List<ArticulosXPuntoVentaVO> getArticulosPuntoVenta(Integer idPuntoVenta, String nombreArticulo)
 			throws BusinessGlobalException {

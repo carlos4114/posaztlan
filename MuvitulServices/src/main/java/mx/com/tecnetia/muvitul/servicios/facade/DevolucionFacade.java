@@ -106,7 +106,7 @@ public class DevolucionFacade implements DevolucionFacadeI {
 		
 		logger.info("CreateDevolucionProducto:::IdUsuario[{}]:::IdCine[{}]", idUsuario, idCine);
 
-		DevolucionResponseVO devolucionResponseVO= devolucionController.createDevolucionProducto(idUsuario, devolucionProductoVO);
+		DevolucionResponseVO devolucionResponseVO= devolucionController.createDevolucionProducto(idUsuario, idCine, devolucionProductoVO);
 				
 		if (devolucionResponseVO == null ) {
 			throw new NotFoundException("No encontrado");

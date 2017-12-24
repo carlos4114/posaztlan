@@ -25,6 +25,19 @@ public class CineDAO extends GlobalHibernateDAO<Cine> implements CineDAOI {
 		return cines;
 	}
 	
+	@Override
+	public List<Cine> findActivos() {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select cne from Cine cne ");
+		hql.append("where cne.activo=1");
+		
+		Query query = getSession().createQuery(hql.toString());
+		
+		List<Cine>  cines = query.list();
+		
+		return cines;
+	}
+	
 
 
 }
