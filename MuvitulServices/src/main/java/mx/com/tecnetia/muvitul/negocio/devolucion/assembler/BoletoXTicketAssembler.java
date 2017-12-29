@@ -38,7 +38,7 @@ public class BoletoXTicketAssembler {
 		boletoXTicketVO.setCantidad(boletoXTicket.getCantidad());
 		boletoXTicketVO.setImporte(boletoXTicket.getImporte());
 		boletoXTicketVO.setFechaExhibicion(boletoXTicket.getFechaExhibicion());
-
+		
 		return boletoXTicketVO;
 	}
 	

@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -93,9 +95,9 @@ public class VentaBoletoBO {
 
 	@Autowired
 	private ImpuestoBoletoDAOI impuestoBoletoDAO;
-	
+
 	@Autowired
-	private CineDAO cineDAO; 
+	private CineDAO cineDAO;
 
 	@Autowired
 	private ServletContext context;
@@ -105,10 +107,10 @@ public class VentaBoletoBO {
 
 	@Autowired
 	private ExistenciaBoletoBO existenciaBoletoBO;
-	
+
 	@Autowired
 	private PrecioXFormatoDAOI precioXFormatoDAO;
-	
+
 	public List<PeliculaVO> findByCineDiaAndExhibicion(Integer idCine, String diaSemana, Date fechaExhibicion)
 			throws BusinessGlobalException {
 		Map<Integer, PeliculaVO> mapPeliculas = new HashMap<Integer, PeliculaVO>();
@@ -117,30 +119,31 @@ public class VentaBoletoBO {
 				fechaExhibicion);
 
 		for (Programacion programacion : programaciones) {
-			
+
 			ExistenciaBoletoVO ExistenciaBoletoVO = existenciaBoletoBO.findByProgramacionSalaAndExhibicion(
 					programacion.getIdProgramacion(), programacion.getSala().getIdSala(), fechaExhibicion);
-			
-			Integer peliculaKey=programacion.getPelicula().getIdPelicula();
-			
+
+			Integer peliculaKey = programacion.getPelicula().getIdPelicula();
+
 			if (!mapPeliculas.containsKey(peliculaKey)) {
-				mapPeliculas.put(peliculaKey,PeliculaAssembler.getPeliculaVO(programacion.getPelicula()));
+				mapPeliculas.put(peliculaKey, PeliculaAssembler.getPeliculaVO(programacion.getPelicula()));
 			}
 
 			PeliculaVO peliculaVO = mapPeliculas.get(peliculaKey);
 
-			String versionFormatoKey=programacion.getVersion().getNombre()+programacion.getFormato().getNombre();
-			
+			String versionFormatoKey = programacion.getVersion().getNombre() + programacion.getFormato().getNombre();
+
 			if (!peliculaVO.getVersionFormatoVO().containsKey(versionFormatoKey)) {
-				VersionFormatoVO versionFormatoVO= new VersionFormatoVO();
-				versionFormatoVO.setNombre(programacion.getVersion().getNombre()+" "+programacion.getFormato().getNombre());
+				VersionFormatoVO versionFormatoVO = new VersionFormatoVO();
+				versionFormatoVO
+						.setNombre(programacion.getVersion().getNombre() + " " + programacion.getFormato().getNombre());
 				peliculaVO.getVersionFormatoVO().put(versionFormatoKey, versionFormatoVO);
 			}
-			
+
 			ProgramacionVO programacionVO = ProgramacionAssembler.getProgramacionVO(programacion);
 			programacionVO.setExistenciaBoletoVO(ExistenciaBoletoVO);
-			
-			VersionFormatoVO versionFormatoVO=peliculaVO.getVersionFormatoVO().get(versionFormatoKey);
+
+			VersionFormatoVO versionFormatoVO = peliculaVO.getVersionFormatoVO().get(versionFormatoKey);
 			versionFormatoVO.getProgramaciones().add(programacionVO);
 
 		}
@@ -148,15 +151,16 @@ public class VentaBoletoBO {
 		return new ArrayList<PeliculaVO>(mapPeliculas.values());
 	}
 
-	
 	public TicketVentaVO createVenta(VentaVO ventaVO) throws BusinessGlobalException {
 
+		int n = 0;
 		int cantidadBoletos = 0;
 		BigDecimal total = new BigDecimal(0);
 		BigDecimal descuento = new BigDecimal(0);
 		BigDecimal porcentajes = new BigDecimal(0);
 		BigDecimal subtotal = new BigDecimal(0);
-		BigDecimal descuentoxBoleto= new BigDecimal(0);
+		BigDecimal descuentoxBoleto = new BigDecimal(0);
+		PromocionXTicketVO promocionTicketVO = null;
 
 		List<ImpuestoBoleto> impuestosBoletos = impuestoBoletoDAO.findByIdCine(ventaVO.getIdCine());
 
@@ -167,6 +171,8 @@ public class VentaBoletoBO {
 
 		for (PromocionXTicketVO promocionXTicketVO : ventaVO.getPromocionesXTicketVO()) {
 			descuento = descuento.add(promocionXTicketVO.getImporte());
+			if (promocionXTicketVO.getCantidad() > 0 )
+				promocionTicketVO = promocionXTicketVO;
 		}
 
 		for (ImpuestoBoleto impuestoBoleto : impuestosBoletos) {
@@ -179,6 +185,48 @@ public class VentaBoletoBO {
 		subtotal = subtotal.add(total);
 		subtotal = subtotal.subtract(descuento);
 		subtotal = subtotal.divide(porcentajes, 3, BigDecimal.ROUND_HALF_EVEN);
+		
+		Collections.sort(ventaVO.getBoletosXTicketVO(), new Comparator<BoletoXTicketVO>() {
+			
+			public int compare(BoletoXTicketVO bxt1, BoletoXTicketVO bxt2) {
+				BigDecimal bxti1 = new BigDecimal(0);
+				bxti1 = bxti1.add(bxt1.getImporte());
+				if (!bxti1.equals(new BigDecimal(0)))
+					bxti1 = bxti1.divide(new BigDecimal(bxt1.getCantidad()));
+
+				BigDecimal bxti2 = new BigDecimal(0);
+				bxti2 = bxti2.add(bxt2.getImporte());
+				if (!bxti2.equals(new BigDecimal(0)))
+					bxti2 = bxti2.divide(new BigDecimal(bxt2.getCantidad()));
+				return bxti1.compareTo(bxti2);
+			}
+			
+		});
+
+		if (promocionTicketVO != null) {
+			switch (promocionTicketVO.getPromocionVO().getTipoPromocionVO().getIdTipoPromocion()) {
+			case Constantes.PROMOCION_NXM:
+				n = promocionTicketVO.getPromocionVO().getDetallePromocionVO().getVarN()
+						- promocionTicketVO.getPromocionVO().getDetallePromocionVO().getVarM();
+				break;
+			case Constantes.PROMOCION_NXFIJO:
+				n = promocionTicketVO.getPromocionVO().getDetallePromocionVO().getVarN();
+				break;
+			case Constantes.PROMOCION_PORCIENTO:
+				n = cantidadBoletos;
+				break;
+			default:
+				break;
+			}
+		}
+		
+		for (BoletoXTicketVO boletoXTicketVO : ventaVO.getBoletosXTicketVO()) {
+			if (n > 0 && boletoXTicketVO.getCantidad() > 0 ){
+				int cantidadPromocion= boletoXTicketVO.getCantidad() > n ? n : boletoXTicketVO.getCantidad(); 
+				boletoXTicketVO.setCantidadPromocion(cantidadPromocion);
+				n=n-cantidadPromocion;
+			}
+		}
 
 		logger.info("Total: [{}] Descuento:[{}] Porcentajes:[{}] Subtotal:[{}]", total.toString(), descuento.toString(),
 				porcentajes.toString(), subtotal.toString());
@@ -186,19 +234,19 @@ public class VentaBoletoBO {
 		TicketVenta ticketVenta = ticketVentaDAO.save(TicketVentaAssembler.getTicketVenta(ventaVO.getIdUsuario(),
 				ventaVO.getIdPuntoVenta(), descuento, subtotal, total));
 
-		descuentoxBoleto= descuentoxBoleto.add(descuento);
-		descuentoxBoleto= descuentoxBoleto.divide(new BigDecimal(cantidadBoletos),3, BigDecimal.ROUND_HALF_EVEN);
-		
+		descuentoxBoleto = descuentoxBoleto.add(descuento);
+		descuentoxBoleto = descuentoxBoleto.divide(new BigDecimal(cantidadBoletos), 3, BigDecimal.ROUND_HALF_EVEN);
+
 		List<BoletosXTicket> boletosXTicket = BoletoXTicketAssembler.getBoletosXTicket(ventaVO.getBoletosXTicketVO(),
 				ticketVenta, descuentoxBoleto);
-		
+
 		for (BoletosXTicket boletoXTicket : boletosXTicket) {
 			boletoXTicketDAO.save(boletoXTicket);
 		}
 
-		List<PromocionesXTicket> promocionesXTicket = PromocionXTicketAssembler.getPromocionesXTicket(
-				ventaVO.getPromocionesXTicketVO(), ticketVenta);
-		
+		List<PromocionesXTicket> promocionesXTicket = PromocionXTicketAssembler
+				.getPromocionesXTicket(ventaVO.getPromocionesXTicketVO(), ticketVenta);
+
 		for (PromocionesXTicket promocionXTicket : promocionesXTicket) {
 			promocionXTicketDAO.save(promocionXTicket);
 		}
@@ -226,7 +274,7 @@ public class VentaBoletoBO {
 		ExistenciaBoletos existenciaBoletos = existenciaBoletoDAO.findByIdProgramacion(
 				ventaVO.getBoletosXTicketVO().get(0).getProgramacionVO().getIdProgramacion(),
 				ventaVO.getBoletosXTicketVO().get(0).getFechaExhibicion());
-		
+
 		if (existenciaBoletos != null) {
 			existenciaBoletos.setBoletosReservados(existenciaBoletos.getBoletosReservados() - cantidadBoletos);
 			existenciaBoletoDAO.update(existenciaBoletos);
@@ -235,36 +283,41 @@ public class VentaBoletoBO {
 		return TicketVentaAssembler.getTicketVentaVO(ticketVenta);
 	}
 
-	public List<ArchivoPdfVO> generarTicketsPdf(Integer idCine, Integer idTicket, BigDecimal pagoCon, BigDecimal cambio) throws BusinessGlobalException {
+	public List<ArchivoPdfVO> generarTicketsPdf(Integer idCine, Integer idTicket, BigDecimal pagoCon, BigDecimal cambio)
+			throws BusinessGlobalException {
 		// String rutaImg = cfg.getString("taquilla.ticket.img") ;
 		// String rutaJrxml = cfg.getString("taquilla.ticket.jrxml");
 		ResourceBundle cfg = ResourceBundle.getBundle("config");
 		String rutaTicketJasper = cfg.getString("taquilla.ticket.jasper");
 		String rutaBoletoJasper = cfg.getString("taquilla.ticket.boleto.jasper");
 		SimpleDateFormat sdf = new SimpleDateFormat(Constantes.FORMAT_DDMMYYYYHHMMSSSSS);
-		List<ArchivoPdfVO> archivosPdfVO= new ArrayList<ArchivoPdfVO>();
-		
+		List<ArchivoPdfVO> archivosPdfVO = new ArrayList<ArchivoPdfVO>();
+
 		pagoCon = pagoCon.setScale(2, RoundingMode.CEILING);
 		cambio = cambio.setScale(2, RoundingMode.CEILING);
-		
-		Cine cine= cineDAO.findById(idCine);
-		TicketVenta ticketVenta =ticketVentaDAO.getById(idTicket);
-		List<Pago>  pagos = pagoDAO.findByTicketAndCta(idTicket);
-		
-		TicketPdfVO ticketPdfVO =TicketVentaAssembler.getTicketPdfVO(cine, ticketVenta, pagoCon, cambio);
-		
-		//List<BoletosXTicket> boletosXTicket= boletoXTicketDAO.findByTicket(idTicket);
-		
-		List<DetalleTicketPdfVO> detallesTicketPdfVO = BoletoXTicketAssembler.getDetallesTicketPdfVO(ticketVenta.getBoletosXTickets());
 
-		if (ticketVenta.getPromocionesXTickets()!=null && !ticketVenta.getPromocionesXTickets().isEmpty()){
-			detallesTicketPdfVO.addAll(PromocionXTicketAssembler.getDetallesTicketPdfVO(ticketVenta.getPromocionesXTickets()));
+		Cine cine = cineDAO.findById(idCine);
+		TicketVenta ticketVenta = ticketVentaDAO.getById(idTicket);
+		List<Pago> pagos = pagoDAO.findByTicketAndCta(idTicket);
+
+		TicketPdfVO ticketPdfVO = TicketVentaAssembler.getTicketPdfVO(cine, ticketVenta, pagoCon, cambio);
+
+		// List<BoletosXTicket> boletosXTicket=
+		// boletoXTicketDAO.findByTicket(idTicket);
+
+		List<DetalleTicketPdfVO> detallesTicketPdfVO = BoletoXTicketAssembler
+				.getDetallesTicketPdfVO(ticketVenta.getBoletosXTickets());
+
+		if (ticketVenta.getPromocionesXTickets() != null && !ticketVenta.getPromocionesXTickets().isEmpty()) {
+			detallesTicketPdfVO
+					.addAll(PromocionXTicketAssembler.getDetallesTicketPdfVO(ticketVenta.getPromocionesXTickets()));
 		}
 
 		List<DetallePagoPdfVO> detallesPagoPdfVO = PagoAssembler.getDetallesPagoPdfVO(pagos);
 
-		List<DetalleImpuestoPdfVO> detallesImpuestoPdfVO = ImpuestoXTicketTaquillaAssembler.getDetallesImpuestoPdfVO(ticketVenta.getImpuestosXTicketTaquillas());
-		
+		List<DetalleImpuestoPdfVO> detallesImpuestoPdfVO = ImpuestoXTicketTaquillaAssembler
+				.getDetallesImpuestoPdfVO(ticketVenta.getImpuestosXTicketTaquillas());
+
 		Map<String, Object> paramTicket = new HashMap<String, Object>();
 		paramTicket.put("logo", new ByteArrayInputStream(cine.getEmpresa().getIcono()));
 		paramTicket.put("razonSocial", ticketPdfVO.getRazonSocial());
@@ -282,47 +335,49 @@ public class VentaBoletoBO {
 		paramTicket.put("leyenda", ticketPdfVO.getLeyenda());
 		paramTicket.put("slogan", ticketPdfVO.getSlogan());
 		paramTicket.put("sugerencias", ticketPdfVO.getSugerencias());
-		
+
 		JRBeanCollectionDataSource venta = new JRBeanCollectionDataSource(detallesTicketPdfVO);
 		paramTicket.put("recordDataSource", venta);
-		
+
 		JRBeanCollectionDataSource tarjetas = new JRBeanCollectionDataSource(detallesPagoPdfVO);
 		paramTicket.put("recordDataSourceTarjeta", tarjetas);
 
 		JRBeanCollectionDataSource impuestos = new JRBeanCollectionDataSource(detallesImpuestoPdfVO);
 		paramTicket.put("recordDataSourceImpuestos", impuestos);
-		
 
 		try {
-			ArchivoPdfVO  archivoPdfVO= new ArchivoPdfVO(Constantes.TICKET);
+			ArchivoPdfVO archivoPdfVO = new ArchivoPdfVO(Constantes.TICKET);
 			String rutaArchivoTicket = context.getRealPath(rutaTicketJasper);
-			archivoPdfVO.setArchivo(JasperRunManager.runReportToPdf(rutaArchivoTicket, paramTicket, new JREmptyDataSource()));
+			archivoPdfVO.setArchivo(
+					JasperRunManager.runReportToPdf(rutaArchivoTicket, paramTicket, new JREmptyDataSource()));
 			archivosPdfVO.add(archivoPdfVO);
 		} catch (JRException e) {
 			e.printStackTrace();
 			logger.error("Error al generar pdf para el ticket[{}]", idTicket);
 		}
-		
+
 		for (BoletosXTicket boletosXTicket : ticketVenta.getBoletosXTickets()) {
-			
+
 			for (int i = 0; i < boletosXTicket.getCantidad(); i++) {
-				
-				BoletoPdfVO boletoPdfVO =BoletoXTicketAssembler.getBoletoPdfVO(cine,boletosXTicket);
-				
+
+				BoletoPdfVO boletoPdfVO = BoletoXTicketAssembler.getBoletoPdfVO(cine, boletosXTicket);
+
 				Map<String, Object> paramBoleto = new HashMap<String, Object>();
 				paramBoleto.put("fecha", boletoPdfVO.getFecha());
 				paramBoleto.put("cine", boletoPdfVO.getNombreCine());
 				paramBoleto.put("tituloPelicula", boletoPdfVO.getTituloPelicula());
 				paramBoleto.put("horarioFuncion", boletoPdfVO.getHorarioFuncion());
 				paramBoleto.put("numeroSala", boletoPdfVO.getNumSala());
-				paramBoleto.put("tipoBoleto",boletoPdfVO.getTipoBoleto() );
+				paramBoleto.put("tipoBoleto", boletoPdfVO.getTipoBoleto());
 				paramBoleto.put("butaca", boletoPdfVO.getButaca());
 				paramBoleto.put("clasificacion", boletoPdfVO.getClasificacion());
-				
+
 				try {
-					ArchivoPdfVO  archivoPdfVO= new ArchivoPdfVO(boletosXTicket.getTipoCliente().getNombre().replace(Constantes.BLANK_SPACE, Constantes.UNDERSCORE));
+					ArchivoPdfVO archivoPdfVO = new ArchivoPdfVO(boletosXTicket.getTipoCliente().getNombre()
+							.replace(Constantes.BLANK_SPACE, Constantes.UNDERSCORE));
 					String rutaArchivoBoleto = context.getRealPath(rutaBoletoJasper);
-					archivoPdfVO.setArchivo(JasperRunManager.runReportToPdf(rutaArchivoBoleto, paramBoleto, new JREmptyDataSource()));
+					archivoPdfVO.setArchivo(
+							JasperRunManager.runReportToPdf(rutaArchivoBoleto, paramBoleto, new JREmptyDataSource()));
 					archivosPdfVO.add(archivoPdfVO);
 				} catch (JRException e) {
 					e.printStackTrace();
@@ -330,15 +385,16 @@ public class VentaBoletoBO {
 				}
 			}
 		}
-		
+
 		return archivosPdfVO;
 	}
-	
+
 	public List<PrecioXFormatoVO> findPreciosByFormatoCine(Integer idCine, Integer idFormato)
 			throws BusinessGlobalException {
 
-		return PrecioXFormatoAssembler.getPreciosXFormatoVO(precioXFormatoDAO.findPreciosByFormatoCine(idCine, idFormato));
+		return PrecioXFormatoAssembler
+				.getPreciosXFormatoVO(precioXFormatoDAO.findPreciosByFormatoCine(idCine, idFormato));
 
 	}
- 
+
 }
