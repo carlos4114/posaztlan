@@ -3,10 +3,12 @@ package mx.com.tecnetia.muvitul.negocio.configuracion.vo;
 import java.util.ArrayList;
 import java.util.List;
 
+import mx.com.tecnetia.muvitul.negocio.taquilla.vo.DistribuidoraVO;
+
 public class PeliculaVO {
 	private Integer idPelicula;
 	private CineVO cineVO;
-//	private Distribuidora distribuidora;
+	private DistribuidoraVO distribuidora;
 //	private Pais pais;
 	private String titulo;
 	private String clasificacion;
@@ -76,6 +78,12 @@ public class PeliculaVO {
 	}
 	public void setProgramacionesVO(List<ProgramacionVO> programacionesVO) {
 		this.programacionesVO = programacionesVO;
+	}
+	public DistribuidoraVO getDistribuidora() {
+		return distribuidora;
+	}
+	public void setDistribuidora(DistribuidoraVO distribuidora) {
+		this.distribuidora = distribuidora;
 	}
 	
 }

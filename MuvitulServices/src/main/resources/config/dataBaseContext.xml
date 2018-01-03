@@ -221,6 +221,9 @@
 				</value>
 				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ReportesCineXDistribuidora
 				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ReportesDistribuidora
+				</value>
+				
 				
 			</list>
 		</property>

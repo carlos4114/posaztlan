@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1excel" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c7f4f4f1-fd4f-46cd-b0bf-8705ec49107b">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1excel" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c7f4f4f1-fd4f-46cd-b0bf-8705ec49107b">
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.x" value="51"/>
+	<property name="ireport.y" value="206"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -83,7 +83,7 @@
 		<parameter name="fechaExhibicion" class="java.lang.String"/>
 		<queryString>
 			<![CDATA[select DATE_FORMAT(fecha_exhibicion, "%d-%m-%Y") as fecha_exhibicion,
-'000' as rentrak,pel.titulo as pelicula,DATE_FORMAT(pro.horario,"%H:%i") as funcion,
+'' as rentrak,pel.titulo as pelicula,DATE_FORMAT(pro.horario,"%H:%i") as funcion,
 form.nombre as formato,ver.nombre as version,sal.nombre as sala,
 cli.nombre as boleto,sum(bol.cantidad) as admision,'' as promocion,
 FORMAT(bol.importe/bol.cantidad,2) as precio,
@@ -140,9 +140,9 @@ order by fecha_exhibicion,sal.id_sala,pel.id_pelicula,pro.id_formato,pro.id_vers
 	<parameter name="fechaInicial" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select emp.nombre as razon_social,'' as plaza, '' as rentak,cin.nombre as cine,
-concat(cin.domicilio,'. ',cin.colonia,'. ',cin.municipio, '. CP. ',cin.cp) as direccion,
-concat(cin.municipio,', ',cin.estado) as municipio_estado,cin.ciudad,
-cin.cp,cin.telefono,cin.municipio,cin.estado,
+concat(cont.calle,'. ',cont.numero,'. ',cont.colonia,'. CP. ',cont.cp) as direccion,
+est.nombre as estado,cont.ciudad,
+cont.cp,cont.telefono,
 sal.nombre as sala,pel.titulo as programa,dis.nombre as distribuidora,
 ddp.porcentaje + ' %' as porcentaje,
 sum(bol.cantidad) as total_admisiones,
@@ -168,6 +168,8 @@ from boletos_x_ticket bol
 join programacion pro on pro.id_programacion = bol.id_programacion
 join sala sal on sal.id_sala = pro.id_sala
 join cine cin on cin.id_cine = sal.id_cine
+join contacto cont on cont.id_contacto = cin.id_contacto
+join estado est on est.id_estado = cont.id_estado
 join empresa emp on emp.id_empresa = cin.id_empresa
 join pelicula pel on pel.id_pelicula = pro.id_pelicula
 join distribuidora dis on dis.id_distribuidora = pel.id_distribuidora
@@ -186,7 +188,6 @@ group by pel.id_pelicula;]]>
 	<field name="rentak" class="java.lang.String"/>
 	<field name="cine" class="java.lang.String"/>
 	<field name="direccion" class="java.lang.String"/>
-	<field name="municipio_estado" class="java.lang.String"/>
 	<field name="ciudad" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -194,9 +195,6 @@ group by pel.id_pelicula;]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="telefono" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="municipio" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="estado" class="java.lang.String">
@@ -457,4 +455,15 @@ $P{fechaInicial}.substring(5,7).equals("11")?"NOVIEMBRE":"DICIEMBRE"]]></textFie
 			</componentElement>
 		</band>
 	</detail>
+	<noData>
+		<band height="50">
+			<staticText>
+				<reportElement x="0" y="17" width="802" height="20" uuid="f007ee0d-a212-498d-bc5d-264f867c6f73"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[No se encontró registro de ventas.]]></text>
+			</staticText>
+		</band>
+	</noData>
 </jasperReport>

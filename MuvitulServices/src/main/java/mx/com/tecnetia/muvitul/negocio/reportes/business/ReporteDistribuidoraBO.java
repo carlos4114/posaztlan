@@ -1,7 +1,6 @@
 package mx.com.tecnetia.muvitul.negocio.reportes.business;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -49,17 +48,17 @@ public class ReporteDistribuidoraBO {
 		parametros.put("fechaInicial",fecha.format(reporte.getFechaInicio()));
 		parametros.put("fechaFinal",fecha.format(reporte.getFechaFin()));
 		parametros.put("idCine", reporte.getCine().getIdCine());
-		parametros.put("idPelicula",reporte.getPelicula()==null?null:reporte.getPelicula().getIdPelicula());
-		parametros.put("idDistribuidora",reporte.getDistribuidora()==null?null:reporte.getDistribuidora().getIdDistribuidora());
+		parametros.put("idPelicula",reporte.getPelicula().getIdPelicula());
+		parametros.put("idDistribuidora",reporte.getPelicula().getDistribuidora().getIdDistribuidora());
 				
-		rutaReporteJasper = cfg.getString(reporte.getRutaReporteJasper());	
-		rutaReporteXls = context.getRealPath(cfg.getString(reporte.getRutaReporteXls()));
-		 rutaPlantillaVm = cfg.getString(reporte.getRutaPlantillaVm());
+		rutaReporteJasper = cfg.getString(reporte.getReportesDistribuidora().getRutaReporteJasper());	
+		rutaReporteXls = context.getRealPath(cfg.getString(reporte.getReportesDistribuidora().getRutaReporteXls()));
+		 rutaPlantillaVm = cfg.getString(reporte.getReportesDistribuidora().getRutaPlantillaVm());
 		String[] rutasArchivoAjuntos = {rutaReporteXls};
 		String[] destinatarios = reporte.getDestinatarios().split(",");		
 		asunto = reporte.getAsunto() + " - " +  reporte.getCine().getNombre();
 		
-		if(!reporte.getRutaReporteJasper().contains("comscore")){
+		if(!reporte.getReportesDistribuidora().getRutaReporteJasper().contains("comscore")){
 			asunto = asunto + " - " + reporte.getPelicula().getTitulo();
 		}
 		
@@ -79,12 +78,12 @@ public class ReporteDistribuidoraBO {
 		ResourceBundle cfg = ResourceBundle.getBundle("config");
 		SimpleDateFormat fecha = new SimpleDateFormat("yyyy/MM/dd");
 	
-		rutaPlantillaVm = cfg.getString(reporte.getRutaPlantillaVmError());
+		rutaPlantillaVm = cfg.getString(reporte.getReportesDistribuidora().getRutaPlantillaVmError());
 		String[] rutasArchivoAjuntos = {};
 		String[] destinatarios = reporte.getEmailError().split(",");
 		asunto = MSG_ERROR+" "+reporte.getAsunto()+" - Fecha de envío: "+ fecha.format(reporte.getFechaEnvio()) + " - " +  reporte.getCine().getNombre();
 		
-		if(!reporte.getRutaReporteJasper().contains("comscore")){
+		if(!reporte.getReportesDistribuidora().getRutaReporteJasper().contains("comscore")){
 			asunto = asunto + " - " + reporte.getPelicula().getTitulo();
 		}
 		
