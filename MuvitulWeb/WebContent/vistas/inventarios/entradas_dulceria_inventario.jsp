@@ -90,7 +90,7 @@
 									<div class="input-group">
 										<span class="input-group-addon"><i
 											class="fa fa-truck"></i></span><select class="form-control"
-											id="proveedor" name="proveedor" required="required" ng-required="true" 
+											id="proveedor" name="proveedor" directiva-select2 required="required" ng-required="true" 
 											ng-options="proveedor.idProveedor as proveedor.nombre for proveedor in listaProveedores"
 											ng-model="parametrosInventario.idProveedor">											
 										</select>									
