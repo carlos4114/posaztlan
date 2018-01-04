@@ -172,7 +172,7 @@
 									for="existenciaFisica">Existencia Física<span
 									class="required">*</span>
 								</label>
-								<div class="col-md-4 col-sm-4 col-xs-6">
+								<div class="col-md-6 col-sm-6 col-xs-6">
 									<div class="input-group">
 										<span class="input-group-addon"><i class="fa fa-cubes"></i></span>
 										<input type="number" id="existenciaFisica"

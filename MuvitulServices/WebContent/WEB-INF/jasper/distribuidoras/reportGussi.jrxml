@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1excel" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c7f4f4f1-fd4f-46cd-b0bf-8705ec49107b">
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="53"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="302"/>
 	<style name="table">
 		<box>
@@ -129,7 +129,7 @@ join version ver on ver.id_version = pro.id_version
 join formato form on form.id_formato = pro.id_formato
 join precio_x_formato pre on pre.id_formato = pro.id_formato and pre.id_tipo_cliente = bol.id_tipo_cliente
 join impuesto_boleto imp on imp.id_cine = cin.id_cine and imp.activo = 1 and clave='iva'
-where pel.id_cine = $P{idCine} and pel.id_distribuidora = $P{idDistribuidora} and pel.id_pelicula = $P{idPelicula} and bol.activo = 0
+where pel.id_cine = $P{idCine} and pel.id_distribuidora = $P{idDistribuidora} and pel.id_pelicula = $P{idPelicula} and bol.activo = 1
 and DATE(bol.fecha_exhibicion) between DATE($P{fechaInicial}) and DATE($P{fechaFinal})
 group by bol.id_programacion,pro.id_formato,pro.id_version,fecha_exhibicion
 ORDER BY dia_numero ASC;]]>
@@ -269,7 +269,7 @@ join tipo_cliente cli on cli.id_tipo_cliente = bol.id_tipo_cliente
 join derechos_autor_x_pelicula dap on dap.id_pelicula = pro.id_pelicula
 join derechos_distribuidora_x_pelicula ddp on ddp.id_pelicula = pro.id_pelicula
 where pel.id_cine = $P{idCine} and pel.id_distribuidora = $P{idDistribuidora} and pel.id_pelicula = $P{idPelicula}
-and bol.activo = 0 and DATE(fecha_exhibicion) between DATE($P{fechaInicial}) and DATE($P{fechaFinal})
+and bol.activo = 1 and DATE(fecha_exhibicion) between DATE($P{fechaInicial}) and DATE($P{fechaFinal})
 group by pel.id_pelicula;]]>
 	</queryString>
 	<field name="razon_social" class="java.lang.String"/>

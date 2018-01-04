@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1excel" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c7f4f4f1-fd4f-46cd-b0bf-8705ec49107b">
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="51"/>
-	<property name="ireport.y" value="206"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -81,6 +81,12 @@
 			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 		</parameter>
 		<parameter name="fechaExhibicion" class="java.lang.String"/>
+		<parameter name="fechaInicial" class="java.lang.String">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<parameter name="fechaFinal" class="java.lang.String">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
 		<queryString>
 			<![CDATA[select DATE_FORMAT(fecha_exhibicion, "%d-%m-%Y") as fecha_exhibicion,
 '' as rentrak,pel.titulo as pelicula,DATE_FORMAT(pro.horario,"%H:%i") as funcion,
@@ -112,7 +118,7 @@ join impuesto_boleto imp on imp.id_cine = cin.id_cine and imp.activo = 1 and cla
 join tipo_cliente cli on cli.id_tipo_cliente = bol.id_tipo_cliente
 join derechos_autor_x_pelicula dap on dap.id_pelicula = pro.id_pelicula
 join derechos_distribuidora_x_pelicula ddp on ddp.id_pelicula = pro.id_pelicula
-where bol.activo = 0 and DATE(fecha_exhibicion) = DATE($P{fechaExhibicion})
+where bol.activo = 1 and DATE(fecha_exhibicion) between DATE($P{fechaInicial}) and DATE($P{fechaFinal})
 group by sal.id_sala,bol.id_programacion,pel.id_pelicula,pro.horario,pro.id_formato,pro.id_version
 order by fecha_exhibicion,sal.id_sala,pel.id_pelicula,pro.id_formato,pro.id_version desc;]]>
 		</queryString>
@@ -138,6 +144,9 @@ order by fecha_exhibicion,sal.id_sala,pel.id_pelicula,pro.id_formato,pro.id_vers
 		<field name="entrada_total" class="java.lang.String"/>
 	</subDataset>
 	<parameter name="fechaInicial" class="java.lang.String"/>
+	<parameter name="fechaFinal" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[select emp.nombre as razon_social,'' as plaza, '' as rentak,cin.nombre as cine,
 concat(cont.calle,'. ',cont.numero,'. ',cont.colonia,'. CP. ',cont.cp) as direccion,
@@ -180,7 +189,7 @@ join impuesto_boleto imp on imp.id_cine = cin.id_cine and imp.activo = 1 and cla
 join tipo_cliente cli on cli.id_tipo_cliente = bol.id_tipo_cliente
 join derechos_autor_x_pelicula dap on dap.id_pelicula = pro.id_pelicula
 join derechos_distribuidora_x_pelicula ddp on ddp.id_pelicula = pro.id_pelicula
-where bol.activo = 0 and DATE(fecha_exhibicion) = DATE($P{fechaInicial})
+where bol.activo = 1 and DATE(fecha_exhibicion) between DATE($P{fechaInicial}) and DATE($P{fechaFinal})
 group by pel.id_pelicula;]]>
 	</queryString>
 	<field name="razon_social" class="java.lang.String"/>
@@ -262,7 +271,7 @@ $P{fechaInicial}.substring(5,7).equals("11")?"NOVIEMBRE":"DICIEMBRE"]]></textFie
 			<componentElement>
 				<reportElement key="table 2" style="table 2" positionType="Float" isPrintRepeatedValues="false" x="0" y="0" width="802" height="182" isPrintInFirstWholeBand="true" uuid="53ee8956-7303-42d4-acd8-3359cd3b76b7"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="Consulta Reporte" uuid="7eff03a8-298c-45a7-b064-185ade4dbca8">
+					<datasetRun subDataset="Consulta Reporte" uuid="29036150-e6b4-485e-bf0b-1315dba589e6">
 						<datasetParameter name="totalAdmisiones">
 							<datasetParameterExpression><![CDATA[$F{total_admisiones}]]></datasetParameterExpression>
 						</datasetParameter>
@@ -275,8 +284,11 @@ $P{fechaInicial}.substring(5,7).equals("11")?"NOVIEMBRE":"DICIEMBRE"]]></textFie
 						<datasetParameter name="entradaNeta">
 							<datasetParameterExpression><![CDATA[$F{entrada_sin_iva}]]></datasetParameterExpression>
 						</datasetParameter>
-						<datasetParameter name="fechaExhibicion">
+						<datasetParameter name="fechaInicial">
 							<datasetParameterExpression><![CDATA[$P{fechaInicial}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="fechaFinal">
+							<datasetParameterExpression><![CDATA[$P{fechaFinal}]]></datasetParameterExpression>
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
