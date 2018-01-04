@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Kardex_Header" pageWidth="792" pageHeight="802" columnWidth="792" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="b3c857af-fd70-49db-83ad-2b66077412af">
-	<property name="ireport.zoom" value="1.6528925619834718"/>
-	<property name="ireport.x" value="256"/>
+	<property name="ireport.zoom" value="2.0000000000000013"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="emision" class="java.lang.String"/>
 	<parameter name="periodo" class="java.lang.String"/>
 	<parameter name="id_cine" class="java.lang.Integer"/>
 	<queryString>
-		<![CDATA[select c.nombre as nombreCine,e.nombre as nombreEmpresa from cine c inner join empresa e ON e.id_empresa = c.id_empresa where id_cine=$P{id_cine};]]>
+		<![CDATA[select c.nombre as nombreCine,e.nombre as nombreEmpresa,DATE_FORMAT(now(),'%d/%m/%Y') as emision from cine c inner join empresa e ON e.id_empresa = c.id_empresa where id_cine=$P{id_cine};]]>
 	</queryString>
 	<field name="nombreCine" class="java.lang.String"/>
 	<field name="nombreEmpresa" class="java.lang.String"/>
+	<field name="emision" class="java.lang.String"/>
 	<title>
 		<band height="24" splitType="Stretch">
 			<staticText>
@@ -174,18 +175,6 @@
 				</graphicElement>
 			</rectangle>
 			<textField>
-				<reportElement x="388" y="-2" width="135" height="20" uuid="58083c97-74b1-42cd-b7db-a9481db9d5a4"/>
-				<box>
-					<pen lineWidth="0.5"/>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$P{emision}]]></textFieldExpression>
-			</textField>
-			<textField>
 				<reportElement x="523" y="-2" width="159" height="20" uuid="7ba2e020-bcdd-4f28-85ad-9b78b52e5fee"/>
 				<box>
 					<pen lineWidth="0.5"/>
@@ -196,6 +185,18 @@
 				</box>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$P{periodo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="388" y="-2" width="135" height="20" uuid="63a2b053-6a88-458c-b86c-fd58b9362cff"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{emision}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>

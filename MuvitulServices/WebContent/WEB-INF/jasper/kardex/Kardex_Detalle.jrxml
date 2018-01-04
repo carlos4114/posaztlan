@@ -4,20 +4,56 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="id_articulo" class="java.lang.Integer"/>
+	<parameter name="id_cine" class="java.lang.Integer"/>
+	<parameter name="id_punto_venta" class="java.lang.Integer"/>
+	<parameter name="fecha_inicio" class="java.lang.String"/>
+	<parameter name="fecha_fin" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[select mi.id_movimiento as id,mi.fecha as fecha, m.nombre as tipo, m.nombre  as movimiento, mi.cantidad as piezas, mi.importe as punitario, mi.importe as total, mi.cantidad as existenciaFinal from movimiento_inventario mi inner join tipo_movimiento_inv m on m.id_tipo_movimiento_inv = mi.id_tipo_movimiento
-where mi.id_articulo=$P{id_articulo};]]>
+		<![CDATA[select 	m.fecha,am.id_autorizacion,am.id_movimiento_inventario, concat(u.nombre,' ', u.paterno) as usuario,	au.comentarios,
+	(CASE WHEN t.es_entrada = 1 Then "Entrada" else "Salida" End ) as tipo,	t.nombre as movimiento,	a.nombre, a.id_articulo,
+ 	a.id_clasificacion_art,ca.nombre,	m.cantidad as piezas,	m.importe/m.cantidad as punitario,  	importe as total,
+  (select Sum(CASE WHEN t2.es_entrada = 1 Then m2.cantidad else m2.cantidad *(-1) End)
+		from movimiento_inventario m2 inner join tipo_movimiento_inv t2 	on t2.id_tipo_movimiento_inv = m2.id_tipo_movimiento
+		where m2.id_articulo = m.id_articulo and  DATE(m2.fecha)<=DATE($P{fecha_fin})	and m2.id_punto_venta =$P{id_punto_venta} ) as existenciaFinal
+ from 	movimiento_inventario m	inner join tipo_movimiento_inv as t 		on t.id_tipo_movimiento_inv = m.id_tipo_movimiento
+		inner join articulo as a 		on a.id_articulo = m.id_articulo
+    inner join clasificacion_art as ca		on ca.id_clasificacion_art = a.id_clasificacion_art
+		left join autorizacion_movimiento as am		on am.id_movimiento_inventario = m.id_movimiento
+    left join autorizacion as au	on au.id_autorizacion = am.id_autorizacion
+    left join usuario as u 		on u.id_usuario = au.id_usuario
+	  inner join punto_venta as pv 	on pv.id_punto_venta = m.id_punto_venta
+	  inner join cine as c 		on c.id_cine = pv.id_cine 	inner join empresa as e
+		on e.id_empresa = c.id_empresa where 	DATE(m.fecha) between DATE($P{fecha_inicio})	and  DATE($P{fecha_fin} )
+		and pv.id_cine = $P{id_cine} 	and pv.id_punto_venta = $P{id_punto_venta} and a.id_articulo =$P{id_articulo} ;]]>
 	</queryString>
-	<field name="id" class="java.lang.Integer"/>
 	<field name="fecha" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="id_autorizacion" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="id_movimiento_inventario" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="usuario" class="java.lang.String"/>
+	<field name="comentarios" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="tipo" class="java.lang.String"/>
 	<field name="movimiento" class="java.lang.String"/>
+	<field name="nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="id_articulo" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="id_clasificacion_art" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="piezas" class="java.lang.Long"/>
 	<field name="punitario" class="java.math.BigDecimal"/>
 	<field name="total" class="java.math.BigDecimal"/>
-	<field name="existenciaFinal" class="java.lang.Long"/>
+	<field name="existenciaFinal" class="java.math.BigDecimal"/>
 	<columnHeader>
 		<band height="21">
 			<staticText>

@@ -27,15 +27,17 @@ public class ReporteVentaFacade implements ReporteVentaFacadeI {
 		Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
 		Integer idCine = (Integer) claims.get(ClaimsEnum.CINE);
 		Integer idUsuario = (Integer) claims.get(ClaimsEnum.USUARIO);
+		Integer idPuntoVenta = (Integer) claims.get(ClaimsEnum.PUNTO_VENTA);
+
 		ArchivoExcelVO archivoExcelVO=null;
 		if (codigoReporte.equals("KARDEX"))
-			archivoExcelVO= reporteJasperController.crearReporteXls(idCine,idUsuario,  fechaInicio,  fechaFin,  idArticulo);
+			archivoExcelVO= reporteJasperController.crearReporteXls(idCine,idUsuario,idPuntoVenta,  fechaInicio,  fechaFin,  idArticulo);
 		else if(codigoReporte.equals("VENTAS-DIA"))
 			archivoExcelVO= reporteJasperController.generarReporteVentas(idCine,idUsuario,  fechaInicio,  fechaFin);
 		else if(codigoReporte.equals("VENTAS-SEMANA"))
-			archivoExcelVO= reporteJasperController.generarReporteVentas(idCine,idUsuario,  fechaInicio,  fechaFin);
+			archivoExcelVO= reporteJasperController.generarReporteVentasSemanal(idCine,idUsuario,  fechaInicio,  fechaFin);
 		else if(codigoReporte.equals("VENTAS-MENSUAL"))
-			archivoExcelVO= reporteJasperController.generarReporteVentas(idCine,idUsuario,  fechaInicio,  fechaFin);
+			archivoExcelVO= reporteJasperController.generarReporteVentasMensual(idCine,idUsuario,  fechaInicio,  fechaFin);
 
 		if (archivoExcelVO == null ) {
 			throw new NotFoundException("No encontrado");

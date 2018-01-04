@@ -6,26 +6,65 @@
 	<property name="net.sf.jasperreports.export.xls.wrap.text" value="true"/>
 	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
 	<property name="net.sf.jasperreports.export.xls.white.page.background" value="true"/>
-	<property name="ireport.zoom" value="0.5"/>
+	<property name="ireport.zoom" value="0.8857805000000005"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="48"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
 	<parameter name="id_articulo" class="java.lang.Integer"/>
 	<parameter name="emision" class="java.lang.String"/>
 	<parameter name="periodo" class="java.lang.String"/>
 	<parameter name="id_cine" class="java.lang.Integer"/>
+	<parameter name="id_punto_venta" class="java.lang.Integer"/>
+	<parameter name="fecha_inicio" class="java.lang.String"/>
+	<parameter name="fecha_fin" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[select a.id_articulo, a.id_articulo as cantidad,  a.id_articulo as total,a.nombre,um.nombre as umedida from articulo a inner join unidad_medida um on a.id_unidad_medida = um.id_unidad_medida where id_articulo = $P{id_articulo};]]>
+		<![CDATA[select 	m.fecha,am.id_autorizacion,am.id_movimiento_inventario, concat(u.nombre,' ', u.paterno) as usuario,	au.comentarios,
+	(CASE WHEN t.es_entrada = 1 Then "Entrada" else "Salida" End ) as tipo,	t.nombre as movimiento,	a.nombre as nombreProd,a.id_articulo,um.nombre as umedida,
+ 	a.id_clasificacion_art,ca.nombre,	m.cantidad as piezas,	m.importe/m.cantidad as punitario,  	importe as total,
+  (select Sum(CASE WHEN t2.es_entrada = 1 Then m2.cantidad else m2.cantidad *(-1) End)
+		from movimiento_inventario m2 inner join tipo_movimiento_inv t2 	on t2.id_tipo_movimiento_inv = m2.id_tipo_movimiento
+		where m2.id_articulo = m.id_articulo and  DATE(m2.fecha) <= DATE( $P{fecha_fin})	and m2.id_punto_venta =$P{id_punto_venta} ) as existencia
+ from 	movimiento_inventario m	inner join tipo_movimiento_inv as t 		on t.id_tipo_movimiento_inv = m.id_tipo_movimiento
+		inner join articulo as a 		on a.id_articulo = m.id_articulo
+    inner join clasificacion_art as ca		on ca.id_clasificacion_art = a.id_clasificacion_art
+		left join autorizacion_movimiento as am		on am.id_movimiento_inventario = m.id_movimiento
+    left join autorizacion as au	on au.id_autorizacion = am.id_autorizacion
+    left join usuario as u 		on u.id_usuario = au.id_usuario
+	  inner join punto_venta as pv 	on pv.id_punto_venta = m.id_punto_venta
+	  inner join cine as c 		on c.id_cine = pv.id_cine 	inner join empresa as e
+		on e.id_empresa = c.id_empresa
+inner join unidad_medida um ON um.id_unidad_medida = a.id_unidad_medida where 	 	DATE(m.fecha) between DATE($P{fecha_inicio})	and  DATE($P{fecha_fin} )	and pv.id_cine = $P{id_cine}  	and pv.id_punto_venta = $P{id_punto_venta} group by a.nombre;]]>
 	</queryString>
+	<field name="fecha" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="id_autorizacion" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="id_movimiento_inventario" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="usuario" class="java.lang.String"/>
+	<field name="comentarios" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tipo" class="java.lang.String"/>
+	<field name="movimiento" class="java.lang.String"/>
+	<field name="nombreProd" class="java.lang.String"/>
 	<field name="id_articulo" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="cantidad" class="java.lang.Integer"/>
-	<field name="total" class="java.lang.Integer"/>
+	<field name="umedida" class="java.lang.String"/>
+	<field name="id_clasificacion_art" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="nombre" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="umedida" class="java.lang.String"/>
+	<field name="piezas" class="java.lang.Long"/>
+	<field name="punitario" class="java.math.BigDecimal"/>
+	<field name="total" class="java.math.BigDecimal"/>
+	<field name="existencia" class="java.math.BigDecimal"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -61,22 +100,27 @@
 		<band height="33" splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="175" splitType="Stretch">
+		<band height="188" splitType="Stretch">
 			<subreport>
 				<reportElement x="16" y="73" width="786" height="100" uuid="fe65766c-48a2-4016-8aeb-6b88951e292b"/>
+				<subreportParameter name="fecha_fin">
+					<subreportParameterExpression><![CDATA[$P{fecha_fin}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="id_punto_venta">
+					<subreportParameterExpression><![CDATA[$P{id_punto_venta}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="id_cine">
+					<subreportParameterExpression><![CDATA[$P{id_cine}]]></subreportParameterExpression>
+				</subreportParameter>
 				<subreportParameter name="id_articulo">
 					<subreportParameterExpression><![CDATA[$F{id_articulo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fecha_inicio">
+					<subreportParameterExpression><![CDATA[$P{fecha_inicio}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "Kardex_Detalle.jasper"]]></subreportExpression>
 			</subreport>
-			<textField>
-				<reportElement x="0" y="0" width="136" height="20" uuid="7aba5ba3-1529-4118-a399-88175cb085c4"/>
-				<textElement>
-					<font size="14" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
-			</textField>
 			<textField>
 				<reportElement x="77" y="20" width="123" height="20" uuid="b5123732-9ff0-4a5c-974e-8ea8fa1a6237"/>
 				<textFieldExpression><![CDATA[$F{umedida}]]></textFieldExpression>
@@ -104,8 +148,15 @@
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="136" y="52" width="100" height="20" uuid="656bf23a-7ee7-49e1-ba36-bf2f8f13f2b6"/>
-				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+				<reportElement x="136" y="53" width="100" height="20" uuid="f1a5017c-d0d9-496d-b689-10b192b71ac1"/>
+				<textFieldExpression><![CDATA[$F{piezas}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="158" height="20" uuid="369d89e0-f8a3-414a-afdc-1187ae8356e3"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombreProd}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
