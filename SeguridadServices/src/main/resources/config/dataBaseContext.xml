@@ -33,6 +33,18 @@
 		<property name="hibernateProperties" ref="hibernateProperties" />
 		<property name="annotatedClasses">
 			<list>
+			 	<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.EstatusAsiento
+				</value>
+			 	<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.AsientosXSala
+				</value>
+			 	<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.AsistenciaXSala
+				</value>
+			 	<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.CargoAjuste
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.CorteCaja
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Caja
+				</value>
 				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Articulo
 				</value>
 				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ArticulosXProducto
@@ -220,6 +232,8 @@
 				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ArticulosCorteAjuste
 				</value>
 				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ReportesCineXDistribuidora
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ReportesDistribuidora
 				</value>
 			</list>
 		</property>

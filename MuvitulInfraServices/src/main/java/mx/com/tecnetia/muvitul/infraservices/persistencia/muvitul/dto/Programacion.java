@@ -31,11 +31,13 @@ public class Programacion implements java.io.Serializable {
 	private Version version;
 	private String diaSemana;
 	private Date horario;
+	private Date fechaInicio;
 	private Date fechaVigencia;
 	private boolean activo;
 	private Date horarioFin;
 	private Set<ExistenciaBoletos> existenciaBoletoses = new HashSet<ExistenciaBoletos>(0);
 	private Set<BoletosXTicket> boletosXTickets = new HashSet<BoletosXTicket>(0);
+	private Set<AsistenciaXSala> asistenciaXSalas = new HashSet<AsistenciaXSala>(0);
 
 	public Programacion() {
 	}
@@ -150,6 +152,16 @@ public class Programacion implements java.io.Serializable {
 		this.fechaVigencia = fechaVigencia;
 	}
 
+	@Temporal(TemporalType.DATE)
+	@Column(name = "fecha_inicio", nullable = false, length = 10)
+	public Date getFechaInicio() {
+		return this.fechaInicio;
+	}
+
+	public void setFechaInicio(Date fechaInicio) {
+		this.fechaInicio = fechaInicio;
+	}
+	
 	@Column(name = "activo", nullable = false)
 	public boolean isActivo() {
 		return this.activo;
@@ -185,6 +197,15 @@ public class Programacion implements java.io.Serializable {
 
 	public void setBoletosXTickets(Set<BoletosXTicket> boletosXTickets) {
 		this.boletosXTickets = boletosXTickets;
+	}
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "programacion")
+	public Set<AsistenciaXSala> getAsistenciaXSalas() {
+		return this.asistenciaXSalas;
+	}
+
+	public void setAsistenciaXSalas(Set<AsistenciaXSala> asistenciaXSalas) {
+		this.asistenciaXSalas = asistenciaXSalas;
 	}
 
 }
