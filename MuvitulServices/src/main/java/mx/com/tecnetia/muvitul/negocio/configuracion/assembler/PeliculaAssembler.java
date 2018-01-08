@@ -5,6 +5,7 @@ import java.util.List;
 
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Pelicula;
 import mx.com.tecnetia.muvitul.negocio.configuracion.vo.PeliculaVO;
+import mx.com.tecnetia.muvitul.negocio.taquilla.assembler.DistribuidoraAssembler;
 
 public class PeliculaAssembler {
 
@@ -21,7 +22,8 @@ public class PeliculaAssembler {
 		peliculaVO.setSinopsis(pelicula.getSinopsis());
 		peliculaVO.setActivo(pelicula.isActivo());
 		peliculaVO.setIcono(pelicula.getIcono());
-
+		peliculaVO.setDistribuidora(DistribuidoraAssembler.getDistribuidoraVO(pelicula.getDistribuidora()));
+		
 		return peliculaVO;
 	}
 

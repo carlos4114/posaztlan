@@ -39,7 +39,8 @@
 							<div class="col-md-12 col-sm-12 col-xs-12">
 								<div class="form-group"
 									ng-show="devolucion.tipoDevolucionVO.clave == 'EFE-002'">
-									<div class="animated flipInY col-lg-4 col-md-4 col-sm-4 col-xs-6 col-lg-offset-4 col-md-offset-4 col-xs-offset-4 col-sm-offset-4 ">
+									<div
+										class="animated flipInY col-lg-4 col-md-4 col-sm-4 col-xs-6 col-lg-offset-4 col-md-offset-4 col-xs-offset-4 col-sm-offset-4 ">
 
 
 										<div class="tile-stats">
@@ -106,8 +107,7 @@
 																	ng-checked="productoXPaquete.productoVO.estado"
 																	ng-model="productoXPaquete.productoVO.estado"
 																	class="inputSwitch"
-																	id="inputSwitch_{{paqueteXTicket.id}}{{productoXPaquete.productoVO.idProducto}}">
-																<label
+																	id="inputSwitch_{{paqueteXTicket.id}}{{productoXPaquete.productoVO.idProducto}}"> <label
 																	for="inputSwitch_{{paqueteXTicket.id}}{{productoXPaquete.productoVO.idProducto}}"
 																	class="labelSwitch">
 																	<div
@@ -133,7 +133,12 @@
 									</div>
 								</fieldset>
 							</div>
-							<dir-pagination-controls></dir-pagination-controls>
+							<div class="row">
+								<div
+									class="col-lg-5 col-md-4 col-sm-5  col-xs-12  col-lg-offset-4 col-md-offset-5  col-sm-offset-5  col-xs-offset-4">
+									<dir-pagination-controls></dir-pagination-controls>
+								</div>
+							</div>
 
 						</div>
 

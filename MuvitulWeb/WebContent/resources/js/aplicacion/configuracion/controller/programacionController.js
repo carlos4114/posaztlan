@@ -79,6 +79,7 @@ var ProgramacionController = angular.module('indexModule').controller("Programac
 	 $scope.resetValues = function(){
 			$scope.formProgramaciones.$setPristine();
 			$scope.programacion={activo:'true'};
+ 
 		 }
 	 
 	 

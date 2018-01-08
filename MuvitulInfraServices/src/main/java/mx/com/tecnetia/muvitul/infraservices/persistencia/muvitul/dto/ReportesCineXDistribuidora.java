@@ -26,13 +26,8 @@ public class ReportesCineXDistribuidora implements java.io.Serializable {
 	private Integer idReporte;
 	private Cine cine;
 	private Pelicula pelicula;
-	private Distribuidora distribuidora;
 	private Date fechaInicio;
 	private Date fechaFin;
-	private String rutaReporteJasper;
-	private String rutaReporteXls;
-	private String rutaPlantillaVm;
-	private String rutaPlantillaVmError;
 	private String destinatarios;
 	private String asunto;
 	private Integer diasPeriodo;
@@ -40,25 +35,20 @@ public class ReportesCineXDistribuidora implements java.io.Serializable {
 	private Date fechaEnvio;
 	private String emailError;
 	private boolean activo;
+	private ReportesDistribuidora reporteDistribuidora;
 	
 	public ReportesCineXDistribuidora() {
 	}
-
-	public ReportesCineXDistribuidora(Integer idReporte, Cine cine, Pelicula pelicula, Distribuidora distribuidora,
-			Date fechaInicio, Date fechaFin, String rutaReporteJasper, String rutaReporteXls, String rutaPlantillaVm,
-			String rutaPlantillaVmError, String destinatarios, String asunto, Integer diasPeriodo, Integer diasEnvio,
-			Date fechaEnvio, String emailError, boolean activo) {
+	
+	public ReportesCineXDistribuidora(Integer idReporte, Cine cine, Pelicula pelicula, Date fechaInicio, Date fechaFin,
+			String destinatarios, String asunto, Integer diasPeriodo, Integer diasEnvio, Date fechaEnvio,
+			String emailError, boolean activo, ReportesDistribuidora reporteDistribuidora) {
 		super();
 		this.idReporte = idReporte;
 		this.cine = cine;
 		this.pelicula = pelicula;
-		this.distribuidora = distribuidora;
 		this.fechaInicio = fechaInicio;
 		this.fechaFin = fechaFin;
-		this.rutaReporteJasper = rutaReporteJasper;
-		this.rutaReporteXls = rutaReporteXls;
-		this.rutaPlantillaVm = rutaPlantillaVm;
-		this.rutaPlantillaVmError = rutaPlantillaVmError;
 		this.destinatarios = destinatarios;
 		this.asunto = asunto;
 		this.diasPeriodo = diasPeriodo;
@@ -66,8 +56,9 @@ public class ReportesCineXDistribuidora implements java.io.Serializable {
 		this.fechaEnvio = fechaEnvio;
 		this.emailError = emailError;
 		this.activo = activo;
+		this.reporteDistribuidora = reporteDistribuidora;
 	}
-	
+
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_reporte", unique = true, nullable = false)
@@ -98,16 +89,6 @@ public class ReportesCineXDistribuidora implements java.io.Serializable {
 	public void setPelicula(Pelicula pelicula) {
 		this.pelicula = pelicula;
 	}
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_distribuidora", nullable = false)
-	public Distribuidora getDistribuidora() {
-		return this.distribuidora;
-	}
-
-	public void setDistribuidora(Distribuidora distribuidora) {
-		this.distribuidora = distribuidora;
-	}
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "fecha_inicio", nullable = false, length = 19)
@@ -127,42 +108,6 @@ public class ReportesCineXDistribuidora implements java.io.Serializable {
 
 	public void setFechaFin(Date fechaFin) {
 		this.fechaFin = fechaFin;
-	}
-	
-	@Column(name = "ruta_reporte_jasper", nullable = false, length = 200)
-	public String getRutaReporteJasper() {
-		return rutaReporteJasper;
-	}
-
-	public void setRutaReporteJasper(String rutaReporteJasper) {
-		this.rutaReporteJasper = rutaReporteJasper;
-	}
-
-	@Column(name = "ruta_reporte_xls", nullable = false, length = 200)
-	public String getRutaReporteXls() {
-		return rutaReporteXls;
-	}
-
-	public void setRutaReporteXls(String rutaReporteXls) {
-		this.rutaReporteXls = rutaReporteXls;
-	}
-
-	@Column(name = "ruta_plantilla_vm", nullable = false, length = 200)
-	public String getRutaPlantillaVm() {
-		return rutaPlantillaVm;
-	}
-
-	public void setRutaPlantillaVm(String rutaPlantillaVm) {
-		this.rutaPlantillaVm = rutaPlantillaVm;
-	}
-	
-	@Column(name = "ruta_plantilla_vm_error", nullable = false, length = 200)
-	public String getRutaPlantillaVmError() {
-		return rutaPlantillaVmError;
-	}
-
-	public void setRutaPlantillaVmError(String rutaPlantillaVmError) {
-		this.rutaPlantillaVmError = rutaPlantillaVmError;
 	}
 
 	@Column(name = "destinatarios", nullable = false, length = 2000)
@@ -227,6 +172,16 @@ public class ReportesCineXDistribuidora implements java.io.Serializable {
 
 	public void setActivo(boolean activo) {
 		this.activo = activo;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_reporte_distribuidora", nullable = false)
+	public ReportesDistribuidora getReporteDistribuidora() {
+		return reporteDistribuidora;
+	}
+
+	public void setReporteDistribuidora(ReportesDistribuidora reporteDistribuidora) {
+		this.reporteDistribuidora = reporteDistribuidora;
 	}
 
 }

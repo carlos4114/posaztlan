@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Kardex_Detalle" pageWidth="792" pageHeight="802" columnWidth="792" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="4815966c-7afa-4609-b2f7-0f8d601971d2">
+	<property name="ireport.zoom" value="1.100000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="id_articulo" class="java.lang.Integer"/>
+	<parameter name="id_cine" class="java.lang.Integer"/>
+	<parameter name="id_punto_venta" class="java.lang.Integer"/>
+	<parameter name="fecha_inicio" class="java.lang.String"/>
+	<parameter name="fecha_fin" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select 	m.fecha,am.id_autorizacion,am.id_movimiento_inventario, concat(u.nombre,' ', u.paterno) as usuario,	au.comentarios,
+	(CASE WHEN t.es_entrada = 1 Then "Entrada" else "Salida" End ) as tipo,	t.nombre as movimiento,	a.nombre, a.id_articulo,
+ 	a.id_clasificacion_art,ca.nombre,	m.cantidad as piezas,	m.importe/m.cantidad as punitario,  	importe as total,
+  (select Sum(CASE WHEN t2.es_entrada = 1 Then m2.cantidad else m2.cantidad *(-1) End)
+		from movimiento_inventario m2 inner join tipo_movimiento_inv t2 	on t2.id_tipo_movimiento_inv = m2.id_tipo_movimiento
+		where m2.id_articulo = m.id_articulo and  DATE(m2.fecha)<=DATE($P{fecha_fin})	and m2.id_punto_venta =$P{id_punto_venta} ) as existenciaFinal
+ from 	movimiento_inventario m	inner join tipo_movimiento_inv as t 		on t.id_tipo_movimiento_inv = m.id_tipo_movimiento
+		inner join articulo as a 		on a.id_articulo = m.id_articulo
+    inner join clasificacion_art as ca		on ca.id_clasificacion_art = a.id_clasificacion_art
+		left join autorizacion_movimiento as am		on am.id_movimiento_inventario = m.id_movimiento
+    left join autorizacion as au	on au.id_autorizacion = am.id_autorizacion
+    left join usuario as u 		on u.id_usuario = au.id_usuario
+	  inner join punto_venta as pv 	on pv.id_punto_venta = m.id_punto_venta
+	  inner join cine as c 		on c.id_cine = pv.id_cine 	inner join empresa as e
+		on e.id_empresa = c.id_empresa where 	DATE(m.fecha) between DATE($P{fecha_inicio})	and  DATE($P{fecha_fin} )
+		and pv.id_cine = $P{id_cine} 	and pv.id_punto_venta = $P{id_punto_venta} and a.id_articulo =$P{id_articulo} ;]]>
+	</queryString>
+	<field name="fecha" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="id_autorizacion" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="id_movimiento_inventario" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="usuario" class="java.lang.String"/>
+	<field name="comentarios" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tipo" class="java.lang.String"/>
+	<field name="movimiento" class="java.lang.String"/>
+	<field name="nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="id_articulo" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="id_clasificacion_art" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="piezas" class="java.lang.Long"/>
+	<field name="punitario" class="java.math.BigDecimal"/>
+	<field name="total" class="java.math.BigDecimal"/>
+	<field name="existenciaFinal" class="java.math.BigDecimal"/>
+	<columnHeader>
+		<band height="21">
+			<staticText>
+				<reportElement x="6" y="1" width="100" height="20" uuid="6caac561-0301-4be0-b8a3-f832a1279a86"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="109" y="1" width="100" height="20" uuid="40f4f77f-1dc6-491c-bd7f-afa86a89483b"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="214" y="1" width="100" height="20" uuid="a9800071-790a-4eb7-9de6-b3a1aab1ba0f"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Movimiento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="320" y="1" width="100" height="20" uuid="da33b82e-02c4-4b82-a548-316b821fa445"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Piezas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="425" y="1" width="100" height="20" uuid="ce2066be-5431-4ddc-97e0-0fc641015f59"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[P. Unitario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="530" y="1" width="100" height="20" uuid="1c43b03a-6d86-4069-bddb-d42c2e5d405b"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="635" y="1" width="100" height="20" uuid="cca59d15-ff79-4b36-83af-b352600067b8"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Existencia Final]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="25" splitType="Stretch">
+			<textField>
+				<reportElement x="6" y="4" width="100" height="20" uuid="aae759fe-9533-46ed-b1c1-a24802b1166d"/>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="109" y="4" width="100" height="20" uuid="20c4011d-ab0b-489f-b56d-71585b4f63ed"/>
+				<textFieldExpression><![CDATA[$F{tipo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="214" y="4" width="100" height="20" uuid="e6e676c1-2c6d-44c9-809b-2ee20d41e7a3"/>
+				<textFieldExpression><![CDATA[$F{movimiento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="320" y="4" width="100" height="20" uuid="bf7b613c-e45b-4d1c-82ea-0dfd6fec87d8"/>
+				<textFieldExpression><![CDATA[$F{piezas}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="425" y="4" width="100" height="20" uuid="10fd8861-eb3c-40ba-b5de-940b0bd75c72"/>
+				<textFieldExpression><![CDATA[$F{punitario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="530" y="4" width="100" height="20" uuid="8a4e3861-fa61-43da-ae8d-9f1be79a2ad5"/>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="635" y="4" width="100" height="20" uuid="aa7b11a5-fd0c-4bf1-96f0-f86c977f9fa8"/>
+				<textFieldExpression><![CDATA[$F{existenciaFinal}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

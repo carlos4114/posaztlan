@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1excel" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c7f4f4f1-fd4f-46cd-b0bf-8705ec49107b">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1excel" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c7f4f4f1-fd4f-46cd-b0bf-8705ec49107b">
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="73"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="354"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -105,7 +105,7 @@ join formato form on form.id_formato = pro.id_formato
 join precio_x_formato pre on pre.id_formato = pro.id_formato and pre.id_tipo_cliente = bol.id_tipo_cliente
 join impuesto_boleto imp on imp.id_cine = cin.id_cine and imp.activo = 1 and clave='iva'
 join tipo_cliente cli on cli.id_tipo_cliente = bol.id_tipo_cliente
-where pel.id_cine = $P{idCine} and pel.id_distribuidora = $P{idDistribuidora} and pel.id_pelicula = $P{idPelicula} and bol.activo = 0 and DATE(fecha_exhibicion) between DATE($P{fechaInicial}) and DATE($P{fechaFinal})
+where pel.id_cine = $P{idCine} and pel.id_distribuidora = $P{idDistribuidora} and pel.id_pelicula = $P{idPelicula} and bol.activo = 1 and DATE(fecha_exhibicion) between DATE($P{fechaInicial}) and DATE($P{fechaFinal})
 group by bol.id_programacion,pro.id_formato,pro.id_version,bol.id_tipo_cliente,fecha_exhibicion
 order by fecha_exhibicion asc;]]>
 		</queryString>
@@ -143,9 +143,10 @@ order by fecha_exhibicion asc;]]>
 	<parameter name="fechaFinal" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select emp.nombre as razon_social,'' as plaza, '' as rentak,cin.nombre as cine,
-concat(cin.domicilio,'. ',cin.colonia,'. ',cin.municipio, '. CP. ',cin.cp) as direccion,
-concat(cin.municipio,', ',cin.estado) as municipio_estado,
-cin.cp,cin.telefono,cin.municipio,cin.estado,
+concat(cont.calle,'. ',cont.numero,'. ',cont.colonia,'. CP. ',cont.cp) as direccion,
+concat(cont.colonia,'. ',est.nombre) as colonia_estado,cont.colonia,
+est.nombre as estado,cont.ciudad,
+cont.cp,cont.telefono,
 sal.nombre as sala,pel.titulo as programa,dis.nombre as distribuidora,
 ddp.porcentaje + ' %' as porcentaje,
 sum(bol.cantidad) as total_admisiones,
@@ -171,6 +172,8 @@ from boletos_x_ticket bol
 join programacion pro on pro.id_programacion = bol.id_programacion
 join sala sal on sal.id_sala = pro.id_sala
 join cine cin on cin.id_cine = sal.id_cine
+join contacto cont on cont.id_contacto = cin.id_contacto
+join estado est on est.id_estado = cont.id_estado
 join empresa emp on emp.id_empresa = cin.id_empresa
 join pelicula pel on pel.id_pelicula = pro.id_pelicula
 join distribuidora dis on dis.id_distribuidora = pel.id_distribuidora
@@ -182,7 +185,7 @@ join tipo_cliente cli on cli.id_tipo_cliente = bol.id_tipo_cliente
 join derechos_autor_x_pelicula dap on dap.id_pelicula = pro.id_pelicula
 join derechos_distribuidora_x_pelicula ddp on ddp.id_pelicula = pro.id_pelicula
 where pel.id_cine = $P{idCine} and pel.id_distribuidora = $P{idDistribuidora} and pel.id_pelicula = $P{idPelicula}
-and bol.activo = 0 and DATE(fecha_exhibicion) between DATE($P{fechaInicial}) and DATE($P{fechaFinal})
+and bol.activo = 1 and DATE(fecha_exhibicion) between DATE($P{fechaInicial}) and DATE($P{fechaFinal})
 group by pel.id_pelicula;]]>
 	</queryString>
 	<field name="razon_social" class="java.lang.String"/>
@@ -190,17 +193,18 @@ group by pel.id_pelicula;]]>
 	<field name="rentak" class="java.lang.String"/>
 	<field name="cine" class="java.lang.String"/>
 	<field name="direccion" class="java.lang.String"/>
-	<field name="municipio_estado" class="java.lang.String"/>
+	<field name="colonia_estado" class="java.lang.String"/>
+	<field name="colonia" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="estado" class="java.lang.String"/>
+	<field name="ciudad" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="cp" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="telefono" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="municipio" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="estado" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="sala" class="java.lang.String"/>
@@ -226,43 +230,68 @@ group by pel.id_pelicula;]]>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="92" splitType="Stretch">
+		<band height="124" splitType="Stretch">
 			<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
 			<staticText>
-				<reportElement x="37" y="52" width="92" height="20" uuid="1e96f0f4-3494-43a7-b7c1-411182a76975"/>
+				<reportElement x="39" y="80" width="92" height="20" uuid="1e96f0f4-3494-43a7-b7c1-411182a76975"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[PELICULA:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="37" y="12" width="92" height="20" uuid="34b6efd5-ebb3-4d9b-8be7-7cd238b2d15e"/>
+				<reportElement x="39" y="60" width="92" height="20" uuid="34b6efd5-ebb3-4d9b-8be7-7cd238b2d15e"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[SALA:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="37" y="32" width="92" height="20" uuid="468e6e6a-bcc5-4c9b-9164-46e6395e481c"/>
+				<reportElement x="336" y="60" width="92" height="20" uuid="468e6e6a-bcc5-4c9b-9164-46e6395e481c"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[DISTRIBUIDORA:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="140" y="12" width="194" height="20" uuid="3918fc3b-76d6-4313-b072-c6c95da781a4"/>
+				<reportElement x="131" y="60" width="194" height="20" uuid="3918fc3b-76d6-4313-b072-c6c95da781a4"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{sala}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="140" y="52" width="194" height="20" uuid="786b5b8f-c6a5-40d8-af44-24bbc5f6a13f"/>
+				<reportElement x="131" y="80" width="491" height="20" uuid="786b5b8f-c6a5-40d8-af44-24bbc5f6a13f"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{programa}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="140" y="32" width="194" height="20" uuid="ab659f12-ee57-472f-b5bb-f2d92f9e098b"/>
+				<reportElement x="428" y="60" width="194" height="20" uuid="ab659f12-ee57-472f-b5bb-f2d92f9e098b"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{distribuidora}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="37" y="72" width="92" height="20" uuid="d4970af7-7e86-4693-a2b0-f75b44257428"/>
+				<reportElement x="39" y="100" width="92" height="20" uuid="d4970af7-7e86-4693-a2b0-f75b44257428"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="39" y="20" width="583" height="20" uuid="7096549a-6a5f-42b7-8074-30c74d197eb7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{direccion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="39" y="0" width="583" height="20" uuid="47cc0b5b-d84f-4552-b47c-4879e080e43c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{cine}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="39" y="40" width="92" height="20" uuid="55b30214-131a-48aa-9e39-d231f6ccb74d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[TEL:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="131" y="40" width="194" height="20" uuid="7746d4f2-cb98-470a-ba5b-997f2eb5cfc4"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{telefono}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="336" y="40" width="286" height="20" uuid="b83517c5-af73-4fdf-a38b-231cf883dbb3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{colonia_estado}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<detail>
@@ -588,4 +617,15 @@ group by pel.id_pelicula;]]>
 			</staticText>
 		</band>
 	</detail>
+	<noData>
+		<band height="50">
+			<staticText>
+				<reportElement x="0" y="18" width="802" height="20" uuid="7ad0ba2a-bd71-4509-8063-eb82c9e3e660"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[No se encontró registro de ventas.]]></text>
+			</staticText>
+		</band>
+	</noData>
 </jasperReport>

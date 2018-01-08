@@ -11,10 +11,10 @@ public class TipoPromocionAssembler {
 			return null;
 		
 		TipoPromocionVO tipoPromocionVO = new TipoPromocionVO();
-		tipoPromocion.setIdTipoPromocion(tipoPromocion.getIdTipoPromocion());
-		tipoPromocion.setNombre(tipoPromocion.getNombre());
-		tipoPromocion.setDescripcion(tipoPromocion.getDescripcion());
-		tipoPromocion.setClave(tipoPromocion.getClave());
+		tipoPromocionVO.setIdTipoPromocion(tipoPromocion.getIdTipoPromocion());
+		tipoPromocionVO.setNombre(tipoPromocion.getNombre());
+		tipoPromocionVO.setDescripcion(tipoPromocion.getDescripcion());
+		//tipoPromocionVO.setClave(tipoPromocion.getClave());
 		return tipoPromocionVO;
 	}
 	

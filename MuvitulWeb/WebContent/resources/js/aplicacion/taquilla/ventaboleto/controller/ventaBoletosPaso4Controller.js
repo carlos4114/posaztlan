@@ -5,7 +5,7 @@ var VentaBoletosPaso4Controller = angular.module('indexModule').controller("Vent
 	$scope.listaPagos			=[];
 	$scope.listaFormasPago		={};
 	$scope.estatusPagoVO 		={idEstatus:'1',nombre:'PAGADO'}
- 	$scope.pago				    ={subtotalAux:0,subtotal:0, porPagar:0, pagado:0,estatusPagoVO:$scope.estatusPagoVO};
+ 	$scope.pago				    ={subtotalAux:0,subtotal:0, porPagar:0, pagoCon: ' ', pagado:0,estatusPagoVO:$scope.estatusPagoVO};
  	$controller('VentaBoletosPaso3Controller',{$scope : $scope });
  	$controller('VentaBoletosPaso5Controller',{$scope : $scope });
     $controller('modalController',{$scope : $scope });
@@ -47,7 +47,7 @@ var VentaBoletosPaso4Controller = angular.module('indexModule').controller("Vent
   	            
         	 }else if( $scope.pago.cambio>=0 && pago.pagoCon >=0 && $scope.requiereNumCuenta ==false){
  				$scope.cambioTotal = $scope.pago.cambio + $scope.cambioTotal;
- 				$scope.pagoConTotal	= pago.pagoCon + $scope.pagoConTotal;
+ 				$scope.pagoConTotal	= calculosFactory.suma(pago.pagoCon , $scope.pagoConTotal);
  			}
  
 		 }
@@ -58,7 +58,9 @@ var VentaBoletosPaso4Controller = angular.module('indexModule').controller("Vent
 	$scope.seleccionarFormaPago =function( formaPago, formPagos){
 		if(formaPago.requiereNumCuenta == false){
     		$scope.pago.noCuenta ='';
+    		$scope.resetObjetoPago();
     		$scope.requiereNumCuenta=false;
+    		
 		}else
 			$scope.requiereNumCuenta=true;
 		
@@ -69,8 +71,8 @@ var VentaBoletosPaso4Controller = angular.module('indexModule').controller("Vent
 	$scope.resetObjetoPago =function( ){
 //  		$scope.pago.formaPagoVO = null;
   		//$scope.pago.importe = 0.00;
-  		$scope.pago.pagoCon = 0.00;
-  		$scope.pago.cambio = 0.00;
+  		$scope.pago.pagoCon = ' ';
+  		$scope.pago.cambio = '';
   		$scope.pago.noCuenta=' ';
 	}
 	

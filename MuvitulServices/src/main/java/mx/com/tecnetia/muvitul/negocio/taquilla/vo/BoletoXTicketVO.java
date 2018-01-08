@@ -17,7 +17,8 @@ public class BoletoXTicketVO {
 	@JsonDeserialize(using = DateStringToDateDeserializer.class)
 	@JsonSerialize(using = DateToDateStringSerializer.class)
 	private Date fechaExhibicion;
-	
+	private int cantidadPromocion;
+
 	public ProgramacionVO getProgramacionVO() {
 		return programacionVO;
 	}
@@ -47,6 +48,13 @@ public class BoletoXTicketVO {
 	}
 	public void setFechaExhibicion(Date fechaExhibicion) {
 		this.fechaExhibicion = fechaExhibicion;
+	}
+	
+	public int getCantidadPromocion() {
+		return cantidadPromocion;
+	}
+	public void setCantidadPromocion(int cantidadPromocion) {
+		this.cantidadPromocion = cantidadPromocion;
 	}
 	
 }

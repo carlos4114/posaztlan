@@ -18,12 +18,12 @@ import org.springframework.transaction.annotation.Transactional;
 import mx.com.tecnetia.muvitul.infraservices.servicios.BusinessGlobalException;
 import mx.com.tecnetia.muvitul.infraservices.servicios.NotFoundException;
 import mx.com.tecnetia.muvitul.negocio.reportes.vo.ReporteJasperVO;
-import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
 
@@ -50,9 +50,9 @@ public class ReporteJasperBO {
  
 	}
 
- 	public JasperPrint getReporteEmptyDataSource(ReporteJasperVO reporteVO) throws JRException  {
+ 	public JasperPrint getReporteEmptyDataSource(ReporteJasperVO reporteVO, JRBeanCollectionDataSource jRBeanCollectionDataSource) throws JRException  {
 		String rutaArchivo = context.getRealPath(reporteVO.getRutaReporte());
-		return (JasperPrint) JasperFillManager.fillReport(rutaArchivo, reporteVO.getParametros(),new JREmptyDataSource());
+		return (JasperPrint) JasperFillManager.fillReport(rutaArchivo, reporteVO.getParametros(), jRBeanCollectionDataSource);
  
 	}
 
@@ -99,11 +99,42 @@ public class ReporteJasperBO {
 		exporter.exportReport();
 	}
 	
-	@SuppressWarnings("deprecation")
-	public byte[] getReporteXls(ReporteJasperVO reporteVO) throws JRException, IOException   {
+	@Transactional(readOnly = true)
+	public byte[] getReporteXls(ReporteJasperVO reporteVO)
+			throws BusinessGlobalException, NotFoundException, HibernateException, IOException, JRException {
 		byte[] excel = null;
 		// Se corre el reporte y se obtiene
-		JasperPrint jprint = this.getReporteEmptyDataSource(reporteVO);
+		JasperPrint jprint = this.getReporte(reporteVO);
+
+		JRXlsExporter exporter = new JRXlsExporter();
+		ByteArrayOutputStream  xlsReport = new ByteArrayOutputStream();
+
+		exporter.setParameter(JRExporterParameter.JASPER_PRINT, jprint);
+		exporter.setParameter(JRXlsExporterParameter.IS_ONE_PAGE_PER_SHEET, Boolean.TRUE);
+		exporter.setParameter(JRXlsExporterParameter.IS_DETECT_CELL_TYPE, Boolean.TRUE);
+		exporter.setParameter(JRXlsExporterParameter.IS_WHITE_PAGE_BACKGROUND, Boolean.TRUE);
+		exporter.setParameter(JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS, Boolean.TRUE);
+//		exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, reporteVO.getRutaPdf());
+		exporter.setParameter(JRXlsExporterParameter.IS_ONE_PAGE_PER_SHEET, Boolean.FALSE);
+		exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, xlsReport);            
+
+		exporter.exportReport();
+		
+//		exporter.setParameter(JRExporterParameter.JASPER_PRINT, jprint);
+//		exporter.exportReport();
+//
+		excel = xlsReport.toByteArray();
+		xlsReport.close();
+		
+		return excel;
+	}
+	
+	
+	@SuppressWarnings("deprecation")
+	public byte[] getReporteXls(ReporteJasperVO reporteVO,JRBeanCollectionDataSource jRBeanCollectionDataSource) throws JRException, IOException   {
+		byte[] excel = null;
+		// Se corre el reporte y se obtiene
+		JasperPrint jprint = this.getReporteEmptyDataSource(reporteVO, jRBeanCollectionDataSource);
 
 		JRXlsExporter exporter = new JRXlsExporter();
 

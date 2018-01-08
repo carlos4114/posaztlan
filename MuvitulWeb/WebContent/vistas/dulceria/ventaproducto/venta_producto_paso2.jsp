@@ -152,8 +152,8 @@
 								<label class="control-label col-md-3 col-sm-3 col-xs-12"
 									for="monto">Pago Con <span class="required">*</span></label>
 								<div class="col-md-6 col-sm-6 col-xs-12">
-									<input type="text" id="pagoCon" name="pagoCon" required
-										ng-model="pago.pagoCon" numeric min="-20" max="10000"
+									<input type="text" id="pagoCon" name="pagoCon" required ng-focus="pago.pagoCon=''"
+										ng-model="pago.pagoCon" min="-20" max="10000"
 										decimals="2"
 										ng-change="calcularCambio(pago.pagoCon,pago.importe)"
 										class="form-control col-md-7 col-xs-12" placeholder=" 00.00 ">
@@ -184,7 +184,7 @@
 									class="required">*</span>
 								</label>
 								<div class="col-md-6 col-sm-6 col-xs-12">
-									<input type="text" id="numero-cuenta" required
+									<input type="text" id="numero-cuenta" required ng-focus="pago.noCuenta=''"
 										class="form-control col-md-7 col-xs-12" integer-number
 										ng-model="pago.noCuenta" name="noCuenta" maxlength="4"
 										placeholder=" &Uacute;ltimos 4 d&iacute;gitos ">

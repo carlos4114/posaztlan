@@ -5,7 +5,7 @@ var VentaProductoPaso2Controller = angular.module('indexModule').controller("Ven
 	$scope.listaPagos			=[];
 	$scope.listaFormasPago		={};
 	$scope.estatusPagoVO 		={idEstatus:'1',nombre:'PAGADO'}
- 	$scope.pago				    ={pagoCon:0.00, cambio:0.00, subtotalAux:0,subtotal:0, porPagar:0, pagado:0,estatusPagoVO:$scope.estatusPagoVO};
+ 	$scope.pago				    ={subtotalAux:0,subtotal:0, porPagar:0, pagado:0, pagoCon: ' ', estatusPagoVO:$scope.estatusPagoVO};
 	
 	$scope.consultarFormasPago =function(){
 		dulceriaService.consultarFormasPago().success(function(data) {	
@@ -17,6 +17,7 @@ var VentaProductoPaso2Controller = angular.module('indexModule').controller("Ven
 	$scope.seleccionarFormaPago =function( formaPago, formPagos){
 		if(formaPago.requiereNumCuenta == false){
     		$scope.pago.noCuenta ='';
+    		$scope.resetObjetoPago();
     		$scope.requiereNumCuenta=false;
 		}else
 			$scope.requiereNumCuenta=true;
@@ -69,7 +70,7 @@ var VentaProductoPaso2Controller = angular.module('indexModule').controller("Ven
 	            $scope.showAviso("El monto que quieres pagar es menor al restante por pagar.");
     	 }else 	if( $scope.pago.cambio>=0 && pago.pagoCon >=0 && $scope.requiereNumCuenta ==false){
  				$scope.cambioTotal = $scope.pago.cambio + $scope.cambioTotal;
- 				$scope.pagoConTotal	= pago.pagoCon + $scope.pagoConTotal;
+ 				$scope.pagoConTotal	= calculosFactory.suma(pago.pagoCon , $scope.pagoConTotal);
  			}
  			
 
@@ -81,8 +82,8 @@ var VentaProductoPaso2Controller = angular.module('indexModule').controller("Ven
 	$scope.resetObjetoPago =function( ){
 //		$scope.pago.formaPagoVO = null;
 		//$scope.pago.importe = 0.00;
-		$scope.pago.pagoCon = 0.00;
-		$scope.pago.cambio = 0.00;
+		$scope.pago.pagoCon = ' ';
+		$scope.pago.cambio = '';
 		$scope.pago.noCuenta=' ';
 }
 
@@ -109,7 +110,11 @@ var VentaProductoPaso2Controller = angular.module('indexModule').controller("Ven
 	};
 	
 	$scope.calcularCambio =function(pagoCon,pagoImporte){
-		if (pagoCon > 0 && pagoImporte < pagoCon)
+		if (pagoImporte > pagoCon){
+			$scope.pago.cambio='';
+		}
+		
+		if (pagoCon >= 0 && pagoImporte <= pagoCon)
 			$scope.pago.cambio=pagoCon-pagoImporte;
 		
 	}

@@ -88,7 +88,7 @@
 								</div>
 								<div class="row">
 									<div
-										class="col-lg-12 col-md-12 col-sm-12 col-xs-12  col-lg-offset-4 col-md-offset-4 col-xs-offset-3">
+										class="col-lg-5 col-md-4 col-sm-5  col-xs-12  col-lg-offset-4 col-md-offset-5  col-sm-offset-5  col-xs-offset-4">
 										<dir-pagination-controls></dir-pagination-controls>
 									</div>
 								</div>

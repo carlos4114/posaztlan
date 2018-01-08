@@ -41,10 +41,8 @@ public class BoletoXTicketAssembler {
 		boletoXTicket.setImporte(boletoXTicketVO.getImporte());
 		boletoXTicket.setFechaExhibicion(boletoXTicketVO.getFechaExhibicion());
 		boletoXTicket.setActivo(true);
+		boletoXTicket.setCantidadPromocion(boletoXTicketVO.getCantidadPromocion());
 
-		
-		
-		
 		return boletoXTicket;
 	}
 

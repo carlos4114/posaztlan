@@ -82,7 +82,8 @@ public class PromocionBO {
 				case Constantes.PROMOCION_NXFIJO:
 
 					if (cantidadBoletos >= varN && varPrecio > 0) {
-						Collections.sort(importes,Collections.reverseOrder());
+						Collections.sort(importes);
+						//Collections.sort(importes,Collections.reverseOrder());
 						BigDecimal importe = new BigDecimal(0);
 
 						for (int i = 0; i < varN; i++) {

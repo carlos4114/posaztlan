@@ -91,7 +91,7 @@
 									<div class="input-group">
 										<span class="input-group-addon"><i
 											class="fa fa-sign-in"></i></span><select class="form-control"
-											id="listProveedor" name="listProveedor" required="required"
+											id="listProveedor" name="listProveedor" directiva-select2 required="required"
 											ng-options="inventario as inventario.proveedor.nombre for inventario in listaArticulosExistencia"
 											ng-model="inventario"  ng-change="actualizaExistencia(inventario)">
 											<option value="" selected="selected">Selecciona proveedor</option>

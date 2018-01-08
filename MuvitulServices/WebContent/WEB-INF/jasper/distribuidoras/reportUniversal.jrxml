@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1excel" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c7f4f4f1-fd4f-46cd-b0bf-8705ec49107b">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1excel" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c7f4f4f1-fd4f-46cd-b0bf-8705ec49107b">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="218"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -97,7 +97,7 @@
 			<![CDATA[select DATE_FORMAT(fecha_exhibicion, "%d-%m-%Y") as fecha_exhibicion,
 '000' as rentrak,pel.titulo as pelicula,DATE_FORMAT(pro.horario,"%H:%i") as funcion,
 form.nombre as formato,ver.nombre as version,sal.nombre as sala,
-cli.nombre as boleto,sum(bol.cantidad) as admision,'' as promocion,
+cli.nombre as boleto,sum(bol.cantidad) as admision,IFNULL(promo.nombre,'NO APLICA') as promocion,
 FORMAT(bol.importe/bol.cantidad,2) as precio,
 FORMAT(sum(bol.importe),2) as entrada,
 FORMAT(sum(bol.importe) * (imp.porcentaje/100),2) as iva,
@@ -112,9 +112,11 @@ join formato form on form.id_formato = pro.id_formato
 join precio_x_formato pre on pre.id_formato = pro.id_formato and pre.id_tipo_cliente = bol.id_tipo_cliente
 join impuesto_boleto imp on imp.id_cine = cin.id_cine and imp.activo = 1 and clave='iva'
 join tipo_cliente cli on cli.id_tipo_cliente = bol.id_tipo_cliente
+left join promociones_x_ticket pxt on pxt.id_ticket = bol.id_ticket
+left join promocion promo on promo.id_promocion = pxt.id_promocion
 join derechos_autor_x_pelicula dap on dap.id_pelicula = pro.id_pelicula
 join derechos_distribuidora_x_pelicula ddp on ddp.id_pelicula = pro.id_pelicula
-where pel.id_cine = $P{idCine} and pel.id_distribuidora = $P{idDistribuidora} and pel.id_pelicula = $P{idPelicula} and bol.activo = 0 and DATE(fecha_exhibicion) between DATE($P{fechaInicial}) and DATE($P{fechaFinal})
+where pel.id_cine = $P{idCine} and pel.id_distribuidora = $P{idDistribuidora} and pel.id_pelicula = $P{idPelicula} and bol.activo = 1 and DATE(fecha_exhibicion) between DATE($P{fechaInicial}) and DATE($P{fechaFinal})
 group by bol.id_programacion,pro.id_formato,pro.id_version,bol.id_tipo_cliente,fecha_exhibicion
 order by fecha_exhibicion asc;]]>
 		</queryString>
@@ -144,9 +146,9 @@ order by fecha_exhibicion asc;]]>
 	<parameter name="fechaFinal" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select emp.nombre as razon_social,'' as plaza, '' as rentak,cin.nombre as cine,
-concat(cin.domicilio,'. ',cin.colonia,'. ',cin.municipio, '. CP. ',cin.cp) as direccion,
-concat(cin.municipio,', ',cin.estado) as municipio_estado,cin.ciudad,
-cin.cp,cin.telefono,cin.municipio,cin.estado,
+concat(cont.calle,'. ',cont.numero,'. ',cont.colonia,'. CP. ',cont.cp) as direccion,
+est.nombre as estado,cont.ciudad,
+cont.cp,cont.telefono,
 sal.nombre as sala,pel.titulo as programa,dis.nombre as distribuidora,
 ddp.porcentaje + ' %' as porcentaje,
 sum(bol.cantidad) as total_admisiones,
@@ -181,6 +183,8 @@ from boletos_x_ticket bol
 join programacion pro on pro.id_programacion = bol.id_programacion
 join sala sal on sal.id_sala = pro.id_sala
 join cine cin on cin.id_cine = sal.id_cine
+join contacto cont on cont.id_contacto = cin.id_contacto
+join estado est on est.id_estado = cont.id_estado
 join empresa emp on emp.id_empresa = cin.id_empresa
 join pelicula pel on pel.id_pelicula = pro.id_pelicula
 join distribuidora dis on dis.id_distribuidora = pel.id_distribuidora
@@ -192,7 +196,7 @@ join tipo_cliente cli on cli.id_tipo_cliente = bol.id_tipo_cliente
 join derechos_autor_x_pelicula dap on dap.id_pelicula = pro.id_pelicula
 join derechos_distribuidora_x_pelicula ddp on ddp.id_pelicula = pro.id_pelicula
 where pel.id_cine = $P{idCine} and pel.id_distribuidora = $P{idDistribuidora} and pel.id_pelicula = $P{idPelicula}
-and bol.activo = 0 and DATE(fecha_exhibicion) between DATE($P{fechaInicial}) and DATE($P{fechaFinal})
+and bol.activo = 1 and DATE(fecha_exhibicion) between DATE($P{fechaInicial}) and DATE($P{fechaFinal})
 group by pel.id_pelicula;]]>
 	</queryString>
 	<field name="razon_social" class="java.lang.String"/>
@@ -200,7 +204,7 @@ group by pel.id_pelicula;]]>
 	<field name="rentak" class="java.lang.String"/>
 	<field name="cine" class="java.lang.String"/>
 	<field name="direccion" class="java.lang.String"/>
-	<field name="municipio_estado" class="java.lang.String"/>
+	<field name="estado" class="java.lang.String"/>
 	<field name="ciudad" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -208,12 +212,6 @@ group by pel.id_pelicula;]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="telefono" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="municipio" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="estado" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="sala" class="java.lang.String"/>
@@ -505,20 +503,20 @@ $P{fechaFinal}.substring(5,7).equals("11")?"NOVIEMBRE":"DICIEMBRE"]]></textField
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="126" uuid="ca4721f6-db69-4a5c-8247-00581a8426aa">
+					<jr:column width="206" uuid="ca4721f6-db69-4a5c-8247-00581a8426aa">
 						<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
 						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement isPrintRepeatedValues="false" x="0" y="0" width="126" height="30" uuid="8decd223-7a6a-46bd-926a-be53d42c02b9">
+								<reportElement isPrintRepeatedValues="false" x="0" y="0" width="206" height="30" uuid="8decd223-7a6a-46bd-926a-be53d42c02b9">
 									<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
 								</reportElement>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<text><![CDATA[DETALLE DE   PROMOCIÓN / CORTESIA]]></text>
+								<text><![CDATA[DETALLE DE PROMOCIÓN / CORTESIA]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell height="20" rowSpan="1">
 							<textField>
-								<reportElement x="0" y="0" width="126" height="20" uuid="01ac2a81-a5bf-428e-9caa-f9d15a6f75d0"/>
+								<reportElement x="0" y="0" width="206" height="20" uuid="01ac2a81-a5bf-428e-9caa-f9d15a6f75d0"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{promocion}]]></textFieldExpression>
 							</textField>
@@ -678,4 +676,15 @@ $P{fechaFinal}.substring(5,7).equals("11")?"NOVIEMBRE":"DICIEMBRE"]]></textField
 			</componentElement>
 		</band>
 	</detail>
+	<noData>
+		<band height="50">
+			<staticText>
+				<reportElement x="0" y="17" width="802" height="20" uuid="1dfd5744-4c55-4313-91c8-ba5f356eb7c8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[No se encontró registro de ventas.]]></text>
+			</staticText>
+		</band>
+	</noData>
 </jasperReport>

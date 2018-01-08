@@ -16,6 +16,6 @@ import mx.com.tecnetia.muvitul.negocio.reportes.vo.ArchivoExcelVO;
 @RequestMapping("/reportes")
 public interface ReporteVentaFacadeI {
 	@RequestMapping(value = "/ventas", method = RequestMethod.GET)
-	public ResponseEntity<ArchivoExcelVO> reporteVentaDulceriaTaquilla(HttpServletRequest request,@RequestParam(value = "codigoReporte")String codigoReporte,@RequestParam(value = "fechaInicio")String fechaInicio,@RequestParam(value = "fechaFin")String fechaFin) throws  Exception;
+	public ResponseEntity<ArchivoExcelVO> reporteVentaDulceriaTaquilla(HttpServletRequest request,@RequestParam(value = "codigoReporte")String codigoReporte,@RequestParam(value = "fechaInicio")String fechaInicio,@RequestParam(value = "fechaFin")String fechaFin, @RequestParam(value = "idArticulo")String idArticulo) throws  Exception;
 
 }

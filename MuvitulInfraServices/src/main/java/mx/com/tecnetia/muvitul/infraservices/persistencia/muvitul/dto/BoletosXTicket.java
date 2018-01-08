@@ -31,6 +31,7 @@ public class BoletosXTicket implements java.io.Serializable {
 	private BigDecimal importe;
 	private Date fechaExhibicion;
 	private boolean activo;
+	private int cantidadPromocion;
 
 	public BoletosXTicket() {
 	}
@@ -135,4 +136,13 @@ public class BoletosXTicket implements java.io.Serializable {
 		this.activo = activo;
 	}
 
+	@Column(name = "cantidad_promocion", nullable = false)
+	public int getCantidadPromocion() {
+		return cantidadPromocion;
+	}
+
+	public void setCantidadPromocion(int cantidadPromocion) {
+		this.cantidadPromocion = cantidadPromocion;
+	}
+	
 }

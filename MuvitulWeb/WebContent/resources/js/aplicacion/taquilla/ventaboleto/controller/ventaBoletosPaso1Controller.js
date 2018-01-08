@@ -164,7 +164,11 @@ var VentaBoletosPaso1Controller = angular.module('indexModule').controller('vent
 	}
 
 	$scope.calcularCambio =function(pagoCon,pagoImporte){
-		if (pagoCon > 0 && pagoImporte < pagoCon)
+		if (pagoImporte > pagoCon){
+			$scope.pago.cambio='';
+		}
+		
+		if (pagoCon >= 0 && pagoImporte <= pagoCon)
 			$scope.pago.cambio=pagoCon-pagoImporte;
 		
 	}
