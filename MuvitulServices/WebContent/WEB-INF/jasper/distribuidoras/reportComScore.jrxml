@@ -98,12 +98,12 @@ FORMAT(sum(bol.importe) * (imp.porcentaje/100),2) as iva,
 FORMAT(sum(bol.importe) - sum(bol.importe) * (imp.porcentaje/100),2) as neto,
 (select sum(bol_total.cantidad)from boletos_x_ticket bol_total
 join programacion pro_total on pro_total.id_programacion = bol_total.id_programacion
-where bol_total.activo = 0 and pro_total.id_sala = pro.id_sala and DATE(bol_total.fecha_exhibicion) = bol.fecha_exhibicion
+where bol_total.activo = 1 and pro_total.id_sala = pro.id_sala and DATE(bol_total.fecha_exhibicion) = bol.fecha_exhibicion
 group by pro_total.id_sala,bol_total.fecha_exhibicion
 ) as admision_total,
 FORMAT((select sum(bol_total.importe)from boletos_x_ticket bol_total
 join programacion pro_total on pro_total.id_programacion = bol_total.id_programacion
-where bol_total.activo = 0 and pro_total.id_sala = pro.id_sala and DATE(bol_total.fecha_exhibicion) = bol.fecha_exhibicion
+where bol_total.activo = 1 and pro_total.id_sala = pro.id_sala and DATE(bol_total.fecha_exhibicion) = bol.fecha_exhibicion
 group by pro_total.id_sala,bol_total.fecha_exhibicion
 ),2) as entrada_total
 from boletos_x_ticket bol
