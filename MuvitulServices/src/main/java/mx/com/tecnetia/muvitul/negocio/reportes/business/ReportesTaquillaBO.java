@@ -3,10 +3,8 @@ package mx.com.tecnetia.muvitul.negocio.reportes.business;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.servlet.ServletContext;
@@ -20,18 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import mx.com.tecnetia.muvitul.infraservices.servicios.BusinessGlobalException;
 import mx.com.tecnetia.muvitul.infraservices.servicios.NotFoundException;
-import mx.com.tecnetia.muvitul.negocio.configuracion.vo.EmpresaVO;
 import mx.com.tecnetia.muvitul.negocio.reportes.vo.ArchivoExcelVO;
-import mx.com.tecnetia.muvitul.negocio.reportes.vo.DetalleInventarioProductoVO;
-import mx.com.tecnetia.muvitul.negocio.reportes.vo.ProductoVO;
-import mx.com.tecnetia.muvitul.negocio.reportes.vo.ProgramacionVO;
 import mx.com.tecnetia.muvitul.negocio.reportes.vo.ReporteJasperVO;
-import mx.com.tecnetia.muvitul.negocio.reportes.vo.ReportesKardexVO;
-import mx.com.tecnetia.muvitul.negocio.reportes.vo.SalaVO;
-import mx.com.tecnetia.muvitul.negocio.reportes.vo.TaquillaVentaVO;
-import mx.com.tecnetia.muvitul.negocio.taquilla.vo.CineVO;
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @Service
 @Transactional
@@ -84,31 +73,31 @@ public class ReportesTaquillaBO {
 
 	}
 
-	public ArchivoExcelVO generarReporteVentas(Integer idCine, Integer idUsuario, String fechaInicio, String fechaFin) {
+	public ArchivoExcelVO generarReporteVentas(Integer idCine, Integer idUsuario,Integer idPuntoVenta, String fechaInicio, String fechaFin) {
 
-		archivoExcelVO = new ArchivoExcelVO("Kardex" + fechaInicio + fechaFin);
+		archivoExcelVO = new ArchivoExcelVO("VentasDiario" + fechaFin + fechaFin);
 		ResourceBundle cfg = ResourceBundle.getBundle("config");
-		String rutaKardexJasper = cfg.getString("reporte.cines.inventario.kardex.jasper");
-		String rutaReporteXls = context.getRealPath(cfg.getString("reporte.cines.inventario.kardex.xls"));
-		String rutaKardex = context.getRealPath(cfg.getString("reporte.cines.inventario.kardex") + "\\");
+		String rutaVentaDiarioJasper = cfg.getString("reporte.cines.ventas.diarios.jasper");
+		String rutaReporteXls = context.getRealPath(cfg.getString("reporte.cines.ventas.diarios.xls"));
+		String rutaVentaDiario = context.getRealPath(cfg.getString("reporte.cines.ventas.diarios") + "\\");
 
 		HashMap<String, Object> paramKardex = new HashMap<String, Object>();
-		paramKardex.put("id_cine", idCine);
-		paramKardex.put("emision", "" + new Date());
-		paramKardex.put("periodo", fechaInicio + fechaFin);
-		paramKardex.put("fecha_inicio", fechaInicio);
-		paramKardex.put("fecha_fin", fechaFin);
-		paramKardex.put("SUBREPORT_DIR", rutaKardex + "\\");
+		paramKardex.put("id_cine", new Integer("1"));
+		paramKardex.put("fecha_inicio", "2017-01-01");
+		paramKardex.put("fecha_fin", "2018-02-01");
+		paramKardex.put("id_punto_venta",idPuntoVenta);
+		paramKardex.put("tipo_reporte","DIARIO");
+		paramKardex.put("datasourceTaquilla",Reporte.getReporte());
+		paramKardex.put("SUBREPORT_DIR", rutaVentaDiario + "\\");
  
 		ReporteJasperVO reporteJasperVO = new ReporteJasperVO();
-		reporteJasperVO.setRutaReporte(rutaKardexJasper);
+		reporteJasperVO.setRutaReporte(rutaVentaDiarioJasper);
 		reporteJasperVO.setRutaPdf(rutaReporteXls);
 		reporteJasperVO.setParametros(paramKardex);
 		try {
 			archivoExcelVO.setArchivo(reporteJasperBO.getReporteXls(reporteJasperVO));
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+ 			e.printStackTrace();
 		}
 
 		return archivoExcelVO;

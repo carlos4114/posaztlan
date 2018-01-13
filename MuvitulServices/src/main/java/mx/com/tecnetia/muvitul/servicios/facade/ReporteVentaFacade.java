@@ -33,7 +33,7 @@ public class ReporteVentaFacade implements ReporteVentaFacadeI {
 		if (codigoReporte.equals("KARDEX"))
 			archivoExcelVO= reporteJasperController.crearReporteXls(idCine,idUsuario,idPuntoVenta,  fechaInicio,  fechaFin,  idArticulo);
 		else if(codigoReporte.equals("VENTAS-DIA"))
-			archivoExcelVO= reporteJasperController.generarReporteVentas(idCine,idUsuario,  fechaInicio,  fechaFin);
+			archivoExcelVO= reporteJasperController.generarReporteVentas(idCine,idUsuario,idPuntoVenta,  fechaInicio,  fechaFin);
 		else if(codigoReporte.equals("VENTAS-SEMANA"))
 			archivoExcelVO= reporteJasperController.generarReporteVentasSemanal(idCine,idUsuario,  fechaInicio,  fechaFin);
 		else if(codigoReporte.equals("VENTAS-MENSUAL"))

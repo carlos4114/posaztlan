@@ -15,7 +15,7 @@ angular.module('indexModule').service('reportesService', ['$http','GlobalFactory
 		        params: {"codigoReporte" : reporteVO.tipoReporte.codigo,
 		        		"fechaInicio" : reporteVO.fechaInicio , 
 		        		"fechaFin" : reporteVO.fechaFin,
-		        		"idArticulo":reporteVO.articulo.idArticulo}
+		        		"idArticulo":3 }
 		    });
 	 }
 }]);
