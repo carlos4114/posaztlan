@@ -35,9 +35,9 @@ public class ReporteVentaFacade implements ReporteVentaFacadeI {
 		else if(codigoReporte.equals("VENTAS-DIA"))
 			archivoExcelVO= reporteJasperController.generarReporteVentas(idCine,idUsuario,idPuntoVenta,  fechaInicio,  fechaFin);
 		else if(codigoReporte.equals("VENTAS-SEMANA"))
-			archivoExcelVO= reporteJasperController.generarReporteVentasSemanal(idCine,idUsuario,  fechaInicio,  fechaFin);
+			archivoExcelVO= reporteJasperController.generarReporteVentasSemanal(idCine,idUsuario,idPuntoVenta,  fechaInicio,  fechaFin);
 		else if(codigoReporte.equals("VENTAS-MENSUAL"))
-			archivoExcelVO= reporteJasperController.generarReporteVentasMensual(idCine,idUsuario,  fechaInicio,  fechaFin);
+			archivoExcelVO= reporteJasperController.generarReporteVentasMensual(idCine,idUsuario, idPuntoVenta, fechaInicio,  fechaFin);
 
 		if (archivoExcelVO == null ) {
 			throw new NotFoundException("No encontrado");
