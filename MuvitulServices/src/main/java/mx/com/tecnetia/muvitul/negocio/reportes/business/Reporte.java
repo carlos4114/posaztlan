@@ -7,17 +7,17 @@ public class Reporte {
 	/**
 	 * @param args
 	 */
-	public static ArrayList<Sala> getReporte() {
+	public static ArrayList<Sala> getReporteDiario() {
 		ArrayList<Sala> salas = new ArrayList<Sala>();
 
-		salas.add(new Sala(new Integer("1"),"Sala 1", getDatos()));
-		salas.add(new Sala(new Integer("2"),"Sala 2", getDatos()));
-		salas.add(new Sala(new Integer("3"),"Sala 3", getDatos()));
+		salas.add(new Sala(new Integer("1"),"Sala 1", getProgramaciones()));
+		salas.add(new Sala(new Integer("2"),"Sala 2", getProgramaciones()));
+		salas.add(new Sala(new Integer("3"),"Sala 3", getProgramaciones()));
 
 		return salas;
 	}
 
-	public static ArrayList<Data> getDatos(){
+	public static ArrayList<Data> getProgramaciones(){
 		  
 		  ArrayList<Data> data = new ArrayList<Data>();
 		  data.add( new Data(new Integer("1"),"Coco","14:45:00",new Integer("2"),new Double("10.0"),new Double("20.0"),"NIÑO"));
@@ -43,7 +43,7 @@ public class Reporte {
 		 }
 
 	
-	public static ArrayList<TaquillaSemanal> getReporteSemanal() {
+	public static ArrayList<TaquillaSemanal> getReporteTaquillaSemanal() {
 		ArrayList<TaquillaSemanal> taquillaSemanal = new ArrayList<TaquillaSemanal>();
 
 		taquillaSemanal.add(new TaquillaSemanal( "MARTES",new Integer("2"),"Resident Evil 6: El capitulo final",new Double("50.00"),new Integer("5"),new Double("250.00"),"-15"));
@@ -70,6 +70,36 @@ public class Reporte {
 		dulceriaSemanal.add(new DulceriaSemanal( "LUNES",new Integer("1"),"Ref-HogDog",new Double("100.00"),new Integer("5"),new Double("500.00")));
 
 		return dulceriaSemanal;
+	}
+	
+	
+	
+	public static ArrayList<TaquillaMensual> getReporteTaquillaMensual() {
+		ArrayList<TaquillaMensual> taquillaMensual = new ArrayList<TaquillaMensual>();
+
+		taquillaMensual.add(new TaquillaMensual( "Semana1",new Integer("1"),"Resident Evil 6: El capitulo final",new Double("50.00"),new Integer("5"),new Double("250.00"),"-15"));
+		taquillaMensual.add(new TaquillaMensual( "Semana2",new Integer("2"),"Resident Evil 6: El capitulo final",new Double("50.00"),new Integer("2"),new Double("100.00"),"-15"));
+		taquillaMensual.add(new TaquillaMensual( "Semana3",new Integer("3"),"Resident Evil 6: El capitulo final",new Double("50.00"),new Integer("2"),new Double("100.00"),"-15"));
+		taquillaMensual.add(new TaquillaMensual( "Semana1",new Integer("1"),"El Aro 3",new Double("60.00"),new Integer("5"),new Double("300.00"),"-15"));
+		taquillaMensual.add(new TaquillaMensual( "Semana2",new Integer("2"),"El Aro 3",new Double("60.00"),new Integer("5"),new Double("300.00"),"-15"));
+		taquillaMensual.add(new TaquillaMensual( "Semana4",new Integer("4"),"El Aro 3",new Double("60.00"),new Integer("5"),new Double("300.00"),"-15"));
+		taquillaMensual.add(new TaquillaMensual( "Semana5",new Integer("5"),"Terminator 3",new Double("60.00"),new Integer("5"),new Double("300.00"),"-15"));
+        
+		return taquillaMensual;
+	}
+	
+	public static ArrayList<DulceriaMensual> getReporteDulceriaMensual() {
+		ArrayList<DulceriaMensual> dulceriaMensual = new ArrayList<DulceriaMensual>();
+
+		dulceriaMensual.add(new DulceriaMensual( "Semana1",new Integer("1"),"Nachos",new Double("30.00"),new Integer("2"),new Double("60.00")));
+		dulceriaMensual.add(new DulceriaMensual( "Semana2",new Integer("2"),"Nachos",new Double("30.00"),new Integer("5"),new Double("150.00")));
+		dulceriaMensual.add(new DulceriaMensual( "Semana3",new Integer("3"),"Nachos",new Double("30.00"),new Integer("5"),new Double("150.00")));
+		dulceriaMensual.add(new DulceriaMensual( "Semana4",new Integer("4"),"Refresco",new Double("30.00"),new Integer("5"),new Double("150.00")));
+		dulceriaMensual.add(new DulceriaMensual( "Semana3",new Integer("3"),"Ref-HogDog",new Double("100.00"),new Integer("5"),new Double("500.00")));
+		dulceriaMensual.add(new DulceriaMensual( "Semana5",new Integer("5"),"Ref-HogDog",new Double("100.00"),new Integer("5"),new Double("500.00")));
+		dulceriaMensual.add(new DulceriaMensual( "Semana5",new Integer("5"),"Ref-HogDog",new Double("100.00"),new Integer("5"),new Double("500.00")));
+
+		return dulceriaMensual;
 	}
 	
 }

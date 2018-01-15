@@ -82,7 +82,7 @@ public class ReportesTaquillaBO {
 		paramKardex.put("fecha_fin", "2018-02-01");
 		paramKardex.put("id_punto_venta",idPuntoVenta);
 		paramKardex.put("tipo_reporte","DIARIO");
-		paramKardex.put("datasourceTaquilla",Reporte.getReporte());
+		paramKardex.put("datasourceTaquilla",Reporte.getReporteDiario());
 		paramKardex.put("SUBREPORT_DIR", rutaVentaDiario + "\\");
  
 		ReporteJasperVO reporteJasperVO = new ReporteJasperVO();
@@ -113,7 +113,7 @@ public class ReportesTaquillaBO {
 		paramKardex.put("fecha_fin", "2018-02-01");
 		paramKardex.put("id_punto_venta",idPuntoVenta);
 		paramKardex.put("tipo_reporte","SEMANAL");
-		paramKardex.put("datasourceTaquilla",Reporte.getReporteSemanal());
+		paramKardex.put("datasourceTaquilla",Reporte.getReporteTaquillaSemanal());
 		paramKardex.put("datasourceDulceria",Reporte.getReporteDulceriaSemanal());
 		paramKardex.put("SUBREPORT_DIR", rutaVentaDiario + "\\");
  
@@ -145,8 +145,8 @@ public class ReportesTaquillaBO {
 		paramKardex.put("fecha_fin", "2018-02-01");
 		paramKardex.put("id_punto_venta",idPuntoVenta);
 		paramKardex.put("tipo_reporte","MENSUAL");
-		paramKardex.put("datasourceTaquilla",Reporte.getReporteSemanal());
-		paramKardex.put("datasourceDulceria",Reporte.getReporteDulceriaSemanal());
+		paramKardex.put("datasourceTaquilla",Reporte.getReporteTaquillaMensual());
+		paramKardex.put("datasourceDulceria",Reporte.getReporteDulceriaMensual());
 		paramKardex.put("SUBREPORT_DIR", rutaVentaMensual + "\\");
  
 		ReporteJasperVO reporteJasperVO = new ReporteJasperVO();

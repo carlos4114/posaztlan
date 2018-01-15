@@ -92,23 +92,23 @@
 		<queryString>
 			<![CDATA[]]>
 		</queryString>
-		<field name="precio" class="java.lang.Double">
-			<fieldDescription><![CDATA[precio]]></fieldDescription>
+		<field name="numSemana" class="java.lang.Integer">
+			<fieldDescription><![CDATA[numSemana]]></fieldDescription>
 		</field>
 		<field name="cantidad" class="java.lang.Integer">
 			<fieldDescription><![CDATA[cantidad]]></fieldDescription>
 		</field>
-		<field name="diaSemana" class="java.lang.String">
-			<fieldDescription><![CDATA[diaSemana]]></fieldDescription>
+		<field name="total" class="java.lang.Double">
+			<fieldDescription><![CDATA[total]]></fieldDescription>
+		</field>
+		<field name="nombreSemana" class="java.lang.String">
+			<fieldDescription><![CDATA[nombreSemana]]></fieldDescription>
 		</field>
 		<field name="producto" class="java.lang.String">
 			<fieldDescription><![CDATA[producto]]></fieldDescription>
 		</field>
-		<field name="total" class="java.lang.Double">
-			<fieldDescription><![CDATA[total]]></fieldDescription>
-		</field>
-		<field name="numDia" class="java.lang.Integer">
-			<fieldDescription><![CDATA[numDia]]></fieldDescription>
+		<field name="precio" class="java.lang.Double">
+			<fieldDescription><![CDATA[precio]]></fieldDescription>
 		</field>
 	</subDataset>
 	<subDataset name="header" uuid="21082179-561c-4cee-a983-4cfeacf11a21">
@@ -199,26 +199,26 @@
 		<queryString>
 			<![CDATA[]]>
 		</queryString>
-		<field name="numDia" class="java.lang.Integer">
-			<fieldDescription><![CDATA[numDia]]></fieldDescription>
+		<field name="precio" class="java.lang.Double">
+			<fieldDescription><![CDATA[precio]]></fieldDescription>
 		</field>
 		<field name="cantidad" class="java.lang.Integer">
 			<fieldDescription><![CDATA[cantidad]]></fieldDescription>
 		</field>
-		<field name="diaSemana" class="java.lang.String">
-			<fieldDescription><![CDATA[diaSemana]]></fieldDescription>
-		</field>
 		<field name="titulo" class="java.lang.String">
 			<fieldDescription><![CDATA[titulo]]></fieldDescription>
+		</field>
+		<field name="total" class="java.lang.Double">
+			<fieldDescription><![CDATA[total]]></fieldDescription>
+		</field>
+		<field name="numSemana" class="java.lang.Integer">
+			<fieldDescription><![CDATA[numSemana]]></fieldDescription>
 		</field>
 		<field name="semana" class="java.lang.String">
 			<fieldDescription><![CDATA[semana]]></fieldDescription>
 		</field>
-		<field name="precio" class="java.lang.Double">
-			<fieldDescription><![CDATA[precio]]></fieldDescription>
-		</field>
-		<field name="total" class="java.lang.Double">
-			<fieldDescription><![CDATA[total]]></fieldDescription>
+		<field name="nombreSemana" class="java.lang.String">
+			<fieldDescription><![CDATA[nombreSemana]]></fieldDescription>
 		</field>
 	</subDataset>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
@@ -840,9 +840,9 @@ ORDER BY s.nombre]]>
 						</cellContents>
 					</crosstabTotalRowHeader>
 				</rowGroup>
-				<columnGroup name="numDia" height="41" totalPosition="End">
+				<columnGroup name="numSemana" height="41" totalPosition="End">
 					<bucket class="java.lang.Integer">
-						<bucketExpression><![CDATA[$F{numDia}]]></bucketExpression>
+						<bucketExpression><![CDATA[$F{numSemana}]]></bucketExpression>
 					</bucket>
 					<crosstabColumnHeader>
 						<cellContents backcolor="#F0F8FF" mode="Opaque">
@@ -854,7 +854,7 @@ ORDER BY s.nombre]]>
 								<textElement>
 									<font size="10" isBold="true"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$V{diaSemana}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$V{nombreSemana}]]></textFieldExpression>
 							</textField>
 							<staticText>
 								<reportElement style="Crosstab Data Text" x="0" y="24" width="55" height="17" uuid="04a8e4a5-bf0b-4835-9963-f085b7485637"/>
@@ -909,10 +909,10 @@ ORDER BY s.nombre]]>
 					</crosstabTotalColumnHeader>
 				</columnGroup>
 				<measure name="numDiaMeasure" class="java.lang.Integer" calculation="Count">
-					<measureExpression><![CDATA[$F{numDia}]]></measureExpression>
+					<measureExpression><![CDATA[$F{numSemana}]]></measureExpression>
 				</measure>
-				<measure name="diaSemana" class="java.lang.String">
-					<measureExpression><![CDATA[$F{diaSemana}]]></measureExpression>
+				<measure name="nombreSemana" class="java.lang.String">
+					<measureExpression><![CDATA[$F{nombreSemana}]]></measureExpression>
 				</measure>
 				<measure name="precio" class="java.lang.Double">
 					<measureExpression><![CDATA[$F{precio}]]></measureExpression>
@@ -975,7 +975,7 @@ ORDER BY s.nombre]]>
 						</textField>
 					</cellContents>
 				</crosstabCell>
-				<crosstabCell width="121" height="17" columnTotalGroup="numDia">
+				<crosstabCell width="121" height="17" columnTotalGroup="numSemana">
 					<cellContents backcolor="#BFE1FF" mode="Opaque">
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -996,7 +996,7 @@ ORDER BY s.nombre]]>
 						</textField>
 					</cellContents>
 				</crosstabCell>
-				<crosstabCell width="121" height="16" rowTotalGroup="titulo" columnTotalGroup="numDia">
+				<crosstabCell width="121" height="16" rowTotalGroup="titulo" columnTotalGroup="numSemana">
 					<cellContents backcolor="#BFE1FF" mode="Opaque">
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -1077,9 +1077,9 @@ ORDER BY s.nombre]]>
 						</cellContents>
 					</crosstabTotalRowHeader>
 				</rowGroup>
-				<columnGroup name="numDia" height="35" totalPosition="End">
+				<columnGroup name="numSemana" height="35" totalPosition="End">
 					<bucket class="java.lang.Integer">
-						<bucketExpression><![CDATA[$F{numDia}]]></bucketExpression>
+						<bucketExpression><![CDATA[$F{numSemana}]]></bucketExpression>
 					</bucket>
 					<crosstabColumnHeader>
 						<cellContents backcolor="#F0F8FF" mode="Opaque">
@@ -1091,7 +1091,7 @@ ORDER BY s.nombre]]>
 								<textElement>
 									<font size="10" isBold="true"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$V{diaSemana}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$V{nombreSemana}]]></textFieldExpression>
 							</textField>
 							<staticText>
 								<reportElement style="Crosstab Data Text" x="55" y="18" width="55" height="17" uuid="f9a9eb8d-3b64-48c6-95a9-a27369458b8e"/>
@@ -1157,8 +1157,8 @@ ORDER BY s.nombre]]>
 				<measure name="total" class="java.lang.Double">
 					<measureExpression><![CDATA[$F{total}]]></measureExpression>
 				</measure>
-				<measure name="diaSemana" class="java.lang.String">
-					<measureExpression><![CDATA[$F{diaSemana}]]></measureExpression>
+				<measure name="nombreSemana" class="java.lang.String">
+					<measureExpression><![CDATA[$F{nombreSemana}]]></measureExpression>
 				</measure>
 				<measure name="totalCantidad" class="java.lang.Integer" calculation="Sum">
 					<measureExpression><![CDATA[$F{cantidad}]]></measureExpression>
@@ -1215,7 +1215,7 @@ ORDER BY s.nombre]]>
 						</textField>
 					</cellContents>
 				</crosstabCell>
-				<crosstabCell width="125" height="18" columnTotalGroup="numDia">
+				<crosstabCell width="125" height="18" columnTotalGroup="numSemana">
 					<cellContents backcolor="#BFE1FF" mode="Opaque">
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -1236,7 +1236,7 @@ ORDER BY s.nombre]]>
 						</textField>
 					</cellContents>
 				</crosstabCell>
-				<crosstabCell width="125" height="16" rowTotalGroup="producto" columnTotalGroup="numDia">
+				<crosstabCell width="125" height="16" rowTotalGroup="producto" columnTotalGroup="numSemana">
 					<cellContents backcolor="#BFE1FF" mode="Opaque">
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
