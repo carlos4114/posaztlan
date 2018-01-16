@@ -53,10 +53,10 @@ angular.module('indexModule').config(function($routeProvider){
 
              /******CONFIGURACIONES*****/
             
-            .when("/cupoSala", {
-                controller: "CupoSalaController",
+            .when("/salas", {
+                controller: "SalasController",
                 controllerAs: "vm",
-                templateUrl: "vistas/configuracion/cupo_x_sala.jsp"
+                templateUrl: "vistas/configuracion/salas.jsp"
             })
             .when("/programacion", {
                 controller: "ProgramacionController",
@@ -135,7 +135,7 @@ angular.module('indexModule').config(function($routeProvider){
 	            controller: "dashboardTaquillaController",
  	            templateUrl: "vistas/dashboard/dashboard_taquilla.jsp"
 	        })
-	        .when("/reportesExcel", {
+	        .when("/reportes/ventas", {
 	            controller: "reportesController",
  	            templateUrl: "vistas/reportes/reportes_excel.jsp"
 	        });
