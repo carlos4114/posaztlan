@@ -116,7 +116,7 @@
 										</label>
 										<div class="input-group">
 											<span class="input-group-addon"><i
-												class="fa fa-calendar"></i></span> <input type="text" calendar
+												class="fa fa-calendar"></i></span> <input type="text" fecha
 												required id="fechaFin" name="fechaFin"
 												ng-model="reporteVO.fechaFin"
 												class="form-control col-md-7 col-xs-12">

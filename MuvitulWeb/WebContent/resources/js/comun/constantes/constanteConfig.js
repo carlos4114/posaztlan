@@ -17,7 +17,6 @@ angular.module('indexModule').factory(
 					var absUrl = $location.absUrl();
 					var arrayLocation = $location.absUrl().split('/');
 					var path = '/' + arrayLocation[3];
-					$rootScope.applet_route = url;
 
 					return {
 						baseUrl : url,
