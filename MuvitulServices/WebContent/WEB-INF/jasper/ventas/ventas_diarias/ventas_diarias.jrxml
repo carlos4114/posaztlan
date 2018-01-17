@@ -90,22 +90,43 @@
 		<parameter name="fecha_inicio" class="java.lang.String"/>
 		<parameter name="id_cine" class="java.lang.Integer"/>
 		<queryString>
-			<![CDATA[select pv.nombre as punto_venta,p.nombre as producto,	p.precio,	sum(pt.cantidad) as cantidad,	sum(pt.importe) as total,'1'  as es_producto
-      from 	producto as p
-      inner join productos_x_ticket as pt on p.id_producto = pt.id_producto
-      inner join ticket_venta as t on t.id_ticket = pt.id_ticket
-      inner join punto_venta as pv	on pv.id_punto_venta = t.id_punto_venta
-      where 	DATE(t.fecha) >=DATE($P{fecha_inicio}) and DATE(t.fecha) <=DATE($P{fecha_fin} ) and pv.id_cine = $P{id_cine}
-      group by  p.nombre, p.precio, pv.id_cine
-Union
-select 	pv.nombre as punto_venta,p.nombre as producto,	p.precio,	sum(pt.cantidad) as cantidad,	sum(pt.importe) as total,'1'  as es_producto
-
-      from 	paquete as p
-      inner join paquetes_x_ticket as pt on p.id_paquete = pt.id_paquete
-      inner join ticket_venta as t on t.id_ticket = pt.id_ticket
-      inner join punto_venta as pv 	on pv.id_punto_venta = t.id_punto_venta
-      where 	DATE(t.fecha) >=DATE($P{fecha_inicio}) and DATE(t.fecha) <=DATE($P{fecha_fin} )  and pv.id_cine = $P{id_cine}
-      group by p.nombre, p.precio, pv.id_cine;]]>
+			<![CDATA[SELECT pv.nombre        AS punto_venta,
+       p.nombre         AS producto,
+       p.precio,
+       Sum(pt.cantidad) AS cantidad,
+       Sum(pt.importe)  AS total,
+       '1'              AS es_producto
+FROM   producto AS p
+       INNER JOIN productos_x_ticket AS pt
+               ON p.id_producto = pt.id_producto
+       INNER JOIN ticket_venta AS t
+               ON t.id_ticket = pt.id_ticket
+       INNER JOIN punto_venta AS pv
+               ON pv.id_punto_venta = t.id_punto_venta
+WHERE  Date(t.fecha) = Date($P{fecha_inicio})
+       AND pv.id_cine = 3
+GROUP  BY pv.nombre,
+          p.nombre,
+          p.precio
+UNION
+SELECT pv.nombre,
+       p.nombre,
+       p.precio,
+       Sum(pt.cantidad) AS cantidad,
+       Sum(pt.importe)  AS total,
+       '0'              AS es_producto
+FROM   paquete AS p
+       INNER JOIN paquetes_x_ticket AS pt
+               ON p.id_paquete = pt.id_paquete
+       INNER JOIN ticket_venta AS t
+               ON t.id_ticket = pt.id_ticket
+       INNER JOIN punto_venta AS pv
+               ON pv.id_punto_venta = t.id_punto_venta
+WHERE  Date(t.fecha) = Date($P{fecha_inicio})
+       AND pv.id_cine= $P{id_cine}
+GROUP  BY pv.nombre,
+          p.nombre,
+          p.precio]]>
 		</queryString>
 		<field name="punto_venta" class="java.lang.String"/>
 		<field name="producto" class="java.lang.String"/>
@@ -208,70 +229,11 @@ select 	pv.nombre as punto_venta,p.nombre as producto,	p.precio,	sum(pt.cantidad
 	<parameter name="fecha_fin" class="java.lang.String"/>
 	<parameter name="datasourceTaquilla" class="java.util.List"/>
 	<queryString>
-		<![CDATA[SELECT p.id_programacion,s.id_sala,p.id_programacion,
-       p.dia_semana,
-       p.id_pelicula,
-       p.horario,
-       b.id_ticket,
-       b.id_tipo_cliente,
-       b.cantidad,
-       b.importe,
-       b.descuento,
-       t.nombre as cliente,
-       pe.titulo,
-       s.nombre as sala,
-       tv.fecha
-FROM boletos_x_ticket AS b
-JOIN programacion AS p ON b.id_programacion = p.id_programacion
-JOIN tipo_cliente AS t ON b.id_tipo_cliente = t.id_tipo_cliente
-JOIN pelicula AS pe ON p.id_pelicula = pe.id_pelicula
-JOIN sala AS s ON p.id_sala = s.id_sala
-JOIN ticket_venta AS tv ON b.id_ticket = tv.id_ticket
-JOIN punto_venta AS pv ON pv.id_punto_venta = tv.id_punto_venta
-WHERE DATE(tv.fecha) >=  DATE($P{fecha_inicio})
-  AND DATE(tv.fecha) <=  DATE( $P{fecha_fin})
-  AND pv.id_cine = $P{id_cine}
-GROUP BY s.id_sala
-ORDER BY s.nombre]]>
+		<![CDATA[select c.nombre as nombreCine,e.nombre as nombreEmpresa ,DATE_FORMAT(now(),'%d/%m/%Y') as emision from cine c inner join empresa e ON e.id_empresa = c.id_empresa where id_cine=$P{id_cine};]]>
 	</queryString>
-	<field name="id_programacion" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="id_sala" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="dia_semana" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="id_pelicula" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="horario" class="java.sql.Time">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="id_ticket" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="id_tipo_cliente" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="cantidad" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="importe" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="descuento" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="cliente" class="java.lang.String"/>
-	<field name="titulo" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="sala" class="java.lang.String"/>
-	<field name="fecha" class="java.sql.Timestamp">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
+	<field name="nombreCine" class="java.lang.String"/>
+	<field name="nombreEmpresa" class="java.lang.String"/>
+	<field name="emision" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -307,8 +269,8 @@ ORDER BY s.nombre]]>
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
-					<jr:columnGroup width="620" uuid="13a4bbcd-e28c-4c92-ab5c-87b90e7d259d">
-						<jr:columnGroup width="620" uuid="4548b07c-bedb-49f2-bd99-67e25d50a284">
+					<jr:columnGroup width="688" uuid="13a4bbcd-e28c-4c92-ab5c-87b90e7d259d">
+						<jr:columnGroup width="688" uuid="4548b07c-bedb-49f2-bd99-67e25d50a284">
 							<jr:column width="154" uuid="245d72e3-0179-4415-a9d7-3dac3e3ee920">
 								<jr:columnHeader style="table 3_CH" height="19" rowSpan="1">
 									<staticText>
@@ -395,10 +357,10 @@ ORDER BY s.nombre]]>
 									</textField>
 								</jr:detailCell>
 							</jr:column>
-							<jr:column width="90" uuid="627b5844-c433-401a-b6c3-acd0248fc615">
+							<jr:column width="158" uuid="627b5844-c433-401a-b6c3-acd0248fc615">
 								<jr:columnHeader height="19" rowSpan="1">
 									<staticText>
-										<reportElement x="0" y="0" width="90" height="19" uuid="492023c9-e757-44e3-8102-feb808759f9b"/>
+										<reportElement x="0" y="0" width="158" height="19" uuid="492023c9-e757-44e3-8102-feb808759f9b"/>
 										<box>
 											<pen lineWidth="0.5"/>
 											<topPen lineWidth="0.5"/>
@@ -414,7 +376,7 @@ ORDER BY s.nombre]]>
 								</jr:columnHeader>
 								<jr:detailCell height="19" rowSpan="1">
 									<textField>
-										<reportElement x="0" y="0" width="90" height="19" uuid="5aad66c0-eb05-4515-928a-bd3b2699fd59"/>
+										<reportElement x="0" y="0" width="158" height="19" uuid="5aad66c0-eb05-4515-928a-bd3b2699fd59"/>
 										<box>
 											<pen lineWidth="0.5"/>
 											<topPen lineWidth="0.5"/>
@@ -423,7 +385,7 @@ ORDER BY s.nombre]]>
 											<rightPen lineWidth="0.5"/>
 										</box>
 										<textElement textAlignment="Center"/>
-										<textFieldExpression><![CDATA[$P{fecha_fin}]]></textFieldExpression>
+										<textFieldExpression><![CDATA["Del "+ $P{fecha_fin} + " al"+ $P{fecha_fin}]]></textFieldExpression>
 									</textField>
 								</jr:detailCell>
 							</jr:column>

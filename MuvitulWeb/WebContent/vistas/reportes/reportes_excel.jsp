@@ -178,16 +178,16 @@
 								</div>
 							</div>
 
-							<div class="container">
-								<div class="row">
-									<div class="col-sm-6 form-group">
-										<div class="input-group" id="DateDemo">
-											<input type='text' id='weeklyDatePicker' test
-												placeholder="Select Week" />
-										</div>
-									</div>
-								</div>
-							</div>
+<!-- 							<div class="container"> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-sm-6 form-group"> -->
+<!-- 										<div class="input-group" id="DateDemo"> -->
+<!-- 											<input type='text' id='weeklyDatePicker' test -->
+<!-- 												placeholder="Select Week" /> -->
+<!-- 										</div> -->
+<!-- 									</div> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
 
 
 						</form>

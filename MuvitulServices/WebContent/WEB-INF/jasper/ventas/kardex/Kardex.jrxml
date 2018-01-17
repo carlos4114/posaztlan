@@ -8,7 +8,7 @@
 	<property name="net.sf.jasperreports.export.xls.white.page.background" value="true"/>
 	<property name="ireport.zoom" value="0.8857805000000005"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="48"/>
+	<property name="ireport.y" value="45"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
 	<parameter name="id_articulo" class="java.lang.Integer"/>
 	<parameter name="emision" class="java.lang.String"/>
@@ -169,4 +169,15 @@ inner join unidad_medida um ON um.id_unidad_medida = a.id_unidad_medida where 	 
 	<summary>
 		<band height="42" splitType="Stretch"/>
 	</summary>
+	<noData>
+		<band height="50">
+			<staticText>
+				<reportElement x="321" y="10" width="290" height="20" uuid="c7c2781a-0e6f-4e53-95dd-4a08b49557f1"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[No se encontraron registros]]></text>
+			</staticText>
+		</band>
+	</noData>
 </jasperReport>
