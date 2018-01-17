@@ -11,6 +11,7 @@ public class TicketVentaVO {
 	private BigDecimal descuento;
 	private BigDecimal importe;
 	private BigDecimal total;
+	private Integer idCaja;
 	
 	public Integer getIdTicket() {
 		return idTicket;
@@ -54,4 +55,12 @@ public class TicketVentaVO {
 	public void setTotal(BigDecimal total) {
 		this.total = total;
 	}
+	public Integer getIdCaja() {
+		return idCaja;
+	}
+	public void setIdCaja(Integer idCaja) {
+		this.idCaja = idCaja;
+	}
+	
+	
 }

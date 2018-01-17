@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 import mx.com.tecnetia.muvitul.negocio.reportes.business.ReportesTaquillaBO;
 import mx.com.tecnetia.muvitul.negocio.reportes.vo.ArchivoExcelVO;
-import mx.com.tecnetia.muvitul.negocio.reportes.vo.ReporteJasperVO;
 
 @Service
 public class ReporteVentasTaquillaController {

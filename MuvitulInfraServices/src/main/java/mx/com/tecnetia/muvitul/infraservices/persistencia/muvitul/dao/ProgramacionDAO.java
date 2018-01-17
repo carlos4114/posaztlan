@@ -28,6 +28,21 @@ public class ProgramacionDAO extends GlobalHibernateDAO<Programacion> implements
 	}
 
 	@Override
+	public List<Programacion> findBySalaDiaAndExhibicionAll(Integer idSala, String diaSemana, Date fechaExhibicion) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select pgr from Programacion pgr inner join pgr.sala sla ");
+		hql.append("where sla.idSala=:idSala and pgr.diaSemana=:diaSemana  and ( :fechaExhibicion between pgr.fechaInicio and pgr.fechaVigencia) ");
+		hql.append("order by pgr.horario asc");
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setParameter("idSala", idSala);
+		query.setParameter("diaSemana", diaSemana);
+		query.setParameter("fechaExhibicion", fechaExhibicion);	
+		
+		return query.list();
+	}
+	
+	@Override
 	public List<Programacion> findByCineSalaAndExhibicion(Integer idCine,Integer idSala, Date fechaExhibicion) {
 		StringBuilder hql = new StringBuilder();
 		hql.append("select pgr from Programacion pgr inner join pgr.pelicula plc inner join pgr.formato frm inner join pgr.version vrs inner join pgr.sala sla ");

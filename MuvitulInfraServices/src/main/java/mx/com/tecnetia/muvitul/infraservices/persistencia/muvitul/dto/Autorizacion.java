@@ -32,8 +32,13 @@ public class Autorizacion implements java.io.Serializable {
 	private Set<AutorizacionMovimiento> autorizacionMovimientos = new HashSet<AutorizacionMovimiento>(0);
 	private Set<CancelacionPago> cancelacionPagos = new HashSet<CancelacionPago>(0);
 	private Set<Devolucion> devolucions = new HashSet<Devolucion>(0);
+	private Set<CorteCaja> corteCajas = new HashSet<CorteCaja>(0);
 
 	public Autorizacion() {
+	}
+	
+	public Autorizacion(Integer idAutorizacion) {
+		this.idAutorizacion = idAutorizacion;
 	}
 
 	public Autorizacion(TipoAutorizacion tipoAutorizacion, Usuario usuario, Date fecha, String comentarios) {
@@ -131,6 +136,15 @@ public class Autorizacion implements java.io.Serializable {
 
 	public void setDevolucions(Set<Devolucion> devolucions) {
 		this.devolucions = devolucions;
+	}
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "autorizacion")
+	public Set<CorteCaja> getCorteCajas() {
+		return this.corteCajas;
+	}
+
+	public void setCorteCajas(Set<CorteCaja> corteCajas) {
+		this.corteCajas = corteCajas;
 	}
 
 }

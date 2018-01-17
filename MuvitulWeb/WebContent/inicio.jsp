@@ -93,10 +93,10 @@
 						              <ul class="nav side-menu">
 							              <li ng-repeat="submenu in seccion.submenus" ng-click="showChilds(submenu)">
 							                <a><i class="{{submenu.icono}}"></i> {{submenu.nombre}} <span class="fa fa-chevron-down"></span></a>
-						                    <ul class="opcion_menu">
-						                      <li ng-repeat="opcion in submenu.submenus"  ng-show="submenu.active"><a href="{{opcion.liga}}">{{opcion.nombre}}</a></li>
-						                    </ul>
-						                  </li> 		        
+								            <ul class="opcion_menu" ng-repeat="opcion in submenu.submenus"  ng-show="submenu.active" >
+								                <a href="{{opcion.liga}}"><li style="color:white">{{opcion.nombre}}</li></a>
+								            </ul>
+							              </li> 		        
 						              </ul>              	
 						          </div>
                                 
@@ -316,7 +316,6 @@
             <script src="<c:url value='/resources/js/aplicacion/inventarios/service/inventarioAngularService.js' />"></script>
 
             <!-- Modulos de ConfiguraciÃ³n -->
-            <script src="<c:url value='/resources/js/aplicacion/configuracion/controller/cupoSalaController.js' />"></script>
             <script src="<c:url value='/resources/js/aplicacion/configuracion/controller/menusDulceriaController.js' />"></script>
             <script src="<c:url value='/resources/js/aplicacion/configuracion/service/menusDulceriaService.js' />"></script>
             <script src="<c:url value='/resources/js/aplicacion/configuracion/controller/peliculasController.js' />"></script>
@@ -336,8 +335,12 @@
             <script src="<c:url value='/resources/js/aplicacion/configuracion/controller/usuariosController.js' />"></script>
 			
 			<!-- Controller del modulo de corte de caja -->
-			<script src="<c:url value='/resources/js/aplicacion/administracion/service/corteCaja.js' />"></script> 
-            <script src="<c:url value='/resources/js/aplicacion/administracion/controller/corteCaja.js' />"></script>
+			<script src="<c:url value='/resources/js/aplicacion/administracion/service/corteCajaService.js' />"></script> 
+            <script src="<c:url value='/resources/js/aplicacion/administracion/controller/corteCajaController.js' />"></script>
+
+			<!-- Controller del modulo de salas -->
+			<script src="<c:url value='/resources/js/aplicacion/configuracion/service/salasService.js' />"></script> 
+            <script src="<c:url value='/resources/js/aplicacion/configuracion/controller/salasController.js' />"></script>
 
             <!-- Controller para modales -->
             <script src="<c:url value='/resources/js/comun/dialog/mensajeModalController.js'/>"></script>

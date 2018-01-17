@@ -7,6 +7,8 @@ public class VentaVO {
 	private Integer idUsuario;
 	private Integer idPuntoVenta;
 	private Integer idCine;
+	private Integer idCaja;
+	
 	private List<PaqueteVO> paquetesVO;
 	private List<PagoVO> pagosVO;
 	private BigDecimal total;
@@ -46,6 +48,12 @@ public class VentaVO {
 	}
 	public void setPagosVO(List<PagoVO> pagosVO) {
 		this.pagosVO = pagosVO;
+	}
+	public Integer getIdCaja() {
+		return idCaja;
+	}
+	public void setIdCaja(Integer idCaja) {
+		this.idCaja = idCaja;
 	}
 	
 }

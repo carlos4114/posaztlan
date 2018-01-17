@@ -4,10 +4,16 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.CajaDAOI;
+import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.CargoAjusteDAOI;
 import mx.com.tecnetia.muvitul.infraservices.servicios.BusinessGlobalException;
+import mx.com.tecnetia.muvitul.negocio.caja.assembler.CajaAssembler;
+import mx.com.tecnetia.muvitul.negocio.caja.assembler.CargoAjusteAssembler;
 import mx.com.tecnetia.muvitul.negocio.configuracion.business.CatalogoBO;
 import mx.com.tecnetia.muvitul.negocio.configuracion.vo.ArticuloVO;
+import mx.com.tecnetia.muvitul.negocio.configuracion.vo.CatalogoVO;
 import mx.com.tecnetia.muvitul.negocio.configuracion.vo.CineVO;
 import mx.com.tecnetia.muvitul.negocio.configuracion.vo.EstadoProductoVO;
 import mx.com.tecnetia.muvitul.negocio.configuracion.vo.FormaPagoVO;
@@ -23,9 +29,32 @@ public class CatalogoController {
 
 	@Autowired
 	private CatalogoBO catalogoBO;
+	@Autowired
+	private CargoAjusteDAOI cargoAjusteDAO;
+	@Autowired
+	private CajaDAOI cajaDAO;
+	
 	
 	@Autowired
-	private CatalogoProveedorBO catalogoProveedorBO;
+	private CatalogoProveedorBO catalogoProveedorBO;		
+	
+	/**
+     * Servicio para obtener catalogo de cajas
+     */
+	@Transactional (readOnly = true)
+	public List<CatalogoVO> getCajas(Integer idPuntoVenta) throws BusinessGlobalException{
+	
+		 return CajaAssembler.getListaVO(this.cajaDAO.getActivos(idPuntoVenta));
+	}
+	
+	/**
+     * Servicio para obtener catalogo de cargos de ajuste
+     */
+	@Transactional (readOnly = true)
+	public List<CatalogoVO> getCargoAjuste() throws BusinessGlobalException{
+		 return CargoAjusteAssembler.getListaVO(this.cargoAjusteDAO.getActivos());
+	}
+
 	
 	public List<FormaPagoVO> getFormasPagos() throws BusinessGlobalException {
 		return catalogoBO.getFormasPagos();

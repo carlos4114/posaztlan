@@ -1,6 +1,6 @@
 package mx.com.tecnetia.muvitul.negocio.reportes.business;
 
-public class DulceriaMensual {
+public class DulceriaMensualVO {
 
 	private String nombreSemana;
 	private Integer numSemana;
@@ -11,7 +11,7 @@ public class DulceriaMensual {
 	
 	
 	
-	public DulceriaMensual(String nombreSemana, Integer numSemana, String producto, Double precio, Integer cantidad,
+	public DulceriaMensualVO(String nombreSemana, Integer numSemana, String producto, Double precio, Integer cantidad,
 			Double total) {
 		super();
 		this.nombreSemana = nombreSemana;

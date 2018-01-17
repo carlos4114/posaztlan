@@ -1,148 +1,149 @@
 'use strict';
 
-angular.module('indexModule').controller("CorteCajaController",['$scope','GlobalFactory', 'CorteCajaService','ErrorFactory', 
-    function($scope,GlobalFactory, CorteCajaService,ErrorFactory){	 			
-	 var idEmpresa = GlobalFactory.getIdEmpresa(); 
-	
-	 $scope.consultaCinesXEmpresa = function(idEmpresa) {
-		 CorteCajaService.consultaCinesXEmpresa(idEmpresa)
-		 .then(
-	      function(d) {
-        	  $scope.listaCines = d;
-	      },
-          function(errResponse){
-          });
-     }
-	 
-	 $scope.consultaPerfilesXEmpresa = function(idEmpresa) {
-		 CorteCajaService.consultaPerfilesXEmpresa(idEmpresa)
-		 .then(
-           function(d) {
-        	 $scope.listaPerfiles = d;
- 	      },
-          function(errResponse){
-          });
-     }
-
-	 $scope.consultaPuntosVentaXCine = function(idCine) {
-		 CorteCajaService.consultaPuntosVentaXCine(idCine)
-		 .then(
-           function(d) {
-        	 $scope.listaPuntosVenta = d;
- 	      },
-          function(errResponse){
-          });
-     }
+angular.module('indexModule').controller("CorteCajaController",['$scope','GlobalFactory', 'CorteCajaService','ErrorFactory','ModalService','PropertiesFactory', 
+    function($scope,GlobalFactory, CorteCajaService,ErrorFactory,ModalService,PropertiesFactory){	 			
 	 
 	 $scope.inicializarValores = function(){
-		 $scope.listaUsuarios = null;		 	
-	 	 $scope.listaPerfiles = null;
-	 	 $scope.listaPuntosVenta = null;	 	 
-	 	 $scope.listaCines = null;
-	     $scope.usuarioVO = {idUsuario:null,correo:'',nombre:'',paterno:'',materno:'',idEstatus:null,estatus:'',idPerfil:null,perfil:'',idPuntoVenta:null,puntoVenta:'',idCine:null};
-	 	 $scope.correoConfirma='';
+		 $scope.listaCargoAjuste = null;		 	
+	 	 $scope.listaCortesCaja = null;
+	     $scope.cajaVO = {idCorteCaja:null,efectivoReal:null,efectivoSistema:null,comentarios:'',idCargoAjuste:null,entradaCaja:null};
+	 	 $scope.conciliado=false;
+	 	 $scope.efectivoCuadra=false;
 	     $scope.errorGeneral='';
 		 $scope.mensajeGeneral='';
-	 }	 
-	 
-	 $scope.obtenerUsuarios = function(idCine) {
-		 CorteCajaService.obtenerUsuarios(idCine)
+		 $scope.errorConciliar='';
+		 
+	 }	
+	
+	 $scope.conciliarEfectivo = function() {
+		 CorteCajaService.obtenerEfectivo()
 		 .then(
 	      function(d) {
-        	  $scope.listaUsuarios = d;
+        	  $scope.cajaVO.efectivoSistema = d;
+        	  $scope.efectivoCuadra=$scope.cajaVO.efectivoSistema===$scope.cajaVO.efectivoReal;
+        	  $scope.conciliado=true;
+	      },
+          function(errResponse){
+        	  $scope.conciliado=false;
+     	 	  $scope.efectivoCuadra=false;       
+     	 	  $scope.errorConciliar = "No se pudo obtener el efectivo en Sistema. "+ErrorFactory.getErrorMessage(errResponse.status);
+          });
+     }
+	 
+	 $scope.obtenerUltimosCortes = function() {
+		 CorteCajaService.obtenerUltimosCortes()
+		 .then(
+           function(d) {
+        	 $scope.listaCortesCaja = d;
+ 	      },
+          function(errResponse){
+          });
+     }	  
+	 
+	 $scope.obtenerCatCargoAjuste = function() {
+		 CorteCajaService.obtenerCatCargoAjuste()
+		 .then(
+	      function(d) {
+        	  $scope.listaCargoAjuste = d;
 	      },
           function(errResponse){
           });
      }
-	 
-	 $scope.guardarUsuario = function(usuarioVO) {
-		 
-		 if($scope.usuarioVO.correo != $scope.correoConfirma){
-	            $scope.errorGeneral = "El correo y la confirmaci\u00F3n no coinciden.";
-	            return false;
-		 }
-		 
-		 $scope.errorGeneral='';
-		 $scope.mensajeGeneral='';
-		 CorteCajaService.guardarUsuarioNuevo(usuarioVO)
-		 .then(
-	      function(d) {
-	    	  if(d.errorCode){
-	        	  $scope.errorGeneral = d.message;
-	    	  }else{	 
-		 		  $scope.mensajeGeneral = 'Se ha guardado el usuario.';
-		 		  $scope.limpiarFormulario();
-	    	  }
-	      },
-          function(errResponse){
-   		   		$scope.errorGeneral = "No se pudo guardar el usuario. "+ErrorFactory.getErrorMessage(errResponse.status);
-          });
-     }
-	 
-	 $scope.actualizarUsuario = function(usuarioVO) {
-		 
-		 if($scope.usuarioVO.correo != $scope.correoConfirma){
-	            $scope.errorGeneral = "El correo y la confirmaci\u00F3n no coinciden.";
-	            return false;
-		 }
-		 
-		 $scope.errorGeneral='';
-		 $scope.mensajeGeneral='';
-		 CorteCajaService.actualizarUsuario(usuarioVO)
-		 .then(
-	      function(d) {
-	    	  if(d.errorCode){
-	        	  $scope.errorGeneral = d.message;
-	    	  }else{	 
-		 		  $scope.mensajeGeneral = 'Se ha actualizado el usuario.';
-		 		  $scope.limpiarFormulario();
-	    	  }
-	      },
-          function(errResponse){
-   		   		$scope.errorGeneral = "No se pudo actualizar el usuario. "+ErrorFactory.getErrorMessage(errResponse.status);
-          });
-     }
-	 
-	 $scope.editarUsuario = function(idUsuario) {
-			$scope.errorGeneral='';
-			$scope.mensajeGeneral='';
-	        
-			for(var i = 0; i < $scope.listaUsuarios.length; i++){
-	            if($scope.listaUsuarios[i].idUsuario === idUsuario) {
-	            	$scope.usuarioVO = angular.copy($scope.listaUsuarios[i]);
-	            	$scope.correoConfirma=$scope.usuarioVO.correo;	            	
-	            	$("#puntoVenta").val($scope.usuarioVO.idPuntoVenta);
-	            	$scope.consultaPuntosVentaXCine($scope.usuarioVO.idCine);
-	                break;
-	            }
-	        }	        
-	   }
-	 
-	 $scope.submit = function(){
-	    	if($scope.usuarioVO.idUsuario === null){
-	            $scope.guardarUsuario($scope.usuarioVO);
-	        }else{
-	        	$scope.actualizarUsuario($scope.usuarioVO);        	
-	        }
-	 }
-
-	 $scope.cambiarCine = function(idCine){
-		 $scope.consultaPuntosVentaXCine(idCine);
-		 $scope.obtenerUsuarios(idCine);		 
-	 }
 	 
 	 $scope.limpiarFormulario = function(){     	
 		 $scope.formCorteCaja.$setPristine();
-	     $scope.usuarioVO = {idUsuario:null,correo:'',nombre:'',paterno:'',materno:'',idEstatus:null,estatus:'',idPerfil:null,perfil:'',idPuntoVenta:null,puntoVenta:'',idCine:null};
-	     $scope.listaUsuarios=null;
-	     $scope.listaPuntosVenta=null;
-	     $scope.correoConfirma='';
-	     $scope.listaCines=null;
-	     $scope.consultaCinesXEmpresa(idEmpresa);
+	 	 $scope.listaCortesCaja = null;
+	     $scope.cajaVO = {idCorteCaja:null,efectivoReal:null,efectivoSistema:null,comentarios:'',idCargoAjuste:null,entradaCaja:null};
+	 	 $scope.conciliado=false;
+	 	 $scope.efectivoCuadra=false;
+				 
+		 $scope.obtenerUltimosCortes();
 	 }
-	 		
+	 
+	 $scope.guardarCorte = function(autorizacion) {
+ 		 
+		 $scope.errorGeneral='';
+		 $scope.mensajeGeneral='';
+		 $scope.errorConciliar='';
+
+		 $scope.cajaVO.idAutorizacion = autorizacion.idAutorizacion;
+		 
+		 if(autorizacion.status==1){
+	
+			 CorteCajaService.guardarCorte($scope.cajaVO)
+			 .then(
+		      function(d) {
+		    	  if(d.errorCode){
+		        	  $scope.errorGeneral = d.message;
+		    	  }else{	 
+			 		  $scope.mensajeGeneral = 'Se ha guardado el corte de caja.';
+			 		  $scope.limpiarFormulario();
+		    	  }
+		      },
+	          function(errResponse){
+	   		   		$scope.errorGeneral = "No se pudo guardar el corte de caja. "+ErrorFactory.getErrorMessage(errResponse.status);
+	          });
+		 }else{
+		   		$scope.errorGeneral = autorizacion.descripcion;			 
+		 }
+     }	
+	 
+	 $scope.showAuthorization = function(tipo){
+		 
+			ModalService.showModal({
+		    	templateUrl: 'vistas/templatemodal/templateModalAutorizacion.html',
+	        	controller: 'authorizationModalController',
+	        	inputs:{ tipoAutorizacion: PropertiesFactory.getTipoAutorizacion(tipo)}
+		      }).then(function(modal) {
+		        modal.element.modal();
+		        modal.close.then(function(result) {
+		        	$scope.guardarCorte(result);		    		
+		        }); 
+	 	      });
+				 
+	 }
+	 
+	 $scope.confirmacionSalida = function(){
+		 /* Modal Confirmacion */
+			$scope.showConfirmacion = function(messageTo){
+				ModalService.showModal({
+			    	templateUrl: 'vistas/templatemodal/templateModalConfirmacion.html',
+			        controller: 'mensajeModalController',
+			        	inputs:{ message: messageTo}
+			    }).then(function(modal) {
+			        modal.element.modal();
+			        modal.close.then(function(result) {
+			        	if(result){
+			        		$scope.showAuthorization("corteDeCaja");			     				        	
+			        	}
+			        }); 
+			    });
+			};
+			
+		   $scope.showConfirmacion ("¿Est\u00e1 seguro que desea registrar el corte?");
+	};
+	 
+	$scope.ocultarConciliacion = function(){
+		if($scope.conciliado != null){
+			$scope.errorGeneral='';
+			 $scope.mensajeGeneral='';
+			 $scope.errorConciliar='';
+			if($scope.conciliado==true){							     
+	
+			    $scope.conciliado=false;	
+			    $scope.efectivoCuadra=false;	
+			    $scope.formCorteCaja2.$setPristine();
+			}
+		}
+	 }
+	 
+	 $scope.submit = function(){
+		 
+	    $scope.confirmacionSalida();	
+	 }
+	 
 	 $scope.inicializarValores();	
-	 $scope.consultaCinesXEmpresa(idEmpresa);
-	 $scope.consultaPerfilesXEmpresa(idEmpresa); 	
+	 $scope.obtenerUltimosCortes();
+	 $scope.obtenerCatCargoAjuste();	
 
 }]);

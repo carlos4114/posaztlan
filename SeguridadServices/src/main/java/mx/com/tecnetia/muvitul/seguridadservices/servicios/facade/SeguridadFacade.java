@@ -2,6 +2,7 @@ package mx.com.tecnetia.muvitul.seguridadservices.servicios.facade;
 
 import io.jsonwebtoken.Claims;
 import mx.com.tecnetia.muvitul.infraservices.negocio.seguridad.vo.CambioContraseniaVO;
+import mx.com.tecnetia.muvitul.infraservices.negocio.seguridad.vo.EstatusUsuarioVO;
 import mx.com.tecnetia.muvitul.infraservices.negocio.seguridad.vo.HttpRequestVO;
 import mx.com.tecnetia.muvitul.infraservices.negocio.seguridad.vo.HttpResponseVO;
 import mx.com.tecnetia.muvitul.infraservices.negocio.seguridad.vo.LoginResponseVO;
@@ -41,6 +42,12 @@ public class SeguridadFacade implements SeguridadFacadeI,UserDetailsService{
 	@Autowired
 	PerfilController perfilController;
 	
+	
+	@Override
+	@Transactional (readOnly = true)
+	public ResponseEntity<List<EstatusUsuarioVO>> getEstatusUsuario() throws BusinessGlobalException {
+		return new ResponseEntity<List<EstatusUsuarioVO>>(this.usuarioController.getEstatusUsuario(), HttpStatus.OK);		
+	}
 	
 	@Override
 	@Transactional(readOnly=true)

@@ -11,7 +11,8 @@ angular.module('globalModule').factory('PropertiesFactory',[ function(){
 	   		  salidaTraspaso: '5',
 	   		  salidaMerma: '6',
 	   		  ajusteEntradaManual: '7',
-	   		  ajusteSalidaManual: '8'	
+	   		  ajusteSalidaManual: '8',
+	   		  corteDeCaja: '9'	   		  
 	   		  }
 		
 	

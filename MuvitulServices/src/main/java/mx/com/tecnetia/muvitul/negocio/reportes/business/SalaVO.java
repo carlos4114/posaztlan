@@ -2,12 +2,12 @@ package mx.com.tecnetia.muvitul.negocio.reportes.business;
 
 import java.util.ArrayList;
 
-public class Sala {
+public class SalaVO {
 	private Integer idSala;
 	private String nombreSala;
 	private ArrayList<Data> datos;
 
-	public Sala(Integer idSala, String nombreSala, ArrayList<Data> datos) {
+	public SalaVO(Integer idSala, String nombreSala, ArrayList<Data> datos) {
 		super();
 		this.idSala = idSala;
 		this.nombreSala = nombreSala;

@@ -13,6 +13,7 @@ import mx.com.tecnetia.muvitul.infraservices.negocio.seguridad.vo.PerfilVO;
 import mx.com.tecnetia.muvitul.infraservices.negocio.seguridad.vo.UserDetailsVO;
 import mx.com.tecnetia.muvitul.infraservices.negocio.seguridad.vo.UsuarioFirmadoVO;
 import mx.com.tecnetia.muvitul.infraservices.negocio.seguridad.vo.UsuarioVO;
+import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Caja;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Cine;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.EstatusUsuario;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Perfil;
@@ -73,6 +74,7 @@ public class UsuarioAssembler {
 		usuarioVO.setMaterno(usuario.getMaterno());
 		usuarioVO.setNombre(usuario.getNombre());
 		usuarioVO.setPaterno(usuario.getPaterno());
+		usuarioVO.setIdCaja(usuario.getCaja()==null?null:usuario.getCaja().getIdCaja());
 		
 		return usuarioVO;
 	}
@@ -123,7 +125,8 @@ public class UsuarioAssembler {
 		usuario.setNombre(usuarioVO.getNombre());
 		usuario.setFoto(null);
 		usuario.setCine(new Cine(usuarioVO.getIdCine()));
-		usuario.setPuntoVenta(new PuntoVenta(usuarioVO.getIdPuntoVenta()));				
+		usuario.setPuntoVenta(new PuntoVenta(usuarioVO.getIdPuntoVenta()));	
+		usuario.setCaja(new Caja(usuarioVO.getIdCaja()));
 		
 		Set<Perfil> perfiles = new HashSet<Perfil>();
 		perfiles.add(new Perfil(usuarioVO.getIdPerfil()));
@@ -140,13 +143,14 @@ public class UsuarioAssembler {
 		//usuario.setIdUsuario(usuarioVO.getIdUsuario());
 		//usuario.setContrasenia(usuarioVO.getContrasenia());
 		usuario.setCorreo(usuarioVO.getCorreo());
-		usuario.getEstatusUsuario().setIdEstatus(usuarioVO.getIdEstatus());
+		usuario.setEstatusUsuario(new EstatusUsuario(usuarioVO.getIdEstatus()));
 		usuario.setMaterno(usuarioVO.getMaterno());
 		usuario.setPaterno(usuarioVO.getPaterno());
 		usuario.setNombre(usuarioVO.getNombre());
 		usuario.setFoto(null);
 		usuario.setCine(new Cine(usuarioVO.getIdCine()));
 		usuario.setPuntoVenta(new PuntoVenta(usuarioVO.getIdPuntoVenta()));
+		usuario.setCaja(new Caja(usuarioVO.getIdCaja()));
 		
 		Set<Perfil> perfiles = new HashSet<Perfil>();
 		perfiles.add(new Perfil(usuarioVO.getIdPerfil()));

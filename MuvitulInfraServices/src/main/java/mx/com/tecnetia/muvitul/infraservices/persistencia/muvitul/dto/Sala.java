@@ -27,6 +27,7 @@ public class Sala implements java.io.Serializable {
 	private boolean activo;
 	private Set<Programacion> programacions = new HashSet<Programacion>(0);
 	private Set<CupoXSala> cupoXSalas = new HashSet<CupoXSala>(0);
+	private Set<AsientosXSala> asientosXSalas = new HashSet<AsientosXSala>(0);
 
 	public Sala() {
 	}
@@ -101,6 +102,15 @@ public class Sala implements java.io.Serializable {
 
 	public void setCupoXSalas(Set<CupoXSala> cupoXSalas) {
 		this.cupoXSalas = cupoXSalas;
+	}
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "sala")
+	public Set<AsientosXSala> getAsientosXSalas() {
+		return this.asientosXSalas;
+	}
+
+	public void setAsientosXSalas(Set<AsientosXSala> asientosXSalas) {
+		this.asientosXSalas = asientosXSalas;
 	}
 
 }

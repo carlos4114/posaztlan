@@ -1187,7 +1187,7 @@ public class FechasUtilsBO {
 		String fecha = "31/03/2016";
 		String fecha2 = "21/02/2014 02:30:21";
 		
-		System.out.println(stringToDateHour(fecha, "dd/MM/yyyy HH:mm:ss"));
+		System.out.println(getCurrentDate());
 		System.out.println(stringToDateHour(fecha2, "dd/MM/yyyy HH:mm:ss"));
 		
 		//Date f = stringToDateHour(fecha, "dd/MM/yyyy HH:mm:ss");

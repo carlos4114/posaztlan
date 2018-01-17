@@ -5,6 +5,7 @@ import java.util.Date;
 
 public class TicketVentaVO {
 	private Integer idTicket;
+	private Integer idCaja;
 	private PuntoVentaVO puntoVentaVO;
 	private UsuarioVO usuarioVO;
 	private Date fecha;
@@ -54,4 +55,11 @@ public class TicketVentaVO {
 	public void setTotal(BigDecimal total) {
 		this.total = total;
 	}
+	public Integer getIdCaja() {
+		return idCaja;
+	}
+	public void setIdCaja(Integer idCaja) {
+		this.idCaja = idCaja;
+	}
+	
 }

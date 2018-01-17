@@ -232,7 +232,7 @@ public class VentaBoletoBO {
 				porcentajes.toString(), subtotal.toString());
 
 		TicketVenta ticketVenta = ticketVentaDAO.save(TicketVentaAssembler.getTicketVenta(ventaVO.getIdUsuario(),
-				ventaVO.getIdPuntoVenta(), descuento, subtotal, total));
+				ventaVO.getIdPuntoVenta(),ventaVO.getIdCaja(), descuento, subtotal, total));
 
 		descuentoxBoleto = descuentoxBoleto.add(descuento);
 		descuentoxBoleto = descuentoxBoleto.divide(new BigDecimal(cantidadBoletos), 3, BigDecimal.ROUND_HALF_EVEN);

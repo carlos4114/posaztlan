@@ -1,6 +1,6 @@
 package mx.com.tecnetia.muvitul.negocio.reportes.business;
 
-public class TaquillaSemanal {
+public class TaquillaSemanalVO {
 
 	private String diaSemana;
 	private Integer numDia;
@@ -12,7 +12,7 @@ public class TaquillaSemanal {
 
 	
 	
-	public TaquillaSemanal(String diaSemana, Integer numDia, String titulo, Double precio, Integer cantidad, Double total,
+	public TaquillaSemanalVO(String diaSemana, Integer numDia, String titulo, Double precio, Integer cantidad, Double total,
 			String semana) {
 		super();
 		this.diaSemana = diaSemana;

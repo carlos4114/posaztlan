@@ -138,6 +138,7 @@ public class UsuarioBO extends GlobalService{
 				       	  			 .claim(ClaimsEnum.USUARIO, usuario.getIdUsuario())
 				       	  			 .claim(ClaimsEnum.CINE, usuario.getCine().getIdCine())
 				       	  			 .claim(ClaimsEnum.PUNTO_VENTA, usuario.getPuntoVenta()==null?null:usuario.getPuntoVenta().getIdPuntoVenta())
+				       	  			 .claim(ClaimsEnum.CAJA, usuario.getCaja()==null?null:usuario.getCaja().getIdCaja())
 				       	  			 .claim(ClaimsEnum.NOMBRE_COMPLETO_USR, usuario.getNombre())
 				       	  			 .setIssuedAt(fechaActual)
 				       	  			 .setExpiration(fechaExpriacion)

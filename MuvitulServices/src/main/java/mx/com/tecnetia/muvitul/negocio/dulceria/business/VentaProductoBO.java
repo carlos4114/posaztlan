@@ -202,7 +202,7 @@ public class VentaProductoBO {
 		}
 
 		TicketVenta ticketVenta = ticketVentaDAO.save(TicketVentaAssembler.getTicketVenta(ventaVO.getIdUsuario(),
-				ventaVO.getIdPuntoVenta(), descuento, subtotal, total));
+				ventaVO.getIdPuntoVenta(), ventaVO.getIdCaja(), descuento, subtotal, total));
 
 		List<PaquetesXTicket> paquetesXTicket = PaqueteXTicketAssembler.getPaquetesXTicket(ventaVO.getPaquetesVO(),
 				ticketVenta);

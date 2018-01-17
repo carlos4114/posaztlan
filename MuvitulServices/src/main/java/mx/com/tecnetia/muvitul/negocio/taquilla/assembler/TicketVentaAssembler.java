@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Caja;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Cine;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.TicketVenta;
 import mx.com.tecnetia.muvitul.negocio.taquilla.vo.TicketPdfVO;
@@ -12,7 +13,7 @@ import mx.com.tecnetia.muvitul.servicios.util.Constantes;
 
 public class TicketVentaAssembler {
 
-	public static TicketVenta getTicketVenta(Integer idUsuario, Integer idPuntoVenta, BigDecimal descuento,
+	public static TicketVenta getTicketVenta(Integer idUsuario, Integer idPuntoVenta,Integer idCaja, BigDecimal descuento,
 			BigDecimal importe, BigDecimal total) {
 
 		if (idUsuario == null || idPuntoVenta==null)
@@ -25,6 +26,7 @@ public class TicketVentaAssembler {
 		ticketVenta.setDescuento(descuento);
 		ticketVenta.setImporte(importe);
 		ticketVenta.setTotal(total);
+		ticketVenta.setCaja(idCaja==null?null:new Caja(idCaja));
 
 		return ticketVenta;
 
@@ -43,6 +45,8 @@ public class TicketVentaAssembler {
 		ticketVentaVO.setDescuento(ticketVenta.getImporte());
 		ticketVentaVO.setImporte(ticketVenta.getImporte());
 		ticketVentaVO.setTotal(ticketVenta.getTotal());
+		ticketVentaVO.setIdCaja(ticketVenta.getCaja()==null?null:ticketVenta.getCaja().getIdCaja());
+		
 		return ticketVentaVO;
 	}
 	

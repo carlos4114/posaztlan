@@ -3,6 +3,27 @@
 angular.module('indexModule').controller("UsuariosController",['$scope','GlobalFactory', 'UsuariosService','ErrorFactory', 
     function($scope,GlobalFactory, UsuariosService,ErrorFactory){	 			
 	 var idEmpresa = GlobalFactory.getIdEmpresa(); 
+	 
+	 
+	 $scope.consultaEstatusUsuario = function() {
+		 UsuariosService.consultaEstatusUsuario()
+		 .then(
+	      function(d) {
+        	  $scope.listaEstatus = d;
+	      },
+          function(errResponse){
+          });
+     }
+	 
+	 $scope.consultaCajasXPuntoVenta = function(idPuntoVenta) {
+		 UsuariosService.consultaCajasXPuntoVenta(idPuntoVenta)
+		 .then(
+	      function(d) {
+        	  $scope.listaCajas = d;
+	      },
+          function(errResponse){
+          });
+     }
 	
 	 $scope.consultaCinesXEmpresa = function(idEmpresa) {
 		 UsuariosService.consultaCinesXEmpresa(idEmpresa)
@@ -35,6 +56,8 @@ angular.module('indexModule').controller("UsuariosController",['$scope','GlobalF
      }
 	 
 	 $scope.inicializarValores = function(){
+		 $scope.listaCajas = null;	
+		 $scope.listaEstatus = null;	
 		 $scope.listaUsuarios = null;		 	
 	 	 $scope.listaPerfiles = null;
 	 	 $scope.listaPuntosVenta = null;	 	 
@@ -109,6 +132,7 @@ angular.module('indexModule').controller("UsuariosController",['$scope','GlobalF
 	        
 			for(var i = 0; i < $scope.listaUsuarios.length; i++){
 	            if($scope.listaUsuarios[i].idUsuario === idUsuario) {
+	            	$scope.consultaCajasXPuntoVenta($scope.listaUsuarios[i].idPuntoVenta); 
 	            	$scope.usuarioVO = angular.copy($scope.listaUsuarios[i]);
 	            	$scope.correoConfirma=$scope.usuarioVO.correo;	            	
 	            	$("#puntoVenta").val($scope.usuarioVO.idPuntoVenta);
@@ -131,18 +155,25 @@ angular.module('indexModule').controller("UsuariosController",['$scope','GlobalF
 		 $scope.obtenerUsuarios(idCine);		 
 	 }
 	 
+	 $scope.cambiarPuntoVenta = function(idPuntoVenta){
+		 $scope.consultaCajasXPuntoVenta(idPuntoVenta);
+	 }
+	 
 	 $scope.limpiarFormulario = function(){     	
 		 $scope.fromUsuarios.$setPristine();
 	     $scope.usuarioVO = {idUsuario:null,correo:'',nombre:'',paterno:'',materno:'',idEstatus:null,estatus:'',idPerfil:null,perfil:'',idPuntoVenta:null,puntoVenta:'',idCine:null};
 	     $scope.listaUsuarios=null;
+		 $scope.listaCajas = null;		 	
 	     $scope.listaPuntosVenta=null;
 	     $scope.correoConfirma='';
 	     $scope.listaCines=null;
 	     $scope.consultaCinesXEmpresa(idEmpresa);
+	     
 	 }
 	 		
 	 $scope.inicializarValores();	
 	 $scope.consultaCinesXEmpresa(idEmpresa);
 	 $scope.consultaPerfilesXEmpresa(idEmpresa); 	
+	 $scope.consultaEstatusUsuario(); 	
 
 }]);

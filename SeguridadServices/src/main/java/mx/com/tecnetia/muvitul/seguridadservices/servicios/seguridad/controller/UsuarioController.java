@@ -3,6 +3,7 @@ package mx.com.tecnetia.muvitul.seguridadservices.servicios.seguridad.controller
 
 import io.jsonwebtoken.Claims;
 import mx.com.tecnetia.muvitul.infraservices.negocio.seguridad.vo.CambioContraseniaVO;
+import mx.com.tecnetia.muvitul.infraservices.negocio.seguridad.vo.EstatusUsuarioVO;
 import mx.com.tecnetia.muvitul.infraservices.negocio.seguridad.vo.HttpRequestVO;
 import mx.com.tecnetia.muvitul.infraservices.negocio.seguridad.vo.HttpResponseVO;
 import mx.com.tecnetia.muvitul.infraservices.negocio.seguridad.vo.LoginResponseVO;
@@ -17,9 +18,11 @@ import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Usuario;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.enumeration.UsuarioEstatusEnum;
 import mx.com.tecnetia.muvitul.infraservices.servicios.BusinessGlobalException;
 import mx.com.tecnetia.muvitul.infraservices.servicios.GlobalService;
+import mx.com.tecnetia.muvitul.seguridadservices.negocio.seguridad.assembler.EstatusUsuarioAssembler;
 import mx.com.tecnetia.muvitul.seguridadservices.negocio.seguridad.assembler.UsuarioAssembler;
 import mx.com.tecnetia.muvitul.seguridadservices.negocio.seguridad.business.SeguridadBO;
 import mx.com.tecnetia.muvitul.seguridadservices.negocio.seguridad.business.UsuarioBO;
+import mx.com.tecnetia.muvitul.seguridadservices.persistencia.muvitul.dao.EstatusUsuarioDAOI;
 import mx.com.tecnetia.muvitul.seguridadservices.persistencia.muvitul.dao.RecursoDAOI;
 import mx.com.tecnetia.muvitul.seguridadservices.persistencia.muvitul.dao.RecursoIbatisDAOI;
 import mx.com.tecnetia.muvitul.seguridadservices.persistencia.muvitul.dao.UsuarioDAOI;
@@ -47,7 +50,18 @@ public class UsuarioController extends GlobalService{
 	@Autowired
 	RecursoDAOI recursoDAO;		
 	@Autowired
-	UsuarioDAOI usuarioDAO;		
+	UsuarioDAOI usuarioDAO;	
+	@Autowired
+	EstatusUsuarioDAOI estatusUsuarioDAO;	
+	
+	/**
+     * Servicio para obtener catalogo de estatus de usuario
+     */
+	@Transactional (readOnly = true)
+	public List<EstatusUsuarioVO> getEstatusUsuario() throws BusinessGlobalException{
+	
+		 return EstatusUsuarioAssembler.getListaVO(this.estatusUsuarioDAO.findAll());
+	}
 	
 	/**
      * Servicio para cambiar la contraseña del usuario
@@ -183,12 +197,7 @@ public class UsuarioController extends GlobalService{
 		usuarioVO.setIdEstatus(UsuarioEstatusEnum.ACTIVO);
 		usuario = UsuarioAssembler.getUsuario(usuarioVO);
 		this.usuarioDAO.save(usuario);
-		
-		/*Set<Perfil> perfiles = new HashSet<Perfil>();
-		perfiles.add(new Perfil(usuarioVO.getIdPerfil()));
-		usuario.setPerfils(perfiles);
-		usuario.getPerfils().add();
-		*/
+				
 		//enviamos el mail de la contrasenia nueva
 		this.seguridadBO.enviarMailContrasenia(new UsuarioLoginVO(usuarioVO.getCorreo(),nuevaContrasenia));
     	

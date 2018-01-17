@@ -48,8 +48,8 @@ public class ReporteDistribuidoraBO {
 		parametros.put("fechaInicial",fecha.format(reporte.getFechaInicio()));
 		parametros.put("fechaFinal",fecha.format(reporte.getFechaFin()));
 		parametros.put("idCine", reporte.getCine().getIdCine());
-		parametros.put("idPelicula",reporte.getPelicula().getIdPelicula());
-		parametros.put("idDistribuidora",reporte.getPelicula().getDistribuidora().getIdDistribuidora());
+		parametros.put("idPelicula",reporte.getPelicula()==null?0:reporte.getPelicula().getIdPelicula());
+		parametros.put("idDistribuidora",reporte.getPelicula()==null?0:reporte.getPelicula().getDistribuidora().getIdDistribuidora());
 				
 		rutaReporteJasper = cfg.getString(reporte.getReportesDistribuidora().getRutaReporteJasper());	
 		rutaReporteXls = context.getRealPath(cfg.getString(reporte.getReportesDistribuidora().getRutaReporteXls()));
@@ -59,7 +59,7 @@ public class ReporteDistribuidoraBO {
 		asunto = reporte.getAsunto() + " - " +  reporte.getCine().getNombre();
 		
 		if(!reporte.getReportesDistribuidora().getRutaReporteJasper().contains("comscore")){
-			asunto = asunto + " - " + reporte.getPelicula().getTitulo();
+			asunto = asunto + " - " + reporte.getPelicula()==null?"":reporte.getPelicula().getTitulo();
 		}
 		
 		cuerpo = "";

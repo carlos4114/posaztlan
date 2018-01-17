@@ -4,22 +4,17 @@ angular.module('indexModule').service("CorteCajaService", ['$http', '$q','Global
    function($http, $q, GlobalFactory, config) {
 		
 		var URI_SERVICIO = config.baseUrl;
-		var URI_SERVICIO_SEGURIDAD = config.baseSeguridadUrl;
-		var URI_NUEVO_USUARIO = URI_SERVICIO_SEGURIDAD + '/seguridad/guardarUsuarioNuevo';
-		var URI_ACTUALIZAR_USUARIO = URI_SERVICIO_SEGURIDAD + '/seguridad/actualizarUsuario';
-		var URI_OBTENER_USUARIOS = URI_SERVICIO_SEGURIDAD + '/seguridad/obtenerUsuarios';
-		var URI_OBTENER_PERFILES = URI_SERVICIO_SEGURIDAD + '/seguridad/obtenerPerfiles';
-		var URI_OBTENER_CINES = URI_SERVICIO + "/catalogo/cinesEmpresa"
-		var URI_OBTENER_PUNTOS_VENTA = URI_SERVICIO + "/catalogo/puntosVenta"
+		var URI_GUARDA_CORTE = URI_SERVICIO + '/caja/guardarCorte';
+		var URI_OBTENER_EFECTIVO = URI_SERVICIO  + '/caja/obtenerEfectivo';
+		var URI_OBTENER_ULTIMOS_CORTES = URI_SERVICIO  + '/caja/obtenerUltimosCortes';
+		var URI_CARGO_AJUSTE = URI_SERVICIO  + '/catalogo/cargoAjuste';
 				 	
 	    var factory = {
-	        guardarUsuarioNuevo: guardarUsuarioNuevo,
-	        actualizarUsuario: actualizarUsuario,
-	        obtenerUsuarios: obtenerUsuarios,
-	        consultaCinesXEmpresa: consultaCinesXEmpresa,
-	        consultaPerfilesXEmpresa: consultaPerfilesXEmpresa,
-	        consultaPuntosVentaXCine: consultaPuntosVentaXCine
-	    };
+	        guardarCorte: guardarCorte,
+	        obtenerEfectivo: obtenerEfectivo,
+	        obtenerUltimosCortes: obtenerUltimosCortes,
+	        obtenerCatCargoAjuste: obtenerCatCargoAjuste	    
+	     };
 	 
 	    return factory;
 	    
@@ -59,31 +54,23 @@ angular.module('indexModule').service("CorteCajaService", ['$http', '$q','Global
 		 }
 
 	 
-	    function guardarUsuarioNuevo(usuarioVO) {	    	
-	        return invocarServicioPost(URI_NUEVO_USUARIO,usuarioVO);	    				 	        
+	    function guardarCorte(cajaVO) {	    	
+	        return invocarServicioPost(URI_GUARDA_CORTE,cajaVO);	    				 	        
 	    }
 	    
-	    function actualizarUsuario(usuarioVO) {
-	        return invocarServicioPost(URI_ACTUALIZAR_USUARIO,usuarioVO);	    				 	        
+	    function obtenerEfectivo() {
+	        return invocarServicioGet(URI_OBTENER_EFECTIVO);	    				 	        
 	    }
 	    
-	    function obtenerUsuarios(idCine) {
+	    function obtenerUltimosCortes() {
+	    	var d = new Date();
+	    	var n = d.getTime();
+	        return invocarServicioGet(URI_OBTENER_ULTIMOS_CORTES);	    				 	        
+	    }
+	    
+	    function obtenerCatCargoAjuste() {
 	    	
-	        return invocarServicioGet(URI_OBTENER_USUARIOS+"/"+idCine);	    				 	        
-	    }
-	    
-	    function consultaCinesXEmpresa(idEmpresa){
-	        return invocarServicioGet(URI_OBTENER_CINES+"/"+idEmpresa);	    				 
-		 }
-
-	    function consultaPerfilesXEmpresa(idEmpresa){		    	    		        
-	        return invocarServicioGet(URI_OBTENER_PERFILES+"/"+idEmpresa);
-		 }
-	    
-	    function consultaPuntosVentaXCine(idCine){		    	    		        
-	        return invocarServicioGet(URI_OBTENER_PUNTOS_VENTA+"/"+idCine);
-		 }
-	    
-	   
+	        return invocarServicioGet(URI_CARGO_AJUSTE);
+	    }	   
 	    
 }]);

@@ -23,7 +23,6 @@ import mx.com.tecnetia.muvitul.infraservices.servicios.BusinessGlobalException;
 import mx.com.tecnetia.muvitul.negocio.configuracion.assembler.AutorizacionAssembler;
 import mx.com.tecnetia.muvitul.negocio.configuracion.vo.EstatusAutorizacionVO;
 import mx.com.tecnetia.muvitul.negocio.configuracion.vo.RequestAutorizacionVO;
-import mx.com.tecnetia.muvitul.servicios.facade.AutorizacionFacade;
 import mx.com.tecnetia.muvitul.servicios.util.Cipher;
 
 @Service

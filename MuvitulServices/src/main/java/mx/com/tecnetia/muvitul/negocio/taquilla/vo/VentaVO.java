@@ -6,6 +6,7 @@ public class VentaVO {
 	private Integer idUsuario;
 	private Integer idPuntoVenta;
 	private Integer idCine;
+	private Integer idCaja;
 	private List<BoletoXTicketVO> boletosXTicketVO;
 	private List<PromocionXTicketVO> promocionesXTicketVO;
 	private List<PagoVO> pagosVO;
@@ -46,4 +47,11 @@ public class VentaVO {
 	public void setPromocionesXTicketVO(List<PromocionXTicketVO> promocionesXTicketVO) {
 		this.promocionesXTicketVO = promocionesXTicketVO;
 	}
+	public Integer getIdCaja() {
+		return idCaja;
+	}
+	public void setIdCaja(Integer idCaja) {
+		this.idCaja = idCaja;
+	}
+	
 }

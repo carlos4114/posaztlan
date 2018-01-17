@@ -184,6 +184,7 @@ public class SeguridadBO extends GlobalService{
   	  			 .claim(ClaimsEnum.USUARIO, (Integer)claims.get(ClaimsEnum.USUARIO))
   	  			 .claim(ClaimsEnum.CINE, (Integer)claims.get(ClaimsEnum.CINE))
 	  			 .claim(ClaimsEnum.PUNTO_VENTA, (Integer)claims.get(ClaimsEnum.PUNTO_VENTA))
+   	  			 .claim(ClaimsEnum.CAJA, (Integer)claims.get(ClaimsEnum.CAJA))
 	  			 .claim(ClaimsEnum.NOMBRE_COMPLETO_USR, claims.get(ClaimsEnum.NOMBRE_COMPLETO_USR))
  	  			 .setExpiration(fechaExpriacion)
   	  			 .signWith(SignatureAlgorithm.HS256, pwdEncryptor)

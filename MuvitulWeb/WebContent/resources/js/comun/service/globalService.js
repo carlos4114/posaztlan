@@ -19,8 +19,8 @@ angular.module('globalModule').factory('GlobalFactory',['$window','$location','$
 			    		 mainPage: paginaPrincipal
 			    		}
     var appPropertiesProduccion = {
-			 servicesPath : 'http://localhost:8080/MuvitulServices/rest/',
-   		 securityPath : 'http://localhost:8080/SeguridadServices/rest/',
+			 servicesPath : 'http://ec2-52-14-125-63.us-east-2.compute.amazonaws.com:8080/MuvitulServices/rest/',
+   		 securityPath : 'http://ec2-52-14-125-63.us-east-2.compute.amazonaws.com:8080/SeguridadServices/rest/',
    		 httpProtocol: httpProtocol,
    		 contextPath: contextPath,
    		 mainPage: paginaPrincipal

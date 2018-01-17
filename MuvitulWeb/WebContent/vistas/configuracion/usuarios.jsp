@@ -89,13 +89,40 @@
 		                        <div class="col-md-6 col-sm-6 col-xs-12">
 									<select class="form-control col-md-7 col-xs-12" name="puntoVenta" id="puntoVenta" directiva-select2 required
 										ng-options="puntoVenta.idPuntoVenta as puntoVenta.nombre for puntoVenta in listaPuntosVenta"
+										ng-change="cambiarPuntoVenta(usuarioVO.idPuntoVenta)"
 										ng-model="usuarioVO.idPuntoVenta">
 										<option value="" selected="selected">Selecciona un punto de venta
 										</option>
 									</select>
 								</div>
-		                      </div>	
-		                      
+		                      </div>
+		                      <div class="form-group">
+		                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="caja">Caja<span class="required">*</span>
+		                        </label>
+		                        <div class="col-md-6 col-sm-6 col-xs-12">
+									<select class="form-control col-md-7 col-xs-12" name="caja" id="caja" required
+										ng-options="caja.id as caja.nombre for caja in listaCajas"
+										ng-model="usuarioVO.idCaja">
+										<option value="" selected="selected">Selecciona una caja
+										</option>
+									</select>
+								</div>
+		                      </div>		                      
+		                      <div ng-if="usuarioVO.idUsuario">   	
+			                      <div class="form-group">
+			                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="estatus">Estatus<span class="required">*</span>
+			                        </label>
+			                        <div class="col-md-6 col-sm-6 col-xs-12">
+					                        <select class="form-control col-md-7 col-xs-12" name="estatus" id="estatus" required
+												ng-options="estatus.id as estatus.nombre for estatus in listaEstatus"
+												ng-model="usuarioVO.idEstatus">
+												<option value="" selected="selected">Selecciona el estatus
+												</option>
+										</select>
+					                </div>
+			                      </div>
+			                  </div>    
+			                      
 	                      	  <br/>
 		                      <div class="form-group">
 		                        <div class="col-md-6 col-sm-6 col-xs-6 col-md-offset-3">

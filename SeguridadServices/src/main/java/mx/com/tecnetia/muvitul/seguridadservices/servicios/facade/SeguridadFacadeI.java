@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import mx.com.tecnetia.muvitul.infraservices.negocio.seguridad.vo.CambioContraseniaVO;
+import mx.com.tecnetia.muvitul.infraservices.negocio.seguridad.vo.EstatusUsuarioVO;
 import mx.com.tecnetia.muvitul.infraservices.negocio.seguridad.vo.HttpRequestVO;
 import mx.com.tecnetia.muvitul.infraservices.negocio.seguridad.vo.HttpResponseVO;
 import mx.com.tecnetia.muvitul.infraservices.negocio.seguridad.vo.LoginResponseVO;
@@ -28,6 +29,9 @@ import mx.com.tecnetia.muvitul.infraservices.servicios.BusinessGlobalException;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/seguridad")
 public interface SeguridadFacadeI {
+	
+	@RequestMapping(value = "estatusUsuario", method = RequestMethod.GET)
+	ResponseEntity<List<EstatusUsuarioVO>> getEstatusUsuario() throws BusinessGlobalException;
 	@RequestMapping(value = "autenticar", method = RequestMethod.POST)
     LoginResponseVO loginJwt(@RequestBody UsuarioLoginVO usuarioVO) throws BusinessGlobalException, Exception;		
 	@RequestMapping(value = "autorizar", method = RequestMethod.POST)

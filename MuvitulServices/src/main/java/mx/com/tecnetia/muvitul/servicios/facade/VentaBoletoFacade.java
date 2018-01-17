@@ -181,9 +181,12 @@ public class VentaBoletoFacade implements VentaBoletoFacadeI {
 		Integer idUsuario = (Integer) claims.get(ClaimsEnum.USUARIO);
 		Integer idCine = (Integer) claims.get(ClaimsEnum.CINE);
 		Integer idPuntoVenta = (Integer) claims.get(ClaimsEnum.PUNTO_VENTA);
+		Integer idCaja = (Integer) claims.get(ClaimsEnum.CAJA);
+		
 		ventaVO.setIdUsuario(idUsuario);
 		ventaVO.setIdCine(idCine);
 		ventaVO.setIdPuntoVenta(idPuntoVenta);
+		ventaVO.setIdCaja(idCaja);
 
 		logger.info("CreateVenta:::IdUsuario[{}]:::IdCine[{}]:::IdPuntoVenta[{}]", idUsuario, idCine, idPuntoVenta);
 

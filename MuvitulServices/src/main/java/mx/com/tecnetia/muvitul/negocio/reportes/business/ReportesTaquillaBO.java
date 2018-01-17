@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import mx.com.tecnetia.muvitul.infraservices.persistencia.utileria.business.FechasUtilsBO;
 import mx.com.tecnetia.muvitul.negocio.reportes.vo.ArchivoExcelVO;
 import mx.com.tecnetia.muvitul.negocio.reportes.vo.ReporteJasperVO;
 
@@ -26,6 +27,8 @@ public class ReportesTaquillaBO {
 	private ServletContext context;
 	@Autowired
 	private ReporteJasperBO reporteJasperBO;
+	@Autowired
+	private Reporte reporte;
 	private ArchivoExcelVO archivoExcelVO = null;
 
 	public ArchivoExcelVO generarKardex(Integer idCine, Integer idUsuario, Integer idPuntoVenta, String fechaInicio, String fechaFin,String idArticulo) {
@@ -82,7 +85,7 @@ public class ReportesTaquillaBO {
 		paramKardex.put("fecha_fin", "2018-02-01");
 		paramKardex.put("id_punto_venta",idPuntoVenta);
 		paramKardex.put("tipo_reporte","DIARIO");
-		paramKardex.put("datasourceTaquilla",Reporte.getReporteDiario());
+		paramKardex.put("datasourceTaquilla",this.reporte.getReporteDiario(idCine, FechasUtilsBO.stringToDate(fechaInicio,"/")));
 		paramKardex.put("SUBREPORT_DIR", rutaVentaDiario + "\\");
  
 		ReporteJasperVO reporteJasperVO = new ReporteJasperVO();
@@ -113,8 +116,8 @@ public class ReportesTaquillaBO {
 		paramKardex.put("fecha_fin", "2018-02-01");
 		paramKardex.put("id_punto_venta",idPuntoVenta);
 		paramKardex.put("tipo_reporte","SEMANAL");
-		paramKardex.put("datasourceTaquilla",Reporte.getReporteTaquillaSemanal());
-		paramKardex.put("datasourceDulceria",Reporte.getReporteDulceriaSemanal());
+		paramKardex.put("datasourceTaquilla",this.reporte.getReporteTaquillaSemanal(idCine,FechasUtilsBO.stringToDate(fechaInicio,"/"),FechasUtilsBO.stringToDate(fechaFin,"/")));
+		paramKardex.put("datasourceDulceria",this.reporte.getReporteDulceriaSemanal(idCine,FechasUtilsBO.stringToDate(fechaInicio,"/"),FechasUtilsBO.stringToDate(fechaFin,"/")));
 		paramKardex.put("SUBREPORT_DIR", rutaVentaDiario + "\\");
  
 		ReporteJasperVO reporteJasperVO = new ReporteJasperVO();
@@ -145,8 +148,8 @@ public class ReportesTaquillaBO {
 		paramKardex.put("fecha_fin", "2018-02-01");
 		paramKardex.put("id_punto_venta",idPuntoVenta);
 		paramKardex.put("tipo_reporte","MENSUAL");
-		paramKardex.put("datasourceTaquilla",Reporte.getReporteTaquillaMensual());
-		paramKardex.put("datasourceDulceria",Reporte.getReporteDulceriaMensual());
+		paramKardex.put("datasourceTaquilla",this.reporte.getReporteTaquillaMensual(idCine,FechasUtilsBO.stringToDate(fechaInicio,"/"),FechasUtilsBO.stringToDate(fechaFin,"/")));
+		paramKardex.put("datasourceDulceria",this.reporte.getReporteDulceriaMensual(idCine,FechasUtilsBO.stringToDate(fechaInicio,"/"),FechasUtilsBO.stringToDate(fechaFin,"/")));
 		paramKardex.put("SUBREPORT_DIR", rutaVentaMensual + "\\");
  
 		ReporteJasperVO reporteJasperVO = new ReporteJasperVO();

@@ -9,8 +9,10 @@ angular.module('indexModule').service("UsuariosService", ['$http', '$q','GlobalF
 		var URI_ACTUALIZAR_USUARIO = URI_SERVICIO_SEGURIDAD + '/seguridad/actualizarUsuario';
 		var URI_OBTENER_USUARIOS = URI_SERVICIO_SEGURIDAD + '/seguridad/obtenerUsuarios';
 		var URI_OBTENER_PERFILES = URI_SERVICIO_SEGURIDAD + '/seguridad/obtenerPerfiles';
+		var URI_OBTENER_CAJAS = URI_SERVICIO + '/catalogo/cajas';
 		var URI_OBTENER_CINES = URI_SERVICIO + "/catalogo/cinesEmpresa"
 		var URI_OBTENER_PUNTOS_VENTA = URI_SERVICIO + "/catalogo/puntosVenta"
+		var URI_OBTENER_ESTATUS_USUARIO = URI_SERVICIO_SEGURIDAD + "/seguridad/estatusUsuario"
 				 	
 	    var factory = {
 	        guardarUsuarioNuevo: guardarUsuarioNuevo,
@@ -18,7 +20,9 @@ angular.module('indexModule').service("UsuariosService", ['$http', '$q','GlobalF
 	        obtenerUsuarios: obtenerUsuarios,
 	        consultaCinesXEmpresa: consultaCinesXEmpresa,
 	        consultaPerfilesXEmpresa: consultaPerfilesXEmpresa,
-	        consultaPuntosVentaXCine: consultaPuntosVentaXCine
+	        consultaPuntosVentaXCine: consultaPuntosVentaXCine,
+	        consultaCajasXPuntoVenta: consultaCajasXPuntoVenta,
+	        consultaEstatusUsuario: consultaEstatusUsuario
 	    };
 	 
 	    return factory;
@@ -76,6 +80,11 @@ angular.module('indexModule').service("UsuariosService", ['$http', '$q','GlobalF
 	        return invocarServicioGet(URI_OBTENER_CINES+"/"+idEmpresa);	    				 
 		 }
 
+	    
+	    function consultaCajasXPuntoVenta(idPuntoVenta){
+	        return invocarServicioGet(URI_OBTENER_CAJAS+"/"+idPuntoVenta);	    				 
+		 }
+
 	    function consultaPerfilesXEmpresa(idEmpresa){		    	    		        
 	        return invocarServicioGet(URI_OBTENER_PERFILES+"/"+idEmpresa);
 		 }
@@ -84,6 +93,9 @@ angular.module('indexModule').service("UsuariosService", ['$http', '$q','GlobalF
 	        return invocarServicioGet(URI_OBTENER_PUNTOS_VENTA+"/"+idCine);
 		 }
 	    
-	   
+	    function consultaEstatusUsuario(){		    	    		        
+	        return invocarServicioGet(URI_OBTENER_ESTATUS_USUARIO);
+		 }
+	    
 	    
 }]);

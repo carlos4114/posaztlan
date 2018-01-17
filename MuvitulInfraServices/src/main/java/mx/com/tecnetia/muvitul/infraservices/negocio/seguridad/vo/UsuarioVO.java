@@ -26,6 +26,7 @@ public class UsuarioVO implements Serializable{
 	private Integer idPuntoVenta;
 	private String puntoVenta;
 	private Integer idCine;
+	private Integer idCaja;
 	private File foto;
 	
 	public String getCorreo() {
@@ -117,6 +118,12 @@ public class UsuarioVO implements Serializable{
 	}
 	public void setPuntoVenta(String puntoVenta) {
 		this.puntoVenta = puntoVenta;
+	}
+	public Integer getIdCaja() {
+		return idCaja;
+	}
+	public void setIdCaja(Integer idCaja) {
+		this.idCaja = idCaja;
 	}
 	
 	

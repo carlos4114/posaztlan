@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import io.jsonwebtoken.Claims;
@@ -18,6 +19,7 @@ import mx.com.tecnetia.muvitul.infraservices.presentacion.seguridad.frontcontrol
 import mx.com.tecnetia.muvitul.infraservices.servicios.BusinessGlobalException;
 import mx.com.tecnetia.muvitul.infraservices.servicios.NotFoundException;
 import mx.com.tecnetia.muvitul.negocio.configuracion.vo.ArticuloVO;
+import mx.com.tecnetia.muvitul.negocio.configuracion.vo.CatalogoVO;
 import mx.com.tecnetia.muvitul.negocio.configuracion.vo.CineVO;
 import mx.com.tecnetia.muvitul.negocio.configuracion.vo.EstadoProductoVO;
 import mx.com.tecnetia.muvitul.negocio.configuracion.vo.FormaPagoVO;
@@ -37,6 +39,18 @@ public class CatalogoFacade implements CatalogoFacadeI {
 	UsuarioFirmadoBean usuarioFirmadoBean;
 	@Autowired
 	CatalogoController catalogoController;
+	
+	@Override
+	@Transactional (readOnly = true)
+	public ResponseEntity<List<CatalogoVO>> getCajas(@PathVariable("idPuntoVenta") Integer idPuntoVenta) throws BusinessGlobalException {
+		return new ResponseEntity<List<CatalogoVO>>(this.catalogoController.getCajas(idPuntoVenta), HttpStatus.OK);		
+	}
+	
+	@Override
+	@Transactional (readOnly = true)
+	public ResponseEntity<List<CatalogoVO>> getCargoAjuste() throws BusinessGlobalException {
+		return new ResponseEntity<List<CatalogoVO>>(this.catalogoController.getCargoAjuste(), HttpStatus.OK);		
+	}
 	
 	@Override
 	public ResponseEntity<List<CineVO>> getCinesEmpresa(@PathVariable("idEmpresa") Integer idEmpresa) throws BusinessGlobalException, NotFoundException {

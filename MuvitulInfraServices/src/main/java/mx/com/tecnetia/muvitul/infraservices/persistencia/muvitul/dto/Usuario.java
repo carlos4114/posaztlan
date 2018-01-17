@@ -27,6 +27,7 @@ public class Usuario implements java.io.Serializable {
 	private Cine cine;
 	private EstatusUsuario estatusUsuario;
 	private PuntoVenta puntoVenta;
+	private Caja caja;
 	private String nombre;
 	private String paterno;
 	private String materno;
@@ -34,6 +35,7 @@ public class Usuario implements java.io.Serializable {
 	private String contrasenia;
 	private String foto;
 	private Set<TicketVenta> ticketVentas = new HashSet<TicketVenta>(0);
+	private Set<CorteCaja> corteCajas = new HashSet<CorteCaja>(0);
 	private Set<Devolucion> devolucions = new HashSet<Devolucion>(0);
 	private Set<PerfilesXUsuario> perfilesXUsuarios = new HashSet<PerfilesXUsuario>(0);
 	private Set<CancelacionPago> cancelacionPagos = new HashSet<CancelacionPago>(0);
@@ -42,6 +44,10 @@ public class Usuario implements java.io.Serializable {
 	private Set<Perfil> perfils = new HashSet<Perfil>(0);
 
 	public Usuario() {
+	}
+	
+	public Usuario(Integer idUsuario) {
+		this.idUsuario = idUsuario;
 	}
 
 	public Usuario(Cine cine, EstatusUsuario estatusUsuario, String nombre, String paterno, String correo,
@@ -116,6 +122,16 @@ public class Usuario implements java.io.Serializable {
 	public void setPuntoVenta(PuntoVenta puntoVenta) {
 		this.puntoVenta = puntoVenta;
 	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_caja")
+	public Caja getCaja() {
+		return this.caja;
+	}
+
+	public void setCaja(Caja caja) {
+		this.caja = caja;
+	}
 
 	@Column(name = "nombre", nullable = false, length = 60)
 	public String getNombre() {
@@ -174,6 +190,15 @@ public class Usuario implements java.io.Serializable {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario")
 	public Set<TicketVenta> getTicketVentas() {
 		return this.ticketVentas;
+	}
+
+	public void setCorteCajas(Set<CorteCaja> corteCajas) {
+		this.corteCajas = corteCajas;
+	}
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario")
+	public Set<CorteCaja> getCorteCajas() {
+		return this.corteCajas;
 	}
 
 	public void setTicketVentas(Set<TicketVenta> ticketVentas) {

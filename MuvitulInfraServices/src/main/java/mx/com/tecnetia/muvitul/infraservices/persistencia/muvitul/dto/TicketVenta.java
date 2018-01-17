@@ -27,6 +27,7 @@ public class TicketVenta implements java.io.Serializable {
 
 	private Integer idTicket;
 	private PuntoVenta puntoVenta;
+	private Caja caja;
 	private Usuario usuario;
 	private Date fecha;
 	private BigDecimal descuento;
@@ -103,6 +104,16 @@ public class TicketVenta implements java.io.Serializable {
 
 	public void setPuntoVenta(PuntoVenta puntoVenta) {
 		this.puntoVenta = puntoVenta;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_caja", nullable = true)
+	public Caja getCaja() {
+		return this.caja;
+	}
+
+	public void setCaja(Caja caja) {
+		this.caja = caja;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)

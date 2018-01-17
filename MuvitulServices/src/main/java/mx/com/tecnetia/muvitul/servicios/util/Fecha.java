@@ -18,6 +18,14 @@ public class Fecha {
 		return days[numberDay - 1];
 	}
 	
+	public static Integer getDayOfWeekInt(Date date) {		
+		int numberDay = 0;
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		numberDay = cal.get(Calendar.DAY_OF_WEEK);
+		return numberDay == 1 ? 7 : numberDay-1;
+	}
+	
 	public static String getDayOfWeek(Date date) {
 		String[] days = { "DOMINGO", "LUNES", "MARTES", "MIERCOLES", "JUEVES", "VIERNES", "SABADO" };
 		int numberDay = 0;
