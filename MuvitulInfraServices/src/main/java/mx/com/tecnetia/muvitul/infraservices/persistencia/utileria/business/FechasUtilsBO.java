@@ -1176,6 +1176,21 @@ public class FechasUtilsBO {
 		}
 		return fechaNueva;
     }
+    /**
+     * Convierte una fecha en formato dd/MM/yyyy a forato yyyy-MM-dd .
+     *
+     * @param stringData Cadena con la fecha en formato dd/MM/yyyy
+     * @return Fecha en tipo String con formato yyyy-MM-dd 
+     */
+    public  String convertStringToData(String stringData)
+	        throws ParseException {
+
+	    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	    SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd");
+	    Date data = sdf.parse(stringData);
+	    String formattedTime = output.format(data);
+	    return formattedTime;
+	}
     
     /**
      * DOCUMENT ME!
