@@ -1182,15 +1182,56 @@ public class FechasUtilsBO {
      * @param stringData Cadena con la fecha en formato dd/MM/yyyy
      * @return Fecha en tipo String con formato yyyy-MM-dd 
      */
-    public  String convertStringToData(String stringData)
-	        throws ParseException {
+    public  static String convertStringToData(String stringData){
 
 	    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	    SimpleDateFormat output = new SimpleDateFormat("yyyy-MM-dd");
-	    Date data = sdf.parse(stringData);
-	    String formattedTime = output.format(data);
+	    Date data;
+	    String formattedTime = null;
+		try {
+			data = sdf.parse(stringData);
+		    formattedTime = output.format(data);
+
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	    return formattedTime;
 	}
+    
+    
+    public static Date getFechaFinMes(Date fecha){
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(fecha); // Configuramos la fecha que se recibe
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH)); 
+        return calendar.getTime(); // Devuelve el objeto Date con los nuevos días añadidos
+
+ }
+    
+    public static Date getFechaInicioMes(Date fecha){
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(fecha); // Configuramos la fecha que se recibe
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum( Calendar.DAY_OF_MONTH)); 
+        return calendar.getTime(); // Devuelve el objeto Date con los nuevos días añadidos
+
+ }
+    
+    public static String convertMMYYtoddMMYY(String fecha, String formato){
+    	// input format: MM/yy
+    	SimpleDateFormat parser = new SimpleDateFormat("MM/yy");
+    	// output format: yyyy-MM-dd
+    	SimpleDateFormat formatter = new SimpleDateFormat(formato);
+    	String fechaFormateada = null;
+    	try {
+    		fechaFormateada=formatter.format(parser.parse(fecha));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} // 2017-11-01
+		return fechaFormateada;
+    }
     
     /**
      * DOCUMENT ME!
@@ -1199,12 +1240,14 @@ public class FechasUtilsBO {
      */
     public static void main(String[] args) {
     	
-		String fecha = "31/03/2016";
+		String fecha = "12/2017";
 		String fecha2 = "21/02/2014 02:30:21";
 		
-		System.out.println(getCurrentDate());
-		System.out.println(stringToDateHour(fecha2, "dd/MM/yyyy HH:mm:ss"));
-		
+		System.out.println(getFechaInicioMes(getCurrentDate()));
+ 
+//		System.out.println(dateToString(addDaysToDate(getCurrentDate(),7),"yyyy-MM-dd"));
+//		System.out.println(convertMMYYtoddMMYY(fecha));
+
 		//Date f = stringToDateHour(fecha, "dd/MM/yyyy HH:mm:ss");
 		//Date f2  = stringToDateHour(fecha2, "dd/MM/yyyy HH:mm:ss");
 		

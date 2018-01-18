@@ -1,11 +1,13 @@
 package mx.com.tecnetia.muvitul.negocio.reportes.business;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import javax.servlet.ServletContext;
 
+import org.hibernate.HibernateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +15,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import mx.com.tecnetia.muvitul.infraservices.persistencia.utileria.business.FechasUtilsBO;
+import mx.com.tecnetia.muvitul.infraservices.servicios.BusinessGlobalException;
+import mx.com.tecnetia.muvitul.infraservices.servicios.NotFoundException;
 import mx.com.tecnetia.muvitul.negocio.reportes.vo.ArchivoExcelVO;
 import mx.com.tecnetia.muvitul.negocio.reportes.vo.ReporteJasperVO;
 import mx.com.tecnetia.muvitul.servicios.util.Fecha;
+import net.sf.jasperreports.engine.JRException;
 
 @Service
 @Transactional
@@ -39,9 +44,10 @@ public class ReportesTaquillaBO {
 		String rutaKardex = context.getRealPath(cfg.getString("reporte.cines.inventario.kardex") + "\\");
 		String fechaI = ""; 
 		String fechaF = "";
-		try {
-			  fechaI=Fecha.convertStringToData(fechaInicio);
-			  fechaF=Fecha.convertStringToData(fechaFin);
+
+	
+		fechaI=FechasUtilsBO.convertStringToData(fechaInicio);
+		fechaF=FechasUtilsBO.convertStringToData(fechaFin);
 		 
 	 	 
 		HashMap<String, Object> paramKardex = new HashMap<String, Object>();
@@ -59,16 +65,19 @@ public class ReportesTaquillaBO {
 		reporteJasperVO.setRutaPdf(rutaReporteXls);
 		reporteJasperVO.setParametros(paramKardex);
 		 
+		try {
 			archivoExcelVO.setArchivo(reporteJasperBO.getReporteXls(reporteJasperVO));
-		} catch ( Exception e) {
- 			e.printStackTrace();
+		} catch (HibernateException | BusinessGlobalException | NotFoundException | IOException | JRException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
 
 		return archivoExcelVO;
 
 	}
 
-	public ArchivoExcelVO generarReporteVentas(Integer idCine, Integer idUsuario,Integer idPuntoVenta, String fechaInicio, String fechaFin) {
+	public ArchivoExcelVO generarReporteVentas(Integer idCine, Integer idUsuario,Integer idPuntoVenta, String fecha) {
 
 		archivoExcelVO = new ArchivoExcelVO("VentaDiario");
 		ResourceBundle cfg = ResourceBundle.getBundle("config");
@@ -76,14 +85,15 @@ public class ReportesTaquillaBO {
 		String rutaReporteXls = context.getRealPath(cfg.getString("reporte.cines.ventas.diarios.xls"));
 		String rutaVentaDiario = context.getRealPath(cfg.getString("reporte.cines.ventas.diarios") + "\\");
 
-		try {
+		
+		 
 			HashMap<String, Object> paramKardex = new HashMap<String, Object>();
 			paramKardex.put("id_cine", idCine);
-			paramKardex.put("fecha_inicio", Fecha.convertStringToData(fechaFin));
-			paramKardex.put("fecha_fin", Fecha.convertStringToData(fechaFin));
+			paramKardex.put("fecha_inicio", FechasUtilsBO.convertStringToData(fecha));
+			paramKardex.put("fecha_fin", FechasUtilsBO.convertStringToData(fecha));
 			paramKardex.put("id_punto_venta",idPuntoVenta);
 			paramKardex.put("tipo_reporte","DIARIO");
-			paramKardex.put("datasourceTaquilla",this.reporte.getReporteDiario(idCine, FechasUtilsBO.stringToDate(fechaInicio,"/")));
+			paramKardex.put("datasourceTaquilla",this.reporte.getReporteDiario(idCine, FechasUtilsBO.stringToDate(fecha,"/")));
 			paramKardex.put("SUBREPORT_DIR", rutaVentaDiario + "\\");
 	 
 			ReporteJasperVO reporteJasperVO = new ReporteJasperVO();
@@ -91,16 +101,19 @@ public class ReportesTaquillaBO {
 			reporteJasperVO.setRutaPdf(rutaReporteXls);
 			reporteJasperVO.setParametros(paramKardex);
 		
-			archivoExcelVO.setArchivo(reporteJasperBO.getReporteXls(reporteJasperVO));
-		} catch (Exception e) {
- 			e.printStackTrace();
-		}
+			try {
+				archivoExcelVO.setArchivo(reporteJasperBO.getReporteXls(reporteJasperVO));
+			} catch (HibernateException | BusinessGlobalException | NotFoundException | IOException | JRException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		 
 
 		return archivoExcelVO;
 
 	}
 
-	public ArchivoExcelVO generarReporteVentasSemanal(Integer idCine, Integer idUsuario,Integer idPuntoVenta, String fechaInicio, String fechaFin) {
+	public ArchivoExcelVO generarReporteVentasSemanal(Integer idCine, Integer idUsuario,Integer idPuntoVenta, String fecha) {
 
 		archivoExcelVO = new ArchivoExcelVO("VentaSemanal");
 		ResourceBundle cfg = ResourceBundle.getBundle("config");
@@ -108,14 +121,19 @@ public class ReportesTaquillaBO {
 		String rutaReporteXls = context.getRealPath(cfg.getString("reporte.cines.ventas.semanales.xls"));
 		String rutaVentaDiario = context.getRealPath(cfg.getString("reporte.cines.ventas.semanales") + "\\");
 
+		String fechaInicio= FechasUtilsBO.convertStringToData(fecha);
+		String fechaFin= FechasUtilsBO.dateToString(FechasUtilsBO.addDaysToDate(FechasUtilsBO.stringddMMyyToDate(fecha,"dd/MM/yyyy"),7),"yyyy-MM-dd");;
+		
+		
+		
 		HashMap<String, Object> paramKardex = new HashMap<String, Object>();
-		paramKardex.put("id_cine", new Integer("1"));
-		paramKardex.put("fecha_inicio", "2017-01-01");
-		paramKardex.put("fecha_fin", "2018-02-01");
+		paramKardex.put("id_cine", idCine);
+		paramKardex.put("fecha_inicio", fechaInicio);
+		paramKardex.put("fecha_fin", fechaFin);
 		paramKardex.put("id_punto_venta",idPuntoVenta);
 		paramKardex.put("tipo_reporte","SEMANAL");
-		paramKardex.put("datasourceTaquilla",this.reporte.getReporteTaquillaSemanal(idCine,FechasUtilsBO.stringToDate(fechaInicio,"/"),FechasUtilsBO.stringToDate(fechaFin,"/")));
-		paramKardex.put("datasourceDulceria",this.reporte.getReporteDulceriaSemanal(idCine,FechasUtilsBO.stringToDate(fechaInicio,"/"),FechasUtilsBO.stringToDate(fechaFin,"/")));
+		paramKardex.put("datasourceTaquilla",this.reporte.getReporteTaquillaSemanal(idCine,FechasUtilsBO.stringToDate(fechaInicio,"-"),FechasUtilsBO.stringToDate(fechaInicio,"-")));
+		paramKardex.put("datasourceDulceria",this.reporte.getReporteDulceriaSemanal(idCine,FechasUtilsBO.stringToDate(fechaFin,"-"),FechasUtilsBO.stringToDate(fechaFin,"-")));
 		paramKardex.put("SUBREPORT_DIR", rutaVentaDiario + "\\");
  
 		ReporteJasperVO reporteJasperVO = new ReporteJasperVO();
@@ -132,7 +150,7 @@ public class ReportesTaquillaBO {
 
 	}
 
-	public ArchivoExcelVO generarReporteVentasMensual(Integer idCine, Integer idUsuario, Integer idPuntoVenta,String fechaInicio, String fechaFin) {
+	public ArchivoExcelVO generarReporteVentasMensual(Integer idCine, Integer idUsuario, Integer idPuntoVenta,String fecha) {
 
 		archivoExcelVO = new ArchivoExcelVO("VentaMensual");
 		ResourceBundle cfg = ResourceBundle.getBundle("config");
@@ -140,14 +158,18 @@ public class ReportesTaquillaBO {
 		String rutaReporteXls = context.getRealPath(cfg.getString("reporte.cines.ventas.mensuales.xls"));
 		String rutaVentaMensual = context.getRealPath(cfg.getString("reporte.cines.ventas.mensuales") + "\\");
 		
+		String fechaInicio= FechasUtilsBO.dateToString(FechasUtilsBO.getFechaInicioMes(FechasUtilsBO.stringddMMyyToDate(FechasUtilsBO.convertMMYYtoddMMYY(fecha,"dd/MM/yyyy"),"dd/MM/yyyy")),"yyyy-MM-dd");
+		String fechaFin=FechasUtilsBO.dateToString(FechasUtilsBO.getFechaFinMes(FechasUtilsBO.stringddMMyyToDate(FechasUtilsBO.convertMMYYtoddMMYY(fecha,"dd/MM/yyyy"),"dd/MM/yyyy")),"yyyy-MM-dd");
+		
+		
 		HashMap<String, Object> paramKardex = new HashMap<String, Object>();
-		paramKardex.put("id_cine", new Integer("1"));
-		paramKardex.put("fecha_inicio", "2017-01-01");
-		paramKardex.put("fecha_fin", "2018-02-01");
+		paramKardex.put("id_cine", idCine);
+		paramKardex.put("fecha_inicio", fechaInicio);
+		paramKardex.put("fecha_fin", fechaFin);
 		paramKardex.put("id_punto_venta",idPuntoVenta);
 		paramKardex.put("tipo_reporte","MENSUAL");
-		paramKardex.put("datasourceTaquilla",this.reporte.getReporteTaquillaMensual(idCine,FechasUtilsBO.stringToDate(fechaInicio,"/"),FechasUtilsBO.stringToDate(fechaFin,"/")));
-		paramKardex.put("datasourceDulceria",this.reporte.getReporteDulceriaMensual(idCine,FechasUtilsBO.stringToDate(fechaInicio,"/"),FechasUtilsBO.stringToDate(fechaFin,"/")));
+		paramKardex.put("datasourceTaquilla",this.reporte.getReporteTaquillaMensual(idCine,FechasUtilsBO.stringToDate(fechaInicio,"-"),FechasUtilsBO.stringToDate(fechaFin,"-")));
+		paramKardex.put("datasourceDulceria",this.reporte.getReporteDulceriaMensual(idCine,FechasUtilsBO.stringToDate(fechaInicio,"-"),FechasUtilsBO.stringToDate(fechaFin,"-")));
 		paramKardex.put("SUBREPORT_DIR", rutaVentaMensual + "\\");
  
 		ReporteJasperVO reporteJasperVO = new ReporteJasperVO();
