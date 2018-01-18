@@ -135,7 +135,7 @@ angular.module('indexModule').config(function($routeProvider){
 	            controller: "dashboardTaquillaController",
  	            templateUrl: "vistas/dashboard/dashboard_taquilla.jsp"
 	        })
-	        .when("/reportes/ventas", {
+	        .when("/reportesExcel", {
 	            controller: "reportesController",
  	            templateUrl: "vistas/reportes/reportes_excel.jsp"
 	        });

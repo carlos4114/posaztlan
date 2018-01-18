@@ -962,14 +962,14 @@ ORDER BY s.nombre]]>
 						<textField>
 							<reportElement style="Crosstab Data Text" x="55" y="0" width="55" height="16" uuid="2e3c292c-a450-49e4-a003-ae9a8a6002cc"/>
 							<textElement>
-								<font size="10" isBold="true"/>
+								<font size="11" isBold="true"/>
 							</textElement>
 							<textFieldExpression><![CDATA[$V{totalCantidad}]]></textFieldExpression>
 						</textField>
 						<textField pattern="$###0.00">
 							<reportElement style="Crosstab Data Text" x="110" y="0" width="56" height="16" uuid="059091ee-e28f-4362-a7b6-005129c058c2"/>
 							<textElement>
-								<font size="10" isBold="true"/>
+								<font size="11" isBold="true"/>
 							</textElement>
 							<textFieldExpression><![CDATA[$V{totalTotal}]]></textFieldExpression>
 						</textField>

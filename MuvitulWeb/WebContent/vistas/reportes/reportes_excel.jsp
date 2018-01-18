@@ -86,26 +86,26 @@
 									</div>
 								</div>
 
-								<div
-									class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12 col-lg-offset-2 col-md-offset-4 col-sm-offset-4 "
-									ng-class="{'has-error': formReportes.articulos.$invalid && formReportes.articulos.$dirty}"
-									ng-if="reporteVO.tipoReporte.codigo == 'KARDEX'">
-									<label>Cine<span class="required">*</span>
-									</label>
-									<div
-										class="input-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-										<select class="form-control" name="articulos"
-											directiva-select2 select-width="300px" required
-											ng-options="articulo as articulo.nombre for articulo in listaArticulos"
-											ng-model="reporteVO.articulo">
-											<option value="" selected="selected">Selecciona un
-												articulo</option>
-										</select>
-									</div>
-									<div
-										ng-show="formReportes.articulos.$invalid && formReportes.articulos.$dirty"
-										ng-style="{color:'red'}">El campo es requerido.</div>
-								</div>
+<!-- 								<div -->
+<!-- 									class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12 col-lg-offset-2 col-md-offset-4 col-sm-offset-4 " -->
+<!-- 									ng-class="{'has-error': formReportes.articulos.$invalid && formReportes.articulos.$dirty}" -->
+<!-- 									ng-if="reporteVO.tipoReporte.codigo == 'KARDEX'"> -->
+<!-- 									<label>Cine<span class="required">*</span> -->
+<!-- 									</label> -->
+<!-- 									<div -->
+<!-- 										class="input-group col-lg-12 col-md-12 col-sm-12 col-xs-12"> -->
+<!-- 										<select class="form-control" name="articulos" -->
+<!-- 											directiva-select2 select-width="300px" required -->
+<!-- 											ng-options="articulo as articulo.nombre for articulo in listaArticulos" -->
+<!-- 											ng-model="reporteVO.articulo"> -->
+<!-- 											<option value="" selected="selected">Selecciona un -->
+<!-- 												articulo</option> -->
+<!-- 										</select> -->
+<!-- 									</div> -->
+<!-- 									<div -->
+<!-- 										ng-show="formReportes.articulos.$invalid && formReportes.articulos.$dirty" -->
+<!-- 										ng-style="{color:'red'}">El campo es requerido.</div> -->
+<!-- 								</div> -->
 
 								<div
 									class="col-lg-6 col-md-6 col-sm-12 col-xs-12  col-lg-offset-3 col-md-offset-3 col-sm-offset-3"
