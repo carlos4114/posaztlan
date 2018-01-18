@@ -205,7 +205,7 @@
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						</box>
-						<textField isBlankWhenNull="true">
+						<textField pattern="$###0.00" isBlankWhenNull="true">
 							<reportElement style="Crosstab Data Text" x="0" y="0" width="68" height="17" uuid="3a23dcdf-ccea-4e51-bb7a-ac451496ed34"/>
 							<textElement>
 								<font size="8" isBold="false"/>
@@ -219,7 +219,7 @@
 							</textElement>
 							<textFieldExpression><![CDATA[$V{cantidad}]]></textFieldExpression>
 						</textField>
-						<textField pattern="">
+						<textField pattern="$###0.00">
 							<reportElement style="Crosstab Data Text" x="152" y="0" width="67" height="17" uuid="f29a4a4a-9b29-4e62-8fb6-d788fbd6ea8d"/>
 							<textElement>
 								<font size="8" isBold="false"/>
@@ -247,7 +247,7 @@
 							</textElement>
 							<textFieldExpression><![CDATA[$V{totalCantidad}]]></textFieldExpression>
 						</textField>
-						<textField pattern="$">
+						<textField pattern="$###0.00">
 							<reportElement style="Crosstab Data Text" mode="Opaque" x="152" y="0" width="67" height="19" uuid="8ccfc136-efcc-4ac9-9252-744fb9484c9c"/>
 							<box>
 								<pen lineWidth="0.0"/>
