@@ -134,6 +134,9 @@ public class ReportesTaquillaBO {
 		paramKardex.put("tipo_reporte","SEMANAL");
 		paramKardex.put("datasourceTaquilla",this.reporte.getReporteTaquillaSemanal(idCine,FechasUtilsBO.stringYYYYMMDDToDate(fechaInicio,"-"),FechasUtilsBO.stringYYYYMMDDToDate(fechaFin,"-")));
 		paramKardex.put("datasourceDulceria",this.reporte.getReporteDulceriaSemanal(idCine,FechasUtilsBO.stringYYYYMMDDToDate(fechaInicio,"-"),FechasUtilsBO.stringYYYYMMDDToDate(fechaFin,"-")));
+//		this.reporte.getReporteDulceriaSemanalDummy();
+//				paramKardex.put("datasourceDulceria",this.reporte.getReporteDulceriaSemanalDummy());
+
 		paramKardex.put("SUBREPORT_DIR", rutaVentaDiario + "\\");
  
 		ReporteJasperVO reporteJasperVO = new ReporteJasperVO();
@@ -170,7 +173,7 @@ public class ReportesTaquillaBO {
 		paramKardex.put("tipo_reporte","MENSUAL");
 		paramKardex.put("datasourceTaquilla",this.reporte.getReporteTaquillaMensual(idCine,FechasUtilsBO.stringYYYYMMDDToDate(fechaInicio,"-"),FechasUtilsBO.stringYYYYMMDDToDate(fechaFin,"-")));
 		paramKardex.put("datasourceDulceria",this.reporte.getReporteDulceriaMensual(idCine,FechasUtilsBO.stringYYYYMMDDToDate(fechaInicio,"-"),FechasUtilsBO.stringYYYYMMDDToDate(fechaFin,"-")));
-		paramKardex.put("SUBREPORT_DIR", rutaVentaMensual + "\\");
+ 		paramKardex.put("SUBREPORT_DIR", rutaVentaMensual + "\\");
  
 		ReporteJasperVO reporteJasperVO = new ReporteJasperVO();
 		reporteJasperVO.setRutaReporte(rutaVentaMensualJasper);

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ventas_semanales" pageWidth="1111" pageHeight="612" orientation="Landscape" columnWidth="1071" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fa18d218-d14c-4d03-8b37-d3444dd5fe5f">
-	<property name="ireport.zoom" value="0.7132791765275018"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ventas_semanales" pageWidth="1656" pageHeight="1440" orientation="Landscape" columnWidth="1616" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fa18d218-d14c-4d03-8b37-d3444dd5fe5f">
+	<property name="ireport.zoom" value="0.7846070941802523"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="96"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -309,7 +309,7 @@ ORDER BY s.nombre]]>
 				<text><![CDATA[REPORTE]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement x="0" y="0" width="1071" height="20" forecolor="#FFFFFF" uuid="143a7c7d-f33e-4ceb-9855-4aa7f7b5ac42"/>
+				<reportElement x="0" y="0" width="1616" height="20" forecolor="#FFFFFF" uuid="143a7c7d-f33e-4ceb-9855-4aa7f7b5ac42"/>
 				<graphicElement>
 					<pen lineWidth="0.0"/>
 				</graphicElement>
@@ -454,7 +454,7 @@ ORDER BY s.nombre]]>
 				</jr:table>
 			</componentElement>
 			<rectangle>
-				<reportElement x="0" y="98" width="1071" height="20" forecolor="#FFFFFF" uuid="782aac37-b332-4caa-ba76-5da8aa51fdd4"/>
+				<reportElement x="0" y="98" width="1616" height="20" forecolor="#FFFFFF" uuid="782aac37-b332-4caa-ba76-5da8aa51fdd4"/>
 				<graphicElement>
 					<pen lineWidth="0.0"/>
 				</graphicElement>
@@ -824,9 +824,9 @@ ORDER BY s.nombre]]>
 		<band height="41"/>
 	</pageHeader>
 	<summary>
-		<band height="572" splitType="Stretch">
+		<band height="463" splitType="Stretch">
 			<crosstab>
-				<reportElement x="0" y="66" width="1500" height="123" uuid="a93b9ae0-f655-4132-82a0-56f6891c0249"/>
+				<reportElement x="29" y="68" width="1587" height="146" isPrintWhenDetailOverflows="true" uuid="a93b9ae0-f655-4132-82a0-56f6891c0249"/>
 				<crosstabDataset>
 					<dataset>
 						<datasetRun subDataset="ventas_taquilla" uuid="9ff5af26-faf0-445b-acce-1d1450e145fb">
@@ -837,7 +837,7 @@ ORDER BY s.nombre]]>
 				<crosstabHeaderCell>
 					<cellContents>
 						<staticText>
-							<reportElement style="Crosstab Data Text" x="0" y="24" width="237" height="17" uuid="e0e6d3f0-66e7-4ec7-9975-43b6335ac6d3"/>
+							<reportElement style="Crosstab Data Text" x="0" y="21" width="182" height="20" uuid="e0e6d3f0-66e7-4ec7-9975-43b6335ac6d3"/>
 							<box>
 								<pen lineWidth="0.5"/>
 								<topPen lineWidth="0.5"/>
@@ -849,6 +849,20 @@ ORDER BY s.nombre]]>
 								<font isBold="true"/>
 							</textElement>
 							<text><![CDATA[Pelicula]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Crosstab Data Text" x="182" y="21" width="55" height="20" uuid="1d31a8ed-a833-402d-975c-272c779d0840"/>
+							<box>
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement>
+								<font isBold="true"/>
+							</textElement>
+							<text><![CDATA[Semana]]></text>
 						</staticText>
 					</cellContents>
 				</crosstabHeaderCell>
@@ -862,11 +876,18 @@ ORDER BY s.nombre]]>
 								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textField>
-								<reportElement style="Crosstab Data Text" x="0" y="0" width="237" height="17" uuid="69502cbd-0882-4dd7-9f61-b03e432a2a6e"/>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="182" height="16" uuid="69502cbd-0882-4dd7-9f61-b03e432a2a6e"/>
 								<textElement>
-									<font isBold="true"/>
+									<font size="10" isBold="true"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$V{titulo}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="182" y="0" width="55" height="16" uuid="dee8007a-9abe-49ec-8319-3a8c68e34ba2"/>
+								<textElement>
+									<font size="10" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{semana}]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabRowHeader>
@@ -973,6 +994,9 @@ ORDER BY s.nombre]]>
 				<measure name="totalesTotal" class="java.lang.Double" calculation="Sum">
 					<measureExpression><![CDATA[$F{total}]]></measureExpression>
 				</measure>
+				<measure name="semana" class="java.lang.String">
+					<measureExpression><![CDATA[$F{semana}]]></measureExpression>
+				</measure>
 				<crosstabCell width="166" height="17">
 					<cellContents>
 						<box>
@@ -1057,13 +1081,13 @@ ORDER BY s.nombre]]>
 				</crosstabCell>
 			</crosstab>
 			<rectangle>
-				<reportElement x="0" y="189" width="1071" height="30" forecolor="#FFFFFF" uuid="f5e00a00-ea77-4d9e-b2aa-b5d297826ffb"/>
+				<reportElement x="29" y="217" width="1587" height="30" forecolor="#FFFFFF" uuid="f5e00a00-ea77-4d9e-b2aa-b5d297826ffb"/>
 				<graphicElement>
 					<pen lineWidth="0.0"/>
 				</graphicElement>
 			</rectangle>
 			<crosstab>
-				<reportElement x="0" y="255" width="1500" height="123" uuid="157b5a83-75b7-48d5-bfd6-6610b6f1c36c"/>
+				<reportElement x="29" y="283" width="1587" height="141" isPrintWhenDetailOverflows="true" uuid="157b5a83-75b7-48d5-bfd6-6610b6f1c36c"/>
 				<crosstabDataset>
 					<dataset>
 						<datasetRun subDataset="ventas_dulceria" uuid="13194056-f29c-482c-849e-44c60e64ad79">
@@ -1297,7 +1321,7 @@ ORDER BY s.nombre]]>
 				</crosstabCell>
 			</crosstab>
 			<staticText>
-				<reportElement x="252" y="219" width="578" height="16" uuid="19564b2e-12d8-4cd0-b93e-e62dc223f740"/>
+				<reportElement x="281" y="247" width="578" height="16" uuid="19564b2e-12d8-4cd0-b93e-e62dc223f740"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -1308,16 +1332,16 @@ ORDER BY s.nombre]]>
 				<textElement textAlignment="Center">
 					<font size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[DULCERIA]]></text>
+				<text><![CDATA[DULCERÍA]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement x="0" y="0" width="1071" height="30" forecolor="#FFFFFF" uuid="b55834fc-b593-40c8-83a8-a35cdd049ecb"/>
+				<reportElement x="29" y="2" width="1587" height="30" forecolor="#FFFFFF" uuid="b55834fc-b593-40c8-83a8-a35cdd049ecb"/>
 				<graphicElement>
 					<pen lineWidth="0.0"/>
 				</graphicElement>
 			</rectangle>
 			<staticText>
-				<reportElement x="252" y="30" width="578" height="16" uuid="ec9bcc1a-7603-425f-8678-2771d73556a5"/>
+				<reportElement x="281" y="32" width="578" height="16" uuid="ec9bcc1a-7603-425f-8678-2771d73556a5"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -1331,19 +1355,13 @@ ORDER BY s.nombre]]>
 				<text><![CDATA[TAQUILLA]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement x="0" y="46" width="1071" height="20" forecolor="#FFFFFF" uuid="ed70ba38-2eb0-47de-851b-a9c63d0a84cd"/>
+				<reportElement x="29" y="48" width="1587" height="20" forecolor="#FFFFFF" uuid="ed70ba38-2eb0-47de-851b-a9c63d0a84cd"/>
 				<graphicElement>
 					<pen lineWidth="0.0"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement x="0" y="235" width="1071" height="20" forecolor="#FFFFFF" uuid="fcd00dbf-a752-44a3-be32-e4e7748179c6"/>
-				<graphicElement>
-					<pen lineWidth="0.0"/>
-				</graphicElement>
-			</rectangle>
-			<rectangle>
-				<reportElement x="0" y="378" width="1071" height="30" forecolor="#FFFFFF" uuid="bc698fc8-4428-4988-8ba2-2937432506c7"/>
+				<reportElement x="29" y="263" width="1587" height="20" forecolor="#FFFFFF" uuid="fcd00dbf-a752-44a3-be32-e4e7748179c6"/>
 				<graphicElement>
 					<pen lineWidth="0.0"/>
 				</graphicElement>
