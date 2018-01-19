@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ventas_mensuales" pageWidth="1440" pageHeight="1440" orientation="Landscape" columnWidth="1400" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fa18d218-d14c-4d03-8b37-d3444dd5fe5f">
-	<property name="ireport.zoom" value="1.5289772612103687"/>
-	<property name="ireport.x" value="819"/>
-	<property name="ireport.y" value="645"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ventas_mensuales" pageWidth="1440" pageHeight="1440" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="1400" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fa18d218-d14c-4d03-8b37-d3444dd5fe5f">
+	<property name="ireport.zoom" value="0.4428902500000012"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -1330,4 +1330,15 @@ ORDER BY s.nombre]]>
 			</rectangle>
 		</band>
 	</summary>
+	<noData>
+		<band height="50">
+			<staticText>
+				<reportElement x="512" y="16" width="348" height="20" uuid="ab843fef-9508-446d-aef0-64f5e80bdd19"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NO SE ENCONTRÓ INFORMACIÓN]]></text>
+			</staticText>
+		</band>
+	</noData>
 </jasperReport>

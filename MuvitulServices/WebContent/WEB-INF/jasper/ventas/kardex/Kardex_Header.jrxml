@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Kardex_Header" pageWidth="792" pageHeight="802" columnWidth="792" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="b3c857af-fd70-49db-83ad-2b66077412af">
-	<property name="ireport.zoom" value="2.0000000000000013"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Kardex_Header" pageWidth="792" pageHeight="802" whenNoDataType="NoDataSection" columnWidth="792" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="b3c857af-fd70-49db-83ad-2b66077412af">
+	<property name="ireport.zoom" value="0.7710865788590638"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="emision" class="java.lang.String"/>
@@ -200,4 +200,15 @@
 			</textField>
 		</band>
 	</columnHeader>
+	<noData>
+		<band height="50">
+			<staticText>
+				<reportElement x="233" y="10" width="352" height="20" uuid="875c0b6a-f381-4807-81d7-406e55431ed8"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NO SE ENCONTRÓ INFORMACIÓN]]></text>
+			</staticText>
+		</band>
+	</noData>
 </jasperReport>

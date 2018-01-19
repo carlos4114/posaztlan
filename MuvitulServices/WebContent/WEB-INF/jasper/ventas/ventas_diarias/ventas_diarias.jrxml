@@ -913,4 +913,15 @@ GROUP  BY pv.nombre,
 	<summary>
 		<band height="42" splitType="Stretch"/>
 	</summary>
+	<noData>
+		<band height="50">
+			<staticText>
+				<reportElement x="277" y="15" width="447" height="20" uuid="e7728147-6248-4a8a-ac89-4b73f6e98077"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NO SE ENCONTRÓ INFORMACIÓN]]></text>
+			</staticText>
+		</band>
+	</noData>
 </jasperReport>
