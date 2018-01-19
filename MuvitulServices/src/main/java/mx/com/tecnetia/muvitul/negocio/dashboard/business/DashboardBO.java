@@ -317,7 +317,8 @@ public class DashboardBO {
 			Collections.sort(rentablesVO, new Comparator<RentableVO>() {
 
 				public int compare(RentableVO rvo1, RentableVO rvo2) {
-					return new Integer(rvo2.getVendidos()).compareTo(new Integer(rvo1.getVendidos()));
+					//return new Integer(rvo2.getVendidos()).compareTo(new Integer(rvo1.getVendidos()));
+					return rvo2.getUnidadXTicket().compareTo(rvo1.getUnidadXTicket());
 				}
 
 			});
@@ -327,7 +328,8 @@ public class DashboardBO {
 			Collections.sort(rentablesVO, new Comparator<RentableVO>() {
 
 				public int compare(RentableVO rvo1, RentableVO rvo2) {
-					return new Integer(rvo1.getVendidos()).compareTo(new Integer(rvo2.getVendidos()));
+					//return new Integer(rvo1.getVendidos()).compareTo(new Integer(rvo2.getVendidos()));
+					return rvo1.getUnidadXTicket().compareTo(rvo2.getUnidadXTicket());
 				}
 
 			});
