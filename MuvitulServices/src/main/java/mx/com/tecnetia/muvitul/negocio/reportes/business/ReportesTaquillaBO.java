@@ -122,7 +122,7 @@ public class ReportesTaquillaBO {
 		String rutaVentaDiario = context.getRealPath(cfg.getString("reporte.cines.ventas.semanales") + "\\");
 
 		String fechaInicio= FechasUtilsBO.convertStringToData(fecha);
-		String fechaFin= FechasUtilsBO.dateToString(FechasUtilsBO.addDaysToDate(FechasUtilsBO.stringddMMyyToDate(fecha,"dd/MM/yyyy"),7),"yyyy-MM-dd");;
+		String fechaFin= FechasUtilsBO.dateToString(FechasUtilsBO.addDaysToDate(FechasUtilsBO.stringddMMyyToDate(fecha,"dd/MM/yyyy"),6),"yyyy-MM-dd");
 		
 		
 		
@@ -132,8 +132,8 @@ public class ReportesTaquillaBO {
 		paramKardex.put("fecha_fin", fechaFin);
 		paramKardex.put("id_punto_venta",idPuntoVenta);
 		paramKardex.put("tipo_reporte","SEMANAL");
-		paramKardex.put("datasourceTaquilla",this.reporte.getReporteTaquillaSemanal(idCine,FechasUtilsBO.stringToDate(fechaInicio,"-"),FechasUtilsBO.stringToDate(fechaInicio,"-")));
-		paramKardex.put("datasourceDulceria",this.reporte.getReporteDulceriaSemanal(idCine,FechasUtilsBO.stringToDate(fechaFin,"-"),FechasUtilsBO.stringToDate(fechaFin,"-")));
+		paramKardex.put("datasourceTaquilla",this.reporte.getReporteTaquillaSemanal(idCine,FechasUtilsBO.stringYYYYMMDDToDate(fechaInicio,"-"),FechasUtilsBO.stringYYYYMMDDToDate(fechaFin,"-")));
+		paramKardex.put("datasourceDulceria",this.reporte.getReporteDulceriaSemanal(idCine,FechasUtilsBO.stringYYYYMMDDToDate(fechaInicio,"-"),FechasUtilsBO.stringYYYYMMDDToDate(fechaFin,"-")));
 		paramKardex.put("SUBREPORT_DIR", rutaVentaDiario + "\\");
  
 		ReporteJasperVO reporteJasperVO = new ReporteJasperVO();
@@ -168,8 +168,8 @@ public class ReportesTaquillaBO {
 		paramKardex.put("fecha_fin", fechaFin);
 		paramKardex.put("id_punto_venta",idPuntoVenta);
 		paramKardex.put("tipo_reporte","MENSUAL");
-		paramKardex.put("datasourceTaquilla",this.reporte.getReporteTaquillaMensual(idCine,FechasUtilsBO.stringToDate(fechaInicio,"-"),FechasUtilsBO.stringToDate(fechaFin,"-")));
-		paramKardex.put("datasourceDulceria",this.reporte.getReporteDulceriaMensual(idCine,FechasUtilsBO.stringToDate(fechaInicio,"-"),FechasUtilsBO.stringToDate(fechaFin,"-")));
+		paramKardex.put("datasourceTaquilla",this.reporte.getReporteTaquillaMensual(idCine,FechasUtilsBO.stringYYYYMMDDToDate(fechaInicio,"-"),FechasUtilsBO.stringYYYYMMDDToDate(fechaFin,"-")));
+		paramKardex.put("datasourceDulceria",this.reporte.getReporteDulceriaMensual(idCine,FechasUtilsBO.stringYYYYMMDDToDate(fechaInicio,"-"),FechasUtilsBO.stringYYYYMMDDToDate(fechaFin,"-")));
 		paramKardex.put("SUBREPORT_DIR", rutaVentaMensual + "\\");
  
 		ReporteJasperVO reporteJasperVO = new ReporteJasperVO();

@@ -1240,11 +1240,12 @@ public class FechasUtilsBO {
      */
     public static void main(String[] args) {
     	
-		String fecha = "12/2017";
-		String fecha2 = "21/02/2014 02:30:21";
+		String fecha = "2017-12-01";
+		String fecha2 = "2017-12-21";
 		
-		System.out.println(getFechaInicioMes(getCurrentDate()));
- 
+		System.out.println(stringYYYYMMDDToDate(fecha,"-"));
+		System.out.println(stringYYYYMMDDToDate(fecha2,"-"));
+		 
 //		System.out.println(dateToString(addDaysToDate(getCurrentDate(),7),"yyyy-MM-dd"));
 //		System.out.println(convertMMYYtoddMMYY(fecha));
 

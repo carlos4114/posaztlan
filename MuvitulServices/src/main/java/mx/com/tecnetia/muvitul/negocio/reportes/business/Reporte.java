@@ -50,17 +50,17 @@ public class Reporte {
 				  IngresosDiariosTaquillaVO ingresosTaquillaVO = this.reportesTaquillaIbatisDAO.getIngresosDiarios(idCine, programacion.getIdProgramacion(), tipoCliente.getIdTipoCliente(), fecha);				  
 				  data.add( 
 						    new Data(
-						    		programacion.getPelicula()==null?null:programacion.getPelicula().getIdPelicula(),
+						    		programacion.getIdProgramacion(),
 						    	    programacion.getPelicula()==null?"":programacion.getPelicula().getTitulo(),
 						    	    programacion.getHorario().toString(),
-						    	    ingresosTaquillaVO.getCantidad(),
-						    	    ingresosTaquillaVO.getImporte().doubleValue(),
-						    	    ingresosTaquillaVO.getTotal().doubleValue(),
+						    	    ingresosTaquillaVO==null?0:ingresosTaquillaVO.getCantidad(),
+						    	    ingresosTaquillaVO==null?0:ingresosTaquillaVO.getImporte().doubleValue(),
+						    	    ingresosTaquillaVO==null?0:ingresosTaquillaVO.getTotal().doubleValue(),
 						    	    tipoCliente.getNombre()
 						    	    )
 						  );
-				  contPromociones = contPromociones + ingresosTaquillaVO.getPromociones();
-				  importePromociones.add(ingresosTaquillaVO.getDescuentos());
+				  contPromociones = contPromociones + (ingresosTaquillaVO==null?0:ingresosTaquillaVO.getPromociones());
+				  importePromociones.add(ingresosTaquillaVO==null?new BigDecimal(0):ingresosTaquillaVO.getDescuentos());
 			  }
 			  data.add( 
 					  new Data(
@@ -136,7 +136,7 @@ public class Reporte {
 				
 		for(int i = 0; i <7; i++){
 			Date fecha = Fecha.sumarRestarDiasFecha(fechaInicio, i);
-			Integer noDiaSemana = Fecha.getDayOfWeekInt(fechaInicio);
+			Integer noDiaSemana = Fecha.getDayOfWeekInt(fecha);
 			List<IngresosTaquillaVO> ingresosSemanalesVO = this.reportesTaquillaIbatisDAO.getIngresosSemanales(idCine, noDiaSemana, fechaInicio, fechaFin);
 			for(IngresosTaquillaVO ingresoSemanalVO : ingresosSemanalesVO){
 				taquillaSemanal.add(
@@ -164,7 +164,7 @@ public class Reporte {
 
 		for(int i = 0; i <7; i++){
 			Date fecha = Fecha.sumarRestarDiasFecha(fechaInicio, i);
-			Integer noDiaSemana = Fecha.getDayOfWeekInt(fechaInicio);
+			Integer noDiaSemana = Fecha.getDayOfWeekInt(fecha);
 			List<IngresosDulceriaVO> ingresosSemanalesVO = this.reportesDulceriaIbatisDAO.getIngresosSemanales(idCine, noDiaSemana, fechaInicio, fechaFin);
 			for(IngresosDulceriaVO ingresoSemanalVO : ingresosSemanalesVO){
 				dulceriaSemanal.add(
