@@ -53,6 +53,7 @@ public class DashboardBO {
 	@Autowired
 	private MovimientoInventarioDAOI movimientoInventarioDAO;
 
+	
 	public IngresoSemanalGraficaVO getIngresoSemanal(Integer idCine, Date fechaActual, int semanas,
 			String clavePuntoVenta) {
 		List<IngresoVO> ingresosVO = null;
