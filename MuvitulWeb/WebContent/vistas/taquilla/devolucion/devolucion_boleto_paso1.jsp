@@ -14,7 +14,7 @@
 			<div class="title_right">
 				<div class="row pull-right">
 
-					<button type="button" ng-click="asignarPaso(2)" ng-if="ticket.exhibicionVencida == false && ticket.devolucionesVO.length > 0" class="btn btn-success">
+					<button type="button" ng-click="asignarPaso(2)" ng-if="ticket.exhibicionVencida == false && ticket.devolucionesVO.length <= 0" class="btn btn-success">
 						Registrar Devolución <i class="fa fa-credit-card"></i>
 					</button>
 

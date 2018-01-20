@@ -34,6 +34,7 @@ import mx.com.tecnetia.muvitul.negocio.dashboard.vo.RentabilidadGraficaVO;
 import mx.com.tecnetia.muvitul.negocio.dashboard.vo.RentabilidadVO;
 import mx.com.tecnetia.muvitul.negocio.dashboard.vo.RentableVO;
 import mx.com.tecnetia.muvitul.servicios.util.Fecha;
+import mx.com.tecnetia.muvitul.servicios.util.PuntoVentaType;
 
 @Service
 @Transactional
@@ -54,8 +55,15 @@ public class DashboardBO {
 
 	public IngresoSemanalGraficaVO getIngresoSemanal(Integer idCine, Date fechaActual, int semanas,
 			String clavePuntoVenta) {
-		List<IngresoVO> ingresosVO = ticketVentaDAO.getIngresosDiarios(idCine, fechaActual, semanas * 7,
-				clavePuntoVenta);
+		List<IngresoVO> ingresosVO = null;
+		
+		if(PuntoVentaType.DULCERIA.getType().equals(clavePuntoVenta)){
+			ingresosVO = ticketVentaDAO.getIngresosDiariosDeDulceria(idCine, fechaActual, semanas * 7);
+		}else{
+			if(PuntoVentaType.TAQUILLA.getType().equals(clavePuntoVenta)){
+				ingresosVO = ticketVentaDAO.getIngresosDiariosDeTaquilla(idCine, fechaActual, semanas * 7);				
+			}
+		}
 		Map<String, BigDecimal> mapIngresos = new HashMap<String, BigDecimal>();
 		for (IngresoVO ingresoVO : ingresosVO)
 			mapIngresos.put(ingresoVO.getAgrupador(), ingresoVO.getTotal());
@@ -227,7 +235,7 @@ public class DashboardBO {
 		calendar.add(Calendar.DAY_OF_YEAR, -dias);
 		Date fechaInicial = calendar.getTime();
 
-		List<IngresoVO> ingresosDiarios = ticketVentaDAO.getIngresosDiarios(idCine, fechaActual, dias, "DUL-001");
+		List<IngresoVO> ingresosDiarios = ticketVentaDAO.getIngresosDiariosDeDulceria(idCine, fechaActual, dias);
 		Map<String, BigDecimal> mapIngresosDiarios = new HashMap<String, BigDecimal>();
 		for (IngresoVO ingresoVO : ingresosDiarios)
 			mapIngresosDiarios.put(ingresoVO.getAgrupador(), ingresoVO.getTotal());

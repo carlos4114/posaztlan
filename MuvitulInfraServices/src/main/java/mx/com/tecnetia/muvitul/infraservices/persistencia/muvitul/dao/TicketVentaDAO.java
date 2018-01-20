@@ -34,7 +34,7 @@ public class TicketVentaDAO extends GlobalHibernateDAO<TicketVenta> implements T
 //	}
 
 	@Override
-	public TicketVenta findByCineAndTipoVenta(Integer idCine, Integer idTicket, Integer idTipoPuntoVenta) {
+	public TicketVenta findByCineAndTipoVenta2(Integer idCine, Integer idTicket, Integer idTipoPuntoVenta) {
 		StringBuilder hql = new StringBuilder();
 		hql.append("select tdv  from TicketVenta tdv join tdv.puntoVenta pdv join pdv.tipoPuntoVenta tpv ");
 		hql.append("join pdv.cine cne ");
@@ -55,9 +55,51 @@ public class TicketVentaDAO extends GlobalHibernateDAO<TicketVenta> implements T
 	}
 
 	
+	@Override
+	public TicketVenta findByCineOfTaquilla(Integer idCine, Integer idTicket) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select tdv  from TicketVenta tdv join tdv.puntoVenta pdv ");
+		hql.append("join pdv.cine cne ");				
+		hql.append("where tdv.idTicket=:idTicket and cne.idCine=:idCine ");
+		hql.append("and exists (from BoletosXTicket as bt where bt.ticketVenta=tdv) ");
+		hql.append("order by tdv.idTicket desc ");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setParameter("idTicket", idTicket);
+		query.setParameter("idCine", idCine);
+		List<TicketVenta> result = query.list();
+
+		if (!result.isEmpty()) {
+			return result.get(0);
+		}
+
+		return null;
+	}
 	
 	@Override
-	public List<IngresoVO> getIngresosDiarios(Integer idCine, Date fechaActual, int dias, String clavePuntoVenta) {
+	public TicketVenta findByCineOfDulceria(Integer idCine, Integer idTicket) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select tdv  from TicketVenta tdv join tdv.puntoVenta pdv ");
+		hql.append("join pdv.cine cne ");
+		hql.append("where tdv.idTicket=:idTicket and cne.idCine=:idCine ");
+		hql.append("and (exists (from PaquetesXTicket as pa where pa.ticketVenta=tdv) or exists (from ProductosXTicket as pr where pr.ticketVenta=tdv)) ");
+			hql.append("order by tdv.idTicket desc ");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setParameter("idTicket", idTicket);
+		query.setParameter("idCine", idCine);
+		List<TicketVenta> result = query.list();
+
+		if (!result.isEmpty()) {
+			return result.get(0);
+		}
+
+		return null;
+	}
+	
+	
+	@Override
+	public List<IngresoVO> getIngresosDiarios2(Integer idCine, Date fechaActual, int dias, String clavePuntoVenta) {
 		StringBuilder sql = new StringBuilder();
 		sql.append("select SUM(tv.total)-SUM(tv.descuento) as total, DATE_FORMAT( DATE(tv.fecha), '%Y%m%d') as agrupador ");
 		sql.append("from ticket_venta tv inner join punto_venta pv ON pv.id_punto_venta = tv.id_punto_venta ");
@@ -70,6 +112,45 @@ public class TicketVentaDAO extends GlobalHibernateDAO<TicketVenta> implements T
 		return getSession().createSQLQuery(sql.toString()).setInteger("idCine", idCine)
 				.setDate("fechaActual", fechaActual).setInteger("dias", dias)
 				.setString("clavePuntoVenta", clavePuntoVenta)
+				.setResultTransformer(Transformers.aliasToBean(IngresoVO.class)).list();
+	}
+	
+	@Override
+	public List<IngresoVO> getIngresosDiariosDeDulceria(Integer idCine, Date fechaActual, int dias) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("select SUM(tv.total)-SUM(tv.descuento) as total, DATE_FORMAT( DATE(tv.fecha), '%Y%m%d') as agrupador ");
+		sql.append("from ticket_venta tv inner join punto_venta pv ON pv.id_punto_venta = tv.id_punto_venta ");
+		sql.append("where pv.id_cine=:idCine ");
+		sql.append("and ( ");
+		sql.append("EXISTS (SELECT 1 "); 
+		sql.append("FROM   productos_x_ticket prxt ");
+		sql.append("WHERE  prxt.id_ticket = tv.id_ticket) ");
+		sql.append("or EXISTS (SELECT 1 ");
+		sql.append("FROM   paquetes_x_ticket paxt ");
+		sql.append("WHERE  paxt.id_ticket = tv.id_ticket) ");
+		sql.append(") ");
+		sql.append("and tv.fecha between DATE_ADD( :fechaActual , INTERVAL - :dias DAY) and  DATE_ADD( :fechaActual , INTERVAL +1 DAY) ");
+		sql.append("group by agrupador ");
+
+		return getSession().createSQLQuery(sql.toString()).setInteger("idCine", idCine)
+				.setDate("fechaActual", fechaActual).setInteger("dias", dias)
+				.setResultTransformer(Transformers.aliasToBean(IngresoVO.class)).list();
+	}
+	
+	@Override
+	public List<IngresoVO> getIngresosDiariosDeTaquilla(Integer idCine, Date fechaActual, int dias) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("select SUM(tv.total)-SUM(tv.descuento) as total, DATE_FORMAT( DATE(tv.fecha), '%Y%m%d') as agrupador ");
+		sql.append("from ticket_venta tv inner join punto_venta pv ON pv.id_punto_venta = tv.id_punto_venta ");
+		sql.append("where pv.id_cine=:idCine ");
+		sql.append("and  EXISTS (SELECT 1 ");		
+		sql.append("FROM   boletos_x_ticket bxt ");
+		sql.append("WHERE  bxt.id_ticket = tv.id_ticket) ");
+		sql.append("and tv.fecha between DATE_ADD( :fechaActual , INTERVAL - :dias DAY) and  DATE_ADD( :fechaActual , INTERVAL +1 DAY) ");
+		sql.append("group by agrupador ");
+
+		return getSession().createSQLQuery(sql.toString()).setInteger("idCine", idCine)
+				.setDate("fechaActual", fechaActual).setInteger("dias", dias)
 				.setResultTransformer(Transformers.aliasToBean(IngresoVO.class)).list();
 	}
 

@@ -37,11 +37,11 @@ public class ProductoXTicketDAO extends GlobalHibernateDAO<ProductosXTicket> imp
 		hql.append("from ProductosXTicket  pxt join pxt.producto ");
 		hql.append("join pxt.ticketVenta tv ");
 		hql.append("join tv.puntoVenta pv ");
-		hql.append("join pv.tipoPuntoVenta tpv ");
+		//hql.append("join pv.tipoPuntoVenta tpv ");
 		hql.append("join pv.cine cne ");
 		hql.append("where cne.idCine=:idCine ");
 		hql.append("and tv.fecha between :startDate and :endDate ");
-		hql.append("and tpv.clave='DUL-001' ");
+		//hql.append("and tpv.clave='DUL-001' ");
 		hql.append("group by pxt.producto ");
 		
 		Query query = getSession().createQuery(hql.toString());

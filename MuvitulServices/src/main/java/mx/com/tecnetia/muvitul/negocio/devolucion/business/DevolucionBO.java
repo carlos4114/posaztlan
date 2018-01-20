@@ -144,31 +144,43 @@ public class DevolucionBO {
 	}
 	
 	public TicketVentaVO getTicketVenta(Integer idCine, Integer idTicket, String clavePuntoVenta) {
-		TipoPuntoVenta tipoPuntoVenta = TipoPuntoVentaDAO.findByClave(clavePuntoVenta);
-		if (tipoPuntoVenta == null) {
+		
+		clavePuntoVenta = clavePuntoVenta == null ? "":clavePuntoVenta;
+		if(clavePuntoVenta.equals("")){
 			return null;
 		}
-		return TicketVentaAssembler.getTicketVentaVO(ticketVentaDAO.findByCineAndTipoVenta(idCine, idTicket, tipoPuntoVenta.getIdTipoPuntoVenta()));
+		
+		TicketVenta ticketVenta =null;
+		
+		if(clavePuntoVenta.equals(PuntoVentaType.TAQUILLA.getType())){
+			ticketVenta = ticketVentaDAO.findByCineOfTaquilla(idCine, idTicket);
+		}
+		
+		if(clavePuntoVenta.equals(PuntoVentaType.DULCERIA.getType())){
+			ticketVenta = ticketVentaDAO.findByCineOfDulceria(idCine, idTicket);			
+		}
+				
+		return TicketVentaAssembler.getTicketVentaVO(ticketVenta);
 	}
 
 	public TicketVentaBoletoVO getTicketVentaBoletos(Integer idCine, Integer idTicket) {
-		TipoPuntoVenta tipoPuntoVenta = TipoPuntoVentaDAO.findByClave(PuntoVentaType.TAQUILLA.getType());
-		if (tipoPuntoVenta == null) {
-			return null;
-		}
+		//TipoPuntoVenta tipoPuntoVenta = TipoPuntoVentaDAO.findByClave(PuntoVentaType.TAQUILLA.getType());
+		//if (tipoPuntoVenta == null) {
+			//return null;
+		//}
 		return TicketVentaAssembler.getTicketVentaBoletoVO(
-				ticketVentaDAO.findByCineAndTipoVenta(idCine, idTicket, tipoPuntoVenta.getIdTipoPuntoVenta()));
+				ticketVentaDAO.findByCineOfTaquilla(idCine, idTicket));
 	}
 
 	public TicketVentaProductoVO getTicketVentaProductos(Integer idCine, Integer idTicket) {
 		
-		TipoPuntoVenta tipoPuntoVenta = TipoPuntoVentaDAO.findByClave(PuntoVentaType.DULCERIA.getType());
+		//TipoPuntoVenta tipoPuntoVenta = TipoPuntoVentaDAO.findByClave(PuntoVentaType.DULCERIA.getType());
 
-		if (tipoPuntoVenta == null) {
-			return null;
-		}
+		//if (tipoPuntoVenta == null) {
+			//return null;
+		//}
 
-		TicketVenta ticketVenta= ticketVentaDAO.findByCineAndTipoVenta(idCine, idTicket, tipoPuntoVenta.getIdTipoPuntoVenta());
+		TicketVenta ticketVenta= ticketVentaDAO.findByCineOfDulceria(idCine, idTicket);
 		
 		if (ticketVenta==null){
 			return null;	
