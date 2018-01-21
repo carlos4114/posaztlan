@@ -56,6 +56,13 @@
 					<cellContents>
 						<staticText>
 							<reportElement style="Crosstab Data Text" x="0" y="26" width="155" height="15" uuid="b2460f20-7eb0-4d61-8f08-406832418575"/>
+							<box>
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
 							<textElement>
 								<font size="9" isBold="true"/>
 							</textElement>
@@ -119,7 +126,7 @@
 							<textField>
 								<reportElement style="Crosstab Data Text" mode="Opaque" x="0" y="13" width="219" height="13" uuid="9966fd2a-b1ea-47bb-802a-3c57fab6354e"/>
 								<textElement>
-									<font size="9" isBold="true"/>
+									<font size="9" isBold="false" isItalic="true"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$V{pelicula}]]></textFieldExpression>
 							</textField>

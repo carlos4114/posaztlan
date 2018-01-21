@@ -471,7 +471,7 @@ ORDER BY s.nombre]]>
 								</staticText>
 							</jr:columnHeader>
 							<jr:columnFooter height="20" rowSpan="1">
-								<textField>
+								<textField pattern="#.##\%">
 									<reportElement x="0" y="0" width="86" height="20" uuid="33e88cb6-67f4-44e7-9239-c3a4c3dccc27"/>
 									<box>
 										<pen lineWidth="0.5"/>
@@ -485,7 +485,7 @@ ORDER BY s.nombre]]>
 								</textField>
 							</jr:columnFooter>
 							<jr:detailCell height="20" rowSpan="1">
-								<textField>
+								<textField pattern="$###0.00">
 									<reportElement x="0" y="0" width="86" height="20" uuid="fd144312-e184-4eb0-92b6-69cc9f0df193"/>
 									<box>
 										<pen lineWidth="0.5"/>
@@ -495,7 +495,7 @@ ORDER BY s.nombre]]>
 										<rightPen lineWidth="0.5"/>
 									</box>
 									<textElement textAlignment="Center"/>
-									<textFieldExpression><![CDATA[$F{ingreso_taquilla}]]></textFieldExpression>
+									<textFieldExpression><![CDATA[$F{ingreso_taquilla}!= null ? $F{ingreso_taquilla}:new BigDecimal(0.0)]]></textFieldExpression>
 								</textField>
 							</jr:detailCell>
 						</jr:column>
@@ -517,7 +517,7 @@ ORDER BY s.nombre]]>
 								</staticText>
 							</jr:columnHeader>
 							<jr:columnFooter height="20" rowSpan="1">
-								<textField>
+								<textField pattern="#.##\%">
 									<reportElement x="0" y="0" width="76" height="20" uuid="ceb54af4-da92-4037-9c75-d396319df7a8"/>
 									<box>
 										<pen lineWidth="0.5"/>
@@ -531,7 +531,7 @@ ORDER BY s.nombre]]>
 								</textField>
 							</jr:columnFooter>
 							<jr:detailCell height="20" rowSpan="1">
-								<textField>
+								<textField pattern="$###0.00">
 									<reportElement x="0" y="0" width="76" height="20" uuid="6d84bb04-a459-438a-9ab8-4b05bb5f6406"/>
 									<box>
 										<pen lineWidth="0.5"/>
@@ -541,7 +541,7 @@ ORDER BY s.nombre]]>
 										<rightPen lineWidth="0.5"/>
 									</box>
 									<textElement textAlignment="Center"/>
-									<textFieldExpression><![CDATA[$F{ingreso_dulceria}]]></textFieldExpression>
+									<textFieldExpression><![CDATA[$F{ingreso_dulceria}!= null ? $F{ingreso_dulceria}:new BigDecimal(0.0)]]></textFieldExpression>
 								</textField>
 							</jr:detailCell>
 						</jr:column>
@@ -564,7 +564,7 @@ ORDER BY s.nombre]]>
 							</jr:columnHeader>
 							<jr:columnFooter height="20" rowSpan="1"/>
 							<jr:detailCell height="20" rowSpan="1">
-								<textField>
+								<textField pattern="$###0.00">
 									<reportElement x="0" y="0" width="61" height="20" uuid="499e4888-9da1-4b76-a1ae-0b40ebea408c"/>
 									<box>
 										<pen lineWidth="0.5"/>
@@ -574,7 +574,7 @@ ORDER BY s.nombre]]>
 										<rightPen lineWidth="0.5"/>
 									</box>
 									<textElement textAlignment="Center"/>
-									<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+									<textFieldExpression><![CDATA[$F{total}!= null ? $F{total}:new BigDecimal(0.0)]]></textFieldExpression>
 								</textField>
 							</jr:detailCell>
 						</jr:column>
@@ -632,7 +632,7 @@ ORDER BY s.nombre]]>
 								</staticText>
 							</jr:columnHeader>
 							<jr:detailCell height="20" rowSpan="1">
-								<textField>
+								<textField pattern="$###0.00">
 									<reportElement x="0" y="0" width="75" height="20" uuid="b581c3af-202e-498e-8a15-44fc26aa2e14"/>
 									<box>
 										<pen lineWidth="0.5"/>
@@ -642,7 +642,7 @@ ORDER BY s.nombre]]>
 										<rightPen lineWidth="0.5"/>
 									</box>
 									<textElement textAlignment="Center"/>
-									<textFieldExpression><![CDATA[$F{impuestos_taquilla}]]></textFieldExpression>
+									<textFieldExpression><![CDATA[$F{impuestos_taquilla} != null ? $F{impuestos_taquilla}:new BigDecimal(0.0)]]></textFieldExpression>
 								</textField>
 							</jr:detailCell>
 						</jr:column>
@@ -664,7 +664,7 @@ ORDER BY s.nombre]]>
 								</staticText>
 							</jr:columnHeader>
 							<jr:detailCell height="20" rowSpan="1">
-								<textField>
+								<textField pattern="$###0.00">
 									<reportElement x="0" y="0" width="74" height="20" uuid="a3244bd0-6ce0-4f45-9425-e5b67ec0b80c"/>
 									<box>
 										<pen lineWidth="0.5"/>
@@ -674,7 +674,7 @@ ORDER BY s.nombre]]>
 										<rightPen lineWidth="0.5"/>
 									</box>
 									<textElement textAlignment="Center"/>
-									<textFieldExpression><![CDATA[$F{impuestos_dulceria}]]></textFieldExpression>
+									<textFieldExpression><![CDATA[$F{impuestos_dulceria} != null ? $F{impuestos_dulceria}:new BigDecimal(0.0)]]></textFieldExpression>
 								</textField>
 							</jr:detailCell>
 						</jr:column>
@@ -871,28 +871,28 @@ ORDER BY s.nombre]]>
 								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textField>
-								<reportElement style="Crosstab Data Text" x="0" y="0" width="165" height="24" uuid="df8d4172-d77f-407e-8f4e-c2151f7d74fc"/>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="177" height="24" uuid="df8d4172-d77f-407e-8f4e-c2151f7d74fc"/>
 								<textElement>
 									<font size="10" isBold="true"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$V{nombreSemana}]]></textFieldExpression>
 							</textField>
 							<staticText>
-								<reportElement style="Crosstab Data Text" x="0" y="24" width="55" height="17" uuid="04a8e4a5-bf0b-4835-9963-f085b7485637"/>
+								<reportElement style="Crosstab Data Text" x="0" y="24" width="59" height="17" uuid="04a8e4a5-bf0b-4835-9963-f085b7485637"/>
 								<textElement>
 									<font size="8" isBold="true"/>
 								</textElement>
 								<text><![CDATA[Precio]]></text>
 							</staticText>
 							<staticText>
-								<reportElement style="Crosstab Data Text" x="55" y="24" width="55" height="17" uuid="a42e6252-9e0f-4199-938d-6fbdb189349d"/>
+								<reportElement style="Crosstab Data Text" x="59" y="24" width="59" height="17" uuid="a42e6252-9e0f-4199-938d-6fbdb189349d"/>
 								<textElement>
 									<font size="8" isBold="true"/>
 								</textElement>
 								<text><![CDATA[Cantidad]]></text>
 							</staticText>
 							<staticText>
-								<reportElement style="Crosstab Data Text" x="110" y="24" width="55" height="17" uuid="c8d00046-a2b1-4f0e-8de4-4d2d230ee610"/>
+								<reportElement style="Crosstab Data Text" x="118" y="24" width="59" height="17" uuid="c8d00046-a2b1-4f0e-8de4-4d2d230ee610"/>
 								<textElement>
 									<font size="8" isBold="true"/>
 								</textElement>
@@ -959,39 +959,39 @@ ORDER BY s.nombre]]>
 				<measure name="semana" class="java.lang.String">
 					<measureExpression><![CDATA[$F{semana}]]></measureExpression>
 				</measure>
-				<crosstabCell width="166" height="17">
+				<crosstabCell width="178" height="17">
 					<cellContents>
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						</box>
 						<textField pattern="$###0.00">
-							<reportElement style="Crosstab Data Text" x="0" y="0" width="55" height="17" uuid="5082454f-0d15-41ec-9ae4-c7f145d91a6d"/>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="59" height="17" uuid="5082454f-0d15-41ec-9ae4-c7f145d91a6d"/>
 							<textFieldExpression><![CDATA[$V{precio}]]></textFieldExpression>
 						</textField>
 						<textField pattern="$###0.00">
-							<reportElement style="Crosstab Data Text" x="110" y="0" width="55" height="17" uuid="aac6257c-11c4-490c-91f6-ac1d999f53ab"/>
+							<reportElement style="Crosstab Data Text" x="118" y="0" width="59" height="17" uuid="aac6257c-11c4-490c-91f6-ac1d999f53ab"/>
 							<textFieldExpression><![CDATA[$V{total}]]></textFieldExpression>
 						</textField>
 						<textField>
-							<reportElement style="Crosstab Data Text" x="55" y="0" width="55" height="17" uuid="d30c15ad-f907-4a42-8022-073a09a32c5f"/>
+							<reportElement style="Crosstab Data Text" x="59" y="0" width="59" height="17" uuid="d30c15ad-f907-4a42-8022-073a09a32c5f"/>
 							<textFieldExpression><![CDATA[$V{cantidad}]]></textFieldExpression>
 						</textField>
 					</cellContents>
 				</crosstabCell>
-				<crosstabCell width="166" height="16" rowTotalGroup="titulo">
+				<crosstabCell width="178" height="16" rowTotalGroup="titulo">
 					<cellContents backcolor="#BFE1FF" mode="Opaque">
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						</box>
 						<textField>
-							<reportElement style="Crosstab Data Text" x="55" y="0" width="55" height="16" uuid="2e3c292c-a450-49e4-a003-ae9a8a6002cc"/>
+							<reportElement style="Crosstab Data Text" x="59" y="0" width="59" height="16" uuid="2e3c292c-a450-49e4-a003-ae9a8a6002cc"/>
 							<textElement>
 								<font size="11" isBold="true"/>
 							</textElement>
 							<textFieldExpression><![CDATA[$V{totalCantidad}]]></textFieldExpression>
 						</textField>
 						<textField pattern="$###0.00">
-							<reportElement style="Crosstab Data Text" x="110" y="0" width="56" height="16" uuid="059091ee-e28f-4362-a7b6-005129c058c2"/>
+							<reportElement style="Crosstab Data Text" x="118" y="0" width="59" height="16" uuid="059091ee-e28f-4362-a7b6-005129c058c2"/>
 							<textElement>
 								<font size="11" isBold="true"/>
 							</textElement>
@@ -1111,28 +1111,28 @@ ORDER BY s.nombre]]>
 								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textField>
-								<reportElement style="Crosstab Data Text" x="0" y="0" width="165" height="18" uuid="8ba43f21-37a7-47be-b925-c856f2b37b41"/>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="177" height="18" uuid="8ba43f21-37a7-47be-b925-c856f2b37b41"/>
 								<textElement>
 									<font size="10" isBold="true"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$V{nombreSemana}]]></textFieldExpression>
 							</textField>
 							<staticText>
-								<reportElement style="Crosstab Data Text" x="55" y="18" width="55" height="17" uuid="f9a9eb8d-3b64-48c6-95a9-a27369458b8e"/>
+								<reportElement style="Crosstab Data Text" x="59" y="18" width="59" height="17" uuid="f9a9eb8d-3b64-48c6-95a9-a27369458b8e"/>
 								<textElement verticalAlignment="Middle">
 									<font size="8" isBold="true"/>
 								</textElement>
 								<text><![CDATA[Cantidad]]></text>
 							</staticText>
 							<staticText>
-								<reportElement style="Crosstab Data Text" x="0" y="18" width="55" height="17" uuid="012f8a72-b6b4-4262-a06b-17064781360e"/>
+								<reportElement style="Crosstab Data Text" x="0" y="18" width="59" height="17" uuid="012f8a72-b6b4-4262-a06b-17064781360e"/>
 								<textElement verticalAlignment="Middle">
 									<font size="8" isBold="true"/>
 								</textElement>
 								<text><![CDATA[Precio]]></text>
 							</staticText>
 							<staticText>
-								<reportElement style="Crosstab Data Text" x="110" y="18" width="55" height="17" uuid="75b65bda-88a6-4fac-ada4-4d776c992a6f"/>
+								<reportElement style="Crosstab Data Text" x="118" y="18" width="59" height="17" uuid="75b65bda-88a6-4fac-ada4-4d776c992a6f"/>
 								<textElement verticalAlignment="Middle">
 									<font size="8" isBold="true"/>
 								</textElement>
@@ -1190,27 +1190,27 @@ ORDER BY s.nombre]]>
 				<measure name="totalTotal" class="java.lang.Double" calculation="Sum">
 					<measureExpression><![CDATA[$F{total}]]></measureExpression>
 				</measure>
-				<crosstabCell width="165" height="18">
+				<crosstabCell width="178" height="18">
 					<cellContents>
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						</box>
 						<textField pattern="$###0.00">
-							<reportElement style="Crosstab Data Text" x="0" y="0" width="55" height="17" uuid="9c3216f5-b4ec-41c0-a962-ac036b1f3bfa"/>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="59" height="17" uuid="9c3216f5-b4ec-41c0-a962-ac036b1f3bfa"/>
 							<textElement verticalAlignment="Middle">
 								<font size="10"/>
 							</textElement>
 							<textFieldExpression><![CDATA[$V{precio}]]></textFieldExpression>
 						</textField>
 						<textField>
-							<reportElement style="Crosstab Data Text" x="55" y="0" width="55" height="17" uuid="de6ae9f4-a759-4586-830e-258a675a0c4d"/>
+							<reportElement style="Crosstab Data Text" x="59" y="0" width="59" height="17" uuid="de6ae9f4-a759-4586-830e-258a675a0c4d"/>
 							<textElement verticalAlignment="Middle">
 								<font size="10"/>
 							</textElement>
 							<textFieldExpression><![CDATA[$V{cantidad}]]></textFieldExpression>
 						</textField>
 						<textField pattern="$###0.00">
-							<reportElement style="Crosstab Data Text" x="110" y="0" width="55" height="17" uuid="955b80e4-84ea-4495-842e-42fb400585c0"/>
+							<reportElement style="Crosstab Data Text" x="118" y="0" width="59" height="17" uuid="955b80e4-84ea-4495-842e-42fb400585c0"/>
 							<textElement verticalAlignment="Middle">
 								<font size="10"/>
 							</textElement>
@@ -1218,20 +1218,20 @@ ORDER BY s.nombre]]>
 						</textField>
 					</cellContents>
 				</crosstabCell>
-				<crosstabCell width="165" height="16" rowTotalGroup="producto">
+				<crosstabCell width="178" height="16" rowTotalGroup="producto">
 					<cellContents backcolor="#BFE1FF" mode="Opaque">
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						</box>
 						<textField>
-							<reportElement style="Crosstab Data Text" x="55" y="0" width="55" height="16" uuid="ef28ab8e-cada-4b4d-ae91-353718bea156"/>
+							<reportElement style="Crosstab Data Text" x="59" y="0" width="59" height="16" uuid="ef28ab8e-cada-4b4d-ae91-353718bea156"/>
 							<textElement verticalAlignment="Middle">
 								<font size="11" isBold="true"/>
 							</textElement>
 							<textFieldExpression><![CDATA[$V{totalCantidad}]]></textFieldExpression>
 						</textField>
 						<textField pattern="$###0.00">
-							<reportElement style="Crosstab Data Text" x="110" y="0" width="55" height="16" uuid="326c7ef9-cd46-45a9-a153-df02dbfb2986"/>
+							<reportElement style="Crosstab Data Text" x="118" y="0" width="59" height="16" uuid="326c7ef9-cd46-45a9-a153-df02dbfb2986"/>
 							<textElement verticalAlignment="Middle">
 								<font size="11" isBold="true"/>
 							</textElement>
