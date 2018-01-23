@@ -20,9 +20,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.MovimientoInventarioDAOI;
+import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.ProductoDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.ProductoXTicketDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.TicketVentaDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ArticulosXProducto;
+import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Producto;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.vo.IngresoVO;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.vo.ProductoCostoVO;
 import mx.com.tecnetia.muvitul.negocio.dashboard.vo.AsistenciaGraficaVO;
@@ -53,6 +55,8 @@ public class DashboardBO {
 	@Autowired
 	private MovimientoInventarioDAOI movimientoInventarioDAO;
 
+	@Autowired
+	private ProductoDAOI productoDAO;
 	
 	public IngresoSemanalGraficaVO getIngresoSemanal(Integer idCine, Date fechaActual, int semanas,
 			String clavePuntoVenta) {
@@ -373,12 +377,16 @@ public class DashboardBO {
 		List<RentableVO> rentablesVO = new ArrayList<RentableVO>();
 		List<IngresoVO> precioAvgArticulos = movimientoInventarioDAO.findAvgPrecioArticulo(idCine, fechaActual, dias);
 		Map<String, BigDecimal> mapPrecioAvgArticulos = new HashMap<String, BigDecimal>();
+		
 		for (IngresoVO precioAvgArticulo : precioAvgArticulos)
 			mapPrecioAvgArticulos.put(precioAvgArticulo.getAgrupador(), precioAvgArticulo.getTotal());
 
 		List<ProductoCostoVO> productosXTicket = productoXTicketDAO.getPrecioPromedio(idCine, startDate, endDate,dias);
 
+		Map<Integer, Producto> mapProductoXTicket = new HashMap<Integer, Producto>();
+		
 		for (ProductoCostoVO productoXTicket : productosXTicket) {
+			mapProductoXTicket.put(productoXTicket.getProducto().getIdProducto(), productoXTicket.getProducto());
 			BigDecimal precioAvgProducto = new BigDecimal(productoXTicket.getImporte().doubleValue());
 
 			BigDecimal unitarioAvgProducto = new BigDecimal(0);
@@ -399,6 +407,21 @@ public class DashboardBO {
 			rentablesVO.add(rentableVO);
 		}
 
+		List<Producto> productos=  productoDAO.findByCine(idCine);
+		
+		for (Producto producto : productos) {
+			
+			if (!mapProductoXTicket.containsKey(producto.getIdProducto())){
+				RentableVO rentableVO = new RentableVO();
+				rentableVO.setNombre(producto.getNombre());
+				rentableVO.setVendidos(0);
+				rentableVO.setRentabilidad((double) 0);
+				rentableVO.setUnidadXTicket((double) 0);
+				rentablesVO.add(rentableVO);
+			}
+
+		}
+		
 		return rentablesVO;
 	}
 
