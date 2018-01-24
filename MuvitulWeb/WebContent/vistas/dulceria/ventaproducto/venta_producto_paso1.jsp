@@ -5,13 +5,33 @@
 
 <style media="screen" type="text/css">
 .colprod {
-    display: table-cell;
-    /* Propiedades de estilo, no afectan al funcionamiento */
-    text-align: center;
-    background-color: #ddd;
-    color: #666;
-    border: 10px solid #eee;
+	display: table-cell;
+	/* Propiedades de estilo, no afectan al funcionamiento */
+	text-align: center;
+	background-color: #ddd;
+	color: #666;
+	border: 10px solid #eee;
 }
+
+.img-texto {
+	position: relative;
+	float: left;
+}
+
+.img-texto span {
+	position: absolute;
+    bottom: 13px;
+    left: 11px;
+    right: 10px;
+    z-index: 999;
+    background: #f75462;
+    padding: 8px;
+    color: #fff;
+    text-align: center;
+    font-family: sans-serif
+}
+
+ 
 </style>
 <!-- bloque de PASO de wizard -->
 <div id="step-1">
@@ -23,8 +43,9 @@
 			<div class="title_right">
 				<div class="row pull-right">
 
-					<button type="button" ng-click="consultarFormasPago();asignarPaso(2);" ng-disabled="pago.subtotal==0"
-						class="btn btn-success">
+					<button type="button"
+						ng-click="consultarFormasPago();asignarPaso(2);"
+						ng-disabled="pago.subtotal==0" class="btn btn-success">
 						Registrar el Pago <i class="fa fa-credit-card"></i>
 					</button>
 
@@ -44,9 +65,9 @@
 							<div
 								class="col-lg-8 col-md-8 col-sm-8 col-xs-12 form-group pull-left top_search">
 								<div class="input-group">
-									<input type="text" ng-model="searchText.nombre" class="form-control"
-										placeholder="Buscar producto..." > <span
-										class="input-group-btn">
+									<input type="text" ng-model="searchText.nombre"
+										class="form-control" placeholder="Buscar producto...">
+									<span class="input-group-btn">
 										<button class="btn btn-default" type="button" ng-click="">Ir!</button>
 
 									</span>
@@ -59,32 +80,38 @@
 						</div>
 
 						<div class="row">
+							<div class="img-texto">
+								<div
+									dir-paginate="paquete in paquetes | filter : searchText | itemsPerPage: 10"
+									class="col-lg-4 col-md-4 col-sm-6 col-xs-6 ">
+									<div ng-class="{'my-disabled' : paquete.deshabilitado}">
+										<a href="javascript:void(0)"
+											ng-click="agregarPaquete(paquete)">
 
-							<div dir-paginate="paquete in paquetes | filter : searchText | itemsPerPage: 10" class="col-lg-4 col-md-4 col-sm-6 col-xs-6 ">
-								<div ng-class="{'my-disabled' : paquete.deshabilitado}">
-									<a href="javascript:void(0)" ng-click="agregarPaquete(paquete)"  >
-										<div class="tile-stats" style="background-color: #FFFF">
-											<div style="position: absolute; top: 10px; right: 10px">
-												<img class="img-responsive avatar-view"
-													ng-src="data:image/png;base64,{{paquete.icono}}"
-													width="50px" height="50px">
+											<div class="tile-stats" style="background-color: #FFFF">
+												<div style="position: absolute; top: 10px; right: 10px">
+													<img class="img-responsive avatar-view"
+														ng-src="data:image/png;base64,{{paquete.icono}}"
+														width="50px" height="50px">
+												</div>
+												<div class="count">{{paquete.cantidad}}</div>
+												<h3>{{paquete.nombre}}</h3>
+												<div ng-if="paquete.paquete">
+													<p
+														ng-repeat="produtoXPaquete in paquete.productosXPaqueteVO">
+														{{produtoXPaquete.cantidad}}
+														{{produtoXPaquete.productoVO.nombre}}(s)</p>
+												</div>
+												<div class="text-center mtop20">
+													<h2>{{paquete.precio | currency }}</h2>
+												</div>
 											</div>
-											<div class="count">{{paquete.cantidad}}</div>
-											<h3>{{paquete.nombre}}</h3>
-											<div ng-if="paquete.paquete">
-												<p
-													ng-repeat="produtoXPaquete in paquete.productosXPaqueteVO">
-													{{produtoXPaquete.cantidad}}
-													{{produtoXPaquete.productoVO.nombre}}(s)</p>
-											</div>
-											<div class="text-center mtop20">
-												<h2>{{paquete.precio | currency }}</h2>
-											</div>
-										</div>
-									</a>								
-								</div>
-								</div>
+										</a>
+									</div>
+									<span ng-if="paquete.deshabilitado">Producto no disponible</span>
 
+								</div>
+							</div>
 							<dir-pagination-controls></dir-pagination-controls>
 						</div>
 						<!-- /row -->
@@ -117,9 +144,8 @@
 											class="success fa fa-minus-square-o"></i></a></td>
 								</tr>
 								<tr ng-if="paquetesSeleccionados.length==0">
-											<td class="text-center" colspan="4">No existen
-												registros.</td>
-										</tr>
+									<td class="text-center" colspan="4">No existen registros.</td>
+								</tr>
 
 							</tbody>
 
