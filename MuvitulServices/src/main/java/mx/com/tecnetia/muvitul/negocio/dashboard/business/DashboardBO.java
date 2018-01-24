@@ -134,12 +134,12 @@ public class DashboardBO {
 			peliculas.add(ingresoVO.getAgrupador());
 		}
 
-		List<IngresoVO> ingresoPeliculaActual = ticketVentaDAO.getIngresosPeliculas(idCine, noSemanaActual);
+		List<IngresoVO> ingresoPeliculaActual = ticketVentaDAO.getIngresosPeliculas(idCine, noSemanaActual - 1);
 		Map<String, BigDecimal> mapIngresosActual = new HashMap<String, BigDecimal>();
 		for (IngresoVO ingresoVO : ingresoPeliculaActual)
 			mapIngresosActual.put(ingresoVO.getAgrupador(), ingresoVO.getTotal());
 
-		List<IngresoVO> ingresoPeliculaAnterior = ticketVentaDAO.getIngresosPeliculas(idCine, noSemanaActual - 1);
+		List<IngresoVO> ingresoPeliculaAnterior = ticketVentaDAO.getIngresosPeliculas(idCine, noSemanaActual - 2);
 		Map<String, BigDecimal> mapIngresosAnteriores = new HashMap<String, BigDecimal>();
 		for (IngresoVO ingresoVO : ingresoPeliculaAnterior)
 			mapIngresosAnteriores.put(ingresoVO.getAgrupador(), ingresoVO.getTotal());

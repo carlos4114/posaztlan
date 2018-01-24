@@ -18,7 +18,7 @@ public class ArticuloDAO extends GlobalHibernateDAO<Articulo> implements Articul
 		hql.append("select art  ");
 		hql.append("from Inventario inv join inv.articulo art join inv.puntoVenta pv ");
 		hql.append("where pv.idPuntoVenta =:idPuntoVenta ");
-		hql.append("and inv.existenciaActual >= 5 ");
+		hql.append("and inv.existenciaActual >= 1 ");
 		hql.append("group by inv.articulo ");
 		
 		Query query = getSession().createQuery(hql.toString());

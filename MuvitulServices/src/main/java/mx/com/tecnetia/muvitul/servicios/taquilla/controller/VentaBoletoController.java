@@ -40,8 +40,8 @@ public class VentaBoletoController {
 	}
 
 	
-	public List<PeliculaVO> getPeliculasByCine(Integer idCine,String diaSemana, Date fechaExhibicion ) throws BusinessGlobalException {
-		return ventaBoletoBO.findByCineDiaAndExhibicion(idCine,diaSemana, fechaExhibicion);
+	public List<PeliculaVO> getPeliculasByCine(Integer idCine,String diaSemana, Date fechaExhibicion, Date horario ) throws BusinessGlobalException {
+		return ventaBoletoBO.findByCineDiaAndExhibicion(idCine,diaSemana, fechaExhibicion, horario);
 	}
 	
 	public List<PromocionVO> getPromocionesByCine(Integer idCine, Integer idPromocionPara, Date fechaExhibicion) throws BusinessGlobalException {

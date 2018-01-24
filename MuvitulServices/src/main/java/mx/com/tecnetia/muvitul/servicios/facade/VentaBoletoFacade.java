@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -65,7 +66,17 @@ public class VentaBoletoFacade implements VentaBoletoFacadeI {
 		logger.info("GetPeliculasByCine:::IdCine[{}]:::FechaExhibicion[{}]", idCine, fechaExhibicion);
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		Date fecha = formatter.parse(fechaExhibicion);
-		List<PeliculaVO> peliculas = ventaBoletoController.getPeliculasByCine(idCine, Fecha.getDayOfWeekShort(fecha), fecha);
+		
+		Calendar horario = Calendar.getInstance();
+		Date hoy = formatter.parse(formatter.format(new Date()));
+		
+		if (!fecha.equals(hoy)){
+			horario.set(Calendar.HOUR_OF_DAY, 0);
+			horario.set(Calendar.MINUTE, 0);
+			horario.set(Calendar.SECOND, 0);
+		}
+		
+		List<PeliculaVO> peliculas = ventaBoletoController.getPeliculasByCine(idCine, Fecha.getDayOfWeekShort(fecha), fecha, horario.getTime());
 
 		if (peliculas == null || peliculas.isEmpty()) {
 			throw new NotFoundException("No encontrado");

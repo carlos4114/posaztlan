@@ -8,6 +8,7 @@ import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Programaci
 
 public interface ProgramacionDAOI  extends GlobalHibernateDAOI<Programacion>{
 	List<Programacion> findByCineDiaAndExhibicion(Integer idCine, String diaSemana,  Date fechaExhibicion);
+	List<Programacion> findByCineDiaAndExhibicionAndHorario(Integer idCine, String diaSemana,  Date fechaExhibicion, Date Horario);
 	List<Programacion> findByCineSalaAndExhibicion(Integer idCine, Integer idSala, Date fechaExhibicion);
 	List<Programacion> findBySalaDiaAndExhibicionAll(Integer idSala, String diaSemana, Date fechaExhibicion);
 	List<Programacion> findBySalaDiaAndRangoHorario(Integer idSala, String diaSemana, Date horario, Date horarioFin, Date today);

@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -111,12 +112,12 @@ public class VentaBoletoBO {
 	@Autowired
 	private PrecioXFormatoDAOI precioXFormatoDAO;
 
-	public List<PeliculaVO> findByCineDiaAndExhibicion(Integer idCine, String diaSemana, Date fechaExhibicion)
+	public List<PeliculaVO> findByCineDiaAndExhibicion(Integer idCine, String diaSemana, Date fechaExhibicion, Date horario)
 			throws BusinessGlobalException {
 		Map<Integer, PeliculaVO> mapPeliculas = new HashMap<Integer, PeliculaVO>();
-
-		List<Programacion> programaciones = programacionDAO.findByCineDiaAndExhibicion(idCine, diaSemana,
-				fechaExhibicion);
+		
+		List<Programacion> programaciones = programacionDAO.findByCineDiaAndExhibicionAndHorario(idCine, diaSemana,
+				fechaExhibicion, horario);
 
 		for (Programacion programacion : programaciones) {
 
