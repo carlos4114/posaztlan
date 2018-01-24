@@ -45,6 +45,11 @@
 										ng-click="asignarPaso(1);consultarPeliculas(param.fechaExhibicion);">Nueva
 										Venta</button></a>
 							</div>
+							
+							<div
+								class="col-lg-2 col-md-2 col-sm-2 col-xs-6 col-lg-offset-5 col-md-offset-5 col-sm-offset-5 col-xs-offset-3 text-center">
+								<h2>Ticket: {{ticketVenta.idTicket}}</h2>
+							</div>
 						</div>
 
 					</div>
