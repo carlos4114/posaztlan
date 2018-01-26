@@ -8,7 +8,8 @@ var devolucionDulceriaController = angular.module('indexModule').controller('dev
 	$controller('devolucionDulceriaControllerPaso3',{$scope : $scope });
     $controller('modalController',{$scope : $scope });
  	$scope.seleccionDevolucion = false;
-	
+ 	$scope.disabledTipoDevolucion=false;
+		
 	$scope.asignarPaso =function( paso){
 		if($scope.ticket  == null || $scope.fin == true || $scope.seleccionDevolucion == false )
 			return;
@@ -74,7 +75,9 @@ var devolucionDulceriaController = angular.module('indexModule').controller('dev
 		
 		console.log('determinar tipodevolucion');
 		var clave='EFE-002';
-		
+	 	$scope.disabledTipoDevolucion=false;
+	 	
+	 	
 		for (var i = 0; i < $scope.ticket.paquetesXTicketVO.length; ++i) {
 			//$scope.listaProductosFilter=$filter('filter')(paquete.paqueteVO.productosXPaqueteVO,{selected:true});
 			var n=0;
@@ -84,12 +87,12 @@ var devolucionDulceriaController = angular.module('indexModule').controller('dev
 				if (value.productoVO.selected == true) n++;
 			});
 			
-		    if (n === 0) { continue; }
+		    if (n == 0) { continue; }
 
 			if ( n != $scope.ticket.paquetesXTicketVO[i].paqueteVO.productosXPaqueteVO.length){
 				clave='PRO-001';
-				$scope.selecionarTipoDevolucion(clave);
-
+				//$scope.selecionarTipoDevolucion(clave);
+			 	$scope.disabledTipoDevolucion=true;
 				break;
 			}
 		}

@@ -50,7 +50,7 @@
 											</label>
 											<div class="input-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
 												<select class=" form-control"  data-live-search="true"
-													name="tipoDevolucion" required ng-disabled="true"
+													name="tipoDevolucion" required ng-disabled="disabledTipoDevolucion == true"
 													ng-options="tipoDevolucion as tipoDevolucion.nombre for tipoDevolucion in listaTiposDevolucion"
 													ng-model="devolucion.tipoDevolucionVO">
 <!-- 													<option value="" selected="selected">Selecciona -->

@@ -71,6 +71,13 @@ var VentaProductoPaso1Controller = angular.module('indexModule').controller("ven
 //        }
 	}
 	
+	$scope.validarPaquetes =function(){
+		dulceriaService.validarPaquetes($scope.paquetesSeleccionados).success(function(data) {	
+ 			console.log(data);
+ 		  }).error(function(data) {
+		  });
+	}
+	
 	$scope.consultarPaquetes();
 
 	$scope.requestAutorizacionVO={};

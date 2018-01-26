@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1excel" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c7f4f4f1-fd4f-46cd-b0bf-8705ec49107b">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="60"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -65,47 +65,32 @@
 	</style>
 	<style name="Crosstab Data Text" hAlign="Center"/>
 	<subDataset name="Consulta Reporte" uuid="21c56f52-e002-472e-a0b2-aea2e8734571">
-		<parameter name="totalAdmisiones" class="java.lang.String" isForPrompting="false">
-			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
-		</parameter>
-		<parameter name="entradaBruta" class="java.lang.String" isForPrompting="false">
-			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
-		</parameter>
-		<parameter name="entradaIVA" class="java.lang.String" isForPrompting="false">
-			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
-		</parameter>
-		<parameter name="entradaNeta" class="java.lang.String" isForPrompting="false">
-			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
-		</parameter>
-		<parameter name="fecha_exhibicion" class="java.lang.String">
-			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
-		</parameter>
-		<parameter name="fechaExhibicion" class="java.lang.String"/>
 		<parameter name="fechaInicial" class="java.lang.String">
 			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 		</parameter>
 		<parameter name="fechaFinal" class="java.lang.String">
 			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 		</parameter>
+		<parameter name="idCine" class="java.lang.Integer"/>
 		<queryString>
 			<![CDATA[select DATE_FORMAT(fecha_exhibicion, "%d-%m-%Y") as fecha_exhibicion,
 '' as rentrak,pel.titulo as pelicula,DATE_FORMAT(pro.horario,"%H:%i") as funcion,
 form.nombre as formato,ver.nombre as version,sal.nombre as sala,
-cli.nombre as boleto,sum(bol.cantidad) as admision,'' as promocion,
-FORMAT(bol.importe/bol.cantidad,2) as precio,
-FORMAT(sum(bol.importe),2) as entrada,
-FORMAT(sum(bol.importe) * (imp.porcentaje/100),2) as iva,
-FORMAT(sum(bol.importe) - sum(bol.importe) * (imp.porcentaje/100),2) as neto,
+sum(bol.cantidad) as admision,'' as promocion,
+bol.importe/bol.cantidad as precio,
+sum(bol.importe) as entrada,
+sum(bol.importe * imp.porcentaje)/(imp.porcentaje+100) as iva,
+sum(bol.importe) - (sum(bol.importe * imp.porcentaje)/(imp.porcentaje+100)) as neto,
 (select sum(bol_total.cantidad)from boletos_x_ticket bol_total
 join programacion pro_total on pro_total.id_programacion = bol_total.id_programacion
 where bol_total.activo = 1 and pro_total.id_sala = pro.id_sala and DATE(bol_total.fecha_exhibicion) = bol.fecha_exhibicion
 group by pro_total.id_sala,bol_total.fecha_exhibicion
 ) as admision_total,
-FORMAT((select sum(bol_total.importe)from boletos_x_ticket bol_total
+(select sum(bol_total.importe)from boletos_x_ticket bol_total
 join programacion pro_total on pro_total.id_programacion = bol_total.id_programacion
 where bol_total.activo = 1 and pro_total.id_sala = pro.id_sala and DATE(bol_total.fecha_exhibicion) = bol.fecha_exhibicion
 group by pro_total.id_sala,bol_total.fecha_exhibicion
-),2) as entrada_total
+) as entrada_total
 from boletos_x_ticket bol
 join programacion pro on pro.id_programacion = bol.id_programacion
 join sala sal on sal.id_sala = pro.id_sala
@@ -118,8 +103,8 @@ join impuesto_boleto imp on imp.id_cine = cin.id_cine and imp.activo = 1 and cla
 join tipo_cliente cli on cli.id_tipo_cliente = bol.id_tipo_cliente
 join derechos_autor_x_pelicula dap on dap.id_pelicula = pro.id_pelicula
 join derechos_distribuidora_x_pelicula ddp on ddp.id_pelicula = pro.id_pelicula
-where bol.activo = 1 and DATE(fecha_exhibicion) between DATE($P{fechaInicial}) and DATE($P{fechaFinal})
-group by sal.id_sala,bol.id_programacion,pel.id_pelicula,pro.horario,pro.id_formato,pro.id_version
+where  pel.id_cine = $P{idCine} and bol.activo = 1 and DATE(fecha_exhibicion) between DATE($P{fechaInicial}) and DATE($P{fechaFinal})
+group by fecha_exhibicion,sal.id_sala,bol.id_programacion,pel.id_pelicula,pro.horario,pro.id_formato,pro.id_version
 order by fecha_exhibicion,sal.id_sala,pel.id_pelicula,pro.id_formato,pro.id_version desc;]]>
 		</queryString>
 		<field name="fecha_exhibicion" class="java.lang.String">
@@ -131,48 +116,34 @@ order by fecha_exhibicion,sal.id_sala,pel.id_pelicula,pro.id_formato,pro.id_vers
 		<field name="formato" class="java.lang.String"/>
 		<field name="version" class="java.lang.String"/>
 		<field name="sala" class="java.lang.String"/>
-		<field name="boleto" class="java.lang.String"/>
 		<field name="admision" class="java.math.BigDecimal"/>
 		<field name="promocion" class="java.lang.String"/>
-		<field name="precio" class="java.lang.String">
+		<field name="precio" class="java.math.BigDecimal">
 			<fieldDescription><![CDATA[]]></fieldDescription>
 		</field>
-		<field name="entrada" class="java.lang.String"/>
-		<field name="iva" class="java.lang.String"/>
-		<field name="neto" class="java.lang.String"/>
+		<field name="entrada" class="java.math.BigDecimal"/>
+		<field name="iva" class="java.math.BigDecimal"/>
+		<field name="neto" class="java.math.BigDecimal"/>
 		<field name="admision_total" class="java.math.BigDecimal"/>
-		<field name="entrada_total" class="java.lang.String"/>
+		<field name="entrada_total" class="java.math.BigDecimal"/>
+		<variable name="totalAsistentes" class="java.lang.Integer" calculation="Sum">
+			<variableExpression><![CDATA[$F{admision}]]></variableExpression>
+		</variable>
+		<variable name="totalIngresos" class="java.math.BigDecimal" calculation="Sum">
+			<variableExpression><![CDATA[$F{entrada}]]></variableExpression>
+		</variable>
 	</subDataset>
 	<parameter name="fechaInicial" class="java.lang.String"/>
 	<parameter name="fechaFinal" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="idCine" class="java.lang.Integer"/>
 	<queryString>
 		<![CDATA[select emp.nombre as razon_social,'' as plaza, '' as rentak,cin.nombre as cine,
 concat(cont.calle,'. ',cont.numero,'. ',cont.colonia,'. CP. ',cont.cp) as direccion,
 est.nombre as estado,cont.ciudad,
 cont.cp,cont.telefono,
-sal.nombre as sala,pel.titulo as programa,dis.nombre as distribuidora,
-ddp.porcentaje + ' %' as porcentaje,
-sum(bol.cantidad) as total_admisiones,
-FORMAT(sum(bol.importe) * (imp.porcentaje/100),2) as entrada_iva,
-FORMAT(sum(bol.importe) - (sum(bol.importe) * (imp.porcentaje/100)),2) as entrada_sin_iva,
-FORMAT(sum(bol.importe),2) as entrada_bruta,
-FORMAT(sum(bol.importe) * (dap.porcentaje/100),2) as derechos_Autor,
-FORMAT(sum(bol.importe) - (sum(bol.importe) * (dap.porcentaje/100)),2) as entrada_neta,
-FORMAT((sum(bol.importe) -
-	(sum(bol.importe) * (dap.porcentaje/100))) * (ddp.porcentaje/100),2) as distribuidora_entrada,
-FORMAT(((sum(bol.importe) - (sum(bol.importe) * (dap.porcentaje/100)))
-	* (ddp.porcentaje/100)) * (imp.porcentaje/100),2)  as distribuidora_iva,
-FORMAT(((sum(bol.importe) - (sum(bol.importe) * (dap.porcentaje/100))) * (ddp.porcentaje/100))
-	- (((sum(bol.importe) - (sum(bol.importe) * (dap.porcentaje/100))) * (ddp.porcentaje/100)) * (imp.porcentaje/100)),2) as distribuidora_ent_sin_iva,
-FORMAT(((sum(bol.importe) - (sum(bol.importe) * (dap.porcentaje/100))) * (ddp.porcentaje/100))
-		+
-	    (((sum(bol.importe) - (sum(bol.importe) * (dap.porcentaje/100))) *
-			(ddp.porcentaje/100)) * (imp.porcentaje/100))
-,2) as distribuidora_total,
-FORMAT((sum(bol.importe) -
-	(sum(bol.importe) * (dap.porcentaje/100))) * ((100-ddp.porcentaje)/100),2) as cine_entrada
+sal.nombre as sala,pel.titulo as programa,dis.nombre as distribuidora
 from boletos_x_ticket bol
 join programacion pro on pro.id_programacion = bol.id_programacion
 join sala sal on sal.id_sala = pro.id_sala
@@ -189,7 +160,7 @@ join impuesto_boleto imp on imp.id_cine = cin.id_cine and imp.activo = 1 and cla
 join tipo_cliente cli on cli.id_tipo_cliente = bol.id_tipo_cliente
 join derechos_autor_x_pelicula dap on dap.id_pelicula = pro.id_pelicula
 join derechos_distribuidora_x_pelicula ddp on ddp.id_pelicula = pro.id_pelicula
-where bol.activo = 1 and DATE(fecha_exhibicion) between DATE($P{fechaInicial}) and DATE($P{fechaFinal})
+where pel.id_cine = $P{idCine} and bol.activo = 1 and DATE(fecha_exhibicion) between DATE($P{fechaInicial}) and DATE($P{fechaFinal})
 group by pel.id_pelicula;]]>
 	</queryString>
 	<field name="razon_social" class="java.lang.String"/>
@@ -197,6 +168,7 @@ group by pel.id_pelicula;]]>
 	<field name="rentak" class="java.lang.String"/>
 	<field name="cine" class="java.lang.String"/>
 	<field name="direccion" class="java.lang.String"/>
+	<field name="estado" class="java.lang.String"/>
 	<field name="ciudad" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -206,26 +178,9 @@ group by pel.id_pelicula;]]>
 	<field name="telefono" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="estado" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
 	<field name="sala" class="java.lang.String"/>
 	<field name="programa" class="java.lang.String"/>
 	<field name="distribuidora" class="java.lang.String"/>
-	<field name="porcentaje" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="total_admisiones" class="java.math.BigDecimal"/>
-	<field name="entrada_iva" class="java.lang.String"/>
-	<field name="entrada_sin_iva" class="java.lang.String"/>
-	<field name="entrada_bruta" class="java.lang.String"/>
-	<field name="derechos_Autor" class="java.lang.String"/>
-	<field name="entrada_neta" class="java.lang.String"/>
-	<field name="distribuidora_entrada" class="java.lang.String"/>
-	<field name="distribuidora_iva" class="java.lang.String"/>
-	<field name="distribuidora_ent_sin_iva" class="java.lang.String"/>
-	<field name="distribuidora_total" class="java.lang.String"/>
-	<field name="cine_entrada" class="java.lang.String"/>
 	<title>
 		<band height="25" splitType="Stretch">
 			<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
@@ -271,24 +226,15 @@ $P{fechaInicial}.substring(5,7).equals("11")?"NOVIEMBRE":"DICIEMBRE"]]></textFie
 			<componentElement>
 				<reportElement key="table 2" style="table 2" positionType="Float" isPrintRepeatedValues="false" x="0" y="0" width="802" height="182" isPrintInFirstWholeBand="true" uuid="53ee8956-7303-42d4-acd8-3359cd3b76b7"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="Consulta Reporte" uuid="29036150-e6b4-485e-bf0b-1315dba589e6">
-						<datasetParameter name="totalAdmisiones">
-							<datasetParameterExpression><![CDATA[$F{total_admisiones}]]></datasetParameterExpression>
-						</datasetParameter>
-						<datasetParameter name="entradaBruta">
-							<datasetParameterExpression><![CDATA[$F{entrada_bruta}]]></datasetParameterExpression>
-						</datasetParameter>
-						<datasetParameter name="entradaIVA">
-							<datasetParameterExpression><![CDATA[$F{entrada_iva}]]></datasetParameterExpression>
-						</datasetParameter>
-						<datasetParameter name="entradaNeta">
-							<datasetParameterExpression><![CDATA[$F{entrada_sin_iva}]]></datasetParameterExpression>
-						</datasetParameter>
+					<datasetRun subDataset="Consulta Reporte" uuid="54e22c61-5644-484c-932b-1854a250629e">
 						<datasetParameter name="fechaInicial">
 							<datasetParameterExpression><![CDATA[$P{fechaInicial}]]></datasetParameterExpression>
 						</datasetParameter>
 						<datasetParameter name="fechaFinal">
 							<datasetParameterExpression><![CDATA[$P{fechaFinal}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="idCine">
+							<datasetParameterExpression><![CDATA[$P{idCine}]]></datasetParameterExpression>
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
@@ -303,6 +249,19 @@ $P{fechaInicial}.substring(5,7).equals("11")?"NOVIEMBRE":"DICIEMBRE"]]></textFie
 								<text><![CDATA[SALA]]></text>
 							</staticText>
 						</jr:columnHeader>
+						<jr:columnFooter height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="65" height="30" uuid="96a16cc5-812c-46b5-ba93-6bb17727d0f7"/>
+								<box>
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<text><![CDATA[]]></text>
+							</staticText>
+						</jr:columnFooter>
 						<jr:detailCell height="20" rowSpan="1">
 							<textField>
 								<reportElement x="0" y="0" width="65" height="20" uuid="b097c367-d19c-475b-922b-d04b597319d9"/>
@@ -322,6 +281,19 @@ $P{fechaInicial}.substring(5,7).equals("11")?"NOVIEMBRE":"DICIEMBRE"]]></textFie
 								<text><![CDATA[SHOW / HORARIO]]></text>
 							</staticText>
 						</jr:columnHeader>
+						<jr:columnFooter height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="87" height="30" uuid="5e783d89-9602-40c7-92bf-524f57d2f38f"/>
+								<box>
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<text><![CDATA[]]></text>
+							</staticText>
+						</jr:columnFooter>
 						<jr:detailCell height="20" rowSpan="1">
 							<textField>
 								<reportElement x="0" y="0" width="87" height="20" uuid="596100ce-a633-48d8-96c7-b848f70e1670"/>
@@ -341,6 +313,19 @@ $P{fechaInicial}.substring(5,7).equals("11")?"NOVIEMBRE":"DICIEMBRE"]]></textFie
 								<text><![CDATA[PELICULA]]></text>
 							</staticText>
 						</jr:columnHeader>
+						<jr:columnFooter height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="139" height="30" uuid="8f28d243-9a62-40c1-9968-4d90d6124659"/>
+								<box>
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<text><![CDATA[]]></text>
+							</staticText>
+						</jr:columnFooter>
 						<jr:detailCell height="20" rowSpan="1">
 							<textField>
 								<reportElement x="0" y="0" width="139" height="20" uuid="be016398-ca23-4b8e-a7da-81b474d72549"/>
@@ -360,6 +345,19 @@ $P{fechaInicial}.substring(5,7).equals("11")?"NOVIEMBRE":"DICIEMBRE"]]></textFie
 								<text><![CDATA[FORMATO]]></text>
 							</staticText>
 						</jr:columnHeader>
+						<jr:columnFooter height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="61" height="30" uuid="6ba4b585-1dc0-4f08-8267-e859e0410af0"/>
+								<box>
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<text><![CDATA[]]></text>
+							</staticText>
+						</jr:columnFooter>
 						<jr:detailCell height="20" rowSpan="1">
 							<textField>
 								<reportElement x="0" y="0" width="61" height="20" uuid="62237165-ebb3-45ed-b559-c5e56ce6b626"/>
@@ -379,6 +377,19 @@ $P{fechaInicial}.substring(5,7).equals("11")?"NOVIEMBRE":"DICIEMBRE"]]></textFie
 								<text><![CDATA[IDIOMA]]></text>
 							</staticText>
 						</jr:columnHeader>
+						<jr:columnFooter height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="62" height="30" uuid="369d007a-355b-4ae8-bdb0-a65d628b6496"/>
+								<box>
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<text><![CDATA[]]></text>
+							</staticText>
+						</jr:columnFooter>
 						<jr:detailCell height="20" rowSpan="1">
 							<textField>
 								<reportElement x="0" y="0" width="62" height="20" uuid="2f05c463-e35c-432c-8703-d3b50bc3b132"/>
@@ -398,6 +409,20 @@ $P{fechaInicial}.substring(5,7).equals("11")?"NOVIEMBRE":"DICIEMBRE"]]></textFie
 								<text><![CDATA[ASISTENTES]]></text>
 							</staticText>
 						</jr:columnHeader>
+						<jr:columnFooter height="30" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="76" height="30" uuid="7e5f7bf8-4bfc-4284-b4ab-2d18d9fc2ed6"/>
+								<box>
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$V{totalAsistentes}]]></textFieldExpression>
+							</textField>
+						</jr:columnFooter>
 						<jr:detailCell height="20" rowSpan="1">
 							<textField>
 								<reportElement x="0" y="0" width="76" height="20" uuid="add5067c-d71d-4c3a-800c-5bcb92338bac"/>
@@ -417,8 +442,22 @@ $P{fechaInicial}.substring(5,7).equals("11")?"NOVIEMBRE":"DICIEMBRE"]]></textFie
 								<text><![CDATA[INGRESOS]]></text>
 							</staticText>
 						</jr:columnHeader>
+						<jr:columnFooter height="30" rowSpan="1">
+							<textField pattern="$#,##0.00">
+								<reportElement x="0" y="0" width="83" height="30" uuid="3ff01125-f3b8-4a40-9c6c-d5a9ef2c8ac6"/>
+								<box>
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textElement textAlignment="Right" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$V{totalIngresos}]]></textFieldExpression>
+							</textField>
+						</jr:columnFooter>
 						<jr:detailCell height="20" rowSpan="1">
-							<textField>
+							<textField pattern="$#,##0.00">
 								<reportElement x="0" y="0" width="83" height="20" uuid="cf5c0814-0182-4a5d-8579-6c07b7e5a0a9"/>
 								<textElement textAlignment="Right" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{entrada}]]></textFieldExpression>
@@ -436,6 +475,20 @@ $P{fechaInicial}.substring(5,7).equals("11")?"NOVIEMBRE":"DICIEMBRE"]]></textFie
 								<text><![CDATA[TOTAL]]></text>
 							</staticText>
 						</jr:columnHeader>
+						<jr:columnFooter height="30" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="66" height="30" uuid="597349d2-5d9a-4333-a430-5bc1232bcb56"/>
+								<box>
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$V{totalAsistentes}]]></textFieldExpression>
+							</textField>
+						</jr:columnFooter>
 						<jr:detailCell height="20" rowSpan="1">
 							<textField>
 								<reportElement x="0" y="0" width="66" height="20" uuid="090713d6-aa53-4afc-9de9-a11e52403f10"/>
@@ -455,8 +508,22 @@ $P{fechaInicial}.substring(5,7).equals("11")?"NOVIEMBRE":"DICIEMBRE"]]></textFie
 								<text><![CDATA[$]]></text>
 							</staticText>
 						</jr:columnHeader>
+						<jr:columnFooter height="30" rowSpan="1">
+							<textField pattern="$#,##0.00">
+								<reportElement x="0" y="0" width="79" height="30" uuid="14835dfd-1fa3-4bb6-a60b-280f7dbb2638"/>
+								<box>
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textElement textAlignment="Right" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$V{totalIngresos}]]></textFieldExpression>
+							</textField>
+						</jr:columnFooter>
 						<jr:detailCell height="20" rowSpan="1">
-							<textField>
+							<textField pattern="$#,##0.00">
 								<reportElement x="0" y="0" width="79" height="20" uuid="04d96ade-6295-432f-878c-e788858f47c3"/>
 								<textElement textAlignment="Right" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{entrada_total}]]></textFieldExpression>

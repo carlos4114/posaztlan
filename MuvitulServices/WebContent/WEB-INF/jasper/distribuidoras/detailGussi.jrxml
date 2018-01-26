@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="testCrostab" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f20cf98b-9cda-4aea-b7ec-0d4185c5fb11">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<parameter name="idCine" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idDistribuidora" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idPelicula" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechaInicial" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechaFinal" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select emp.nombre as empresa, cin.nombre as cine,sal.nombre as sala,pel.titulo as programa,dis.nombre as distribuidora,
+bol.fecha_exhibicion,
+CASE date_format(bol.fecha_exhibicion,'%w')
+	WHEN 0 THEN 'Dia 3'
+    WHEN 1 THEN 'Dia 4'
+    WHEN 2 THEN 'Dia 5'
+    WHEN 3 THEN 'Dia 6'
+    WHEN 4 THEN 'Dia 7'
+    WHEN 5 THEN 'Dia 1'
+    WHEN 6 THEN 'Dia 2'
+    ELSE 'NO DAY FOUND'
+END as dia_numero,
+CASE date_format(bol.fecha_exhibicion,'%w')
+	WHEN 0 THEN 'DOMINGO'
+    WHEN 1 THEN 'LUNES'
+    WHEN 2 THEN 'MARTES'
+    WHEN 3 THEN 'MIERCOLES'
+    WHEN 4 THEN 'JUEVES'
+    WHEN 5 THEN 'VIERNES'
+    WHEN 6 THEN 'SABADO'
+    ELSE 'NO DAY FOUND'
+END as dia_nombre,
+form.nombre as formato,ver.nombre as version,
+pro.horario as funcion,
+tp.nombre as tipo_cliente,sum(bol.cantidad) admision,
+(bol.importe - ((bol.importe / (100 + imp.porcentaje)) * imp.porcentaje)) / bol.cantidad as precio,
+sum(bol.importe) - ((sum(bol.importe) / (100 + imp.porcentaje)) * imp.porcentaje) as neto,
+(sum(bol.importe) / (100 + imp.porcentaje)) * imp.porcentaje as IVA,
+sum(bol.importe) as entrada
+from programacion pro
+join boletos_x_ticket bol on pro.id_programacion = bol.id_programacion
+join tipo_cliente tp on tp.id_tipo_cliente = bol.id_tipo_cliente
+join sala sal on sal.id_sala = pro.id_sala
+join cine cin on cin.id_cine = sal.id_cine
+join empresa emp on emp.id_empresa = cin.id_empresa
+join pelicula pel on pel.id_pelicula = pro.id_pelicula
+join distribuidora dis on dis.id_distribuidora = pel.id_distribuidora
+join version ver on ver.id_version = pro.id_version
+join formato form on form.id_formato = pro.id_formato
+join precio_x_formato pre on pre.id_formato = pro.id_formato and pre.id_tipo_cliente = bol.id_tipo_cliente
+join impuesto_boleto imp on imp.id_cine = cin.id_cine and imp.activo = 1 and clave='iva'
+where pel.id_cine = $P{idCine} and pel.id_distribuidora = $P{idDistribuidora} and pel.id_pelicula = $P{idPelicula}
+and bol.activo = 1 and DATE(fecha_exhibicion) between DATE($P{fechaInicial}) and DATE($P{fechaFinal})
+group by tp.nombre,bol.id_programacion,pro.id_formato,pro.id_version,fecha_exhibicion
+ORDER BY fecha_exhibicion,tp.nombre ASC;]]>
+	</queryString>
+	<field name="empresa" class="java.lang.String"/>
+	<field name="cine" class="java.lang.String"/>
+	<field name="sala" class="java.lang.String"/>
+	<field name="programa" class="java.lang.String"/>
+	<field name="distribuidora" class="java.lang.String"/>
+	<field name="fecha_exhibicion" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dia_numero" class="java.lang.String"/>
+	<field name="dia_nombre" class="java.lang.String"/>
+	<field name="formato" class="java.lang.String"/>
+	<field name="version" class="java.lang.String"/>
+	<field name="funcion" class="java.sql.Time"/>
+	<field name="tipo_cliente" class="java.lang.String"/>
+	<field name="admision" class="java.math.BigDecimal"/>
+	<field name="precio" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="neto" class="java.math.BigDecimal"/>
+	<field name="IVA" class="java.math.BigDecimal"/>
+	<field name="entrada" class="java.math.BigDecimal"/>
+	<summary>
+		<band height="42" splitType="Stretch">
+			<crosstab>
+				<reportElement isPrintRepeatedValues="false" x="0" y="0" width="802" height="42" uuid="ac8c2926-d31a-4169-bd56-a31193e50885"/>
+				<crosstabHeaderCell>
+					<cellContents>
+						<staticText>
+							<reportElement style="Crosstab Data Text" mode="Opaque" x="0" y="0" width="140" height="34" backcolor="#F0F8FF" uuid="3864c3e5-d004-4745-8b86-23509b5069e9"/>
+							<box>
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement verticalAlignment="Middle"/>
+							<text><![CDATA[FECHA DE EXHIBICION]]></text>
+						</staticText>
+					</cellContents>
+				</crosstabHeaderCell>
+				<rowGroup name="dia_numero" width="70" totalPosition="End">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{dia_numero}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#FFFFFF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="70" height="17" uuid="9f029542-fd7a-4a0e-8756-2fbe22abefb3"/>
+								<textElement verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$V{dia_numero}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement x="0" y="0" width="140" height="17" forecolor="#000000" uuid="a5ab0fc0-6619-4cc9-83d7-207ba4112433"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[TOTAL BOLETOS]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="dia_nombre" width="70">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{dia_nombre}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#FFFFFF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="70" height="17" uuid="ecbb08a7-3de3-4c01-9b82-eb01710998b9"/>
+								<textElement verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$V{dia_nombre}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents backcolor="#BFE1FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement x="0" y="0" width="70" height="25" uuid="8e2231d5-9cc3-4905-b26c-711c52c63c28"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[Total dia_nombre]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="tipo_cliente" height="18" totalPosition="End">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{tipo_cliente}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="70" height="17" uuid="2b34a4af-8089-4eb9-b241-7ab23ce13d60"/>
+								<textElement verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$V{tipo_cliente}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement x="70" y="0" width="70" height="34" forecolor="#000000" uuid="ebc27958-e72b-4a57-a5cd-8c3d3bb95f69"/>
+								<box>
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[NUM. BOLETOS]]></text>
+							</staticText>
+							<staticText>
+								<reportElement x="0" y="0" width="70" height="18" forecolor="#000000" uuid="63690f5b-4a94-4f9b-8456-21ecb895b043"/>
+								<box bottomPadding="0">
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[IMPORTE]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<columnGroup name="precio" height="16">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[new java.text.DecimalFormat("\$#,##0.00").format(Double.valueOf($F{precio}))]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField pattern="$#,##0.00" isBlankWhenNull="false">
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="70" height="16" uuid="9c79dc9a-0445-4524-9044-a9af8260a727"/>
+								<textElement verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$V{precio}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents backcolor="#BFE1FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<staticText>
+								<reportElement x="0" y="0" width="70" height="17" uuid="7b334bdd-d9bc-4170-a8b8-09fc8053e60c"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<text><![CDATA[Total precio]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="admisionMeasure" class="java.math.BigDecimal" calculation="Sum">
+					<measureExpression><![CDATA[$F{admision}]]></measureExpression>
+				</measure>
+				<measure name="importeMeasure" class="java.math.BigDecimal" calculation="Sum">
+					<measureExpression><![CDATA[new Double( $F{admision}.doubleValue() * $F{precio}.doubleValue() )]]></measureExpression>
+				</measure>
+				<crosstabCell width="70" height="17">
+					<cellContents>
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField pattern="">
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="70" height="17" uuid="8e541ba1-939e-4cd0-aa74-5ffee92d52a4"/>
+							<textElement verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$V{admisionMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="70" height="17" rowTotalGroup="dia_numero">
+					<cellContents backcolor="#F0F8FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField pattern="">
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="70" height="17" forecolor="#000000" uuid="2005c636-d9fb-48ec-882f-be484e387c71"/>
+							<textElement verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$V{admisionMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="140" height="17" columnTotalGroup="tipo_cliente">
+					<cellContents backcolor="#FFFFFF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="70" y="0" width="70" height="17" forecolor="#000000" uuid="70c88613-613d-4258-8a5a-d675142a868c"/>
+							<box>
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement verticalAlignment="Middle">
+								<font size="10"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{admisionMeasure}]]></textFieldExpression>
+						</textField>
+						<textField pattern="$#,##0.00">
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="70" height="17" uuid="e2acfa31-c484-45e4-8f15-9fe9d9c98c2f"/>
+							<box>
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement verticalAlignment="Middle">
+								<font size="10"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{importeMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="140" height="17" rowTotalGroup="dia_numero" columnTotalGroup="tipo_cliente">
+					<cellContents backcolor="#F0F8FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="70" y="0" width="70" height="17" forecolor="#000000" uuid="9d38b859-62d1-4f9f-baf2-34d9d7c84246"/>
+							<box>
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement verticalAlignment="Middle">
+								<font size="10"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{admisionMeasure}]]></textFieldExpression>
+						</textField>
+						<textField pattern="$#,##0.00">
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="70" height="17" uuid="9acea6c4-29c1-4b3b-9f4a-ef1f427fe57a"/>
+							<box>
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement>
+								<font size="10"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{importeMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="70" columnTotalGroup="precio">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="70" height="17" uuid="323679bd-1357-4635-8705-2ee7c941c853"/>
+							<textFieldExpression><![CDATA[$V{admisionMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="70" rowTotalGroup="dia_numero" columnTotalGroup="precio">
+					<cellContents backcolor="#005FB3" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="70" height="17" forecolor="#FFFFFF" uuid="f37532ed-4768-41f6-a262-0de4c045c695"/>
+							<textFieldExpression><![CDATA[$V{admisionMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell height="25" rowTotalGroup="dia_nombre">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="7ca70845-2651-41f3-84a9-4704daec0625"/>
+							<textFieldExpression><![CDATA[$V{admisionMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="dia_nombre" columnTotalGroup="tipo_cliente">
+					<cellContents backcolor="#F0F8FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" forecolor="#FFFFFF" uuid="057c1841-0320-4d6d-b692-2140a6ac167c"/>
+							<textFieldExpression><![CDATA[$V{admisionMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="dia_nombre" columnTotalGroup="precio">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" uuid="f3966e97-519a-495c-9401-40e5300a7a96"/>
+							<textFieldExpression><![CDATA[$V{admisionMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+			</crosstab>
+		</band>
+	</summary>
+</jasperReport>

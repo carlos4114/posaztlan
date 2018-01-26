@@ -48,6 +48,7 @@ import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ProductosX
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ProductosXTicket;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.TicketVenta;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.TipoMovimientoInv;
+import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.vo.ArticuloExistenciaVO;
 import mx.com.tecnetia.muvitul.infraservices.servicios.BusinessGlobalException;
 import mx.com.tecnetia.muvitul.negocio.dulceria.assembler.ImpuestoXTicketPaqueteAssembler;
 import mx.com.tecnetia.muvitul.negocio.dulceria.assembler.ImpuestosXTicketProductoAssembler;
@@ -61,7 +62,9 @@ import mx.com.tecnetia.muvitul.negocio.dulceria.vo.ArticuloXProductoVO;
 import mx.com.tecnetia.muvitul.negocio.dulceria.vo.DetalleImpuestoPdfVO;
 import mx.com.tecnetia.muvitul.negocio.dulceria.vo.DetallePagoPdfVO;
 import mx.com.tecnetia.muvitul.negocio.dulceria.vo.DetalleTicketPdfVO;
+import mx.com.tecnetia.muvitul.negocio.dulceria.vo.PaqueteAgotadoVO;
 import mx.com.tecnetia.muvitul.negocio.dulceria.vo.PaqueteVO;
+import mx.com.tecnetia.muvitul.negocio.dulceria.vo.ProductoExistenciaVO;
 import mx.com.tecnetia.muvitul.negocio.dulceria.vo.ProductoXPaqueteVO;
 import mx.com.tecnetia.muvitul.negocio.dulceria.vo.TicketPdfVO;
 import mx.com.tecnetia.muvitul.negocio.dulceria.vo.TicketVentaVO;
@@ -140,10 +143,11 @@ public class VentaProductoBO {
 		}
 
 		Map<Integer, Articulo> mapArticulosDisp = new HashMap<Integer, Articulo>();
-		List<Articulo> articulos = articuloDAO.getDisponible(idPuntoVenta);
+		List<ArticuloExistenciaVO> articulosExistenciaVO = articuloDAO.getDisponible(idPuntoVenta);
 		
-		for (Articulo articulo : articulos)
-			mapArticulosDisp.put(articulo.getIdArticulo(), articulo);
+		for (ArticuloExistenciaVO articuloExistenciaVO : articulosExistenciaVO){
+			mapArticulosDisp.put(articuloExistenciaVO.getArticulo().getIdArticulo(), articuloExistenciaVO.getArticulo());
+		}
 
 		
 		Map<Integer, Producto> mapProductosAgotados = new HashMap<Integer, Producto>();
@@ -169,6 +173,64 @@ public class VentaProductoBO {
 
 	}
 
+	public PaqueteAgotadoVO validarPaquete(List<PaqueteVO> paquetesVO, Integer idPuntoVenta) {
+		Map<Integer, ArticuloExistenciaVO> mapArticulosDisponibles = new HashMap<Integer, ArticuloExistenciaVO>();
+		Map<Integer, ProductoExistenciaVO> mapProductosXVender = new HashMap<Integer, ProductoExistenciaVO>();
+		List<ProductoExistenciaVO> productosExistenciaVO= new  ArrayList<ProductoExistenciaVO>();
+		PaqueteAgotadoVO paqueteAgotadoVO = new PaqueteAgotadoVO();
+		paqueteAgotadoVO.setProductosExistenciaVO(productosExistenciaVO);
+		
+		
+		List<ArticuloExistenciaVO> articulosExistenciaVO = articuloDAO.getDisponible(idPuntoVenta);
+		
+		for (ArticuloExistenciaVO articuloExistenciaVO : articulosExistenciaVO){
+			mapArticulosDisponibles.put(articuloExistenciaVO.getArticulo().getIdArticulo(), articuloExistenciaVO);
+		}
+		
+		for (PaqueteVO paqueteVO : paquetesVO) {
+			for (ProductoXPaqueteVO productosXPaqueteVO : paqueteVO.getProductosXPaqueteVO()) {
+				
+				if (!mapProductosXVender.containsKey(productosXPaqueteVO.getProductoVO().getIdProducto())) {
+					ProductoExistenciaVO  productoExistenciaVO = new ProductoExistenciaVO();
+					productoExistenciaVO.setProductoVO(productosXPaqueteVO.getProductoVO());
+					productoExistenciaVO.setSeleccionado(0);
+					mapProductosXVender.put(productosXPaqueteVO.getProductoVO().getIdProducto(), productoExistenciaVO );
+				}
+				
+				ProductoExistenciaVO productoExistenciaVO = mapProductosXVender.get(productosXPaqueteVO.getProductoVO().getIdProducto());
+				productoExistenciaVO.setSeleccionado(productoExistenciaVO.getSeleccionado() + (paqueteVO.getCantidad()* productosXPaqueteVO.getCantidad() ));
+				mapProductosXVender.put(productosXPaqueteVO.getProductoVO().getIdProducto(), productoExistenciaVO);
+
+			}
+			
+		}
+		
+		for(Map.Entry<Integer, ProductoExistenciaVO> entry : mapProductosXVender.entrySet()) {
+			logger.info("--> {} ---> {}",entry.getKey(), entry.getValue());
+			ProductoExistenciaVO productoExistenciaVO =entry.getValue();
+			for (ArticuloXProductoVO articuloXProductoVO : productoExistenciaVO.getProductoVO().getArticulosXProductosVO()) {
+				
+				ArticuloExistenciaVO articuloExistenciaVO =mapArticulosDisponibles.get(articuloXProductoVO.getArticuloVO().getIdArticulo());
+				long existencia= articuloExistenciaVO !=null ? articuloExistenciaVO.getExistencia(): 0  / articuloXProductoVO.getCantidad();
+				
+				if (existencia > productoExistenciaVO.getExistencia() ){
+					productoExistenciaVO.setExistencia(existencia);
+				}
+			}
+			
+			if (productoExistenciaVO.getSeleccionado() > productoExistenciaVO.getExistencia()){
+				paqueteAgotadoVO.setAgotado(true);
+				productosExistenciaVO.add(productoExistenciaVO);
+			}
+			
+		}
+		
+		
+		
+		return  paqueteAgotadoVO;
+	}
+
+	
 	public TicketVentaVO createVenta(VentaVO ventaVO) throws BusinessGlobalException {
 		BigDecimal total = new BigDecimal(0);
 		BigDecimal subtotal = new BigDecimal(0);
@@ -193,8 +255,7 @@ public class VentaProductoBO {
 					}
 
 					MovimientoInventario movimientoInventario = mapMovimientoInventario.get(articuloKey);
-					movimientoInventario
-							.setCantidad(movimientoInventario.getCantidad() + (articuloXProductoVO.getCantidad()
+					movimientoInventario.setCantidad(movimientoInventario.getCantidad() + (articuloXProductoVO.getCantidad()
 									* productoXPaqueteVO.getCantidad() * paqueteVO.getCantidad()));
 
 				}
@@ -400,5 +461,6 @@ public class VentaProductoBO {
 
 		return archivosPdfVO;
 	}
+
 
 }

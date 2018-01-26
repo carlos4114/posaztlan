@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import mx.com.tecnetia.muvitul.infraservices.servicios.BusinessGlobalException;
 import mx.com.tecnetia.muvitul.negocio.dulceria.business.VentaProductoBO;
 import mx.com.tecnetia.muvitul.negocio.dulceria.vo.ArchivoPdfVO;
+import mx.com.tecnetia.muvitul.negocio.dulceria.vo.PaqueteAgotadoVO;
 import mx.com.tecnetia.muvitul.negocio.dulceria.vo.PaqueteVO;
 import mx.com.tecnetia.muvitul.negocio.dulceria.vo.TicketVentaVO;
 import mx.com.tecnetia.muvitul.negocio.dulceria.vo.VentaVO;
@@ -22,7 +23,11 @@ public class VentaProductoController {
 	public List<PaqueteVO> getPaquetes(Integer idPuntoVenta) throws BusinessGlobalException {
 		return ventaProductoBO.getPaquetes(idPuntoVenta);
 	}
-
+	
+	public PaqueteAgotadoVO validarPaquete(List<PaqueteVO> paquetesVO,Integer idPuntoVenta) {
+		return ventaProductoBO.validarPaquete(paquetesVO,idPuntoVenta );
+	}
+	
 	public TicketVentaVO createVenta(VentaVO ventaVO) throws BusinessGlobalException {
 		return ventaProductoBO.createVenta(ventaVO);
 	}
@@ -31,4 +36,6 @@ public class VentaProductoController {
 		return ventaProductoBO.generarTicketPdf(idTicket,pagoCon, cambio, idCine);
 		
 	}
+
+
 }
