@@ -50,7 +50,8 @@ public class ReporteDistribuidoraBO {
 		parametros.put("idCine", reporte.getCine().getIdCine());
 		parametros.put("idPelicula",reporte.getPelicula()==null?0:reporte.getPelicula().getIdPelicula());
 		parametros.put("idDistribuidora",reporte.getPelicula()==null?0:reporte.getPelicula().getDistribuidora().getIdDistribuidora());
-				
+		parametros.put("SUBREPORT_DIR",cfg.getString(reporte.getReportesDistribuidora().getRutaReporteJasper())+"\\");
+		
 		rutaReporteJasper = cfg.getString(reporte.getReportesDistribuidora().getRutaReporteJasper());	
 		rutaReporteXls = context.getRealPath(cfg.getString(reporte.getReportesDistribuidora().getRutaReporteXls()));
 		 rutaPlantillaVm = cfg.getString(reporte.getReportesDistribuidora().getRutaPlantillaVm());

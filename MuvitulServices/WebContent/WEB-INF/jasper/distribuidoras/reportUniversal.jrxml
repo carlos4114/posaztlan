@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1excel" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c7f4f4f1-fd4f-46cd-b0bf-8705ec49107b">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="218"/>
+	<property name="ireport.y" value="213"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -81,16 +81,16 @@
 		<parameter name="totalAdmisiones" class="java.math.BigDecimal" isForPrompting="false">
 			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 		</parameter>
-		<parameter name="precioPromedio" class="java.lang.String" isForPrompting="false">
+		<parameter name="precioPromedio" class="java.math.BigDecimal" isForPrompting="false">
 			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 		</parameter>
-		<parameter name="entradaBruta" class="java.lang.String" isForPrompting="false">
+		<parameter name="entradaBruta" class="java.math.BigDecimal" isForPrompting="false">
 			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 		</parameter>
-		<parameter name="entradaIVA" class="java.lang.String" isForPrompting="false">
+		<parameter name="entradaIVA" class="java.math.BigDecimal" isForPrompting="false">
 			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 		</parameter>
-		<parameter name="entradaNeta" class="java.lang.String" isForPrompting="false">
+		<parameter name="entradaNeta" class="java.math.BigDecimal" isForPrompting="false">
 			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 		</parameter>
 		<queryString>
@@ -98,10 +98,10 @@
 '000' as rentrak,pel.titulo as pelicula,DATE_FORMAT(pro.horario,"%H:%i") as funcion,
 form.nombre as formato,ver.nombre as version,sal.nombre as sala,
 cli.nombre as boleto,sum(bol.cantidad) as admision,IFNULL(promo.nombre,'NO APLICA') as promocion,
-FORMAT(bol.importe/bol.cantidad,2) as precio,
-FORMAT(sum(bol.importe),2) as entrada,
-FORMAT(sum(bol.importe) * (imp.porcentaje/100),2) as iva,
-FORMAT(sum(bol.importe) - sum(bol.importe) * (imp.porcentaje/100),2) as neto
+bol.importe/bol.cantidad as precio,
+sum(bol.importe) as entrada,
+sum(bol.importe * imp.porcentaje)/(imp.porcentaje+100) as iva,
+sum(bol.importe) - (sum(bol.importe * imp.porcentaje)/(imp.porcentaje+100)) as neto
 from boletos_x_ticket bol
 join programacion pro on pro.id_programacion = bol.id_programacion
 join sala sal on sal.id_sala = pro.id_sala
@@ -132,12 +132,12 @@ order by fecha_exhibicion asc;]]>
 		<field name="boleto" class="java.lang.String"/>
 		<field name="admision" class="java.math.BigDecimal"/>
 		<field name="promocion" class="java.lang.String"/>
-		<field name="precio" class="java.lang.String">
+		<field name="precio" class="java.math.BigDecimal">
 			<fieldDescription><![CDATA[]]></fieldDescription>
 		</field>
-		<field name="entrada" class="java.lang.String"/>
-		<field name="iva" class="java.lang.String"/>
-		<field name="neto" class="java.lang.String"/>
+		<field name="entrada" class="java.math.BigDecimal"/>
+		<field name="iva" class="java.math.BigDecimal"/>
+		<field name="neto" class="java.math.BigDecimal"/>
 	</subDataset>
 	<parameter name="idCine" class="java.lang.Integer"/>
 	<parameter name="idDistribuidora" class="java.lang.Integer"/>
@@ -152,33 +152,33 @@ cont.cp,cont.telefono,
 sal.nombre as sala,pel.titulo as programa,dis.nombre as distribuidora,
 ddp.porcentaje + ' %' as porcentaje,
 sum(bol.cantidad) as total_admisiones,
-(select FORMAT(sum(importe_boleto)/count(1),2) from(
+(select sum(importe_boleto)/count(1) from(
 select sum(bol_2.importe)/sum(bol_2.cantidad) as importe_boleto
     from boletos_x_ticket bol_2
 	join programacion prot2 on prot2.id_programacion = bol_2.id_programacion
 	join pelicula pelt2 on pelt2.id_pelicula = prot2.id_pelicula
     where pelt2.id_cine = $P{idCine} and pelt2.id_distribuidora = $P{idDistribuidora} and pelt2.id_pelicula = $P{idPelicula}
-	and bol_2.activo = 0 and DATE(fecha_exhibicion) between DATE($P{fechaInicial}) and DATE($P{fechaFinal})
+	and bol_2.activo = 1 and DATE(fecha_exhibicion) between DATE($P{fechaInicial}) and DATE($P{fechaFinal})
 	group by pelt2.id_pelicula,bol_2.id_programacion,prot2.id_formato,prot2.id_version,bol_2.id_tipo_cliente
 ) as tabla_precio_promedio) as precio_promedio,
-FORMAT(sum(bol.importe) * (imp.porcentaje/100),2) as entrada_iva,
-FORMAT(sum(bol.importe) - (sum(bol.importe) * (imp.porcentaje/100)),2) as entrada_sin_iva,
-FORMAT(sum(bol.importe),2) as entrada_bruta,
-FORMAT(sum(bol.importe) * (dap.porcentaje/100),2) as derechos_Autor,
-FORMAT(sum(bol.importe) - (sum(bol.importe) * (dap.porcentaje/100)),2) as entrada_neta,
-FORMAT((sum(bol.importe) -
-	(sum(bol.importe) * (dap.porcentaje/100))) * (ddp.porcentaje/100),2) as distribuidora_entrada,
-FORMAT(((sum(bol.importe) - (sum(bol.importe) * (dap.porcentaje/100)))
-	* (ddp.porcentaje/100)) * (imp.porcentaje/100),2)  as distribuidora_iva,
-FORMAT(((sum(bol.importe) - (sum(bol.importe) * (dap.porcentaje/100))) * (ddp.porcentaje/100))
-	- (((sum(bol.importe) - (sum(bol.importe) * (dap.porcentaje/100))) * (ddp.porcentaje/100)) * (imp.porcentaje/100)),2) as distribuidora_ent_sin_iva,
-FORMAT(((sum(bol.importe) - (sum(bol.importe) * (dap.porcentaje/100))) * (ddp.porcentaje/100))
+sum(bol.importe * imp.porcentaje)/(imp.porcentaje+100) as entrada_iva,
+sum(bol.importe) - sum(bol.importe * imp.porcentaje)/(imp.porcentaje+100) as entrada_sin_iva,
+sum(bol.importe) as entrada_bruta,
+sum(bol.importe) * (dap.porcentaje/100) as derechos_Autor,
+sum(bol.importe) - (sum(bol.importe) * (dap.porcentaje/100)) as entrada_neta,
+(sum(bol.importe) -
+	(sum(bol.importe) * (dap.porcentaje/100))) * (ddp.porcentaje/100) as distribuidora_entrada,
+((sum(bol.importe) - (sum(bol.importe) * (dap.porcentaje/100)))
+	* (ddp.porcentaje/100)) * (imp.porcentaje/100)  as distribuidora_iva,
+((sum(bol.importe) - (sum(bol.importe) * (dap.porcentaje/100))) * (ddp.porcentaje/100))
+	- (((sum(bol.importe) - (sum(bol.importe) * (dap.porcentaje/100))) * (ddp.porcentaje/100)) * (imp.porcentaje/100)) as distribuidora_ent_sin_iva,
+((sum(bol.importe) - (sum(bol.importe) * (dap.porcentaje/100))) * (ddp.porcentaje/100))
 		+
 	    (((sum(bol.importe) - (sum(bol.importe) * (dap.porcentaje/100))) *
 			(ddp.porcentaje/100)) * (imp.porcentaje/100))
-,2) as distribuidora_total,
-FORMAT((sum(bol.importe) -
-	(sum(bol.importe) * (dap.porcentaje/100))) * ((100-ddp.porcentaje)/100),2) as cine_entrada
+as distribuidora_total,
+(sum(bol.importe) -
+	(sum(bol.importe) * (dap.porcentaje/100))) * ((100-ddp.porcentaje)/100) as cine_entrada
 from boletos_x_ticket bol
 join programacion pro on pro.id_programacion = bol.id_programacion
 join sala sal on sal.id_sala = pro.id_sala
@@ -221,17 +221,17 @@ group by pel.id_pelicula;]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="total_admisiones" class="java.math.BigDecimal"/>
-	<field name="precio_promedio" class="java.lang.String"/>
-	<field name="entrada_iva" class="java.lang.String"/>
-	<field name="entrada_sin_iva" class="java.lang.String"/>
-	<field name="entrada_bruta" class="java.lang.String"/>
-	<field name="derechos_Autor" class="java.lang.String"/>
-	<field name="entrada_neta" class="java.lang.String"/>
-	<field name="distribuidora_entrada" class="java.lang.String"/>
-	<field name="distribuidora_iva" class="java.lang.String"/>
-	<field name="distribuidora_ent_sin_iva" class="java.lang.String"/>
-	<field name="distribuidora_total" class="java.lang.String"/>
-	<field name="cine_entrada" class="java.lang.String"/>
+	<field name="precio_promedio" class="java.math.BigDecimal"/>
+	<field name="entrada_iva" class="java.math.BigDecimal"/>
+	<field name="entrada_sin_iva" class="java.math.BigDecimal"/>
+	<field name="entrada_bruta" class="java.math.BigDecimal"/>
+	<field name="derechos_Autor" class="java.math.BigDecimal"/>
+	<field name="entrada_neta" class="java.math.BigDecimal"/>
+	<field name="distribuidora_entrada" class="java.math.BigDecimal"/>
+	<field name="distribuidora_iva" class="java.math.BigDecimal"/>
+	<field name="distribuidora_ent_sin_iva" class="java.math.BigDecimal"/>
+	<field name="distribuidora_total" class="java.math.BigDecimal"/>
+	<field name="cine_entrada" class="java.math.BigDecimal"/>
 	<title>
 		<band height="25" splitType="Stretch">
 			<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
@@ -555,7 +555,7 @@ $P{fechaFinal}.substring(5,7).equals("11")?"NOVIEMBRE":"DICIEMBRE"]]></textField
 					<jr:column width="65" uuid="9c8afc02-4c1b-4c81-ab10-7d1b8716634b">
 						<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
 						<jr:tableHeader height="30" rowSpan="1">
-							<textField>
+							<textField pattern="$#,##0.00">
 								<reportElement x="0" y="0" width="65" height="30" uuid="8fe7c371-0870-4f65-b7cb-e28415e7f42a"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$P{precioPromedio}]]></textFieldExpression>
@@ -573,7 +573,7 @@ $P{fechaFinal}.substring(5,7).equals("11")?"NOVIEMBRE":"DICIEMBRE"]]></textField
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell height="20" rowSpan="1">
-							<textField>
+							<textField pattern="$#,##0.00">
 								<reportElement x="0" y="0" width="65" height="20" uuid="85d8a705-fd69-4992-a3af-5d0d0bd7d301"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="9"/>
@@ -585,7 +585,7 @@ $P{fechaFinal}.substring(5,7).equals("11")?"NOVIEMBRE":"DICIEMBRE"]]></textField
 					<jr:column width="89" uuid="d25d8a09-30e1-4687-a043-e2f4b599749c">
 						<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
 						<jr:tableHeader height="30" rowSpan="1">
-							<textField>
+							<textField pattern="$#,##0.00">
 								<reportElement x="0" y="0" width="89" height="30" uuid="b306f99a-5ba6-4491-8212-f244b7e82f7e"/>
 								<textElement textAlignment="Right" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$P{entradaBruta}]]></textFieldExpression>
@@ -603,7 +603,7 @@ $P{fechaFinal}.substring(5,7).equals("11")?"NOVIEMBRE":"DICIEMBRE"]]></textField
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell height="20" rowSpan="1">
-							<textField>
+							<textField pattern="$#,##0.00">
 								<reportElement x="0" y="0" width="89" height="20" uuid="5c248333-ef68-4bf1-86b1-9767ae70e625"/>
 								<textElement textAlignment="Right" verticalAlignment="Middle">
 									<font size="9"/>
@@ -615,7 +615,7 @@ $P{fechaFinal}.substring(5,7).equals("11")?"NOVIEMBRE":"DICIEMBRE"]]></textField
 					<jr:column width="92" uuid="9b424471-133a-41cc-89ec-a2609136a3db">
 						<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
 						<jr:tableHeader height="30" rowSpan="1">
-							<textField>
+							<textField pattern="$#,##0.00">
 								<reportElement x="0" y="0" width="92" height="30" uuid="aeca2072-979a-4efe-a60f-13dc12097ad7"/>
 								<textElement textAlignment="Right" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$P{entradaIVA}]]></textFieldExpression>
@@ -633,7 +633,7 @@ $P{fechaFinal}.substring(5,7).equals("11")?"NOVIEMBRE":"DICIEMBRE"]]></textField
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell height="20" rowSpan="1">
-							<textField>
+							<textField pattern="$#,##0.00">
 								<reportElement x="0" y="0" width="92" height="20" uuid="84ae308f-54da-464d-8550-b644c1c67e8b"/>
 								<textElement textAlignment="Right" verticalAlignment="Middle">
 									<font size="9"/>
@@ -645,7 +645,7 @@ $P{fechaFinal}.substring(5,7).equals("11")?"NOVIEMBRE":"DICIEMBRE"]]></textField
 					<jr:column width="87" uuid="a6bbe7b7-80a4-4684-a676-c66cbfcc9046">
 						<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
 						<jr:tableHeader height="30" rowSpan="1">
-							<textField>
+							<textField pattern="$#,##0.00">
 								<reportElement x="0" y="0" width="87" height="30" uuid="1a71fe1f-4ec0-4e7f-8f30-f070ee784dc7"/>
 								<textElement textAlignment="Right" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$P{entradaNeta}]]></textFieldExpression>
@@ -663,7 +663,7 @@ $P{fechaFinal}.substring(5,7).equals("11")?"NOVIEMBRE":"DICIEMBRE"]]></textField
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell height="20" rowSpan="1">
-							<textField>
+							<textField pattern="$#,##0.00">
 								<reportElement x="0" y="0" width="87" height="20" uuid="a48dccfd-ae8b-43e7-ac49-eba52d29af32"/>
 								<textElement textAlignment="Right" verticalAlignment="Middle">
 									<font size="9"/>

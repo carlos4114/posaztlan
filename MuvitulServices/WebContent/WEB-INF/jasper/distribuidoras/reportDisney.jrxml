@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1excel" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c7f4f4f1-fd4f-46cd-b0bf-8705ec49107b">
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="53"/>
-	<property name="ireport.y" value="308"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -83,10 +83,10 @@
 '000' as rentrak,pel.titulo as pelicula,DATE_FORMAT(pro.horario,"%H:%i") as funcion,
 form.nombre as formato,ver.nombre as version,sal.nombre as sala,
 cli.nombre as boleto,sum(bol.cantidad) as admision,'' as promocion,
-FORMAT(bol.importe/bol.cantidad,2) as precio,
-FORMAT(sum(bol.importe),2) as entrada,
-FORMAT(sum(bol.importe) * (imp.porcentaje/100),2) as iva,
-FORMAT(sum(bol.importe) - sum(bol.importe) * (imp.porcentaje/100),2) as neto
+bol.importe/bol.cantidad as precio,
+sum(bol.importe) as entrada,
+sum(bol.importe * imp.porcentaje)/(imp.porcentaje+100) as iva,
+sum(bol.importe) - (sum(bol.importe * imp.porcentaje)/(imp.porcentaje+100)) as neto
 from boletos_x_ticket bol
 join programacion pro on pro.id_programacion = bol.id_programacion
 join sala sal on sal.id_sala = pro.id_sala
@@ -115,23 +115,23 @@ order by fecha_exhibicion asc;]]>
 		<field name="boleto" class="java.lang.String"/>
 		<field name="admision" class="java.math.BigDecimal"/>
 		<field name="promocion" class="java.lang.String"/>
-		<field name="precio" class="java.lang.String">
+		<field name="precio" class="java.math.BigDecimal">
 			<fieldDescription><![CDATA[]]></fieldDescription>
 		</field>
-		<field name="entrada" class="java.lang.String"/>
-		<field name="iva" class="java.lang.String"/>
-		<field name="neto" class="java.lang.String"/>
+		<field name="entrada" class="java.math.BigDecimal"/>
+		<field name="iva" class="java.math.BigDecimal"/>
+		<field name="neto" class="java.math.BigDecimal"/>
 	</subDataset>
 	<subDataset name="Table Dataset 1" uuid="d89b34fe-d140-4d36-b4c0-4fa0db3120ec">
 		<parameter name="totalAdmisiones" class="java.math.BigDecimal"/>
-		<parameter name="entradaBruta" class="java.lang.String"/>
-		<parameter name="entradaIVA" class="java.lang.String"/>
-		<parameter name="derechosAutor" class="java.lang.String"/>
-		<parameter name="entradaNeta" class="java.lang.String"/>
-		<parameter name="porcentaje" class="java.lang.Double"/>
-		<parameter name="pago" class="java.lang.String" isForPrompting="false"/>
-		<parameter name="pagoIVA" class="java.lang.String"/>
-		<parameter name="total" class="java.lang.String"/>
+		<parameter name="entradaBruta" class="java.math.BigDecimal"/>
+		<parameter name="entradaIVA" class="java.math.BigDecimal"/>
+		<parameter name="derechosAutor" class="java.math.BigDecimal"/>
+		<parameter name="entradaNeta" class="java.math.BigDecimal"/>
+		<parameter name="porcentaje" class="java.math.BigDecimal"/>
+		<parameter name="pago" class="java.math.BigDecimal" isForPrompting="false"/>
+		<parameter name="pagoIVA" class="java.math.BigDecimal"/>
+		<parameter name="total" class="java.math.BigDecimal"/>
 	</subDataset>
 	<parameter name="idCine" class="java.lang.Integer"/>
 	<parameter name="idDistribuidora" class="java.lang.Integer"/>
@@ -144,48 +144,46 @@ concat(cont.calle,'. ',cont.numero,'. ',cont.colonia,'. CP. ',cont.cp) as direcc
 est.nombre as estado,cont.ciudad,
 cont.cp,cont.telefono,
 sal.nombre as sala,pel.titulo as programa,dis.nombre as distribuidora,
-ddp.porcentaje + ' %' as porcentaje,
+ddp.porcentaje as porcentaje,
 sum(bol.cantidad) as total_admisiones,
-(select FORMAT(sum(importe_boleto)/count(1),2) from(
+(select sum(importe_boleto)/count(1) from(
 select sum(bol_2.importe)/sum(bol_2.cantidad) as importe_boleto
     from boletos_x_ticket bol_2
 	join programacion prot2 on prot2.id_programacion = bol_2.id_programacion
 	join pelicula pelt2 on pelt2.id_pelicula = prot2.id_pelicula
     where pelt2.id_cine = $P{idCine} and pelt2.id_distribuidora = $P{idDistribuidora} and pelt2.id_pelicula = $P{idPelicula}
-	and bol_2.activo = 0 and DATE(fecha_exhibicion) between DATE($P{fechaInicial}) and DATE($P{fechaFinal})
+	and bol_2.activo = 1 and DATE(fecha_exhibicion) between DATE($P{fechaInicial}) and DATE($P{fechaFinal})
 	group by pelt2.id_pelicula,bol_2.id_programacion,prot2.id_formato,prot2.id_version,bol_2.id_tipo_cliente
 ) as tabla_precio_promedio) as precio_promedio,
-FORMAT(sum(bol.importe) * (imp.porcentaje/100),2) as entrada_iva,
-FORMAT(sum(bol.importe) - (sum(bol.importe) * (imp.porcentaje/100)),2) as entrada_sin_iva,
-FORMAT(sum(bol.importe),2) as entrada_bruta,
-FORMAT(sum(bol.importe) * (dap.porcentaje/100),2) as derechos_Autor,
-FORMAT(sum(bol.importe) - (sum(bol.importe) * (dap.porcentaje/100)) - (sum(bol.importe) * (imp.porcentaje/100)),2) as entrada_neta,
-FORMAT((sum(bol.importe)
-	- (sum(bol.importe) * (dap.porcentaje/100))
-	- (sum(bol.importe) * (imp.porcentaje/100)))
-	* (ddp.porcentaje/100),2) as distribuidora_entrada,
-FORMAT((sum(bol.importe)
-	- (sum(bol.importe) * (dap.porcentaje/100))
-	- (sum(bol.importe) * (imp.porcentaje/100)))
-	* (ddp.porcentaje/100)
-	* (imp.porcentaje/100),2)  as distribuidora_iva,
-FORMAT((
-			(sum(bol.importe)
-			- (sum(bol.importe) * (dap.porcentaje/100))
-			- (sum(bol.importe) * (imp.porcentaje/100)))
-			* (ddp.porcentaje/100)
-		)
-		+
-	    (
-			(sum(bol.importe)
-			- (sum(bol.importe) * (dap.porcentaje/100))
-			- (sum(bol.importe) * (imp.porcentaje/100)))
-			* (ddp.porcentaje/100)
-			* (imp.porcentaje/100)
-		)
-,2) as distribuidora_total,
-FORMAT((sum(bol.importe) -
-	(sum(bol.importe) * (dap.porcentaje/100))) * ((100-ddp.porcentaje)/100),2) as cine_entrada
+(sum(bol.importe) / (100 + imp.porcentaje)) * imp.porcentaje as entrada_iva,
+(sum(bol.importe) - ((sum(bol.importe) / (100 + imp.porcentaje)) * imp.porcentaje)) * (dap.porcentaje/100) as derechos_Autor,
+sum(bol.importe) as entrada_bruta,
+sum(bol.importe)
+- ((sum(bol.importe) / (100 + imp.porcentaje)) * imp.porcentaje)
+- ((sum(bol.importe) - ((sum(bol.importe) / (100 + imp.porcentaje)) * imp.porcentaje)) * (dap.porcentaje/100))
+	as entrada_neta,
+(sum(bol.importe)
+- ((sum(bol.importe) / (100 + imp.porcentaje)) * imp.porcentaje)
+- (sum(bol.importe) - ((sum(bol.importe) / (100 + imp.porcentaje)) * imp.porcentaje)) * (dap.porcentaje/100)
+) * (ddp.porcentaje/100)
+ as distribuidora_entrada,
+ ddp.porcentaje as porcent_distribuidora,
+((sum(bol.importe)
+- ((sum(bol.importe) / (100 + imp.porcentaje)) * imp.porcentaje)
+- (sum(bol.importe) - ((sum(bol.importe) / (100 + imp.porcentaje)) * imp.porcentaje)) * (dap.porcentaje/100)
+) * (ddp.porcentaje/100))
+* (imp.porcentaje/100)
+  as distribuidora_iva,
+((sum(bol.importe)
+- ((sum(bol.importe) / (100 + imp.porcentaje)) * imp.porcentaje)
+- (sum(bol.importe) - ((sum(bol.importe) / (100 + imp.porcentaje)) * imp.porcentaje)) * (dap.porcentaje/100)
+) * (ddp.porcentaje/100))
++
+((sum(bol.importe)
+- ((sum(bol.importe) / (100 + imp.porcentaje)) * imp.porcentaje)
+- (sum(bol.importe) - ((sum(bol.importe) / (100 + imp.porcentaje)) * imp.porcentaje)) * (dap.porcentaje/100)
+) * (ddp.porcentaje/100))
+* (imp.porcentaje/100) as distribuidora_total
 from boletos_x_ticket bol
 join programacion pro on pro.id_programacion = bol.id_programacion
 join sala sal on sal.id_sala = pro.id_sala
@@ -224,20 +222,19 @@ group by pel.id_pelicula;]]>
 	<field name="sala" class="java.lang.String"/>
 	<field name="programa" class="java.lang.String"/>
 	<field name="distribuidora" class="java.lang.String"/>
-	<field name="porcentaje" class="java.lang.Double">
+	<field name="porcentaje" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="total_admisiones" class="java.math.BigDecimal"/>
-	<field name="precio_promedio" class="java.lang.String"/>
-	<field name="entrada_iva" class="java.lang.String"/>
-	<field name="entrada_sin_iva" class="java.lang.String"/>
-	<field name="entrada_bruta" class="java.lang.String"/>
-	<field name="derechos_Autor" class="java.lang.String"/>
-	<field name="entrada_neta" class="java.lang.String"/>
-	<field name="distribuidora_entrada" class="java.lang.String"/>
-	<field name="distribuidora_iva" class="java.lang.String"/>
-	<field name="distribuidora_total" class="java.lang.String"/>
-	<field name="cine_entrada" class="java.lang.String"/>
+	<field name="precio_promedio" class="java.math.BigDecimal"/>
+	<field name="entrada_iva" class="java.math.BigDecimal"/>
+	<field name="derechos_Autor" class="java.math.BigDecimal"/>
+	<field name="entrada_bruta" class="java.math.BigDecimal"/>
+	<field name="entrada_neta" class="java.math.BigDecimal"/>
+	<field name="distribuidora_entrada" class="java.math.BigDecimal"/>
+	<field name="porcent_distribuidora" class="java.math.BigDecimal"/>
+	<field name="distribuidora_iva" class="java.math.BigDecimal"/>
+	<field name="distribuidora_total" class="java.math.BigDecimal"/>
 	<title>
 		<band height="25" splitType="Stretch">
 			<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
@@ -524,7 +521,7 @@ $P{fechaFinal}.substring(5,7).equals("11")?"NOVIEMBRE":"DICIEMBRE"]]></textField
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell height="20" rowSpan="1">
-							<textField>
+							<textField pattern="$#,##0.00">
 								<reportElement x="0" y="0" width="60" height="20" uuid="85d8a705-fd69-4992-a3af-5d0d0bd7d301"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="9"/>
@@ -568,7 +565,7 @@ $P{fechaFinal}.substring(5,7).equals("11")?"NOVIEMBRE":"DICIEMBRE"]]></textField
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell height="20" rowSpan="1">
-							<textField>
+							<textField pattern="$#,##0.00">
 								<reportElement x="0" y="0" width="60" height="20" uuid="84ae308f-54da-464d-8550-b644c1c67e8b"/>
 								<textElement textAlignment="Right" verticalAlignment="Middle">
 									<font size="9"/>
@@ -590,7 +587,7 @@ $P{fechaFinal}.substring(5,7).equals("11")?"NOVIEMBRE":"DICIEMBRE"]]></textField
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell height="20" rowSpan="1">
-							<textField>
+							<textField pattern="$#,##0.00">
 								<reportElement x="0" y="0" width="60" height="20" uuid="a48dccfd-ae8b-43e7-ac49-eba52d29af32"/>
 								<textElement textAlignment="Right" verticalAlignment="Middle">
 									<font size="9"/>
@@ -637,138 +634,150 @@ $P{fechaFinal}.substring(5,7).equals("11")?"NOVIEMBRE":"DICIEMBRE"]]></textField
 					<jr:column width="202" uuid="3467ebe9-94b2-4376-9344-b0ae5775492a">
 						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="202" height="30" uuid="8c988880-ef49-4103-ae28-dc430730ec28"/>
+								<reportElement x="0" y="0" width="199" height="30" uuid="8c988880-ef49-4103-ae28-dc430730ec28"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<text><![CDATA[RESUMEN DE LA SEMANA]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:detailCell style="table 2_TD" height="207" rowSpan="1">
-							<textField>
-								<reportElement x="114" y="0" width="88" height="20" uuid="f26f4eda-e014-4efd-8da4-b12c7bba5856"/>
+						<jr:detailCell style="table 2_TD" height="201" rowSpan="1">
+							<textField pattern="">
+								<reportElement x="100" y="0" width="100" height="20" uuid="f26f4eda-e014-4efd-8da4-b12c7bba5856"/>
 								<textElement textAlignment="Right" verticalAlignment="Middle">
-									<font size="8"/>
+									<font size="7"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$P{totalAdmisiones}]]></textFieldExpression>
 							</textField>
-							<textField>
-								<reportElement x="114" y="20" width="88" height="20" uuid="d51b305d-3818-496c-8ed1-833f274b7d65"/>
+							<textField pattern="$#,##0.00">
+								<reportElement x="100" y="80" width="100" height="20" uuid="d51b305d-3818-496c-8ed1-833f274b7d65"/>
 								<textElement textAlignment="Right" verticalAlignment="Middle">
-									<font size="8"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$P{entradaBruta}]]></textFieldExpression>
-							</textField>
-							<textField>
-								<reportElement x="114" y="40" width="88" height="20" uuid="cbd9d05d-f4b0-4e13-b2ed-55335d2dfed8"/>
-								<textElement textAlignment="Right" verticalAlignment="Middle">
-									<font size="8"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$P{entradaIVA}]]></textFieldExpression>
-							</textField>
-							<textField>
-								<reportElement x="114" y="60" width="88" height="20" uuid="330e9079-3119-49ae-bfbf-10dc39e924e7"/>
-								<textElement textAlignment="Right" verticalAlignment="Middle">
-									<font size="8"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$P{derechosAutor}]]></textFieldExpression>
-							</textField>
-							<textField>
-								<reportElement x="114" y="80" width="88" height="20" uuid="88e14eff-5f45-4971-85be-8365d415eaba"/>
-								<textElement textAlignment="Right" verticalAlignment="Middle">
-									<font size="8"/>
+									<font size="7"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$P{entradaNeta}]]></textFieldExpression>
 							</textField>
-							<textField>
-								<reportElement x="114" y="100" width="88" height="20" uuid="4b5efa05-c9e3-4710-86ff-8d4cc845671e"/>
+							<textField pattern="$#,##0.00">
+								<reportElement x="100" y="20" width="100" height="20" uuid="cbd9d05d-f4b0-4e13-b2ed-55335d2dfed8"/>
 								<textElement textAlignment="Right" verticalAlignment="Middle">
-									<font size="8"/>
+									<font size="7"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$P{porcentaje}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$P{entradaBruta}]]></textFieldExpression>
 							</textField>
-							<textField>
-								<reportElement x="114" y="120" width="88" height="20" uuid="f911b39b-bdc5-472f-9fd7-04652d565ef6"/>
+							<textField pattern="$#,##0.00">
+								<reportElement x="100" y="40" width="100" height="20" uuid="330e9079-3119-49ae-bfbf-10dc39e924e7"/>
 								<textElement textAlignment="Right" verticalAlignment="Middle">
-									<font size="8"/>
+									<font size="7"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$P{entradaIVA}]]></textFieldExpression>
+							</textField>
+							<textField pattern="$#,##0.00">
+								<reportElement x="100" y="60" width="100" height="20" uuid="88e14eff-5f45-4971-85be-8365d415eaba"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="7"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$P{derechosAutor}]]></textFieldExpression>
+							</textField>
+							<textField pattern="$#,##0.00" isBlankWhenNull="true">
+								<reportElement x="100" y="100" width="100" height="20" uuid="4b5efa05-c9e3-4710-86ff-8d4cc845671e"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="7"/>
+								</textElement>
+							</textField>
+							<textField pattern="$#,##0.00">
+								<reportElement x="100" y="140" width="100" height="20" uuid="f911b39b-bdc5-472f-9fd7-04652d565ef6"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="7"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$P{pago}]]></textFieldExpression>
 							</textField>
-							<textField>
-								<reportElement x="114" y="140" width="88" height="20" uuid="6651b0fa-7e7b-41fa-a91a-b65817b94cf6"/>
+							<textField pattern="$#,##0.00">
+								<reportElement x="100" y="160" width="100" height="20" uuid="6651b0fa-7e7b-41fa-a91a-b65817b94cf6"/>
 								<textElement textAlignment="Right" verticalAlignment="Middle">
-									<font size="8"/>
+									<font size="7"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$P{pagoIVA}]]></textFieldExpression>
 							</textField>
-							<textField>
-								<reportElement x="114" y="160" width="88" height="20" uuid="67eedd04-ac7e-4f3c-bfcc-73aadb510088"/>
+							<textField pattern="$#,##0.00">
+								<reportElement x="100" y="180" width="100" height="20" uuid="67eedd04-ac7e-4f3c-bfcc-73aadb510088"/>
 								<textElement textAlignment="Right" verticalAlignment="Middle">
-									<font size="8"/>
+									<font size="7"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$P{total}]]></textFieldExpression>
 							</textField>
 							<staticText>
-								<reportElement x="0" y="0" width="114" height="20" uuid="f793f952-31b6-47f6-b09f-a0440c59e317"/>
+								<reportElement x="0" y="0" width="100" height="20" uuid="f793f952-31b6-47f6-b09f-a0440c59e317"/>
 								<textElement verticalAlignment="Middle">
-									<font size="8"/>
+									<font size="7"/>
 								</textElement>
 								<text><![CDATA[     TOTAL DE ADMISIONES]]></text>
 							</staticText>
 							<staticText>
-								<reportElement x="0" y="20" width="114" height="20" uuid="688bbbe7-369c-459c-9683-8e2f7371d915"/>
+								<reportElement x="0" y="20" width="100" height="20" uuid="688bbbe7-369c-459c-9683-8e2f7371d915"/>
 								<textElement verticalAlignment="Middle">
-									<font size="8"/>
+									<font size="7"/>
 								</textElement>
 								<text><![CDATA[     ENTRADA BRUTA]]></text>
 							</staticText>
 							<staticText>
-								<reportElement x="0" y="40" width="114" height="20" uuid="90060783-83c8-4aa7-8cc7-dd5d14d8c8fe"/>
+								<reportElement x="0" y="40" width="100" height="20" uuid="90060783-83c8-4aa7-8cc7-dd5d14d8c8fe"/>
 								<textElement verticalAlignment="Middle">
-									<font size="8"/>
+									<font size="7"/>
 								</textElement>
 								<text><![CDATA[     (-) IVA]]></text>
 							</staticText>
 							<staticText>
-								<reportElement x="0" y="60" width="114" height="20" uuid="4d342661-5b87-4b8b-940b-62aba33ca4c8"/>
+								<reportElement x="0" y="60" width="100" height="20" uuid="4d342661-5b87-4b8b-940b-62aba33ca4c8"/>
 								<textElement verticalAlignment="Middle">
-									<font size="8"/>
+									<font size="7"/>
 								</textElement>
 								<text><![CDATA[     (-) DER. DE AUTOR]]></text>
 							</staticText>
 							<staticText>
-								<reportElement x="0" y="80" width="114" height="20" uuid="a9767395-8812-455e-80b4-a8c05c2037a0"/>
+								<reportElement x="0" y="80" width="100" height="20" uuid="a9767395-8812-455e-80b4-a8c05c2037a0"/>
 								<textElement verticalAlignment="Middle">
-									<font size="8"/>
+									<font size="7"/>
 								</textElement>
 								<text><![CDATA[     ENTRADA NETA]]></text>
 							</staticText>
 							<staticText>
-								<reportElement x="0" y="100" width="114" height="20" uuid="c256d843-1832-4a7d-9136-fed2ec553795"/>
+								<reportElement x="0" y="120" width="100" height="20" uuid="c256d843-1832-4a7d-9136-fed2ec553795"/>
 								<textElement verticalAlignment="Middle">
-									<font size="8"/>
+									<font size="7"/>
 								</textElement>
 								<text><![CDATA[     PORCENTAJE]]></text>
 							</staticText>
 							<staticText>
-								<reportElement x="0" y="120" width="114" height="20" uuid="4290b121-8fb5-47d8-8131-927e5f0e1aa5"/>
+								<reportElement x="0" y="140" width="100" height="20" uuid="4290b121-8fb5-47d8-8131-927e5f0e1aa5"/>
 								<textElement verticalAlignment="Middle">
-									<font size="8"/>
+									<font size="7"/>
 								</textElement>
 								<text><![CDATA[     PAGO]]></text>
 							</staticText>
 							<staticText>
-								<reportElement x="0" y="140" width="114" height="20" uuid="f4b59caf-9f84-4817-a58d-570d1db859a0"/>
+								<reportElement x="0" y="160" width="100" height="20" uuid="f4b59caf-9f84-4817-a58d-570d1db859a0"/>
 								<textElement verticalAlignment="Middle">
-									<font size="8"/>
+									<font size="7"/>
 								</textElement>
 								<text><![CDATA[     IVA]]></text>
 							</staticText>
 							<staticText>
-								<reportElement x="0" y="160" width="114" height="20" uuid="f08e3c7c-2dbf-4a2a-84ef-2f5e4b8976ef"/>
+								<reportElement x="0" y="180" width="100" height="20" uuid="f08e3c7c-2dbf-4a2a-84ef-2f5e4b8976ef"/>
 								<textElement verticalAlignment="Middle">
-									<font size="8"/>
+									<font size="7"/>
 								</textElement>
 								<text><![CDATA[     TOTAL]]></text>
 							</staticText>
+							<textField pattern="#.##\%">
+								<reportElement x="100" y="120" width="100" height="20" uuid="1ed5ca72-6c2e-428d-b27e-48c436c4047a"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="7"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$P{porcentaje}]]></textFieldExpression>
+							</textField>
+							<textField pattern="$#,##0.00" isBlankWhenNull="true">
+								<reportElement x="0" y="100" width="100" height="20" uuid="e2c9a755-f216-4335-90a4-000f0a09f5a5"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="7"/>
+								</textElement>
+							</textField>
 						</jr:detailCell>
 					</jr:column>
 				</jr:table>
