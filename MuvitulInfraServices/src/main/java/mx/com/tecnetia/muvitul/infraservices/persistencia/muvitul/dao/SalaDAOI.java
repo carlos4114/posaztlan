@@ -11,4 +11,5 @@ public interface SalaDAOI extends GlobalHibernateDAOI<Sala>{
 	List<Sala> findAllByIdCine(Integer idCine);
 	List<Sala> findByNombre(Integer idCine, String nombre);
 	boolean findNombreRepetido(Integer idCine, Integer idSala, String nombre);
+
 }

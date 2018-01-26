@@ -1,7 +1,6 @@
 package mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao;
 
 import java.util.List;
-
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
