@@ -122,8 +122,16 @@
 									               	     <tbody>							                						               
 											               <tr dir-paginate="filaAsientos in salaVO.asientosListVO |  filter: filterSearch |itemsPerPage: salaVO.asientosListVO.length" >
 													                 <td dir-paginate="asiento in filtered=(filaAsientos |  filter: filterSearch) |itemsPerPage: filaAsientos.length" width="40px" height="40px">
-																		   <img align="center" src="<c:url value='/resources/img/butacaDisponible.png' />" 
-														           			height="25px" width="25px" class="img-responsive" title="{{asiento.numeroAsiento}}" />
+																		  <a href="javascript:void(0)" ng-click="modificarButaca(asiento)">
+																		    <div ng-if="asiento.existente">
+																			   <img align="center" src="<c:url value='/resources/img/butacaDisponible.png' />" 
+															           			height="25px" width="25px" class="img-responsive" title="{{asiento.numeroAsiento}}" />
+															           		</div>
+															           		<div ng-if="!asiento.existente">
+																			   <img align="center" src="<c:url value='/resources/img/cuadro.png' />" 
+															           			height="25px" width="25px" class="img-responsive" title="{{asiento.numeroAsiento}}" />
+															           		</div>	
+														           		  </a> 	
 													                 </td>				
 											               </tr>
 											             </tbody>

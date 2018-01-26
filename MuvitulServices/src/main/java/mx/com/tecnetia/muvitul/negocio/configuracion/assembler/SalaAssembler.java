@@ -50,8 +50,11 @@ public class SalaAssembler {
 		if(asientos.size()>0){
 			asientosListVO.add(filaAsientos);
 		}
-		
+
 		salaVO.setAsientosListVO(asientosListVO);
+		
+		salaVO.setFilas(asientosListVO==null?null:(asientosListVO.size()<=0?null:asientosListVO.size()));
+		salaVO.setMaxAsientos(asientosListVO==null?null:(asientosListVO.size()<=0?null:asientosListVO.get(0).size()));
 		
 		return salaVO;
 	}

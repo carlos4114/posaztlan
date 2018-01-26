@@ -48,33 +48,36 @@ public class SalaBO {
 			return new HttpResponseVO(1,"El nombre de esta sala ya existe o ha existido");
 		}	
 		//validamos si coincide el tamaño del mapa contra el nuemero de asientos
-		int contAsientos = 0;
-		for(List<AsientoVO> filaAsientos : salaVO.getAsientosListVO()){
-			for(AsientoVO asientoVO : filaAsientos){
-				if(asientoVO.isExistente())
-					contAsientos++;
+		if(salaVO.isTieneNumerado()){
+			int contAsientos = 0;
+			for(List<AsientoVO> filaAsientos : salaVO.getAsientosListVO()){
+				for(AsientoVO asientoVO : filaAsientos){
+					if(asientoVO.isExistente())
+						contAsientos++;
+				}
 			}
+			if(contAsientos!=(salaVO.getCupo()==null?0:salaVO.getCupo().intValue())){
+				return new HttpResponseVO(2,"El número de butacas no coincide con el mapa");
+			}		
 		}
-		if(contAsientos!=(salaVO.getCupo()==null?0:salaVO.getCupo().intValue())){
-			return new HttpResponseVO(2,"El número de butacas no coincide con el mapa");
-		}		
 		
 		Sala sala = this.salaDAO.findById(salaVO.getIdSala());
 		CupoXSala cupo = this.cupoXsalaDAO.findById(salaVO.getIdCupoSala());
 		
 		// si se dio de baja la sala
-		if(sala.isActivo() && !salaVO.isActivo()){
+		/*if(sala.isActivo() && !salaVO.isActivo()){
 			//se da de baja la sala el cupo y los asientos
-			cupo.setActivo(false);
+			//cupo.setActivo(false);
 			cupo.setUltimaActualizacion(FechasUtilsBO.getCurrentDate());
 			this.cupoXsalaDAO.update(cupo);
 			this.asientosXSalaDAO.actualizarEstatus(salaVO.getIdSala(),false);
-		}
+		}*/
+		
 		//actualizamos la sala
 		sala = SalaAssembler.getSala(salaVO, sala);
 		this.salaDAO.update(sala);	
 		
-		//se guarda ahora el cupo de la sala. Se calida si hubo un cambio en el cupo
+		//se guarda ahora el cupo de la sala. Se valida si hubo un cambio en el cupo
 		boolean cupoConNumerado = cupo.isTieneNumerado();
 		if((salaVO.getCupo()==null?0:salaVO.getCupo().intValue())!=cupo.getNoAsientos()){
 			// se da de baja el cupo y se da de alta un nuevo cupo, para guardar historico
@@ -146,7 +149,7 @@ public class SalaBO {
      */
 	@Transactional(readOnly = true)
 	public List<SalaCupoVO> obtenerSalas(Integer idCine) throws BusinessGlobalException{
-		List<Sala> salas = this.salaDAO.findByIdCine(idCine);
+		List<Sala> salas = this.salaDAO.findAllByIdCine(idCine);
 		List<SalaCupoVO> salasVO = new ArrayList<SalaCupoVO>();
 		
 		for(Sala sala:salas){

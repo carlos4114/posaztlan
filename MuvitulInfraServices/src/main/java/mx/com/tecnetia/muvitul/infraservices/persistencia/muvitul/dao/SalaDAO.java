@@ -26,6 +26,20 @@ public class SalaDAO extends GlobalHibernateDAO<Sala> implements SalaDAOI {
 	}
 	
 	@Override
+	public List<Sala> findAllByIdCine(Integer idCine) {
+		
+		StringBuilder hql = new StringBuilder();
+		hql.append("select sla from Sala sla join sla.cine cne ");
+		hql.append("where cne.idCine=:idCine ");
+		hql.append("order by sla.nombre asc");
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setParameter("idCine", idCine);
+		
+		return query.list();
+	}
+	
+	@Override
 	public List<Sala> findByNombre(Integer idCine, String nombre) {
 		
 		StringBuilder hql = new StringBuilder();

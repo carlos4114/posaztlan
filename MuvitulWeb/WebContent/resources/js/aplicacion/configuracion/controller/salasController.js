@@ -4,6 +4,10 @@ angular.module('indexModule').controller("SalasController",['$scope','GlobalFact
     function($scope,GlobalFactory, ModalService,SalasService,ErrorFactory){	 			
 	 var idEmpresa = GlobalFactory.getIdEmpresa(); 
 	 
+	 $scope.modificarButaca = function(asiento) {
+		  asiento.existente = !asiento.existente;
+     }
+	 
 	 $scope.obtenerMapaNuevo = function(filas,maxAsientos) {
 		  SalasService.obtenerMapaNuevo(filas,maxAsientos)
 		 .then(
