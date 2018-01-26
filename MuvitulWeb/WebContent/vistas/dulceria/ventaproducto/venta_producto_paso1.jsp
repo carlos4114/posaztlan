@@ -44,7 +44,7 @@
 				<div class="row pull-right">
 
 					<button type="button"
-						ng-click="consultarFormasPago();asignarPaso(2);"
+						ng-click="consultarFormasPago();asignarPaso(2); validarPaquetes()"
 						ng-disabled="pago.subtotal==0" class="btn btn-success">
 						Registrar el Pago <i class="fa fa-credit-card"></i>
 					</button>

@@ -19,6 +19,7 @@ import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.enumeration.Cl
 import mx.com.tecnetia.muvitul.infraservices.servicios.BusinessGlobalException;
 import mx.com.tecnetia.muvitul.infraservices.servicios.NotFoundException;
 import mx.com.tecnetia.muvitul.negocio.dulceria.vo.ArchivoPdfVO;
+import mx.com.tecnetia.muvitul.negocio.dulceria.vo.PaqueteAgotadoVO;
 import mx.com.tecnetia.muvitul.negocio.dulceria.vo.PaqueteVO;
 import mx.com.tecnetia.muvitul.negocio.dulceria.vo.TicketVentaVO;
 import mx.com.tecnetia.muvitul.negocio.dulceria.vo.VentaVO;
@@ -50,6 +51,22 @@ public class VentaProductoFacade implements VentaProductoFacadeI {
 		return new ResponseEntity<List<PaqueteVO>>(paquetes, HttpStatus.OK);
 	}
 
+	@Override
+	public ResponseEntity<PaqueteAgotadoVO> validarPaquete(HttpServletRequest request, @RequestBody List<PaqueteVO> paquetesVO)
+			throws BusinessGlobalException, NotFoundException {
+
+		
+		Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
+		Integer idCine = (Integer) claims.get(ClaimsEnum.CINE);
+		Integer idPuntoVenta=(Integer) claims.get(ClaimsEnum.PUNTO_VENTA);
+		
+		logger.info("ValidarPaquete:::IdCine[{}]:::IdPuntoVenta[{}]",idCine,idPuntoVenta);
+		
+		PaqueteAgotadoVO paqueteAgotado = ventaProductoController.validarPaquete(paquetesVO, idPuntoVenta);
+		
+		return new ResponseEntity<PaqueteAgotadoVO>(paqueteAgotado, HttpStatus.OK);
+	}
+	
 	@Override
 	public ResponseEntity<TicketVentaVO> createVenta(HttpServletRequest request, @RequestBody VentaVO ventaVO) throws BusinessGlobalException, NotFoundException {
 		

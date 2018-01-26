@@ -31,6 +31,11 @@ angular.module('indexModule').service('dulceriaService', ['$http','GlobalFactory
 		        params: {"idTicket" : idTicket, "pagoCon" : pagoCon , "cambio" : cambio}
 		    });
 	 }
+	 
+	 this.validarPaquetes = function(paquetesVO ){
+		 return $http.post(config.baseUrl + "/ventaProducto/existencias",paquetesVO  );
+	 }
+	 
 	  
 	 /**************************************/
 	 

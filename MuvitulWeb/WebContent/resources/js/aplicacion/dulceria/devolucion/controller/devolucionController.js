@@ -9,8 +9,7 @@ var devolucionDulceriaController = angular.module('indexModule').controller('dev
     $controller('modalController',{$scope : $scope });
  	$scope.seleccionDevolucion = false;
  	$scope.disabledTipoDevolucion=false;
-	
-	
+		
 	$scope.asignarPaso =function( paso){
 		if($scope.ticket  == null || $scope.fin == true || $scope.seleccionDevolucion == false )
 			return;
