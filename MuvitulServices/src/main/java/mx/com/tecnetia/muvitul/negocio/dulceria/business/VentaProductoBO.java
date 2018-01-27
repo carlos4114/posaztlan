@@ -213,7 +213,7 @@ public class VentaProductoBO {
 				ArticuloExistenciaVO articuloExistenciaVO =mapArticulosDisponibles.get(articuloXProductoVO.getArticuloVO().getIdArticulo());
 				long existencia= articuloExistenciaVO !=null ? articuloExistenciaVO.getExistencia(): 0  / articuloXProductoVO.getCantidad();
 				
-				if (existencia > productoExistenciaVO.getExistencia() ){
+				if (existencia < productoExistenciaVO.getExistencia() ){
 					productoExistenciaVO.setExistencia(existencia);
 				}
 			}
