@@ -1,6 +1,6 @@
 'use strict';
 
-var VentaProductoPaso1Controller = angular.module('indexModule').controller("ventaProductoController", function($scope,$controller,$filter,statusFactory,dulceriaService){
+var VentaProductoPaso1Controller = angular.module('indexModule').controller("ventaProductoController", function($scope,$controller,$filter,ModalService,statusFactory,dulceriaService){
 	$scope.statusVenta = {elegirProducto : "selected",registrarPago : "",confirmarVenta : "",numeroPaso : 1	}
 	$scope.fechaActual = moment(new Date()).format('DD/MM/YYYY');
 	$controller('VentaProductoPaso2Controller',{$scope : $scope });
@@ -73,10 +73,36 @@ var VentaProductoPaso1Controller = angular.module('indexModule').controller("ven
 	
 	$scope.validarPaquetes =function(){
 		dulceriaService.validarPaquetes($scope.paquetesSeleccionados).success(function(data) {	
- 			console.log(data);
+			var mensajes=[];
+			
+			if(data.agotado){
+  			
+ 			 angular.forEach(data.productosExistenciaVO, function(value, key){
+ 				var mensaje="";
+ 				mensaje+=value.productoVO.nombre +"\tExistencia: "+value.existencia+"\tSeleccionados: "+value.seleccionado;
+ 				mensajes.push(mensaje);
+ 			});
+ 			 $scope.showAvisoMensajes(mensajes);
+			}
+            else
+            	$scope.asignarPaso(2); 
  		  }).error(function(data) {
+ 			 $scope.asignarPaso(2); 
 		  });
 	}
+	
+	 $scope.showAvisoMensajes= function(messageTo) {
+		ModalService.showModal({
+							templateUrl : 'vistas/templatemodal/templateModalAvisoDinamico.html',
+							controller : 'mensajeModalController',
+							inputs : {
+								message : messageTo
+							}
+						}).then(function(modal) {
+					modal.element.modal();
+				});
+	};
+	
 	
 	$scope.consultarPaquetes();
 
