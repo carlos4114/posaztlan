@@ -206,22 +206,24 @@ public class VentaProductoBO {
 		}
 		
 		for(Map.Entry<Integer, ProductoExistenciaVO> entry : mapProductosXVender.entrySet()) {
-			logger.info("--> {} ---> {}",entry.getKey(), entry.getValue());
 			ProductoExistenciaVO productoExistenciaVO =entry.getValue();
 			for (ArticuloXProductoVO articuloXProductoVO : productoExistenciaVO.getProductoVO().getArticulosXProductosVO()) {
 				
 				ArticuloExistenciaVO articuloExistenciaVO =mapArticulosDisponibles.get(articuloXProductoVO.getArticuloVO().getIdArticulo());
+				
 				long existencia= articuloExistenciaVO !=null ? articuloExistenciaVO.getExistencia(): 0  / articuloXProductoVO.getCantidad();
 				
-				if (existencia < productoExistenciaVO.getExistencia() ){
+				if ((productoExistenciaVO.getExistencia() == 0 && existencia > 0) || productoExistenciaVO.getExistencia() > existencia ){
 					productoExistenciaVO.setExistencia(existencia);
 				}
+
 			}
 			
 			if (productoExistenciaVO.getSeleccionado() > productoExistenciaVO.getExistencia()){
 				paqueteAgotadoVO.setAgotado(true);
 				productosExistenciaVO.add(productoExistenciaVO);
 			}
+			logger.info("<<<<<< {} {}", productoExistenciaVO.getProductoVO().getNombre(), productoExistenciaVO.getExistencia());
 			
 		}
 		
