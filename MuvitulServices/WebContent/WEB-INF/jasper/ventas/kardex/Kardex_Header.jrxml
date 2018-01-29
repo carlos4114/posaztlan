@@ -1,11 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Kardex_Header" pageWidth="792" pageHeight="802" whenNoDataType="NoDataSection" columnWidth="792" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="b3c857af-fd70-49db-83ad-2b66077412af">
-	<property name="ireport.zoom" value="0.7710865788590638"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="1.1289478601075569"/>
+	<property name="ireport.x" value="25"/>
 	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="inventarioTotal" uuid="c485ab08-ce7c-4994-a18d-90a5f8bf9cd0">
+		<parameter name="id_punto_venta" class="java.lang.Integer"/>
+		<parameter name="fecha_inicio" class="java.lang.String"/>
+		<parameter name="fecha_fin" class="java.lang.String"/>
+		<queryString>
+			<![CDATA[select
+ifnull((
+select Sum(CASE WHEN t2.es_entrada = 1 Then m2.importe else m2.importe*(-1) End)
+	from movimiento_inventario m2 inner join
+tipo_movimiento_inv t2
+	on t2.id_tipo_movimiento_inv = m2.id_tipo_movimiento
+	where
+   date(m2.fecha) <= date($P{fecha_inicio} )
+	and m2.id_punto_venta = $P{id_punto_venta}
+),0) as inv_inicial,
+ifnull(
+(select Sum(CASE WHEN t2.es_entrada = 1 Then m2.importe else m2.importe *(-1) End)
+	from movimiento_inventario m2 inner join
+tipo_movimiento_inv t2
+	on t2.id_tipo_movimiento_inv = m2.id_tipo_movimiento
+	where
+	date(m2.fecha) <= date( $P{fecha_fin})
+	and m2.id_punto_venta = $P{id_punto_venta}
+ ),0) as inv_final;]]>
+		</queryString>
+		<field name="inv_inicial" class="java.math.BigDecimal"/>
+		<field name="inv_final" class="java.math.BigDecimal"/>
+	</subDataset>
 	<parameter name="emision" class="java.lang.String"/>
 	<parameter name="periodo" class="java.lang.String"/>
 	<parameter name="id_cine" class="java.lang.Integer"/>
+	<parameter name="id_punto_venta" class="java.lang.Integer"/>
+	<parameter name="fecha_inicio" class="java.lang.String"/>
+	<parameter name="fecha_fin" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select c.nombre as nombreCine,e.nombre as nombreEmpresa,DATE_FORMAT(now(),'%d/%m/%Y') as emision from cine c inner join empresa e ON e.id_empresa = c.id_empresa where id_cine=$P{id_cine};]]>
 	</queryString>
@@ -98,70 +149,6 @@
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{nombreCine}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="2" y="44" width="253" height="20" uuid="2f262cad-baf3-4a2c-a49b-ce700177d8f8"/>
-				<box>
-					<pen lineWidth="0.5"/>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Valor de inventario]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="2" y="64" width="129" height="20" uuid="8e5c0e76-302c-43b5-a6e0-bd82981fafd6"/>
-				<box>
-					<pen lineWidth="0.5"/>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Inicio]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="131" y="64" width="124" height="20" uuid="231a9ed7-a0ba-4f42-9545-ebe9da08d57d"/>
-				<box>
-					<pen lineWidth="0.5"/>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Final]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="2" y="84" width="129" height="20" uuid="fdc7e441-329e-4136-9847-96687ce45a4e"/>
-				<box>
-					<pen lineWidth="0.5"/>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textFieldExpression><![CDATA[$F{nombreEmpresa}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="131" y="84" width="124" height="20" uuid="282b6430-dc6d-4bf7-8e1a-8cf65282c37b"/>
-				<box>
-					<pen lineWidth="0.5"/>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textFieldExpression><![CDATA[$F{nombreEmpresa}]]></textFieldExpression>
-			</textField>
 			<rectangle>
 				<reportElement x="2" y="21" width="718" height="20" uuid="25efb2cf-3c14-4374-a374-3b7cf72970dd"/>
 				<graphicElement>
@@ -198,6 +185,107 @@
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{emision}]]></textFieldExpression>
 			</textField>
+			<componentElement>
+				<reportElement key="table" x="2" y="41" width="360" height="69" uuid="3932e018-543c-4b5d-862d-167ca7066737"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="inventarioTotal" uuid="9e9f732c-dac3-42d7-8974-7c7e87dd6f2b">
+						<datasetParameter name="id_punto_venta">
+							<datasetParameterExpression><![CDATA[$P{id_punto_venta}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="fecha_inicio">
+							<datasetParameterExpression><![CDATA[$P{fecha_inicio}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="fecha_fin">
+							<datasetParameterExpression><![CDATA[$P{fecha_fin}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:columnGroup width="221" uuid="cdf8bda7-0016-4bda-9151-484716082bae">
+						<jr:columnHeader height="16" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="221" height="16" uuid="e44512a2-773e-4b27-8d4c-0dd3fdce5c82"/>
+								<box>
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textElement textAlignment="Center">
+									<font size="10" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Valor De Inventario]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:column width="111" uuid="425588df-3ab2-43e3-9493-906769d7cd79">
+							<jr:tableHeader style="table_TH" height="0" rowSpan="1"/>
+							<jr:columnHeader style="table_CH" height="18" rowSpan="1">
+								<staticText>
+									<reportElement mode="Opaque" x="0" y="0" width="111" height="18" uuid="c63394e2-2d9b-4d49-941e-e648b95a092f"/>
+									<box>
+										<pen lineWidth="0.5"/>
+										<topPen lineWidth="0.5"/>
+										<leftPen lineWidth="0.5"/>
+										<bottomPen lineWidth="0.5"/>
+										<rightPen lineWidth="0.5"/>
+									</box>
+									<textElement textAlignment="Center">
+										<font isBold="true"/>
+									</textElement>
+									<text><![CDATA[Inicial]]></text>
+								</staticText>
+							</jr:columnHeader>
+							<jr:detailCell style="table_TD" height="21" rowSpan="1">
+								<textField pattern="$###0.00">
+									<reportElement x="0" y="0" width="111" height="21" uuid="19a650bb-b8cf-4980-b64d-409c43726159"/>
+									<box>
+										<pen lineWidth="0.5"/>
+										<topPen lineWidth="0.5"/>
+										<leftPen lineWidth="0.5"/>
+										<bottomPen lineWidth="0.5"/>
+										<rightPen lineWidth="0.5"/>
+									</box>
+									<textElement textAlignment="Center"/>
+									<textFieldExpression><![CDATA[$F{inv_inicial}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="110" uuid="dfcffdc3-832a-4e7e-ba59-32869ea2d790">
+							<jr:tableHeader style="table_TH" height="0" rowSpan="1"/>
+							<jr:columnHeader style="table_CH" height="18" rowSpan="1">
+								<staticText>
+									<reportElement mode="Opaque" x="0" y="0" width="110" height="18" uuid="89453eb3-1484-454d-98fe-a85d16004fe2"/>
+									<box>
+										<pen lineWidth="0.5"/>
+										<topPen lineWidth="0.5"/>
+										<leftPen lineWidth="0.5"/>
+										<bottomPen lineWidth="0.5"/>
+										<rightPen lineWidth="0.5"/>
+									</box>
+									<textElement textAlignment="Center">
+										<font isBold="true"/>
+									</textElement>
+									<text><![CDATA[Final]]></text>
+								</staticText>
+							</jr:columnHeader>
+							<jr:detailCell style="table_TD" height="21" rowSpan="1">
+								<textField pattern="$###0.00">
+									<reportElement x="0" y="0" width="110" height="21" uuid="858107ba-d323-4402-b5a6-89ba0f46e4ba"/>
+									<box>
+										<pen lineWidth="0.5"/>
+										<topPen lineWidth="0.5"/>
+										<leftPen lineWidth="0.5"/>
+										<bottomPen lineWidth="0.5"/>
+										<rightPen lineWidth="0.5"/>
+									</box>
+									<textElement textAlignment="Center"/>
+									<textFieldExpression><![CDATA[$F{inv_final}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+					</jr:columnGroup>
+				</jr:table>
+			</componentElement>
 		</band>
 	</columnHeader>
 	<noData>

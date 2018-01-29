@@ -509,7 +509,7 @@ GROUP  BY pv.nombre,
 								</textField>
 							</jr:columnFooter>
 							<jr:detailCell height="20" rowSpan="1">
-								<textField pattern="$###0.00">
+								<textField pattern="$###0.00" isBlankWhenNull="false">
 									<reportElement x="0" y="0" width="76" height="20" uuid="6d84bb04-a459-438a-9ab8-4b05bb5f6406"/>
 									<box>
 										<pen lineWidth="0.5"/>
