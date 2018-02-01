@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Kardex" pageWidth="1080" pageHeight="595" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="1040" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c6c5e7c9-e5da-4d9e-a492-200fcb39e97f">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Kardex" pageWidth="1080" pageHeight="739" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="1040" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c6c5e7c9-e5da-4d9e-a492-200fcb39e97f">
 	<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
 	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.columns" value="false"/>
 	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.rows" value="true"/>
 	<property name="net.sf.jasperreports.export.xls.wrap.text" value="true"/>
 	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
 	<property name="net.sf.jasperreports.export.xls.white.page.background" value="true"/>
-	<property name="ireport.zoom" value="1.1000000000000019"/>
-	<property name="ireport.x" value="72"/>
-	<property name="ireport.y" value="288"/>
+	<property name="ireport.zoom" value="0.6830134553650716"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="125"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -170,9 +170,9 @@ inner join unidad_medida um ON um.id_unidad_medida = a.id_unidad_medida where 	 
 		<band height="52" splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="482" splitType="Stretch">
+		<band height="647" splitType="Stretch">
 			<subreport>
-				<reportElement x="19" y="171" width="952" height="296" isPrintWhenDetailOverflows="true" uuid="fe65766c-48a2-4016-8aeb-6b88951e292b"/>
+				<reportElement x="19" y="171" width="952" height="476" isPrintWhenDetailOverflows="true" uuid="fe65766c-48a2-4016-8aeb-6b88951e292b"/>
 				<subreportParameter name="fecha_fin">
 					<subreportParameterExpression><![CDATA[$P{fecha_fin}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -192,11 +192,11 @@ inner join unidad_medida um ON um.id_unidad_medida = a.id_unidad_medida where 	 
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "Kardex_Detalle.jasper"]]></subreportExpression>
 			</subreport>
 			<textField>
-				<reportElement x="77" y="42" width="123" height="20" uuid="b5123732-9ff0-4a5c-974e-8ea8fa1a6237"/>
+				<reportElement x="96" y="42" width="123" height="20" uuid="b5123732-9ff0-4a5c-974e-8ea8fa1a6237"/>
 				<textFieldExpression><![CDATA[$F{umedida}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="42" width="77" height="20" uuid="960301df-9171-47f1-ab4e-13979fa14dab"/>
+				<reportElement x="0" y="42" width="96" height="20" uuid="960301df-9171-47f1-ab4e-13979fa14dab"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
@@ -213,7 +213,7 @@ inner join unidad_medida um ON um.id_unidad_medida = a.id_unidad_medida where 	 
 				<textFieldExpression><![CDATA[$F{nombreProd}]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement key="table" mode="Transparent" x="77" y="102" width="360" height="50" uuid="e326e8e9-d3fa-43ff-8572-ed310ac3aa14"/>
+				<reportElement key="table" mode="Transparent" x="25" y="102" width="360" height="50" uuid="e326e8e9-d3fa-43ff-8572-ed310ac3aa14"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="inventarioXproductos" uuid="bac4da3f-5dc9-48a2-8a29-0c90e48e89fa">
 						<datasetParameter name="id_articulo">
@@ -364,14 +364,14 @@ inner join unidad_medida um ON um.id_unidad_medida = a.id_unidad_medida where 	 
 				<reportElement x="0" y="152" width="1040" height="19" uuid="1ef6ccd9-af50-4045-b33e-508ded0b74cd"/>
 			</frame>
 			<staticText>
-				<reportElement x="0" y="62" width="77" height="20" uuid="f713fa78-f0d2-44be-b3c3-35c43e6d7178"/>
+				<reportElement x="0" y="62" width="96" height="20" uuid="f713fa78-f0d2-44be-b3c3-35c43e6d7178"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Clasificación:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="77" y="63" width="207" height="20" uuid="39610b49-83dc-4e5d-b552-64ba51442861"/>
+				<reportElement x="96" y="62" width="207" height="20" uuid="39610b49-83dc-4e5d-b552-64ba51442861"/>
 				<textFieldExpression><![CDATA[$F{clasificacion}]]></textFieldExpression>
 			</textField>
 		</band>
