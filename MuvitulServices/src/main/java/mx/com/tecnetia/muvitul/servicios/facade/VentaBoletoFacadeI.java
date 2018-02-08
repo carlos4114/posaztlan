@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import mx.com.tecnetia.muvitul.infraservices.servicios.BusinessGlobalException;
 import mx.com.tecnetia.muvitul.infraservices.servicios.NotFoundException;
+import mx.com.tecnetia.muvitul.negocio.configuracion.vo.AsientoVO;
+import mx.com.tecnetia.muvitul.negocio.configuracion.vo.HttpResponseAsientosVO;
 import mx.com.tecnetia.muvitul.negocio.taquilla.vo.ArchivoPdfVO;
 import mx.com.tecnetia.muvitul.negocio.taquilla.vo.Boletos;
 import mx.com.tecnetia.muvitul.negocio.taquilla.vo.ExistenciaBoletoVO;
@@ -58,6 +60,9 @@ public interface VentaBoletoFacadeI {
 	@RequestMapping(value = "/existencias", method = RequestMethod.PUT)
 	public ResponseEntity<ExistenciaBoletoVO> updateExistenciaBoleto(HttpServletRequest request,
 			@RequestBody ExistenciaBoletoVO existenciaBoletoVO) throws BusinessGlobalException, NotFoundException;
+	
+	@RequestMapping(value = "/existenciaAsiento", method = RequestMethod.POST)
+	HttpResponseAsientosVO updateExistenciaAsiento(HttpServletRequest request,@RequestBody AsientoVO asientoVO) throws BusinessGlobalException;
 
 	@RequestMapping(value = "/ventas", method = RequestMethod.POST)
 	public ResponseEntity<TicketVentaVO> createVenta(HttpServletRequest request, @RequestBody VentaVO ventaVO)

@@ -7,7 +7,7 @@ var MenusDulceriaController = angular.module('indexModule').controller("MenusDul
 	$scope.listaProductos={};
 	 
 	$scope.guardarPaquete =function( paquete){
-		console.log(paquete);
+		
 	}
 	
 	$scope.eliminarPaquete =function( paquete){
@@ -22,12 +22,12 @@ var MenusDulceriaController = angular.module('indexModule').controller("MenusDul
 	}
 	$scope.onChange = function (e, file) {
 		var data = file[0];
-		 console.log(file)
+		 
 	  };
 	//Consultar productos 
 	$scope.consultarProductos =function( ){
 		menusDulceriaService.consultarProductos().success(function(data) {	
-				console.log(data);
+				
 				$scope.listaProductos=data;
  		  }).error(function(data) {
  				console.log(data);
@@ -35,8 +35,7 @@ var MenusDulceriaController = angular.module('indexModule').controller("MenusDul
 	}
 	
 	$scope.consultarPaquetes =function( ){
-		menusDulceriaService.consultarPaquetes().success(function(data) {	
-			console.log(data);
+		menusDulceriaService.consultarPaquetes().success(function(data) {				
 			$scope.listaPaquetes=data;
 		  }).error(function(data) {
 				console.log(data);

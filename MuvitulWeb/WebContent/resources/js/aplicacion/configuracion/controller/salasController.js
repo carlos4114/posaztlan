@@ -5,7 +5,13 @@ angular.module('indexModule').controller("SalasController",['$scope','GlobalFact
 	 var idEmpresa = GlobalFactory.getIdEmpresa(); 
 	 
 	 $scope.modificarButaca = function(asiento) {
-		  asiento.existente = !asiento.existente;
+		  SalasService.actualizaAsiento($scope.salaVO.asientosListVO,asiento)
+			 .then(
+		      function(d) {
+		    	  $scope.salaVO.asientosListVO = d;
+		      },
+	         function(errResponse){
+	         });
      }
 	 
 	 $scope.obtenerMapaNuevo = function(filas,maxAsientos) {

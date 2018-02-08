@@ -10,5 +10,4 @@ public interface AsientosXSalaDAOI extends GlobalHibernateDAOI<AsientosXSala>{
 	void actualizarEstatus(Integer idSala, boolean activo);
 	String getMaxFila(Integer idSala);
 	Integer getMaxNoAsientos(Integer idSala);
-
 }

@@ -37,7 +37,6 @@ var MenusDulceriaController = angular.module('indexModule').controller("Promocio
 	 }
 	
 	$scope.crearPromocion = function( promocionVO){
-		console.log(promocionVO)
 		if ( $scope.formPromociones.$invalid) {
             angular.forEach( $scope.formPromociones.$error, function (field) {
               angular.forEach(field, function(errorField){

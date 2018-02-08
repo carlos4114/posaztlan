@@ -44,13 +44,15 @@ angular.module('indexModule').factory("statusFactory",function() {
 	   		    	statusVenta.elegirPelicula ="selected";
 	   		    	statusVenta.elegirPromocion="";
 	   		    	statusVenta.elegirCantidad ="";
-	   		    	statusVenta.registrarPago  ="";
+	   		    	statusVenta.seleccionarAsientos ="";
+		   		    statusVenta.registrarPago  ="";
 	   		    	statusVenta.confirmarVenta ="";
 	   	 	        break;
 	   		    case 2:
 	   		    	statusVenta.elegirPelicula = "done";
 	   		    	statusVenta.elegirPromocion="selected";
 	   		    	statusVenta.elegirCantidad ="";
+	   		    	statusVenta.seleccionarAsientos ="";
 	   		    	statusVenta.registrarPago  ="";
 	   		    	statusVenta.confirmarVenta ="";
 	   	 	        break;
@@ -58,6 +60,7 @@ angular.module('indexModule').factory("statusFactory",function() {
 	   		    	statusVenta.elegirPelicula = "done";
 	   		    	statusVenta.elegirPromocion="done";
 	   		    	statusVenta.elegirCantidad ="selected";
+	   		    	statusVenta.seleccionarAsientos ="";
 	   		    	statusVenta.registrarPago  ="";
 	   		    	statusVenta.confirmarVenta ="";
 	   	 	        break;
@@ -65,13 +68,23 @@ angular.module('indexModule').factory("statusFactory",function() {
 	   		    	statusVenta.elegirPelicula = "done";
 	   		    	statusVenta.elegirPromocion="done";
 	   		    	statusVenta.elegirCantidad ="done";
-	   		    	statusVenta.registrarPago  ="selected";
+	   		    	statusVenta.seleccionarAsientos ="selected";
+	   		    	statusVenta.registrarPago  ="";
 	   		    	statusVenta.confirmarVenta ="";
-	   	 	        break;
+	   	 	        break;	   	 	        
 	   		    case 5:
 	   		    	statusVenta.elegirPelicula = "done";
 	   		    	statusVenta.elegirPromocion="done";
 	   		    	statusVenta.elegirCantidad ="done";
+	   		    	statusVenta.seleccionarAsientos ="done";
+	   		    	statusVenta.registrarPago  ="selected";
+	   		    	statusVenta.confirmarVenta ="";
+	   	 	        break;
+	   		    case 6:
+	   		    	statusVenta.elegirPelicula = "done";
+	   		    	statusVenta.elegirPromocion="done";
+	   		    	statusVenta.elegirCantidad ="done";
+	   		    	statusVenta.seleccionarAsientos ="done";
 	   		    	statusVenta.registrarPago  ="done";
 	   		    	statusVenta.confirmarVenta ="selected";
 	   	 	        break;

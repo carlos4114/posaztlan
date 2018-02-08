@@ -3,7 +3,6 @@
 angular.module('indexModule').service('promocionesTaquillaService', ['$http','GlobalFactory','config', function($http,GlobalFactory,config) {
 
 	this.consultarConfigPromociones = function(){
-		console.log("consultar config promociones");
 		return $http.get(config.baseUrl+"/configuracion/configPromociones");
 	}
 	
@@ -17,7 +16,6 @@ angular.module('indexModule').service('promocionesTaquillaService', ['$http','Gl
 	}
 	
 	 this.crearPromocion = function(promocionVO ) {
-		 console.log("crear programacion");
 		 return $http.post(config.baseUrl + "/configuracion/promociones", promocionVO );
 	 }
 	

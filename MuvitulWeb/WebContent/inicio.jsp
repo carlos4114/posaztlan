@@ -263,6 +263,7 @@
             <script src="<c:url value='/resources/js/aplicacion/taquilla/ventaboleto/controller/ventaBoletosPaso3Controller.js' />"></script>
             <script src="<c:url value='/resources/js/aplicacion/taquilla/ventaboleto/controller/ventaBoletosPaso4Controller.js' />"></script>
             <script src="<c:url value='/resources/js/aplicacion/taquilla/ventaboleto/controller/ventaBoletosPaso5Controller.js' />"></script>
+            <script src="<c:url value='/resources/js/aplicacion/taquilla/ventaboleto/controller/ventaBoletosPaso6Controller.js' />"></script>
 
             <!-- Controller del modulo de taquilla - devolucion boletos -->
 

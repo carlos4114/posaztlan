@@ -9,12 +9,14 @@ angular.module('indexModule').service("SalasService", ['$http', '$q','GlobalFact
 		var URI_ACTUALIZAR = URI_SERVICIO + '/sala/actualizar';
 		var URI_GUARDAR = URI_SERVICIO + '/sala/guardarNueva';
 		var URI_OBTENER_MAPA_NUEVO = URI_SERVICIO + '/sala/obtenerMapaNuevo';
-				 	
+	    var URI_ACTUALIZA_ASIENTO = URI_SERVICIO + '/sala/actualizaAsiento';
+
 	    var factory = {
 	        guardar: guardar,
 	        actualizar: actualizar,
 	        obtenerSalas: obtenerSalas,
 	        consultaCinesXEmpresa: consultaCinesXEmpresa,
+	        actualizaAsiento: actualizaAsiento,
 	        obtenerMapaNuevo: obtenerMapaNuevo
 	    };
 	 
@@ -54,6 +56,11 @@ angular.module('indexModule').service("SalasService", ['$http', '$q','GlobalFact
 	        return deferred.promise; 
 	    				 
 		 }
+	    
+	    function actualizaAsiento(asientosVOList,asientoVO){
+			var actualizaAsientoVO = {asientosVOList:asientosVOList, asientoVO:asientoVO};
+	        return invocarServicioPost(URI_ACTUALIZA_ASIENTO,actualizaAsientoVO);	    				 	        
+	    }
 
 	 
 	    function guardar(salaVO) {	    	

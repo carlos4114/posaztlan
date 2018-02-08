@@ -18,14 +18,20 @@ angular.module('indexModule').directive('elegirCantidad', function(){
     }        
 })
 
-angular.module('indexModule').directive('registrarPago', function(){
+angular.module('indexModule').directive('seleccionarAsientos', function(){
     return {
     	templateUrl : "vistas/taquilla/ventaboleto/venta_boletos_paso4.jsp"
     }        
 })
 
-angular.module('indexModule').directive('confirmarVenta', function(){
+angular.module('indexModule').directive('registrarPago', function(){
     return {
     	templateUrl : "vistas/taquilla/ventaboleto/venta_boletos_paso5.jsp"
+    }        
+})
+
+angular.module('indexModule').directive('confirmarVenta', function(){
+    return {
+    	templateUrl : "vistas/taquilla/ventaboleto/venta_boletos_paso6.jsp"
     }        
 })

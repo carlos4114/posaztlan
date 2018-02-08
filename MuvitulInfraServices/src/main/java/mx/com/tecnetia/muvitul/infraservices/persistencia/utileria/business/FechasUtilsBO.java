@@ -1243,7 +1243,7 @@ public class FechasUtilsBO {
 		String fecha = "2017-12-01";
 		String fecha2 = "2017-12-21";
 		
-		System.out.println(stringYYYYMMDDToDate(fecha,"-"));
+		System.out.println(getCurrentDate());
 		System.out.println(stringYYYYMMDDToDate(fecha2,"-"));
 		 
 //		System.out.println(dateToString(addDaysToDate(getCurrentDate(),7),"yyyy-MM-dd"));

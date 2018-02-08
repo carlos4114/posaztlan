@@ -1,14 +1,17 @@
 package mx.com.tecnetia.muvitul.negocio.configuracion.business;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import mx.com.tecnetia.muvitul.infraservices.negocio.muvitul.vo.AsistenciaVO;
 import mx.com.tecnetia.muvitul.infraservices.negocio.seguridad.vo.HttpResponseVO;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.AsientosXSalaDAOI;
+import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.AsistenciaPeliculaIbatisDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.CupoXSalaDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.SalaDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.AsientosXSala;
@@ -32,6 +35,36 @@ public class SalaBO {
 	private CupoXSalaDAOI cupoXsalaDAO;
 	@Autowired
 	private AsientosXSalaDAOI asientosXSalaDAO;
+	@Autowired
+	private AsistenciaPeliculaIbatisDAOI asistenciaXSalaIbatisDAO;
+	
+	/**
+     * Servicio para actualizar una sala con su cupo y mapa de sala
+     */
+	public List<List<AsientoVO>> actualizarAsiento(List<List<AsientoVO>> asientosVOList, AsientoVO asientoVO) throws BusinessGlobalException {
+		if(asientosVOList == null)
+			throw new BusinessGlobalException("No se pudo actualizar el asiento. AsientosVOList no puede ser nulo.");
+		if(asientoVO == null)
+			throw new BusinessGlobalException("No se pudo actualizar el asiento. AsientoVO no puede ser nulo.");
+		
+		//convertimos la fila de letra al indice en la matriz
+		int fila = (int)asientoVO.getFila().charAt(0) - 65;		
+
+		//actualizamos el asiento con el estatus que corresponde y el numero nuevo de asiento
+		asientosVOList.get(fila).get(asientoVO.getPosicion()-1).setExistente(!asientoVO.isExistente());
+		
+		int ultimoNumAsiento = 0 ;
+		for(int i = 0; i < asientosVOList.get(fila).size(); i++){
+			if(asientosVOList.get(fila).get(i).isExistente()){
+				ultimoNumAsiento = ultimoNumAsiento+1;				
+				asientosVOList.get(fila).get(i).setNumeroAsiento(ultimoNumAsiento);
+			}else{
+				asientosVOList.get(fila).get(i).setNumeroAsiento(null);				
+			}
+		}
+		
+		return asientosVOList;
+	}
 	
 	/**
      * Servicio para actualizar una sala con su cupo y mapa de sala
@@ -103,7 +136,7 @@ public class SalaBO {
 				for(List<AsientoVO> filaAsientos : salaVO.getAsientosListVO()){
 					for(AsientoVO asientoVO : filaAsientos){
 						asientoVO.setActivo(true);
-						asientoVO.setIdAisento(null);
+						asientoVO.setIdAsiento(null);
 						this.asientosXSalaDAO.save(AsientosXSalaAssembler.getAsientosXSala(asientoVO, sala));
 					}
 				}
@@ -119,7 +152,7 @@ public class SalaBO {
 						for(List<AsientoVO> filaAsientos : salaVO.getAsientosListVO()){
 							for(AsientoVO asientoVO : filaAsientos){	
 								asientoVO.setActivo(true);
-								asientoVO.setIdAisento(null);
+								asientoVO.setIdAsiento(null);
 								this.asientosXSalaDAO.save(AsientosXSalaAssembler.getAsientosXSala(asientoVO, sala));
 							}
 						}						
@@ -201,7 +234,7 @@ public class SalaBO {
 			for(List<AsientoVO> filaAsientos : salaVO.getAsientosListVO()){
 				for(AsientoVO asientoVO : filaAsientos){	
 					asientoVO.setActivo(true);
-					asientoVO.setIdAisento(null);
+					asientoVO.setIdAsiento(null);
 					this.asientosXSalaDAO.save(AsientosXSalaAssembler.getAsientosXSala(asientoVO, sala));
 				}
 			}
@@ -209,7 +242,20 @@ public class SalaBO {
 		
 		return new HttpResponseVO();
 	}
-
+	
+	/**
+     * Servicio para obtener el mapa de una sala con su asistencia
+     */
+	@Transactional(readOnly=true)
+	public List<List<AsientoVO>> obtenerMapaConAsistencia(Integer idProgramacion,Date fechaExhibicion,Integer idUsuario) throws BusinessGlobalException {
+		if(idProgramacion == null)
+			throw new BusinessGlobalException("No se puede obtener el mapa con asistencia. La programacion no puede ser nulo.");
+		
+		List<AsistenciaVO> asistenciaList = this.asistenciaXSalaIbatisDAO.getAsistencia(idProgramacion,fechaExhibicion);
+		
+		return SalaAssembler.getMapaConAsistencia(asistenciaList, idProgramacion,idUsuario);
+	}
+		
 	/**
      * Servicio para crear un mapa nuevo de sala en base al numero de filas y asientos maximos por fila
      */
@@ -230,6 +276,7 @@ public class SalaBO {
 				asientoVO.setExistente(true);
 				asientoVO.setFila(Character.toString((char) i));
 				asientoVO.setNumeroAsiento(j);
+				asientoVO.setPosicion(j);
 				filaAsientos.add(asientoVO);
 			}
 			asientosListVO.add(filaAsientos);

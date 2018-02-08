@@ -1,16 +1,69 @@
 'use strict';
 
-angular.module('indexModule').service('taquillaService', ['$http','GlobalFactory','config', function($http,GlobalFactory,config) {
+angular.module('indexModule').service('taquillaService', ['$http','$q','GlobalFactory','config', function($http,$q,GlobalFactory,config) {
  
+	function invocarServicioGet(URI){
+	    
+    	var deferred = $q.defer();
+        
+        $http.get(URI)
+            .then(
+            function (response) {
+                deferred.resolve(response.data);
+            },
+            function(errResponse){	                
+                deferred.reject(errResponse);
+            }
+        );
+        return deferred.promise; 
+    				 
+	 }
+	
+	function invocarServicioPost(URI,jsonVO){
+	    
+    	var deferred = $q.defer();
+        
+    	$http.post(URI,jsonVO)
+            .then(
+            function (response) {
+                deferred.resolve(response.data);
+            },
+            function(errResponse){	                
+                deferred.reject(errResponse);
+            }
+        );
+        return deferred.promise; 
+    				 
+	 }	
+	
+	this.consultarMapaConAsistencia = function(idProgramacion,fechaExhibicion){
+		
+		var deferred = $q.defer();
+		
+		$http.get(config.baseUrl+"/sala/mapaConAsistencia",{
+				params : {"fechaExhibicion" : fechaExhibicion,
+						 "idProgramacion" : idProgramacion							 
+				}
+		 }).then(
+		            function (response) {
+		                deferred.resolve(response.data);
+		            },
+		            function(errResponse){	                
+		                deferred.reject(errResponse);
+		            }
+		 );
+		 
+		 return deferred.promise; 
+	 }
+	
+	
 	this.consultarPeliculas = function(fechaExhibicion){
-		console.log(fechaExhibicion)
 		 return $http.get(config.baseUrl+"/ventaBoleto/peliculas", {
 				params : {"fechaExhibicion" : fechaExhibicion }
 		  });
 	 }
 	 
 	 this.consultarPromociones = function(fechaExhibicion){
-			console.log(fechaExhibicion)
 
  		return $http.get(config.baseUrl+"/ventaBoleto/promociones", {
 			params : {"fechaExhibicion" : fechaExhibicion }
@@ -39,6 +92,11 @@ angular.module('indexModule').service('taquillaService', ['$http','GlobalFactory
 	 
 	 this.updateExistenciaBoleto = function(existenciaBoletoVO){
  		 return $http.put(config.baseUrl+"/ventaBoleto/existencias",existenciaBoletoVO);
+	 }
+	 
+	 this.updateExistenciaAsiento = function(fechaExhibicion,asientoVO){
+		 asientoVO.fechaExhibicion = fechaExhibicion;
+ 		 return $http.post(config.baseUrl+"/ventaBoleto/existenciaAsiento",asientoVO);
 	 }
 	 
 	 this.consultarDescuentos = function(promocionBoletoVO ){

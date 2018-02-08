@@ -24,6 +24,10 @@ public class EstatusAsiento implements java.io.Serializable {
 
 	public EstatusAsiento() {
 	}
+	
+	public EstatusAsiento(Integer idEstatusAsiento) {
+		this.idEstatusAsiento = idEstatusAsiento;
+	}
 
 	public EstatusAsiento(String nombre) {
 		this.nombre = nombre;

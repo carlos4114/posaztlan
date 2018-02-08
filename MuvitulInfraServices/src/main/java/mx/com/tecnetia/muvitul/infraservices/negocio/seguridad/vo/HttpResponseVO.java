@@ -1,6 +1,7 @@
 package mx.com.tecnetia.muvitul.infraservices.negocio.seguridad.vo;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class HttpResponseVO implements Serializable{
         private static final long serialVersionUID = 1L;

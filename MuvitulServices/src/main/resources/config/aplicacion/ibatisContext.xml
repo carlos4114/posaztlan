@@ -38,6 +38,10 @@
 		<property name="mapperInterface" value="mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.ReportesDulceriaIbatisDAOI" />
 		<property name="sqlSessionFactory" ref="ibatisSessionFactory" />
 	</bean>	
+	<bean id="asistenciaXSalaIbatisDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.AsistenciaPeliculaIbatisDAOI" />
+		<property name="sqlSessionFactory" ref="ibatisSessionFactory" />
+	</bean>	
 	
 	
  </beans>

@@ -34,7 +34,6 @@ angular.module('loginModule').controller('LoginController', ['LoginService','$sc
                         $scope.resetValues();
                 		$scope.error = ErrorFactory.getErrorSecurityMessage(responseLogin.errorCode);
                 	}else{
-                		console.log(responseLogin);
                     	$scope.token = responseLogin.token;
                     	GlobalFactory.setAuthHeader('Bearer ' + responseLogin.token);
                     	GlobalFactory.setCompleteUserName(responseLogin.nombreCompletoUsuario);

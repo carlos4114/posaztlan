@@ -1,5 +1,6 @@
 package mx.com.tecnetia.muvitul.servicios.configuracion.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,17 @@ public class SalaController {
 	private SalaBO salaBO;
 	
 	/**
+     * Servicio para obtener el mapa de una sala con su asistencia
+     */
+	@Transactional(readOnly=true)
+	public List<List<AsientoVO>> obtenerMapaConAsistencia(Integer idProgramacion, Date fechaExhibicion,Integer idUsuario) throws BusinessGlobalException {
+		if(idProgramacion == null)
+			throw new BusinessGlobalException("No se puede obtener el mapa con asistencia. La programacion no puede ser nulo.");
+
+		return this.salaBO.obtenerMapaConAsistencia(idProgramacion, fechaExhibicion,idUsuario);
+	}
+	
+	/**
      * Servicio para crear un mapa nuevo de sala en base al numero de filas y asientos maximos por fila
      */
 	@Transactional(readOnly=true)
@@ -28,6 +40,18 @@ public class SalaController {
 			throw new BusinessGlobalException("No se pudo crear el mapa de asientos. Max Asientos no puede ser nulo.");
 
 		return this.salaBO.crearMapaNuevo(filas, maxAsientos);
+	}
+	
+	/**
+     * Servicio para actualizar el asiento en la configuracion de un mapa
+     */
+	public List<List<AsientoVO>> actualizarAsiento(List<List<AsientoVO>> asientosVOList, AsientoVO asientoVO) throws BusinessGlobalException {
+		if(asientosVOList== null)
+			throw new BusinessGlobalException("No se pudo actualizar el asiento. AsientoVOList no puede ser nulo.");
+		if(asientoVO == null)
+			throw new BusinessGlobalException("No se pudo actualizar el asiento. AsientoVO no puede ser nulo.");
+
+		return this.salaBO.actualizarAsiento(asientosVOList, asientoVO);
 	}
 	
 	/**

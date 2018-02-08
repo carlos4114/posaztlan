@@ -7,7 +7,6 @@ angular.module('indexModule').service('programacionesTaquillaService', ['$http',
 	}
 
 	 this.crearProgramacion = function( programacionVo ) {
-		 console.log("crear programacion");
 		 return $http.post(config.baseUrl + "/configuracion/programaciones", programacionVo );
 	 }
 	
@@ -21,8 +20,7 @@ angular.module('indexModule').service('programacionesTaquillaService', ['$http',
 		 
 	}
 	this.eliminarProgramaciones = function( id ) {
-		 console.log("eliminar programacion");
-	 		return $http.delete(config.baseUrl + "/configuracion/programaciones", {
+			return $http.delete(config.baseUrl + "/configuracion/programaciones", {
 	 				params : {
 	 	 				"id" : id
 	 	 			}

@@ -12,13 +12,19 @@
 					ng-click="asignarPaso(2);StopTimer()">
 					<i class="fa fa-star"></i> Regresar a Promociones
 				</button>
+				<button type="button" class="btn btn-success"
+					ng-disabled="pago.subtotal == 0 "
+					ng-click="asignarPaso(4);StopTimer();StartTimerAsientos(paramsExistenciaBoleto)">
+					Seleccionar Asientos <i class="fa fa-th"></i>
+				</button>
 
-
+<!-- 
 				<button type="button" class="btn btn-success"
 					ng-disabled="pago.subtotal == 0 "
 					ng-click="asignarPaso(4);consultarFormasPago();StopTimer()">
 					Registrar el Pago <i class="fa fa-credit-card"></i>
 				</button>
+ -->				
 
 			</div>
 			<div class="clearfix"></div>

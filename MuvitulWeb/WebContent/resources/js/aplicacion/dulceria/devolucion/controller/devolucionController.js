@@ -39,8 +39,7 @@ var devolucionDulceriaController = angular.module('indexModule').controller('dev
 	
 	
 	$scope.seleccionarTodosPaquetes = function( paquetes ) {
-		 console.log($scope.ticket.seleccionarPaquetes);
-	   		 angular.forEach(paquetes , function(value, key){ 
+			 angular.forEach(paquetes , function(value, key){ 
 	   			value.paqueteVO.selected = $scope.ticket.seleccionarPaquetes;
 	   			$scope.seleccionarTodosProducto(value);
 	 	   	});	
@@ -73,7 +72,6 @@ var devolucionDulceriaController = angular.module('indexModule').controller('dev
 	
 	$scope.determinarTipoDevolucion = function() {
 		
-		console.log('determinar tipodevolucion');
 		var clave='EFE-002';
 	 	$scope.disabledTipoDevolucion=false;
 	 	
@@ -82,8 +80,6 @@ var devolucionDulceriaController = angular.module('indexModule').controller('dev
 			//$scope.listaProductosFilter=$filter('filter')(paquete.paqueteVO.productosXPaqueteVO,{selected:true});
 			var n=0;
 			angular.forEach($scope.ticket.paquetesXTicketVO[i].paqueteVO.productosXPaqueteVO , function(value, key){ 
-				console.log(value.productoVO.nombre);
-				console.log(value.productoVO.selected);
 				if (value.productoVO.selected == true) n++;
 			});
 			

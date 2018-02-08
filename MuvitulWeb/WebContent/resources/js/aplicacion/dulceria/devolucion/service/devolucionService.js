@@ -3,7 +3,6 @@
 angular.module('indexModule').service('devolucionDulceriaService', ['$http','GlobalFactory','config', function($http,GlobalFactory,config) {
  
 	 this.consultarTicketProductos = function(idTicket){
-		 console.log("consultar tickets");
 		 return $http.get(config.baseUrl+"/devolucion/productos", {
 			 params : {"idTicket" : idTicket}
 		 });

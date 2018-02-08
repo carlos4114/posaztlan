@@ -20,6 +20,7 @@ public class AsientosXSalaAssembler {
 		asiento.setIdAsientosXSala(asientoVO.getIdAsiento());
 		asiento.setNumeroAsiento(asientoVO.getNumeroAsiento());
 		asiento.setSala(sala);
+		asiento.setPosicion(asientoVO.getPosicion());
 		asiento.setUltimaActualizacion(FechasUtilsBO.getCurrentDate());
 		
 		return asiento;

@@ -110,7 +110,7 @@
 									                    <table>	
 									               	     <tbody>							                						               
 											               <tr dir-paginate="filaAsientos in salaVO.asientosListVO |  filter: filterSearch |itemsPerPage: salaVO.asientosListVO.length" >
-											               		<td width="40px" height="40px">
+											               		<td style="text-align: center;" width="40px" height="40px">
 													               {{filaAsientos[$index].fila}}
 													            </td>	
 											               </tr>
@@ -123,28 +123,32 @@
 											               <tr dir-paginate="filaAsientos in salaVO.asientosListVO |  filter: filterSearch |itemsPerPage: salaVO.asientosListVO.length" >
 													                 <td dir-paginate="asiento in filtered=(filaAsientos |  filter: filterSearch) |itemsPerPage: filaAsientos.length" width="40px" height="40px">
 																		  <a href="javascript:void(0)" ng-click="modificarButaca(asiento)">
-																		    <div ng-if="asiento.existente">
-																			   <img align="center" src="<c:url value='/resources/img/butacaDisponible.png' />" 
-															           			height="25px" width="25px" class="img-responsive" title="{{asiento.numeroAsiento}}" />
+																		    <div ng-if="asiento.existente">																			   
+															           		   <img align="center" 
+																				   ng-src="<c:url value='/resources/img/asientos/butacaDisponible_{{asiento.numeroAsiento}}.png' />" 
+																           			height="25px" width="25px" class="img-responsive" />	
 															           		</div>
 															           		<div ng-if="!asiento.existente">
 																			   <img align="center" src="<c:url value='/resources/img/cuadro.png' />" 
-															           			height="25px" width="25px" class="img-responsive" title="{{asiento.numeroAsiento}}" />
+															           			height="25px" width="25px" class="img-responsive" />
 															           		</div>	
 														           		  </a> 	
 													                 </td>				
 											               </tr>
-											             </tbody>
-											             <tfoot ng-if="salaVO.asientosListVO!=null">									              
-											        	    <tr class="headings">										        	    										                           
-									                            <th dir-paginate="filaAsientos in salaVO.asientosListVO[0] |  filter: filterSearch |itemsPerPage: salaVO.asientosListVO[0].length" 
-									                                style="text-align: center;" class="column-title">							                              
-									                               {{$index+1}}
-									                            </th>
-									                         </tr>   						                            									        	    
-											        	  </tfoot>  
+											             </tbody>											               
 											           </table>  
-											          </td>   
+											          </td>
+											          <td valign="top">
+									                    <table>	
+									               	     <tbody>							                						               
+											               <tr dir-paginate="filaAsientos in salaVO.asientosListVO |  filter: filterSearch |itemsPerPage: salaVO.asientosListVO.length" >
+											               		<td style="text-align: center;" width="40px" height="40px">
+													               {{filaAsientos[$index].fila}}
+													            </td>	
+											               </tr>
+											             </tbody>
+											            </table>   	
+									                  </td>   
 											       <tr/>        											          									              
 									             </tbody>									             
 									           </table>      

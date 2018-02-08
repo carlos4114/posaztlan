@@ -1,226 +1,197 @@
-<html>
-<head>
-<meta charset="utf-8">
-<title>Confirmar Venta</title>
-</head>
-<body>
-	<!-- bloque de PASO 5 de wizard - CANTIDAD -->
-	<div id="step-2">
-		<div class="x_panel">
-			<div class="x_title">
-				<h2>
-					<i class="fa fa-thumbs-o-up"></i> Confirma la Venta
-				</h2>
-				<div class="row pull-right">
 
-					<!-- 				<button type="button" class="btn btn-primary" -->
-					<!-- 					ng-click="asignarPaso(4)"> -->
-					<!-- 					<i class="fa fa-credit-card"></i> Regresar al Pago -->
-					<!-- 				</button> -->
-
-				</div>
-				<div class="clearfix"></div>
+<!-- bloque de PASO 5 de wizard - CANTIDAD -->
+<div id="step-2">
+	<div class="x_panel">
+		<div class="x_title">
+			<h2>
+				<i class="fa fa-credit-card"></i> Registra el Pago
+			</h2>
+			<div class="row pull-right" ng-init=calcularTotalPagado(listaPagos)>
+				<button type="button" class="btn btn-primary"
+					ng-click="asignarPaso(4);StartTimerAsientos(paramsExistenciaBoleto)">
+					<i class="fa fa-th"></i> Seleccionar Asientos
+				</button>
+				<button type="button" class="btn btn-success"
+					ng-click="confirmacionVenta(objetosVenta)"
+					ng-disabled="pago.porPagar > 0">
+					Confirmar la Venta <i class="fa fa-thumbs-o-up"></i>
+				</button>
 			</div>
-			<div class="x_content">
-				<!-- bloque de pelicula -->
-				<div class="col-md-12 col-sm-12 col-xs-12">
-					<div class="x_panel">
-						<div class="row">
-
-							<div
-								class="col-lg-2 col-md-2 col-sm-2 col-xs-6 col-lg-offset-5 col-md-offset-5 col-sm-offset-5 col-xs-offset-3 text-center">
-								<a class="btn btn-app" title="Cerrar venta e imprimir boletos"
-									ng-click="imprimirBoleto()"> <i class="fa fa-print"></i>
-									Imprimir Boletos
-								</a>
-
-							</div>
-
-
-							<div
-								class="col-lg-2col-md-2 col-sm-2 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-offset-5 col-xs-offset-0">
-								<a href="#/ventaBoletos"><button type="button"
-										class="btn btn-success  col-xs-12"
-										ng-disabled="isImpreso==false"
-										ng-click="asignarPaso(1);consultarPeliculas(param.fechaExhibicion);">Nueva
-										Venta</button></a>
-							</div>
-							
-							<div
-								class="col-lg-2 col-md-2 col-sm-2 col-xs-6 col-lg-offset-5 col-md-offset-5 col-sm-offset-5 col-xs-offset-3 text-center">
-								<h2>Ticket: {{ticketVenta.idTicket}}</h2>
-							</div>
-						</div>
-
-					</div>
-
-					<div class="x_panel">
-						<div class="x_title">
-							<h2>
-								<i class="fa fa-film"></i> {{objetosVenta.pelicula.titulo}}
-							</h2>
-							<div class="row pull-right">
-								<h3>TOTAL = {{pago.subtotal | currency}}</h3>
-							</div>
-							<div class="clearfix"></div>
-						</div>
-						<div class="col-md-3 col-sm-3 col-xs-3">
-							<br /> <br />
-							<div class="profile_img">
-								<div id="crop-avatar">
-									<img class="img-responsive avatar-view"
-										ng-src="data:image/png;base64,{{objetosVenta.pelicula.icono}}"
-										width="90%">
-
-								</div>
-							</div>
-						</div>
-						<div class="col-md-9 col-sm-9 col-xs-9">
-							<div class="row">
-								<div class="col-md-4 col-sm-4 col-xs-4">
-									<br /> <br />
-									<div class="row">
-										<div class="col-md-12 col-sm-12 col-xs-12">
-											<label>CINE: {{objetosVenta.pelicula.cineVO.nombre}}
-											</label>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-md-12 col-sm-12 col-xs-12">
-											<label>FECHA: {{objetosVenta.fechaExhibicion |
-												date:'dd-MM-yyyy'}} </label>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-md-12 col-sm-12 col-xs-12">
-											<label>HORARIO: {{objetosVenta.programacion.horario}}
-												{{objetosVenta.programacion.versionVO.nombre}}
-												{{objetosVenta.programacion.formatoVO.nombre}} </label>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-md-12 col-sm-12 col-xs-12">
-											<label>DISTRIBUIDORA:
-												{{objetosVenta.pelicula.distribuidoraVO.nombre}}</label>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-md-12 col-sm-12 col-xs-12">
-											<label>PAIS: {{objetosVenta.pelicula.paisVO.nombre}}</label>
-										</div>
-									</div>
-								</div>
-								<!-- /col md 4 -->
-								<div class="col-md-8 col-sm-8 col-xs-8">
-									<br />
-									<div
-										class="animated flipInY col-lg-6 col-md-12 col-sm-12 col-xs12">
-
-										<div class="tile-stats">
-											<h2 class="text-center">Promoci&oacute;n</h2>
-											<br />
-											<h3 class="text-center">{{objetosVenta.promocion.nombre}}</h3>
-											<p class="text-center">
-												{{objetosVenta.promocion.descripcion}}</p>
-											<p class="text-center"
-												ng-if="promocion.cantidad ==0 || promocion== null">No
-												seleccionó Promoción</p>
-
-
-										</div>
-
-									</div>
-
-									<div
-										class="animated flipInY col-lg-6 col-md-12 col-sm-12 col-xs12">
-
-										<div class="tile-stats">
-											<h2 class="text-center">Sala</h2>
-											<br />
-											<h3 class="text-center">{{objetosVenta.programacion.salaVO.nombre}}</h3>
-
-										</div>
-
-									</div>
-
-								</div>
-
-
-								<!-- /div col-md-8 -->
-							</div>
-							<!-- /row -->
-							<br />
-							<div class="row">
-								<div
-									class="table-responsive col-lg-6 col-md-12 col-sm-12 col-xs-12">
-									<h3 class="text-center">Boletos</h3>
-									<table class="table table-striped jambo_table bulk_action">
-										<thead>
-											<tr class="headings">
-												<th class="column-title text-center">Tipo</th>
-												<th class="column-title text-center">Cant.</th>
-												<th class="column-title text-center">Subtotal</th>
-											</tr>
-										</thead>
-
-
-										<tbody>
-											<tr class="odd pointer" ng-repeat="boleto in  boletos "
-												ng-if="boleto.cantidad >0">
-												<td class=" " ng-if="boleto.tipoCliente == 'PROMO'">Promoción</td>
-												<td class=" " ng-if="boleto.tipoCliente != 'PROMO'">{{boleto.tipoCliente}}</td>
-												<td class="text-center">{{boleto.cantidad}}</td>
-												<td class="text-center">{{boleto.subtotal | currency}}</td>
-
-											</tr>
-
-										</tbody>
-
-									</table>
-								</div>
-								<!-- table-responsive -->
-								<div
-									class="table-responsive col-lg-6 col-md-12 col-sm-12 col-xs-12">
-									<h3 class="text-center">Pagos</h3>
-									<table class="table table-striped jambo_table bulk_action">
-										<thead>
-											<tr class="headings">
-												<th class="column-title text-center">Forma de Pago</th>
-												<th class="column-title text-center">Importe</th>
-												<th class="column-title text-center">Cuenta</th>
-											</tr>
-										</thead>
-
-										<tbody>
-										<tbody>
-											<tr class="even pointer" ng-repeat="pago in listaPagos">
-												<td class=" ">{{pago.formaPagoVO.nombre}}</td>
-												<td class="text-center">{{pago.importe | currency}}</td>
-												<td class="text-center">{{pago.noCuenta}}</td>
-											</tr>
-
-										</tbody>
-										</tbody>
-
-									</table>
-								</div>
-								<!-- table-responsive -->
-							</div>
-							<!-- row -->
-
-						</div>
-						<!-- /div 9 columnas -->
-
-					</div>
-					<!-- /xpanel -->
-				</div>
-				<!-- /col-md-12 -->
-
-			</div>
-			<!-- /xcontent -->
+			<div class="clearfix"></div>
 		</div>
-		<!-- /xpanel MODULO -->
-	</div>
+		<div class="x_content">
+			<!-- bloque de pelicula -->
+			<div class="col-md-12 col-sm-12 col-xs-12">
+				<div class="x_panel">
+					<div class="row">
+						<div
+							class="animated flipInY col-lg-2 col-md-2 col-sm-2 col-xs-2 col-lg-offset-3 col-md-offset-1 col-xs-offset-1">
+							<div class="tile">
+								<h2>Total</h2>
+								<h3>{{pago.subtotal | currency}}</h3>
+							</div>
+						</div>
+						<div class="animated flipInY col-lg-2 col-md-2 col-sm-2 col-xs-2">
+							<div class="tile">
+								<h2>Pagado</h2>
+								<h3>{{pago.pagado | currency}}</h3>
+							</div>
+						</div>
+						<div class="animated flipInY col-lg-2 col-md-2 col-sm-2 col-xs-2">
+							<div class="tile">
+								<h2>Por Pagar</h2>
+								<h3>{{pago.porPagar | currency}}</h3>
+							</div>
+						</div>
+						<div ng-if="cambioTotal > 0 "
+							class="animated flipInY  col-lg-2 col-md-3 col-sm-3  col-xs-3 col-xs-offset-1 col-md-offset-0 ">
 
-</body>
-</html>
+							<div class="tile-stats">
+								<h2 class="text-center">Cambio</h2>
+								<br />
+								<h3 class="text-center">{{cambioTotal | currency}}</h3>
+							</div>
+						</div>
+					</div>
+					<!-- row -->
+					<br />
+					<div class="row">
+						<div
+							class="table-responsive col-lg-6 col-md-10 col-sm-8 col-xs-12 col-lg-offset-3 col-md-offset-1 col-sm-offset-2">
+							<table class="table table-striped jambo_table bulk_action">
+								<thead>
+									<tr class="headings">
+										<th class="column-title text-center">Forma de Pago</th>
+										<th class="column-title text-center">Importe</th>
+										<th class="column-title text-center">Cuenta</th>
+										<th class="column-title text-center">Acción</th>
+									</tr>
+								</thead>
+
+								<tbody>
+									<tr class="even pointer" ng-repeat="pago in listaPagos">
+										<td class=" ">{{pago.formaPagoVO.nombre}}</td>
+										<td class="text-center">{{pago.importe | currency}}</td>
+										<td class="text-center">{{pago.noCuenta}}</td>
+										<td class="text-center"><button type="button"
+												class="btn  btn-danger btn-xs " ng-click="cancelar(listaPagos,$index)">Quitar</button></td>
+									</tr>
+									<tr ng-if="listaPagos.length==0">
+										<td class="text-center" colspan="4">No existen
+											registros.</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<!-- table-responsive -->
+					</div>
+					<!-- row -->
+				</div>
+				<!-- xpanel -->
+				<div class="x_panel">
+					<br />
+					<form id="formPagos" name="formPagos" role="form" novalidate
+						class="form-horizontal form-label-left">
+						<div class="form-group"
+							ng-class="{'has-error': formPagos.formaPago.$invalid && formPagos.formaPago.$dirty}">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12"
+								for="forma-pago">Forma de Pago <span class="required">*</span>
+							</label>
+							<div class="col-md-6 col-sm-6 col-xs-12">
+								<div class="btn-group btn-group-justified" data-toggle="buttons">
+
+
+									<label class="btn btn-primary "
+										ng-repeat="formaPago in listaFormasPago"
+										ng-click="seleccionarFormaPago(formaPago, formPagos)">
+										<input type="radio" class="sr-only" id="fp-efectivo"
+										ng-model="pago.formaPagoVO" required name="formaPago"
+										name="forma-pago" checked> <span class="docs-tooltip"
+										title="Pago {{formaPago.nombre}}"> {{formaPago.nombre}}
+									</span>
+									</label>
+								</div>
+							</div>
+							<div
+								ng-show="formPagos.formaPago.$invalid && formPagos.formaPago.$dirty"
+								ng-style="{color:'red'}">El campo es requerido.</div>
+						</div>
+						<div class="form-group"
+							ng-class="{'has-error': formPagos.importe.$invalid && formPagos.importe.$dirty}">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12"
+								for="monto">Importe <span class="required">*</span></label>
+							<div class="col-md-6 col-sm-6 col-xs-12">
+								<input type="text" id="importe" name="importe" numeric min="-20"
+									max="10000" decimals="2" required ng-model="pago.importe"
+									ng-change="calcularCambio(pago.pagoCon,pago.importe)"
+									class="form-control col-md-7 col-xs-12" placeholder=" 00.00 ">
+							</div>
+							<div
+								ng-show="formPagos.importe.$invalid && formPagos.importe.$dirty"
+								ng-style="{color:'red'}">El campo es requerido.</div>
+						</div>
+						<div class="form-group"
+							ng-class="{'has-error': (formPagos.pagoCon.$invalid && formPagos.pagoCon.$dirty) || ( pago.importe > pago.pagoCon &&  pago.pagoCon > 0)}"
+							ng-if="!pago.formaPagoVO.requiereNumCuenta ">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12"
+								for="monto">Pago Con <span class="required">*</span></label>
+							<div class="col-md-6 col-sm-6 col-xs-12">
+								<input type="text" id="pagoCon" name="pagoCon" required ng-focus="pago.pagoCon=''"
+									ng-model="pago.pagoCon" min="-20" max="10000"
+									decimals="2"
+									ng-change="calcularCambio(pago.pagoCon,pago.importe)" 
+									class="form-control col-md-7 col-xs-12" placeholder=" 00.00 ">
+							</div>
+							<div
+								ng-show="formPagos.pagoCon.$invalid && formPagos.pagoCon.$dirty"
+								ng-style="{color:'red'}">El campo es requerido.</div>
+							<div ng-show="pago.importe > pago.pagoCon &&  pago.pagoCon > 0"
+								ng-style="{color:'red'}">El importe {{pago.importe}} es
+								mayor a lo que está recibiendo ! .</div>
+						</div>
+						<div class="form-group"
+							ng-if="!pago.formaPagoVO.requiereNumCuenta ">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12"
+								for="monto">Cambio <span class="required">*</span></label>
+							<div class="col-md-6 col-sm-6 col-xs-12">
+								<input type="text" id="importe" ng-model="pago.cambio" disabled
+									numeric min="-20" max="10000" decimals="2"
+									class="form-control col-md-7 col-xs-12" placeholder="  ">
+							</div>
+
+						</div>
+						<div class="form-group"
+							ng-if="pago.formaPagoVO.requiereNumCuenta "
+							ng-class="{'has-error': formPagos.noCuenta.$invalid && formPagos.noCuenta.$dirty}">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12"
+								for="numero-cuenta">N&uacute;mero de Cuenta <span
+								class="required">*</span>
+							</label>
+							<div class="col-md-6 col-sm-6 col-xs-12">
+								<input type="text" id="numero-cuenta" required  ng-focus="pago.noCuenta=''"
+									class="form-control col-md-7 col-xs-12" integer-number
+									ng-model="pago.noCuenta" name="noCuenta" maxlength="4"
+									placeholder=" &Uacute;ltimos 4 d&iacute;gitos ">
+							</div>
+							<div
+								ng-show="formPagos.noCuenta.$invalid && formPagos.noCuenta.$dirty  "
+								ng-style="{color:'red'}">El campo es requerido.</div>
+						</div>
+						<div class="form-group">
+							<div
+								class="col-md-6 col-sm-6 col-xs-12 col-md-offset-6  col-sm-offset-5 col-md-offset-5">
+								<button type="button" class="btn btn-success"
+									ng-click="guardarPago(pago,formPagos)">Guardar Pago</button>
+							</div>
+						</div>
+					</form>
+
+				</div>
+				<!-- /xpanel formulario -->
+			</div>
+			<!-- /x12 columnas -->
+		</div>
+		<!-- /xcontent -->
+	</div>
+	<!-- /xpanel MODULO -->
+</div>

@@ -86,7 +86,6 @@ var VentaProductoPaso3Controller = angular.module('indexModule').controller("Ven
 	
 	
 	$scope.imprimirCortesia =function(){
-		console.log("Imprimiendo cortesia");
 		
 		dulceriaService.imprimirCortesia(10, 2000).success(function(data,status,headers) {	 		 
  		 angular.forEach(data, function(value, key){

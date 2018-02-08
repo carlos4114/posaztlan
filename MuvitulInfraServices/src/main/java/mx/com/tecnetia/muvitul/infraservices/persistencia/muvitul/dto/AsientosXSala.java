@@ -27,6 +27,7 @@ public class AsientosXSala implements java.io.Serializable {
 	private Integer idAsientosXSala;
 	private Sala sala;
 	private String fila;
+	private Integer posicion;
 	private Integer numeroAsiento;	
 	private boolean existente;
 	private boolean activo;
@@ -68,7 +69,16 @@ public class AsientosXSala implements java.io.Serializable {
 		this.fila = fila;
 	}
 	
-	@Column(name = "numero_asiento", nullable = false)
+	@Column(name = "posicion", nullable = false)
+	public Integer getPosicion() {
+		return posicion;
+	}
+	
+	public void setPosicion(Integer posicion) {
+		this.posicion = posicion;
+	}
+	
+	@Column(name = "numero_asiento", nullable = true)
 	public Integer getNumeroAsiento() {
 		return numeroAsiento;
 	}

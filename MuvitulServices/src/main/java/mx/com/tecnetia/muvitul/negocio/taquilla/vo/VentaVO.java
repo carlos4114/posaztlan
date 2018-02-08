@@ -2,6 +2,8 @@ package mx.com.tecnetia.muvitul.negocio.taquilla.vo;
 
 import java.util.List;
 
+import mx.com.tecnetia.muvitul.negocio.configuracion.vo.AsientoVO;
+
 public class VentaVO {
 	private Integer idUsuario;
 	private Integer idPuntoVenta;
@@ -10,6 +12,7 @@ public class VentaVO {
 	private List<BoletoXTicketVO> boletosXTicketVO;
 	private List<PromocionXTicketVO> promocionesXTicketVO;
 	private List<PagoVO> pagosVO;
+	private List<List<AsientoVO>> asientos;
 	
 	public Integer getIdUsuario() {
 		return idUsuario;
@@ -52,6 +55,12 @@ public class VentaVO {
 	}
 	public void setIdCaja(Integer idCaja) {
 		this.idCaja = idCaja;
+	}
+	public List<List<AsientoVO>> getAsientos() {
+		return asientos;
+	}
+	public void setAsientos(List<List<AsientoVO>> asientos) {
+		this.asientos = asientos;
 	}
 	
 }

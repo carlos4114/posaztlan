@@ -14,7 +14,6 @@ angular.module('indexModule').controller("reportesController", function($scope, 
             $scope.showAviso("Es necesario llenar los campos obligatorios ");
         } else {
         	reportesService.consultarReportes($scope.reporteVO).success(function(data,status,headers) {
-     			 console.log(data);
      			$scope.save(data.archivo,data.nombre);   			 
     		}).error(function(data) {
     		  });

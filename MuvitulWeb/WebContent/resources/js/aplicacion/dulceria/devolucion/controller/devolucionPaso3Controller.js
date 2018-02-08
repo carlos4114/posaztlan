@@ -10,8 +10,7 @@ var devolucionDulceriaControllerPaso3 = angular.module('indexModule').controller
 // 			$scope.devolucion.importe = $scope.ticket.subtotal;
   			$scope.asignarPaso(3);
  			$scope.fin = true;
-			console.log($scope.devolucion);
-
+	
  		}).error(function(data) {
  		});
 	}

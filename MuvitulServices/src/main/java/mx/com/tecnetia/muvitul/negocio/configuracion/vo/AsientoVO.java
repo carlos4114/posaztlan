@@ -1,18 +1,30 @@
 package mx.com.tecnetia.muvitul.negocio.configuracion.vo;
 
 public class AsientoVO {
+	private String fechaExhibicion;
 	private Integer idAsiento;
 	private Integer idSala;
 	private String fila;
 	private Integer numeroAsiento;
 	private boolean existente;
 	private boolean activo;
+	private Integer idProgramacion;
+	private Integer idEstatusAsiento;
+	private Integer posicion;
 	
+	
+	
+	public String getFechaExhibicion() {
+		return fechaExhibicion;
+	}
+	public void setFechaExhibicion(String fechaExhibicion) {
+		this.fechaExhibicion = fechaExhibicion;
+	}
+	public void setIdAsiento(Integer idAsiento) {
+		this.idAsiento = idAsiento;
+	}
 	public Integer getIdAsiento() {
 		return idAsiento;
-	}
-	public void setIdAisento(Integer idAsiento) {
-		this.idAsiento = idAsiento;
 	}
 	public Integer getIdSala() {
 		return idSala;
@@ -43,6 +55,24 @@ public class AsientoVO {
 	}
 	public void setActivo(boolean activo) {
 		this.activo = activo;
+	}
+	public Integer getIdProgramacion() {
+		return idProgramacion;
+	}
+	public void setIdProgramacion(Integer idProgramacion) {
+		this.idProgramacion = idProgramacion;
+	}
+	public Integer getIdEstatusAsiento() {
+		return idEstatusAsiento;
+	}
+	public void setIdEstatusAsiento(Integer idEstatusAsiento) {
+		this.idEstatusAsiento = idEstatusAsiento;
+	}
+	public Integer getPosicion() {
+		return posicion;
+	}
+	public void setPosicion(Integer posicion) {
+		this.posicion = posicion;
 	}
 	
 	

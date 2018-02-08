@@ -3,16 +3,61 @@ package mx.com.tecnetia.muvitul.negocio.configuracion.assembler;
 import java.util.ArrayList;
 import java.util.List;
 
+import mx.com.tecnetia.muvitul.infraservices.negocio.muvitul.vo.AsistenciaVO;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.AsientosXSala;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Cine;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.CupoXSala;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Sala;
+import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.enumeration.EstatusAsientoEnum;
 import mx.com.tecnetia.muvitul.negocio.configuracion.vo.AsientoVO;
 import mx.com.tecnetia.muvitul.negocio.configuracion.vo.SalaCupoVO;
 import mx.com.tecnetia.muvitul.negocio.configuracion.vo.SalaProgramacionVO;
 import mx.com.tecnetia.muvitul.negocio.configuracion.vo.SalaVO;
 
 public class SalaAssembler {
+	
+	public static List<List<AsientoVO>> getMapaConAsistencia(List<AsistenciaVO> asistenciaList, Integer idProgramacion, Integer idUsuario){
+		List<List<AsientoVO>> asientosListVO = new ArrayList<List<AsientoVO>>();
+
+		if(asistenciaList==null){
+			return null;
+		}
+		
+		List<AsientoVO> filaAsientos = new ArrayList<AsientoVO>();
+		String filaAnterior = asistenciaList.size()>0?asistenciaList.get(0).getFila():"";
+		for(AsistenciaVO asistencia : asistenciaList){						
+			if(!asistencia.getFila().equals(filaAnterior)){
+                asientosListVO.add(filaAsientos);    	    		
+                filaAsientos = new ArrayList<AsientoVO>();
+                filaAnterior =asistencia.getFila();
+    		}
+			AsientoVO asientoVO = new AsientoVO();
+    		asientoVO.setActivo(true);
+    		asientoVO.setExistente(asistencia.isExistente());
+    		asientoVO.setFila(asistencia.getFila());
+    		asientoVO.setIdAsiento(asistencia.getIdAsiento());
+    		asientoVO.setIdProgramacion(idProgramacion);
+    		asientoVO.setPosicion(asistencia.getPosicion());
+    		asientoVO.setNumeroAsiento(asistencia.getNumeroAsiento());
+    		Integer idEstatusAsiento = null;
+    		if(asistencia.getIdEstatusAsiento()==null){
+    			idEstatusAsiento = EstatusAsientoEnum.DISPONIBLE;
+    		}else{
+    			if(!idUsuario.equals(asistencia.getIdUsuario()) && (asistencia.getIdEstatusAsiento()==null?0:asistencia.getIdEstatusAsiento().intValue()) == EstatusAsientoEnum.RESERVADO){
+    				idEstatusAsiento = EstatusAsientoEnum.COMPRADO;    				
+    			}else{
+    				idEstatusAsiento = asistencia.getIdEstatusAsiento();
+    			}
+    		}    		
+    		asientoVO.setIdEstatusAsiento(idEstatusAsiento);
+    		filaAsientos.add(asientoVO);                	 		
+		}
+		if(asistenciaList.size()>0){
+			asientosListVO.add(filaAsientos);
+		}
+		
+		return asientosListVO;
+	}
 	
 	public static SalaCupoVO getSalaCupoVO(Sala sala, CupoXSala cupo, List<AsientosXSala> asientos){
 		
@@ -42,9 +87,10 @@ public class SalaAssembler {
     		asientoVO.setActivo(asiento.isActivo());
     		asientoVO.setExistente(asiento.isExistente());
     		asientoVO.setFila(asiento.getFila());
-    		asientoVO.setIdAisento(asiento.getIdAsientosXSala());
+    		asientoVO.setIdAsiento(asiento.getIdAsientosXSala());
     		asientoVO.setIdSala(sala.getIdSala());
     		asientoVO.setNumeroAsiento(asiento.getNumeroAsiento());
+    		asientoVO.setPosicion(asiento.getPosicion());
     		filaAsientos.add(asientoVO);                	 		
 		}
 		if(asientos.size()>0){

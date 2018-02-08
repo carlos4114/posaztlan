@@ -7,9 +7,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.BoletosIbatisDAOI;
 import mx.com.tecnetia.muvitul.infraservices.servicios.BusinessGlobalException;
+import mx.com.tecnetia.muvitul.negocio.configuracion.business.SalaBO;
+import mx.com.tecnetia.muvitul.negocio.configuracion.vo.AsientoVO;
+import mx.com.tecnetia.muvitul.negocio.configuracion.vo.HttpResponseAsientosVO;
 import mx.com.tecnetia.muvitul.negocio.taquilla.business.ExistenciaBoletoBO;
 import mx.com.tecnetia.muvitul.negocio.taquilla.business.PromocionBO;
 import mx.com.tecnetia.muvitul.negocio.taquilla.business.VentaBoletoBO;
@@ -33,10 +37,23 @@ public class VentaBoletoController {
 	private VentaBoletoBO ventaBoletoBO;
 	@Autowired
 	private ExistenciaBoletoBO existenciaBoletoBO;
+	@Autowired
+	private SalaBO salaBO;
+	
 	
     @Scheduled(fixedDelayString = "${fixedDelay.limpieza.boletos}")
 	public void limpiarBoletosReservados() throws BusinessGlobalException{
     	this.boletosIbatisDAO.borrarBoletosReservados();
+    	this.boletosIbatisDAO.borrarAsientosReservados();
+	}
+    
+	@Transactional(readOnly = false)
+	public HttpResponseAsientosVO reservaAsiento(Date fechaExhibicion, AsientoVO asientoVO, Integer idUsuario) throws BusinessGlobalException{
+		 
+		 HttpResponseAsientosVO httpResponseVO = this.existenciaBoletoBO.reservaAsiento(asientoVO, fechaExhibicion,idUsuario);
+		 httpResponseVO.setMapaAsientos(this.salaBO.obtenerMapaConAsistencia(asientoVO.getIdProgramacion(), fechaExhibicion,idUsuario));
+		 
+		 return httpResponseVO;
 	}
 
 	

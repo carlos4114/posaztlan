@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.AsistenciaXSala;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.BoletosXTicket;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.BoletosXTicketId;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Cine;
@@ -95,7 +96,7 @@ public class BoletoXTicketAssembler {
 		return detallesTicketVO;
 	}
 
-	public static BoletoPdfVO getBoletoPdfVO(Cine cine, BoletosXTicket boletosXTicket) {
+	public static BoletoPdfVO getBoletoPdfVO(Cine cine, BoletosXTicket boletosXTicket, AsistenciaXSala asistencia) {
 		
 		if (boletosXTicket == null)
 			return null;
@@ -110,7 +111,7 @@ public class BoletoXTicketAssembler {
 		boletoPdfVO.setHorarioFuncion(boletosXTicket.getProgramacion().getHorario().toString());
 		boletoPdfVO.setNumSala(boletosXTicket.getProgramacion().getSala().getNombre());
 		boletoPdfVO.setTipoBoleto(boletosXTicket.getTipoCliente().getNombre());
-		boletoPdfVO.setButaca("--");
+		boletoPdfVO.setButaca(asistencia==null?"--":(asistencia.getAsientosXSala().getFila()+asistencia.getAsientosXSala().getNumeroAsiento()));
 		boletoPdfVO.setClasificacion(boletosXTicket.getProgramacion().getPelicula().getClasificacion());
 
 		return boletoPdfVO;

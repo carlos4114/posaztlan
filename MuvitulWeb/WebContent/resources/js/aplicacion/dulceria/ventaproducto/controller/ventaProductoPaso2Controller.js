@@ -123,7 +123,6 @@ var VentaProductoPaso2Controller = angular.module('indexModule').controller("Ven
 		venta.pagosVO=$scope.listaPagos;
 		venta.paquetesVO=$scope.paquetesSeleccionados;
 		venta.total=$scope.pago.subtotal;
-		console.log(venta);
 		dulceriaService.procesarVenta(venta).success(function(data) {	
 			$scope.asignarPaso(3);
 			$scope.ticketVenta=data;
@@ -141,7 +140,6 @@ var VentaProductoPaso2Controller = angular.module('indexModule').controller("Ven
 			$scope.cambioTotal = $scope.cambioTotal - (valueAtIndex.pagoCon - valueAtIndex.importe);
 			$scope.pagoConTotal	= $scope.pagoConTotal - valueAtIndex.pagoCon;
 		}
-		console.log(valueAtIndex);
 		array.splice(index,1);
 		$scope.calcularTotalPagado($scope.listaPagos);
 	}

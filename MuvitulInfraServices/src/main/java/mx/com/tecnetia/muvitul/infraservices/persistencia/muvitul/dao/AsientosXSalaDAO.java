@@ -24,7 +24,7 @@ public class AsientosXSalaDAO extends GlobalHibernateDAO<AsientosXSala> implemen
 		criteria.add(Restrictions.eq("activo", true));
 		criteria.add(Restrictions.eq("sala.idSala", idSala));
 		criteria.addOrder(Order.asc("fila"));
-		criteria.addOrder(Order.asc("numeroAsiento"));
+		criteria.addOrder(Order.asc("posicion"));
 		
 		return criteria.list();
 

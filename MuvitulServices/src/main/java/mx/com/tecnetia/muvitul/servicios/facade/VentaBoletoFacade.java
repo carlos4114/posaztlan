@@ -26,8 +26,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import io.jsonwebtoken.Claims;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.enumeration.ClaimsEnum;
+import mx.com.tecnetia.muvitul.infraservices.persistencia.utileria.business.FechasUtilsBO;
 import mx.com.tecnetia.muvitul.infraservices.servicios.BusinessGlobalException;
 import mx.com.tecnetia.muvitul.infraservices.servicios.NotFoundException;
+import mx.com.tecnetia.muvitul.negocio.configuracion.vo.AsientoVO;
+import mx.com.tecnetia.muvitul.negocio.configuracion.vo.HttpResponseAsientosVO;
 import mx.com.tecnetia.muvitul.negocio.taquilla.vo.ArchivoPdfVO;
 import mx.com.tecnetia.muvitul.negocio.taquilla.vo.BoletoPdfVO;
 import mx.com.tecnetia.muvitul.negocio.taquilla.vo.Boletos;
@@ -182,6 +185,14 @@ public class VentaBoletoFacade implements VentaBoletoFacadeI {
 		return new ResponseEntity<ExistenciaBoletoVO>(ventaBoletoController.updateExistenciaBoleto(existenciaBoletoVO),
 				HttpStatus.OK);
 
+	}
+	
+	@Override
+	@Transactional(readOnly = false)
+	public HttpResponseAsientosVO updateExistenciaAsiento(HttpServletRequest request,@RequestBody AsientoVO asientoVO) throws BusinessGlobalException{
+		Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
+		Integer idUsuario = (Integer) claims.get(ClaimsEnum.USUARIO);
+		return this.ventaBoletoController.reservaAsiento(FechasUtilsBO.stringToDate(asientoVO.getFechaExhibicion(),"/"), asientoVO, idUsuario);
 	}
 
 	@Override

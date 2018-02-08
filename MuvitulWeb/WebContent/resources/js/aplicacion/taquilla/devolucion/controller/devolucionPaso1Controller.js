@@ -26,7 +26,6 @@ var devolucionBoletoController = angular.module('indexModule').controller('devol
 			
 			devolucionBoletoService.consultarTicket(idTicket).success(function(data) {
 				$scope.ticket = data;
-				console.log(data);
 				$scope.devolucion.idTicketVenta = $scope.ticket.idTicket;
 				$scope.cargarCatalogos();
 

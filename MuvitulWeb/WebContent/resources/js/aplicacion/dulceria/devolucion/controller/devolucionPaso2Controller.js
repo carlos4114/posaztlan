@@ -58,7 +58,6 @@ var devolucionDulceriaControllerPaso2 = angular.module('indexModule').controller
 		$scope.consultarTiposDevoluciones = function() {
 			devolucionDulceriaService.consultarTiposDevoluciones(1).success(function(data) {
 				$scope.listaTiposDevolucion		=data;
-				console.log(data);
 			}).error(function(data) {
 			});
 		}

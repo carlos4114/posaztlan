@@ -8,6 +8,8 @@ var VentaBoletosPaso3Controller = angular.module('indexModule').controller("Vent
 	$scope.asientosDisponibles   ={};
 	$scope.promocionBoletoVO ={};
 	$controller('VentaBoletosPaso2Controller',{$scope : $scope });
+	$controller('VentaBoletosPaso4Controller',{$scope : $scope });
+	
 	
      $scope.StartTimer = function (paramsExistenciaBoleto) {
  		$scope.consultarExistenciaBoletos(paramsExistenciaBoleto);

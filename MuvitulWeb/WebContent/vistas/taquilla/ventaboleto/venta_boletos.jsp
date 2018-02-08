@@ -30,13 +30,18 @@
 								Selecciona la cantidad<br />
 						</span>
 					</a></li>
-					<li><a href="" ng-class="statusVenta.registrarPago"> <span
+					<li><a href="" ng-class="statusVenta.seleccionarAsientos"> <span
 							class="step_no">4</span> <span class="step_descr">
+								Seleccionar Asientos<br />
+						</span>
+					</a></li>
+					<li><a href="" ng-class="statusVenta.registrarPago"> <span
+							class="step_no">5</span> <span class="step_descr">
 								Registra el pago<br />
 						</span>
 					</a></li>
 					<li><a href="" ng-class="statusVenta.confirmarVenta"> <span
-							class="step_no">5</span> <span class="step_descr">
+							class="step_no">6</span> <span class="step_descr">
 								Confirma la venta<br />
 						</span>
 					</a></li>
@@ -49,9 +54,11 @@
 				<div class="col-md-12 col-sm-12 col-xs-12"
 					ng-if="statusVenta.numeroPaso ===3" elegir-cantidad></div>
 				<div class="col-md-12 col-sm-12 col-xs-12"
-					ng-if="statusVenta.numeroPaso ===4" registrar-pago></div>
+					ng-if="statusVenta.numeroPaso ===4" seleccionar-asientos></div>
 				<div class="col-md-12 col-sm-12 col-xs-12"
-					ng-if="statusVenta.numeroPaso ===5" confirmar-venta></div>
+					ng-if="statusVenta.numeroPaso ===5" registrar-pago></div>	
+				<div class="col-md-12 col-sm-12 col-xs-12"
+					ng-if="statusVenta.numeroPaso ===6" confirmar-venta></div>
 
 				<!-- /bloque de PASO de wizard -->
 			</div>

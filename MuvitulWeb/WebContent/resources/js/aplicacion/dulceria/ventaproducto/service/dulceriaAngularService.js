@@ -3,18 +3,15 @@
 angular.module('indexModule').service('dulceriaService', ['$http','GlobalFactory','config', function($http,GlobalFactory,config) {
 	
 	this.consultarPaquetes = function(){
-		console.log("consultar paquetes");
 		return $http.get(config.baseUrl+"/ventaProducto/paquetes");
 	}
  
 	 this.consultarFormasPago = function(){
-			console.log("consultar formas pago");
 		 return $http.get(config.baseUrl+"/catalogo/formaspago");
 	 }
 	 
 	 
 	 this.consultarArticulos = function(){
-			console.log("consultar Articulos");
 		 return $http.get(config.baseUrl+"/catalogo/articulos");
 	 }
 	 
@@ -40,7 +37,6 @@ angular.module('indexModule').service('dulceriaService', ['$http','GlobalFactory
 	 /**************************************/
 	 
 	 this.consultarTicketBoletos = function(idTicket){
-			console.log("consultar tickets");
 		return $http.get(config.baseUrl+"/devolucion/boletos", {
 			params : {"idTicket" : idTicket }
 		});
@@ -48,7 +44,6 @@ angular.module('indexModule').service('dulceriaService', ['$http','GlobalFactory
 	 }
 	 
 	 this.requestAutorizar = function(requestAutorizacionVO){
-			console.log("consultar tickets");
 		 return $http.post(config.baseUrl + "/autorizacion/movimientos",requestAutorizacionVO  );
 	 }
 

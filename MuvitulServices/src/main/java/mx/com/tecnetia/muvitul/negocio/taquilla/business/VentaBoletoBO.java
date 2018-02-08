@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -22,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.AsistenciaXSalaDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.BoletosXTicketDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.CineDAO;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.ExistenciaBoletoDAOI;
@@ -32,8 +32,11 @@ import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.PrecioXFor
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.ProgramacionDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.PromocionesXTicketDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.TicketVentaDAOI;
+import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.AsistenciaXSala;
+import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.AsistenciaXSalaId;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.BoletosXTicket;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Cine;
+import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.EstatusAsiento;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ExistenciaBoletos;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ImpuestoBoleto;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ImpuestosXTicketTaquilla;
@@ -41,7 +44,9 @@ import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Pago;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Programacion;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.PromocionesXTicket;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.TicketVenta;
+import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.enumeration.EstatusAsientoEnum;
 import mx.com.tecnetia.muvitul.infraservices.servicios.BusinessGlobalException;
+import mx.com.tecnetia.muvitul.negocio.configuracion.vo.AsientoVO;
 import mx.com.tecnetia.muvitul.negocio.taquilla.assembler.BoletoXTicketAssembler;
 import mx.com.tecnetia.muvitul.negocio.taquilla.assembler.ImpuestoXTicketTaquillaAssembler;
 import mx.com.tecnetia.muvitul.negocio.taquilla.assembler.PagoAssembler;
@@ -111,6 +116,9 @@ public class VentaBoletoBO {
 
 	@Autowired
 	private PrecioXFormatoDAOI precioXFormatoDAO;
+	
+	@Autowired
+	private AsistenciaXSalaDAOI asistenciaXsalaDAO;
 
 	public List<PeliculaVO> findByCineDiaAndExhibicion(Integer idCine, String diaSemana, Date fechaExhibicion, Date horario)
 			throws BusinessGlobalException {
@@ -280,6 +288,21 @@ public class VentaBoletoBO {
 			existenciaBoletos.setBoletosReservados(existenciaBoletos.getBoletosReservados() - cantidadBoletos);
 			existenciaBoletoDAO.update(existenciaBoletos);
 		}
+		
+		//guardamos los asientos
+		//this.asistenciaXsalaDAO.getWithEstatus(idProgramacion, fechaExhibicion, idUsuario, idEstatusAsiento)		
+		for(List<AsientoVO> filasAsientos:ventaVO.getAsientos()){
+			for(AsientoVO asientoVO:filasAsientos){
+				if(asientoVO.getIdEstatusAsiento().intValue() == EstatusAsientoEnum.RESERVADO){
+					AsistenciaXSala asistencia = this.asistenciaXsalaDAO.findById(new AsistenciaXSalaId(asientoVO.getIdAsiento(), 
+							asientoVO.getIdProgramacion(), 
+							ventaVO.getBoletosXTicketVO().get(0).getFechaExhibicion()));
+					asistencia.setEstatusAsiento(new EstatusAsiento(EstatusAsientoEnum.COMPRADO));
+					asistencia.setTicketVenta(ticketVenta);
+					this.asistenciaXsalaDAO.update(asistencia);
+				}
+			}
+		}
 
 		return TicketVentaAssembler.getTicketVentaVO(ticketVenta);
 	}
@@ -356,12 +379,14 @@ public class VentaBoletoBO {
 			e.printStackTrace();
 			logger.error("Error al generar pdf para el ticket[{}]", idTicket);
 		}
-
+		
+		List<AsistenciaXSala> asistencia = this.asistenciaXsalaDAO.getByTicket(idTicket);
+		int asiento = 0;
 		for (BoletosXTicket boletosXTicket : ticketVenta.getBoletosXTickets()) {
-
+			
 			for (int i = 0; i < boletosXTicket.getCantidad(); i++) {
-
-				BoletoPdfVO boletoPdfVO = BoletoXTicketAssembler.getBoletoPdfVO(cine, boletosXTicket);
+				
+				BoletoPdfVO boletoPdfVO = BoletoXTicketAssembler.getBoletoPdfVO(cine, boletosXTicket, (asistencia==null?null:(asistencia.size()>asiento?asistencia.get(asiento):null)));
 
 				Map<String, Object> paramBoleto = new HashMap<String, Object>();
 				paramBoleto.put("fecha", boletoPdfVO.getFecha());
@@ -384,6 +409,7 @@ public class VentaBoletoBO {
 					e.printStackTrace();
 					logger.error("Error al generar pdf para el boleto [{}]", idTicket);
 				}
+				asiento = asiento +1;
 			}
 		}
 

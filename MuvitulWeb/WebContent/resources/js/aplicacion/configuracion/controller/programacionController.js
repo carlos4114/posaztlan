@@ -37,7 +37,6 @@ var ProgramacionController = angular.module('indexModule').controller("Programac
             $scope.showAviso("Es necesario llenar los campos obligatorios ");
          }else{
          	 programacionesTaquillaService.crearProgramacion(programacion).success(function(data) {
-         		 console.log(data);
          		if (data.nuevo==true){
     	            $scope.showAviso("La programación fue registrada correctamente.");
     				$scope.consultarProgramacion();
@@ -63,7 +62,6 @@ var ProgramacionController = angular.module('indexModule').controller("Programac
 		}
 
 		$scope.eliminarProgramacion = function(idProgramacion) {
-			console.log(idProgramacion)
 			programacionesTaquillaService.eliminarProgramaciones(idProgramacion).success(function(data) {
 				$scope.consultarProgramacion();
 			}).error(function(data) {

@@ -1,6 +1,6 @@
 'use strict';
 
-var VentaProductoPaso1Controller = angular.module('indexModule').controller("ventaProductoController", function($scope,$controller,$filter,statusFactory,dulceriaService){
+var VentaProductoPaso1Controller = angular.module('indexModule').controller("ventaProductoController", function($scope,$controller,$filter,ModalService,statusFactory,dulceriaService){
 	$scope.statusVenta = {elegirProducto : "selected",registrarPago : "",confirmarVenta : "",numeroPaso : 1	}
 	$scope.fechaActual = moment(new Date()).format('DD/MM/YYYY');
 	$controller('VentaProductoPaso2Controller',{$scope : $scope });
@@ -18,7 +18,6 @@ var VentaProductoPaso1Controller = angular.module('indexModule').controller("ven
 		dulceriaService.consultarPaquetes().success(function(data) {
 			$scope.paquetes =data;
 			 $scope.errorPaquetes=false;
-			console.log(data);
 		}).error(function(data) {
 			 $scope.paquetes={};
  			 $scope.errorPaquetes=true;
@@ -73,10 +72,50 @@ var VentaProductoPaso1Controller = angular.module('indexModule').controller("ven
 	
 	$scope.validarPaquetes =function(){
 		dulceriaService.validarPaquetes($scope.paquetesSeleccionados).success(function(data) {	
- 			console.log(data);
+
+			var mensajes=[];
+			
+			if(data.agotado){
+  			
+ 			 angular.forEach(data.productosExistenciaVO, function(value, key){
+ 				var mensaje="";
+ 				mensaje+=value.productoVO.nombre +"\tExistencia: "+value.existencia+"\tSeleccionados: "+value.seleccionado;
+ 				mensajes.push(mensaje);
+ 			});
+ 			 $scope.showAvisoMensajes(mensajes);
+			}
+            else
+            	$scope.asignarPaso(2); 
+			var mensajes=[];
+			
+			if(data.agotado){
+  			
+ 			 angular.forEach(data.productosExistenciaVO, function(value, key){
+ 				var mensaje="";
+ 				mensaje+=value.productoVO.nombre +"\tExistencia: "+value.existencia+"\tSeleccionados: "+value.seleccionado;
+ 				mensajes.push(mensaje);
+ 			});
+ 			 $scope.showAvisoMensajes(mensajes);
+			}
+            else
+            	$scope.asignarPaso(2); 
  		  }).error(function(data) {
+ 			 $scope.asignarPaso(2); 
 		  });
 	}
+	
+	 $scope.showAvisoMensajes= function(messageTo) {
+		ModalService.showModal({
+							templateUrl : 'vistas/templatemodal/templateModalAvisoDinamico.html',
+							controller : 'mensajeModalController',
+							inputs : {
+								message : messageTo
+							}
+						}).then(function(modal) {
+					modal.element.modal();
+				});
+	};
+	
 	
 	$scope.consultarPaquetes();
 
@@ -84,7 +123,6 @@ var VentaProductoPaso1Controller = angular.module('indexModule').controller("ven
 	
 	$scope.consultarTicketBoletos = function() {
 		dulceriaService.consultarTicketBoletos(214).success(function(data) {
-			console.log(data);
 		}).error(function(data) {
 		});
 	}
@@ -98,7 +136,6 @@ var VentaProductoPaso1Controller = angular.module('indexModule').controller("ven
 		$scope.requestAutorizacionVO.comentarios="Comentarios"
 		
 		dulceriaService.requestAutorizar($scope.requestAutorizacionVO).success(function(data) {
-			console.log(data);
 		}).error(function(data) {
 		});
 	}
@@ -111,51 +148,42 @@ var VentaProductoPaso1Controller = angular.module('indexModule').controller("ven
 	
 	$scope.consultar = function() {
 		dulceriaService.consultar(1, $scope.fechaActual, 4, 'DUL-001').success(function(data) {
-			console.log(data);
 		}).error(function(data) {
 		});
 	}
 	
 	$scope.consultarArticulos = function() {
 		dulceriaService.consultarArticulos().success(function(data) {
-			console.log(data);
 		}).error(function(data) {
 		});
 	}
 	
 	$scope.consultarIngresosPeliculas = function() {
 		dulceriaService.consultarIngresoPelicula(1).success(function(data) {
-			console.log(data);
 		}).error(function(data) {
 		});
 	}
 	
 	$scope.consultarAsistencia = function() {
 		dulceriaService.consultarAsistencia(1,$scope.fechaActual, 12).success(function(data) {
-			console.log(data);
 		}).error(function(data) {
 		});
 	}
 	
 	$scope.consultarCinesEmpresa = function() {
 		dulceriaService.consultarCinesEmpresa().success(function(data) {
-			console.log(data);
 		}).error(function(data) {
 		});
 	}
 	
 	$scope.consultarRentables = function() {
 		dulceriaService.consultarRentables(1,$scope.fechaActual,30, false, 10).success(function(data) {
-			console.log('rentables');
-			console.log(data);
 		}).error(function(data) {
 		});
 	}
 	
 	$scope.consultarVendidos = function() {
 		dulceriaService.consultarVendidos(1,$scope.fechaActual,30, false, 10).success(function(data) {
-			console.log('vendidos');
-			console.log(data);
 		}).error(function(data) {
 		});
 	}
@@ -163,7 +191,6 @@ var VentaProductoPaso1Controller = angular.module('indexModule').controller("ven
 	
 	$scope.consultarRentabilidad = function() {
 		dulceriaService.consultarRentabilidad(1,$scope.fechaActual, 30).success(function(data) {
-			console.log(data);
 		}).error(function(data) {
 		});
 	}
