@@ -212,14 +212,14 @@
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						</box>
-						<textField pattern="$###0.00" isBlankWhenNull="true">
+						<textField pattern="$###0.00" isBlankWhenNull="false">
 							<reportElement style="Crosstab Data Text" x="0" y="0" width="68" height="17" uuid="3a23dcdf-ccea-4e51-bb7a-ac451496ed34"/>
 							<textElement>
 								<font size="8" isBold="false"/>
 							</textElement>
 							<textFieldExpression><![CDATA[$V{precio}]]></textFieldExpression>
 						</textField>
-						<textField isBlankWhenNull="true">
+						<textField isBlankWhenNull="false">
 							<reportElement style="Crosstab Data Text" x="68" y="0" width="84" height="17" uuid="0d2eecd5-cbf2-4bbf-96e6-fbdd174c667c"/>
 							<textElement>
 								<font size="8" isBold="false"/>

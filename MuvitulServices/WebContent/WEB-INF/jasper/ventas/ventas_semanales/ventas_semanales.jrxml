@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ventas_semanales" pageWidth="1800" pageHeight="1440" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="1760" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fa18d218-d14c-4d03-8b37-d3444dd5fe5f">
-	<property name="ireport.zoom" value="0.4428902500000011"/>
-	<property name="ireport.x" value="64"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="0.7846070941802523"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="197"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -115,6 +115,7 @@
 		<parameter name="id_cine" class="java.lang.Integer"/>
 		<parameter name="fecha_fin" class="java.lang.String"/>
 		<parameter name="tipo_reporte" class="java.lang.String"/>
+		<parameter name="periodo" class="java.lang.String"/>
 		<queryString>
 			<![CDATA[select c.nombre as nombreCine,e.nombre as nombreEmpresa ,DATE_FORMAT(now(),'%d/%m/%Y') as emision from cine c inner join empresa e ON e.id_empresa = c.id_empresa where id_cine=$P{id_cine};]]>
 		</queryString>
@@ -229,6 +230,7 @@
 	<parameter name="fecha_fin" class="java.lang.String"/>
 	<parameter name="datasourceTaquilla" class="java.util.List"/>
 	<parameter name="datasourceDulceria" class="java.util.List"/>
+	<parameter name="periodo" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT p.id_programacion,s.id_sala,p.id_programacion,
        p.dia_semana,
@@ -315,9 +317,9 @@ ORDER BY s.nombre]]>
 				</graphicElement>
 			</rectangle>
 			<componentElement>
-				<reportElement key="table 3" style="table 3" x="229" y="48" width="479" height="50" uuid="b5f790fa-2d14-4b73-bc8e-b561c1c84d80"/>
+				<reportElement key="table 3" style="table 3" x="229" y="48" width="655" height="50" uuid="b5f790fa-2d14-4b73-bc8e-b561c1c84d80"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="header" uuid="2b551cfa-d3fe-43ba-a669-23f1454063ce">
+					<datasetRun subDataset="header" uuid="161978b4-7356-4446-b7ea-744f450106e5">
 						<datasetParameter name="id_cine">
 							<datasetParameterExpression><![CDATA[$P{id_cine}]]></datasetParameterExpression>
 						</datasetParameter>
@@ -327,10 +329,13 @@ ORDER BY s.nombre]]>
 						<datasetParameter name="tipo_reporte">
 							<datasetParameterExpression><![CDATA[$P{tipo_reporte}]]></datasetParameterExpression>
 						</datasetParameter>
+						<datasetParameter name="periodo">
+							<datasetParameterExpression><![CDATA[$P{periodo}]]></datasetParameterExpression>
+						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
-					<jr:columnGroup width="620" uuid="13a4bbcd-e28c-4c92-ab5c-87b90e7d259d">
-						<jr:columnGroup width="620" uuid="4548b07c-bedb-49f2-bd99-67e25d50a284">
+					<jr:columnGroup width="741" uuid="13a4bbcd-e28c-4c92-ab5c-87b90e7d259d">
+						<jr:columnGroup width="741" uuid="4548b07c-bedb-49f2-bd99-67e25d50a284">
 							<jr:column width="154" uuid="245d72e3-0179-4415-a9d7-3dac3e3ee920">
 								<jr:columnHeader style="table 3_CH" height="19" rowSpan="1">
 									<staticText>
@@ -417,10 +422,10 @@ ORDER BY s.nombre]]>
 									</textField>
 								</jr:detailCell>
 							</jr:column>
-							<jr:column width="90" uuid="627b5844-c433-401a-b6c3-acd0248fc615">
+							<jr:column width="211" uuid="627b5844-c433-401a-b6c3-acd0248fc615">
 								<jr:columnHeader height="19" rowSpan="1">
 									<staticText>
-										<reportElement x="0" y="0" width="90" height="19" uuid="492023c9-e757-44e3-8102-feb808759f9b"/>
+										<reportElement x="0" y="0" width="211" height="19" uuid="492023c9-e757-44e3-8102-feb808759f9b"/>
 										<box>
 											<pen lineWidth="0.5"/>
 											<topPen lineWidth="0.5"/>
@@ -436,16 +441,9 @@ ORDER BY s.nombre]]>
 								</jr:columnHeader>
 								<jr:detailCell height="19" rowSpan="1">
 									<textField>
-										<reportElement x="0" y="0" width="90" height="19" uuid="5aad66c0-eb05-4515-928a-bd3b2699fd59"/>
-										<box>
-											<pen lineWidth="0.5"/>
-											<topPen lineWidth="0.5"/>
-											<leftPen lineWidth="0.5"/>
-											<bottomPen lineWidth="0.5"/>
-											<rightPen lineWidth="0.5"/>
-										</box>
+										<reportElement x="0" y="0" width="211" height="19" uuid="7da3083b-19a3-4382-9bbb-ba3b7bbbeadf"/>
 										<textElement textAlignment="Center"/>
-										<textFieldExpression><![CDATA[$P{fecha_fin}]]></textFieldExpression>
+										<textFieldExpression><![CDATA[$P{periodo}]]></textFieldExpression>
 									</textField>
 								</jr:detailCell>
 							</jr:column>
@@ -1002,17 +1000,17 @@ ORDER BY s.nombre]]>
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						</box>
-						<textField pattern="$###0.00">
+						<textField pattern="$###0.00" isBlankWhenNull="false">
 							<reportElement style="Crosstab Data Text" x="0" y="0" width="59" height="17" uuid="5082454f-0d15-41ec-9ae4-c7f145d91a6d"/>
-							<textFieldExpression><![CDATA[$V{precio}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[($V{precio}==null )? new Double(0.00):$V{precio}]]></textFieldExpression>
 						</textField>
-						<textField pattern="$###0.00">
+						<textField pattern="$###0.00" isBlankWhenNull="false">
 							<reportElement style="Crosstab Data Text" x="118" y="0" width="59" height="17" uuid="aac6257c-11c4-490c-91f6-ac1d999f53ab"/>
-							<textFieldExpression><![CDATA[$V{total}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[($V{total}==null )? new Double(0.00):$V{total}]]></textFieldExpression>
 						</textField>
-						<textField>
+						<textField isBlankWhenNull="false">
 							<reportElement style="Crosstab Data Text" x="59" y="0" width="59" height="17" uuid="d30c15ad-f907-4a42-8022-073a09a32c5f"/>
-							<textFieldExpression><![CDATA[$V{cantidad}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[($V{cantidad}==null )? new Integer(0):$V{cantidad}]]></textFieldExpression>
 						</textField>
 					</cellContents>
 				</crosstabCell>
@@ -1026,14 +1024,14 @@ ORDER BY s.nombre]]>
 							<textElement>
 								<font size="10" isBold="true"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$V{totalCantidad}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[($V{totalCantidad}==null )? new Integer(0):$V{totalCantidad}]]></textFieldExpression>
 						</textField>
 						<textField pattern="$###0.00">
 							<reportElement style="Crosstab Data Text" x="118" y="0" width="59" height="16" uuid="059091ee-e28f-4362-a7b6-005129c058c2"/>
 							<textElement>
 								<font size="10" isBold="true"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$V{totalTotal}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[($V{totalTotal}==null )? new Double(0.00):$V{totalTotal}]]></textFieldExpression>
 						</textField>
 					</cellContents>
 				</crosstabCell>
@@ -1047,14 +1045,14 @@ ORDER BY s.nombre]]>
 							<textElement>
 								<font size="10" isBold="true"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$V{totalesCantidad}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[($V{totalesCantidad}==null )? new Integer(0):$V{totalesCantidad}]]></textFieldExpression>
 						</textField>
 						<textField pattern="$###0.00">
 							<reportElement style="Crosstab Data Text" x="48" y="0" width="73" height="16" uuid="e932faa9-80c3-46ac-b455-f8ce0d564f85"/>
 							<textElement>
 								<font size="10" isBold="true"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$V{totalesTotal}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[($V{totalesTotal}==null )? new Double(0.00):$V{totalesTotal}]]></textFieldExpression>
 						</textField>
 					</cellContents>
 				</crosstabCell>
@@ -1068,14 +1066,14 @@ ORDER BY s.nombre]]>
 							<textElement>
 								<font size="11" isBold="true"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$V{totalesCantidad}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[($V{totalesCantidad}==null )? new Integer(0):$V{totalesCantidad}]]></textFieldExpression>
 						</textField>
 						<textField pattern="$###0.00">
 							<reportElement style="Crosstab Data Text" x="48" y="0" width="73" height="16" uuid="d42ad0d2-2112-4923-8d4a-cb148b6586cf"/>
 							<textElement>
 								<font size="11" isBold="true"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$V{totalesTotal}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[($V{totalesTotal}==null )? new Double(0.00):$V{totalesTotal}]]></textFieldExpression>
 						</textField>
 					</cellContents>
 				</crosstabCell>
@@ -1233,26 +1231,26 @@ ORDER BY s.nombre]]>
 						<box>
 							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						</box>
-						<textField pattern="$###0.00">
+						<textField pattern="$###0.00" isBlankWhenNull="false">
 							<reportElement style="Crosstab Data Text" x="0" y="0" width="59" height="17" uuid="9c3216f5-b4ec-41c0-a962-ac036b1f3bfa"/>
 							<textElement verticalAlignment="Middle">
 								<font size="10"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$V{precio}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[($V{precio}==null )? new Double(0.00):$V{precio}]]></textFieldExpression>
 						</textField>
-						<textField>
+						<textField isBlankWhenNull="false">
 							<reportElement style="Crosstab Data Text" x="59" y="0" width="59" height="17" uuid="de6ae9f4-a759-4586-830e-258a675a0c4d"/>
 							<textElement verticalAlignment="Middle">
 								<font size="10"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$V{cantidad}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[($V{cantidad}==null )? new Integer(0):$V{cantidad}]]></textFieldExpression>
 						</textField>
-						<textField pattern="$###0.00">
+						<textField pattern="$###0.00" isBlankWhenNull="false">
 							<reportElement style="Crosstab Data Text" x="118" y="0" width="59" height="17" uuid="955b80e4-84ea-4495-842e-42fb400585c0"/>
 							<textElement verticalAlignment="Middle">
 								<font size="10"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$V{total}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[($V{total}==null )? new Double(0.00):$V{total}]]></textFieldExpression>
 						</textField>
 					</cellContents>
 				</crosstabCell>
@@ -1266,14 +1264,14 @@ ORDER BY s.nombre]]>
 							<textElement verticalAlignment="Middle">
 								<font size="11" isBold="true"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$V{totalCantidad}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[($V{totalCantidad}==null )? new Integer(0):$V{totalCantidad}]]></textFieldExpression>
 						</textField>
 						<textField pattern="$###0.00">
 							<reportElement style="Crosstab Data Text" x="118" y="0" width="59" height="16" uuid="326c7ef9-cd46-45a9-a153-df02dbfb2986"/>
 							<textElement verticalAlignment="Middle">
 								<font size="11" isBold="true"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$V{totalTotal}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[($V{totalTotal}==null )? new Double(0.00):$V{totalTotal}]]></textFieldExpression>
 						</textField>
 					</cellContents>
 				</crosstabCell>
@@ -1287,14 +1285,14 @@ ORDER BY s.nombre]]>
 							<textElement verticalAlignment="Middle">
 								<font size="10" isBold="true"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$V{totalTotal}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[($V{totalTotal}==null )? new Double(0.00):$V{totalTotal}]]></textFieldExpression>
 						</textField>
 						<textField>
 							<reportElement style="Crosstab Data Text" x="0" y="0" width="55" height="18" uuid="6900d334-5fad-4331-abd6-2c1f67e40d96"/>
 							<textElement verticalAlignment="Middle">
 								<font size="10" isBold="true"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$V{totalCantidad}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[($V{totalCantidad}==null )? new Integer(0):$V{totalCantidad}]]></textFieldExpression>
 						</textField>
 					</cellContents>
 				</crosstabCell>
@@ -1308,14 +1306,14 @@ ORDER BY s.nombre]]>
 							<textElement verticalAlignment="Middle">
 								<font size="11" isBold="true"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$V{totalCantidad}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[($V{totalCantidad}==null )? new Integer(0):$V{totalCantidad}]]></textFieldExpression>
 						</textField>
 						<textField pattern="$###0.00">
 							<reportElement style="Crosstab Data Text" x="55" y="0" width="70" height="16" uuid="de1986f3-8243-4079-a31e-73985ce3e84f"/>
 							<textElement verticalAlignment="Middle">
 								<font size="11" isBold="true"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$V{totalTotal}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[($V{totalTotal}==null )? new Double(0.00):$V{totalTotal}]]></textFieldExpression>
 						</textField>
 					</cellContents>
 				</crosstabCell>

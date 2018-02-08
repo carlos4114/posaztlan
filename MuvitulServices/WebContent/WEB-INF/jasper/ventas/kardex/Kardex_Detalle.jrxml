@@ -1,8 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Kardex_Detalle" pageWidth="792" pageHeight="802" whenNoDataType="NoDataSection" columnWidth="792" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="4815966c-7afa-4609-b2f7-0f8d601971d2">
-	<property name="ireport.zoom" value="0.82644628099174"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Kardex_Detalle" pageWidth="936" pageHeight="802" whenNoDataType="NoDataSection" columnWidth="936" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="4815966c-7afa-4609-b2f7-0f8d601971d2">
+	<property name="ireport.zoom" value="0.9090909090909172"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
 	<parameter name="id_articulo" class="java.lang.Integer"/>
 	<parameter name="id_cine" class="java.lang.Integer"/>
 	<parameter name="id_punto_venta" class="java.lang.Integer"/>
@@ -54,10 +94,16 @@
 	<field name="punitario" class="java.math.BigDecimal"/>
 	<field name="total" class="java.math.BigDecimal"/>
 	<field name="existenciaFinal" class="java.math.BigDecimal"/>
+	<title>
+		<band height="29"/>
+	</title>
+	<pageHeader>
+		<band height="26"/>
+	</pageHeader>
 	<columnHeader>
 		<band height="21">
 			<staticText>
-				<reportElement x="6" y="1" width="100" height="20" uuid="6caac561-0301-4be0-b8a3-f832a1279a86"/>
+				<reportElement x="6" y="1" width="172" height="20" uuid="6caac561-0301-4be0-b8a3-f832a1279a86"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -71,7 +117,7 @@
 				<text><![CDATA[Fecha]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="109" y="1" width="100" height="20" uuid="40f4f77f-1dc6-491c-bd7f-afa86a89483b"/>
+				<reportElement x="178" y="1" width="100" height="20" uuid="40f4f77f-1dc6-491c-bd7f-afa86a89483b"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -85,7 +131,7 @@
 				<text><![CDATA[Tipo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="214" y="1" width="100" height="20" uuid="a9800071-790a-4eb7-9de6-b3a1aab1ba0f"/>
+				<reportElement x="278" y="1" width="236" height="20" uuid="a9800071-790a-4eb7-9de6-b3a1aab1ba0f"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -99,7 +145,7 @@
 				<text><![CDATA[Movimiento]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="320" y="1" width="100" height="20" uuid="da33b82e-02c4-4b82-a548-316b821fa445"/>
+				<reportElement x="514" y="1" width="100" height="20" uuid="da33b82e-02c4-4b82-a548-316b821fa445"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -113,7 +159,7 @@
 				<text><![CDATA[Piezas]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="425" y="1" width="100" height="20" uuid="ce2066be-5431-4ddc-97e0-0fc641015f59"/>
+				<reportElement x="614" y="1" width="100" height="20" uuid="ce2066be-5431-4ddc-97e0-0fc641015f59"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -127,7 +173,7 @@
 				<text><![CDATA[P. Unitario]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="530" y="1" width="100" height="20" uuid="1c43b03a-6d86-4069-bddb-d42c2e5d405b"/>
+				<reportElement x="714" y="1" width="100" height="20" uuid="1c43b03a-6d86-4069-bddb-d42c2e5d405b"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -141,7 +187,7 @@
 				<text><![CDATA[Total]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="635" y="1" width="100" height="20" uuid="cca59d15-ff79-4b36-83af-b352600067b8"/>
+				<reportElement x="814" y="1" width="100" height="20" uuid="cca59d15-ff79-4b36-83af-b352600067b8"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -157,33 +203,33 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="25" splitType="Stretch">
+		<band height="20" splitType="Stretch">
 			<textField>
-				<reportElement x="6" y="4" width="100" height="20" uuid="aae759fe-9533-46ed-b1c1-a24802b1166d"/>
-				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="109" y="4" width="100" height="20" uuid="20c4011d-ab0b-489f-b56d-71585b4f63ed"/>
+				<reportElement x="178" y="0" width="100" height="20" uuid="20c4011d-ab0b-489f-b56d-71585b4f63ed"/>
 				<textFieldExpression><![CDATA[$F{tipo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="214" y="4" width="100" height="20" uuid="e6e676c1-2c6d-44c9-809b-2ee20d41e7a3"/>
-				<textFieldExpression><![CDATA[$F{movimiento}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="320" y="4" width="100" height="20" uuid="bf7b613c-e45b-4d1c-82ea-0dfd6fec87d8"/>
-				<textFieldExpression><![CDATA[$F{piezas}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="425" y="4" width="100" height="20" uuid="10fd8861-eb3c-40ba-b5de-940b0bd75c72"/>
-				<textFieldExpression><![CDATA[$F{punitario}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="530" y="4" width="100" height="20" uuid="8a4e3861-fa61-43da-ae8d-9f1be79a2ad5"/>
+				<reportElement x="714" y="0" width="100" height="20" uuid="8a4e3861-fa61-43da-ae8d-9f1be79a2ad5"/>
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="635" y="4" width="100" height="20" uuid="aa7b11a5-fd0c-4bf1-96f0-f86c977f9fa8"/>
+				<reportElement x="614" y="0" width="100" height="20" uuid="10fd8861-eb3c-40ba-b5de-940b0bd75c72"/>
+				<textFieldExpression><![CDATA[$F{punitario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="514" y="0" width="100" height="20" uuid="bf7b613c-e45b-4d1c-82ea-0dfd6fec87d8"/>
+				<textFieldExpression><![CDATA[$F{piezas}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="278" y="0" width="236" height="20" uuid="e6e676c1-2c6d-44c9-809b-2ee20d41e7a3"/>
+				<textFieldExpression><![CDATA[$F{movimiento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="6" y="0" width="172" height="20" uuid="aae759fe-9533-46ed-b1c1-a24802b1166d"/>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="814" y="0" width="100" height="20" uuid="aa7b11a5-fd0c-4bf1-96f0-f86c977f9fa8"/>
 				<textFieldExpression><![CDATA[$F{existenciaFinal}]]></textFieldExpression>
 			</textField>
 		</band>

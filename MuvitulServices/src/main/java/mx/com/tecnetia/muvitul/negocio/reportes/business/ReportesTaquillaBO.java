@@ -89,6 +89,7 @@ public class ReportesTaquillaBO {
 		 
 			HashMap<String, Object> paramKardex = new HashMap<String, Object>();
 			paramKardex.put("id_cine", idCine);
+			paramKardex.put("periodo", "Del "+fecha +" al "+fecha);
 			paramKardex.put("fecha_inicio", FechasUtilsBO.convertStringToData(fecha));
 			paramKardex.put("fecha_fin", FechasUtilsBO.convertStringToData(fecha));
 			paramKardex.put("id_punto_venta",idPuntoVenta);
@@ -123,20 +124,19 @@ public class ReportesTaquillaBO {
 
 		String fechaInicio= FechasUtilsBO.convertStringToData(fecha);
 		String fechaFin= FechasUtilsBO.dateToString(FechasUtilsBO.addDaysToDate(FechasUtilsBO.stringddMMyyToDate(fecha,"dd/MM/yyyy"),6),"yyyy-MM-dd");
-		
+		String fechaFinPeriodo= FechasUtilsBO.dateToString(FechasUtilsBO.addDaysToDate(FechasUtilsBO.stringddMMyyToDate(fecha,"dd/MM/yyyy"),6),"dd/MM/yyyy");
+
 		
 		
 		HashMap<String, Object> paramKardex = new HashMap<String, Object>();
 		paramKardex.put("id_cine", idCine);
+		paramKardex.put("periodo", "Del "+fecha +" al "+fechaFinPeriodo);
 		paramKardex.put("fecha_inicio", fechaInicio);
 		paramKardex.put("fecha_fin", fechaFin);
 		paramKardex.put("id_punto_venta",idPuntoVenta);
 		paramKardex.put("tipo_reporte","SEMANAL");
 		paramKardex.put("datasourceTaquilla",this.reporte.getReporteTaquillaSemanal(idCine,FechasUtilsBO.stringYYYYMMDDToDate(fechaInicio,"-"),FechasUtilsBO.stringYYYYMMDDToDate(fechaFin,"-")));
 		paramKardex.put("datasourceDulceria",this.reporte.getReporteDulceriaSemanal(idCine,FechasUtilsBO.stringYYYYMMDDToDate(fechaInicio,"-"),FechasUtilsBO.stringYYYYMMDDToDate(fechaFin,"-")));
-//		this.reporte.getReporteDulceriaSemanalDummy();
-//				paramKardex.put("datasourceDulceria",this.reporte.getReporteDulceriaSemanalDummy());
-
 		paramKardex.put("SUBREPORT_DIR", rutaVentaDiario + "\\");
  
 		ReporteJasperVO reporteJasperVO = new ReporteJasperVO();
@@ -163,10 +163,13 @@ public class ReportesTaquillaBO {
 		
 		String fechaInicio= FechasUtilsBO.dateToString(FechasUtilsBO.getFechaInicioMes(FechasUtilsBO.stringddMMyyToDate(FechasUtilsBO.convertMMYYtoddMMYY(fecha,"dd/MM/yyyy"),"dd/MM/yyyy")),"yyyy-MM-dd");
 		String fechaFin=FechasUtilsBO.dateToString(FechasUtilsBO.getFechaFinMes(FechasUtilsBO.stringddMMyyToDate(FechasUtilsBO.convertMMYYtoddMMYY(fecha,"dd/MM/yyyy"),"dd/MM/yyyy")),"yyyy-MM-dd");
-		
+		String fechaInicioPeriodo= FechasUtilsBO.dateToString(FechasUtilsBO.getFechaInicioMes(FechasUtilsBO.stringddMMyyToDate(FechasUtilsBO.convertMMYYtoddMMYY(fecha,"dd/MM/yyyy"),"dd/MM/yyyy")),"dd/MM/yyyy");
+		String fechaFinPeriodo=FechasUtilsBO.dateToString(FechasUtilsBO.getFechaFinMes(FechasUtilsBO.stringddMMyyToDate(FechasUtilsBO.convertMMYYtoddMMYY(fecha,"dd/MM/yyyy"),"dd/MM/yyyy")),"dd/MM/yyyy");
+
 		
 		HashMap<String, Object> paramKardex = new HashMap<String, Object>();
 		paramKardex.put("id_cine", idCine);
+		paramKardex.put("periodo", "Del "+fechaInicioPeriodo +" al "+fechaFinPeriodo);
 		paramKardex.put("fecha_inicio", fechaInicio);
 		paramKardex.put("fecha_fin", fechaFin);
 		paramKardex.put("id_punto_venta",idPuntoVenta);
