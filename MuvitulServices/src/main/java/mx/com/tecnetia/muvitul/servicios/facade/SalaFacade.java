@@ -63,4 +63,13 @@ public class SalaFacade implements SalaFacadeI {
 		return this.salaController.obtenerMapaConAsistencia(idProgramacion, FechasUtilsBO.stringToDate(fechaExhibicion, "/"),idUsuario);
 	}
 	
+	@Override
+	@Transactional(readOnly=false)
+	public void borrarAsientosReservadosUsuario(HttpServletRequest request) throws BusinessGlobalException {
+		Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
+		Integer idUsuario = (Integer) claims.get(ClaimsEnum.USUARIO);
+		
+		this.salaController.borrarAsientosReservadosUsuario(idUsuario);
+	}
+	
 }

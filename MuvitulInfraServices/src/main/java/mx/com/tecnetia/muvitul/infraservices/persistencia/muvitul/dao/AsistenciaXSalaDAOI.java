@@ -11,4 +11,7 @@ public interface AsistenciaXSalaDAOI extends GlobalHibernateDAOI<AsistenciaXSala
 	List<AsistenciaXSala> getByTicket(Integer idTicket);
 	List<AsistenciaXSala> getActivos(Integer idProgramacion, Date fechaExhibicion);
 	List<AsistenciaXSala> getWithEstatus(Integer idProgramacion, Date fechaExhibicion, Integer idUsuario, Integer idEstatusAsiento);
+	void borrarReservadosUsuario(Integer idUsuario);
+	void borrarPorTicket(Integer idTicket);
+	
 }

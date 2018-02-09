@@ -19,6 +19,17 @@ public class SalaController {
 	private SalaBO salaBO;
 	
 	/**
+     * Servicio para borrar los asientos reservados de un usuario
+     */
+	@Transactional(readOnly=false)
+	public void borrarAsientosReservadosUsuario(Integer idUsuario) throws BusinessGlobalException {
+		if(idUsuario == null)
+			throw new BusinessGlobalException("No se puede obtener el mapa con asistencia. El usuario no puede ser nulo.");
+		
+		this.salaBO.borrarAsientosReservadosUsuario(idUsuario);
+	}
+	
+	/**
      * Servicio para obtener el mapa de una sala con su asistencia
      */
 	@Transactional(readOnly=true)

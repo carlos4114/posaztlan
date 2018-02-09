@@ -8,6 +8,11 @@ var VentaBoletosPaso4Controller = angular.module('indexModule').controller("Vent
    
    $scope.Timer = null;
    
+   $scope.BorrarAsientos = function () {
+	   $scope.totalAsientos = 0;
+	   $scope.borrarReservadosUsuario();
+   };
+   
    $scope.StartTimerAsientos = function () {
 	   $scope.consultarMapaConAsistencia();
        $scope.Timer = $interval(function () {	 $scope.consultarMapaConAsistencia() }, 10000);

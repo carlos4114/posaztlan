@@ -19,12 +19,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.AsistenciaXSalaDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.BoletosXTicketDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.CineDAO;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.ExistenciaBoletoDAOI;
+import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.FolioBoletoDAOI;
+import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.FolioIbatisDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.ImpuestoBoletoDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.ImpuestosXTicketTaquillaDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.PagoDAOI;
@@ -38,6 +41,8 @@ import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.BoletosXTi
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Cine;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.EstatusAsiento;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ExistenciaBoletos;
+import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.FolioBoleto;
+import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.FolioBoletoId;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ImpuestoBoleto;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ImpuestosXTicketTaquilla;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Pago;
@@ -119,7 +124,13 @@ public class VentaBoletoBO {
 	
 	@Autowired
 	private AsistenciaXSalaDAOI asistenciaXsalaDAO;
-
+	
+	@Autowired
+	private FolioBoletoDAOI folioBoletoDAO;
+	
+	@Autowired
+	private FolioIbatisDAOI folioIbatisDAO;
+	
 	public List<PeliculaVO> findByCineDiaAndExhibicion(Integer idCine, String diaSemana, Date fechaExhibicion, Date horario)
 			throws BusinessGlobalException {
 		Map<Integer, PeliculaVO> mapPeliculas = new HashMap<Integer, PeliculaVO>();
@@ -160,6 +171,7 @@ public class VentaBoletoBO {
 		return new ArrayList<PeliculaVO>(mapPeliculas.values());
 	}
 
+	@Transactional(readOnly=false, isolation = Isolation.SERIALIZABLE )
 	public TicketVentaVO createVenta(VentaVO ventaVO) throws BusinessGlobalException {
 
 		int n = 0;
@@ -179,8 +191,8 @@ public class VentaBoletoBO {
 		}
 
 		for (PromocionXTicketVO promocionXTicketVO : ventaVO.getPromocionesXTicketVO()) {
-			descuento = descuento.add(promocionXTicketVO.getImporte());
-			if (promocionXTicketVO.getCantidad() > 0 )
+			descuento = descuento.add(promocionXTicketVO.getImporte()==null?new BigDecimal(0):promocionXTicketVO.getImporte());
+			if (promocionXTicketVO.getCantidad() > 0 && promocionXTicketVO.getImporte()!=null)
 				promocionTicketVO = promocionXTicketVO;
 		}
 
@@ -248,16 +260,24 @@ public class VentaBoletoBO {
 
 		List<BoletosXTicket> boletosXTicket = BoletoXTicketAssembler.getBoletosXTicket(ventaVO.getBoletosXTicketVO(),
 				ticketVenta, descuentoxBoleto);
-
+		
+		Integer idCine = ventaVO.getIdCine();
+		int folio =this.folioIbatisDAO.obtenerSiguienteFolio(idCine);
 		for (BoletosXTicket boletoXTicket : boletosXTicket) {
 			boletoXTicketDAO.save(boletoXTicket);
+			for(int i = 0 ; i< boletoXTicket.getCantidad(); i++){				
+				this.folioBoletoDAO.save(new FolioBoleto(new FolioBoletoId(folio,idCine),boletoXTicket.getTipoCliente(),ticketVenta,folio, new Cine(idCine)));				
+				folio=folio+1;
+			}
 		}
 
 		List<PromocionesXTicket> promocionesXTicket = PromocionXTicketAssembler
 				.getPromocionesXTicket(ventaVO.getPromocionesXTicketVO(), ticketVenta);
 
-		for (PromocionesXTicket promocionXTicket : promocionesXTicket) {
-			promocionXTicketDAO.save(promocionXTicket);
+		if(promocionesXTicket!=null){
+			for (PromocionesXTicket promocionXTicket : promocionesXTicket) {
+				promocionXTicketDAO.save(promocionXTicket);
+			}
 		}
 
 		List<Pago> pagos = PagoAssembler.getPagos(ventaVO.getPagosVO(), ticketVenta);
@@ -290,7 +310,6 @@ public class VentaBoletoBO {
 		}
 		
 		//guardamos los asientos
-		//this.asistenciaXsalaDAO.getWithEstatus(idProgramacion, fechaExhibicion, idUsuario, idEstatusAsiento)		
 		for(List<AsientoVO> filasAsientos:ventaVO.getAsientos()){
 			for(AsientoVO asientoVO:filasAsientos){
 				if(asientoVO.getIdEstatusAsiento().intValue() == EstatusAsientoEnum.RESERVADO){
@@ -384,10 +403,12 @@ public class VentaBoletoBO {
 		int asiento = 0;
 		for (BoletosXTicket boletosXTicket : ticketVenta.getBoletosXTickets()) {
 			
+			List<FolioBoleto> folios = this.folioBoletoDAO.getByTicketAndTipoCliente(idTicket, boletosXTicket.getTipoCliente().getIdTipoCliente(), idCine);
 			for (int i = 0; i < boletosXTicket.getCantidad(); i++) {
 				
+				Integer folio = i>=folios.size()?0:folios.get(i).getFolio();
 				BoletoPdfVO boletoPdfVO = BoletoXTicketAssembler.getBoletoPdfVO(cine, boletosXTicket, (asistencia==null?null:(asistencia.size()>asiento?asistencia.get(asiento):null)));
-
+				
 				Map<String, Object> paramBoleto = new HashMap<String, Object>();
 				paramBoleto.put("fecha", boletoPdfVO.getFecha());
 				paramBoleto.put("cine", boletoPdfVO.getNombreCine());
@@ -397,6 +418,7 @@ public class VentaBoletoBO {
 				paramBoleto.put("tipoBoleto", boletoPdfVO.getTipoBoleto());
 				paramBoleto.put("butaca", boletoPdfVO.getButaca());
 				paramBoleto.put("clasificacion", boletoPdfVO.getClasificacion());
+				paramBoleto.put("folio", folio);
 
 				try {
 					ArchivoPdfVO archivoPdfVO = new ArchivoPdfVO(boletosXTicket.getTipoCliente().getNombre()

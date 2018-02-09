@@ -36,6 +36,11 @@ public class PromocionXTicketAssembler {
 
 		if(promocionesXTicketVO==null || promocionesXTicketVO.isEmpty())
 			return null;
+		if(promocionesXTicketVO.get(0)==null )
+			return null;
+		
+		if(promocionesXTicketVO.get(0).getImporte()==null)
+			return null;
 		
 		List<PromocionesXTicket> promocionesXTicket = new ArrayList<PromocionesXTicket>();
 		

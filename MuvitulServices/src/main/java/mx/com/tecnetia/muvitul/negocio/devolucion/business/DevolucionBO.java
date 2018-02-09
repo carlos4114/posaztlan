@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.AutorizacionMovimientoDAOI;
+import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.AsistenciaXSalaDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.BoletosXTicketDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.CineDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.DevolucionDAOI;
@@ -30,7 +30,6 @@ import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.PaqueteXTi
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.ProductoXTicketDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.TicketVentaDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.TipoMovimientoInvDAOI;
-import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.TipoPuntoVentaDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Autorizacion;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.BoletosXTicket;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Cine;
@@ -44,7 +43,6 @@ import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.PaquetesXT
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ProductosXTicket;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.TicketVenta;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.TipoMovimientoInv;
-import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.TipoPuntoVenta;
 import mx.com.tecnetia.muvitul.infraservices.servicios.BusinessGlobalException;
 import mx.com.tecnetia.muvitul.negocio.devolucion.assembler.AutorizacionAssembler;
 import mx.com.tecnetia.muvitul.negocio.devolucion.assembler.BoletoXTicketAssembler;
@@ -90,9 +88,6 @@ public class DevolucionBO {
 	private TicketVentaDAOI ticketVentaDAO;
 
 	@Autowired
-	private TipoPuntoVentaDAOI TipoPuntoVentaDAO;
-
-	@Autowired
 	private DevolucionDAOI devolucionDAO;
 
 	@Autowired
@@ -114,9 +109,6 @@ public class DevolucionBO {
 	private MovimientoInventarioDAOI movimientoInventarioDAO;
 
 	@Autowired
-	private AutorizacionMovimientoDAOI autorizacionMovimientoDAO;
-
-	@Autowired
 	private CineDAOI cineDAO;
 
 	@Autowired
@@ -136,6 +128,9 @@ public class DevolucionBO {
 	
 	@Autowired
 	private ServletContext context;
+	
+	@Autowired
+	private AsistenciaXSalaDAOI asistenciaXSalaDAO;
 
 	
 	public TicketVentaVO getTicketVenta(Integer idTicket) {
@@ -219,6 +214,7 @@ public class DevolucionBO {
 		return ticketVentaProductoVO;
 	}
 
+	@Transactional(readOnly=false)
 	public DevolucionResponseVO createDevolucionBoleto(Integer idUsuario, DevolucionBoletoVO devolucionBoletoVO) {
 
 		boolean cortesia = DevolucionType.CORTESIA_BOL.getType().equals(devolucionBoletoVO.getTipoDevolucionVO().getClave()) ? true : false;
@@ -242,6 +238,9 @@ public class DevolucionBO {
 
 		Devolucion devolucion = DevolucionAssembler.getDevolucion(devolucionBoletoVO, idUsuario);
 		devolucionDAO.save(devolucion);
+		
+		//liberamos los asientos
+		this.asistenciaXSalaDAO.borrarPorTicket(devolucionBoletoVO.getIdTicketVenta());
 
 		return DevolucionAssembler.getDevolucionResponseVO(devolucion, cortesia);
 

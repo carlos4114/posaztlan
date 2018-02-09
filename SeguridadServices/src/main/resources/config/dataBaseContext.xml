@@ -33,11 +33,17 @@
 		<property name="hibernateProperties" ref="hibernateProperties" />
 		<property name="annotatedClasses">
 			<list>
+			 	<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.FolioBoleto
+				</value>
+				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.FolioBoletoId
+				</value>			
 			 	<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.EstatusAsiento
 				</value>
 			 	<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.AsientosXSala
 				</value>
 			 	<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.AsistenciaXSala
+				</value>
+			 	<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.AsistenciaXSalaId
 				</value>
 			 	<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.CargoAjuste
 				</value>

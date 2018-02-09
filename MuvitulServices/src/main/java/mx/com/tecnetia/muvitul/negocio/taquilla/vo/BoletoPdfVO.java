@@ -11,6 +11,7 @@ public class BoletoPdfVO {
  	private String asiento;
  	private String clasificacion;
  	private String butaca;
+ 	private Integer folio;
 
  	
 	public String getFecha() {
@@ -66,6 +67,12 @@ public class BoletoPdfVO {
 	}
 	public void setButaca(String butaca) {
 		this.butaca = butaca;
+	}
+	public Integer getFolio() {
+		return folio;
+	}
+	public void setFolio(Integer folio) {
+		this.folio = folio;
 	}
 	
 	 

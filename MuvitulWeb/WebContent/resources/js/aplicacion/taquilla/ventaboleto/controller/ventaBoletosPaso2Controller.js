@@ -2,7 +2,7 @@
 
 var VentaBoletosPaso2Controller = angular.module('indexModule').controller("VentaBoletosPaso2Controller", function($scope, taquillaService,$controller){
 	
-	$scope.listaPromociones		={};
+	$scope.listaPromociones		=[];
 	$scope.paramsExistenciaBoleto={};
 	
 	//Consulta de promociones

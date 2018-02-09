@@ -13,7 +13,7 @@
 					<i class="fa fa-calculator"></i> Modificar Cantidades
 				</button>				
 				<button type="button" class="btn btn-success"
-					ng-disabled="totalAsientos!=totalBoletos"
+					ng-disabled="totalAsientos!=totalBoletos && mapaAsientos.length>0"
 					ng-click="asignarPaso(5);consultarFormasPago();StopTimerAsientos()">
 					Registrar el Pago <i class="fa fa-credit-card"></i>
 				</button>
@@ -24,7 +24,41 @@
 			<!-- bloque de pelicula -->
 			<div class="col-md-12 col-sm-12 col-xs-12">
 				<div class="x_panel">
-					<div class="form-group"> 
+				    <div class="row" ng-if="mapaAsientos.length<=0">
+						   <h2 align="center">
+								La sala no cuenta con asientos numerados.
+						   </h2>
+					</div>
+					
+					<div class="form-group" ng-if="mapaAsientos.length>0"> 
+					   <div class="col-md-12 col-sm-12 col-xs-12">
+						<div class="x_panel">
+							<div class="row">
+								<div
+									class="animated flipInY col-lg-4 col-md-4 col-sm-4 col-xs-6">
+									<div class="tile-stats">
+										<h2 class="text-center">Boletos Comprados</h2>
+										<h3 class="text-center">{{totalBoletos}}</h3>
+									</div>
+								</div>
+								<div
+									class="animated flipInY col-lg-4 col-md-4 col-sm-4 col-xs-6">
+									<div class="tile-stats">
+										<h2 class="text-center">Por Seleccionar</h2>
+										<h3 class="text-center">{{totalBoletos-totalAsientos}}</h3>
+									</div>
+								</div>
+								<div class="animated flipInY col-lg-4 col-md-4 col-sm-4 col-xs-6">
+									<div class="tile-stats">
+										<h2 class="text-center">Seleccionados</h2>
+										<h3 class="text-center">{{totalAsientos}}</h3>
+									</div>
+								</div>							
+							</div>
+							<!-- row -->	
+						</div>
+					  </div>		
+										
 				        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" align="center">
 				           <img src="<c:url value='/resources/img/pantalla.png' />" class="img-responsive" />
 						   <br/><br/>											   

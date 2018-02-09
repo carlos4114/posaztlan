@@ -14,7 +14,7 @@
 				</button>
 				<button type="button" class="btn btn-success"
 					ng-disabled="pago.subtotal == 0 "
-					ng-click="asignarPaso(4);StopTimer();StartTimerAsientos(paramsExistenciaBoleto)">
+					ng-click="BorrarAsientos();asignarPaso(4);StopTimer();StartTimerAsientos()">
 					Seleccionar Asientos <i class="fa fa-th"></i>
 				</button>
 

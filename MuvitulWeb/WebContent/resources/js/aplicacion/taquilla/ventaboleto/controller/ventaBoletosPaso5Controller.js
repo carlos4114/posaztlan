@@ -132,7 +132,8 @@ var VentaBoletosPaso5Controller = angular.module('indexModule').controller("Vent
 		taquillaService.procesarVenta(venta).success(function(data) {	
 			$scope.asignarPaso(6);
 			$scope.ticketVenta=data;
-			 
+			$scope.totalBoletos = 0 ;
+			$scope.totalAsientos = 0 ;			 
  		  }).error(function(data) {
 		  });
 	}

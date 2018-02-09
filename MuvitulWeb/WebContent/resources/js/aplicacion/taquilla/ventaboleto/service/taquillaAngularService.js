@@ -36,6 +36,22 @@ angular.module('indexModule').service('taquillaService', ['$http','$q','GlobalFa
     				 
 	 }	
 	
+	this.borrarReservadosUsuario = function(){
+		
+		var deferred = $q.defer();
+		
+		$http.get(config.baseUrl+"/sala/borrarReservados").then(
+		            function (response) {
+		                deferred.resolve(response.data);
+		            },
+		            function(errResponse){	                
+		                deferred.reject(errResponse);
+		            }
+		 );
+		 
+		 return deferred.promise; 
+	 }
+	
 	this.consultarMapaConAsistencia = function(idProgramacion,fechaExhibicion){
 		
 		var deferred = $q.defer();

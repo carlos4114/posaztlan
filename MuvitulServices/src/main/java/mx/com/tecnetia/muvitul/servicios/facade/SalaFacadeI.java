@@ -40,4 +40,6 @@ public interface SalaFacadeI {
 	@RequestMapping(value = "/mapaConAsistencia", method = RequestMethod.GET)
 	List<List<AsientoVO>> getMapaConAsistencia(HttpServletRequest request,Integer idProgramacion, String fechaExhibicion) throws BusinessGlobalException;
 
+	@RequestMapping(value = "/borrarReservados", method = RequestMethod.GET)
+	void borrarAsientosReservadosUsuario(HttpServletRequest request) throws BusinessGlobalException;
 }

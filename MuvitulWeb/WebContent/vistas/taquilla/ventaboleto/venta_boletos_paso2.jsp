@@ -10,7 +10,7 @@
 			  
 				<h2>
 					<i class="fa fa-star"></i> Selecciona la Promoci&oacute;n que
-					Deseas Aplicar
+					Deseas Aplicar 
 				</h2>
 			 
 			<div class="row pull-right">
@@ -32,8 +32,12 @@
 			<form id="demo-form2" data-parsley-validate
 				class="form-horizontal form-label-left">
 				<div class="col-md-12 col-sm-12 col-xs-12">
-					<div class="x_content">
-
+					<div class="x_content">					    
+						<div class="row" ng-if="listaPromociones.length<=0">
+						   <h2 align="center">
+								No se encontraron promociones vigentes.
+						   </h2>
+						</div>
 						<!-- Tabla de Promociones -->
 						<div class="row">
 							<div ng-repeat="promocion in listaPromociones "

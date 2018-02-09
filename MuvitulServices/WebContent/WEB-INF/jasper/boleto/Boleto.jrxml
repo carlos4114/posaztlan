@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Tiket" pageWidth="198" pageHeight="992" columnWidth="198" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="7c1bdacc-8bc4-4274-bca6-c26dbb4debea">
 	<property name="ireport.zoom" value="3.0052592036063106"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="164"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -84,6 +84,9 @@
 	<parameter name="tipoBoleto" class="java.lang.String"/>
 	<parameter name="cine" class="java.lang.String"/>
 	<parameter name="clasificacion" class="java.lang.String"/>
+	<parameter name="folio" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -96,7 +99,7 @@
 	<columnHeader>
 		<band height="30" splitType="Stretch">
 			<textField>
-				<reportElement x="74" y="11" width="109" height="16" uuid="67b7a200-882c-45e6-b064-a57423df3c54"/>
+				<reportElement x="83" y="11" width="100" height="16" uuid="67b7a200-882c-45e6-b064-a57423df3c54"/>
 				<textElement textAlignment="Right">
 					<font size="10" isBold="true"/>
 				</textElement>
@@ -108,6 +111,20 @@
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="44" y="11" width="39" height="14" uuid="579110fa-6ffd-4b3e-bb20-6b1d6825ea53"/>
+				<textElement verticalAlignment="Top">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{folio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="5" y="11" width="39" height="14" uuid="e89d647a-69d3-485e-ba2c-dc7625af68f8"/>
+				<textElement verticalAlignment="Top">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FOLIO:]]></text>
 			</staticText>
 		</band>
 	</columnHeader>

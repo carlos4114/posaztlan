@@ -12,6 +12,7 @@ import mx.com.tecnetia.muvitul.infraservices.negocio.muvitul.vo.AsistenciaVO;
 import mx.com.tecnetia.muvitul.infraservices.negocio.seguridad.vo.HttpResponseVO;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.AsientosXSalaDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.AsistenciaPeliculaIbatisDAOI;
+import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.AsistenciaXSalaDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.CupoXSalaDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.SalaDAOI;
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.AsientosXSala;
@@ -37,6 +38,8 @@ public class SalaBO {
 	private AsientosXSalaDAOI asientosXSalaDAO;
 	@Autowired
 	private AsistenciaPeliculaIbatisDAOI asistenciaXSalaIbatisDAO;
+	@Autowired
+	private AsistenciaXSalaDAOI asistenciaXSalaDAO;	
 	
 	/**
      * Servicio para actualizar una sala con su cupo y mapa de sala
@@ -244,12 +247,27 @@ public class SalaBO {
 	}
 	
 	/**
+     * Servicio para borrar los asientos reservados de un usuario
+     */
+	@Transactional(readOnly=false)
+	public void borrarAsientosReservadosUsuario(Integer idUsuario) throws BusinessGlobalException {
+		if(idUsuario == null)
+			throw new BusinessGlobalException("No se puede obtener el mapa con asistencia. El usuario no puede ser nulo.");
+		
+		this.asistenciaXSalaDAO.borrarReservadosUsuario(idUsuario);		
+	}
+	
+	/**
      * Servicio para obtener el mapa de una sala con su asistencia
      */
 	@Transactional(readOnly=true)
 	public List<List<AsientoVO>> obtenerMapaConAsistencia(Integer idProgramacion,Date fechaExhibicion,Integer idUsuario) throws BusinessGlobalException {
 		if(idProgramacion == null)
 			throw new BusinessGlobalException("No se puede obtener el mapa con asistencia. La programacion no puede ser nulo.");
+		if(fechaExhibicion == null)
+			throw new BusinessGlobalException("No se puede obtener el mapa con asistencia. La fechaExhibicion no puede ser nulo.");
+		if(idUsuario == null)
+			throw new BusinessGlobalException("No se puede obtener el mapa con asistencia. El Usuario no puede ser nulo.");
 		
 		List<AsistenciaVO> asistenciaList = this.asistenciaXSalaIbatisDAO.getAsistencia(idProgramacion,fechaExhibicion);
 		

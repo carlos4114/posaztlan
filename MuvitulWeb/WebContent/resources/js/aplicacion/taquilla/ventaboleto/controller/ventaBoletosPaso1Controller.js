@@ -156,6 +156,15 @@ var VentaBoletosPaso1Controller = angular.module('indexModule').controller('vent
 	}	
 
 	
+	$scope.borrarReservadosUsuario = function() {
+		 taquillaService.borrarReservadosUsuario()
+		 .then(
+		      function(d) {
+	          },
+		      function(errResponse){
+		      });
+   } 
+	
 	$scope.consultarMapaConAsistencia = function() {
 		 var fechaExhibicion = $scope.param.fechaExhibicion;	
 		 var idProgramacion = $scope.objetosVenta.programacion.idProgramacion;

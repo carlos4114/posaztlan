@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao.BoletosIbatisDAOI;
@@ -82,6 +83,7 @@ public class VentaBoletoController {
 		return getExistenciaBoleto(existenciaBoletoVO.getProgramacionVO().getIdProgramacion(), existenciaBoletoVO.getProgramacionVO().getSalaVO().getIdSala(), existenciaBoletoVO.getFechaExhibicion());
 	}
 
+	@Transactional(readOnly=false, isolation = Isolation.SERIALIZABLE )
 	public TicketVentaVO createVenta(VentaVO ventaVO) throws BusinessGlobalException {
 		return ventaBoletoBO.createVenta(ventaVO);
 	}
