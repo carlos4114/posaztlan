@@ -2,16 +2,16 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>appgroupid</groupId>
-	<artifactId>Muvitul</artifactId>
+	<artifactId>PosAztlan</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<modules>
 
-	<module>MuvitulInfraServices</module>
-	<module>MuvitulServices</module>
+	<module>PosAztlanInfraServices</module>
+	<module>PosAztlanServices</module>
 	<module>SeguridadServices</module>
-	<module>MuvitulEA</module>
-	<module>MuvitulWeb</module>
+	<module>PosAztlanEA</module>
+	<module>PosAztlanWeb</module>
 	</modules>
 
 	<build>

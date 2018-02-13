@@ -13,11 +13,11 @@
       <context-root>MuvitulServices</context-root>
     </web>
   </module>
-	<module>
-		<web>
-			<web-uri>MuvitulWeb-0.0.1-SNAPSHOT.war</web-uri>
-			<context-root>MuvitulWeb</context-root>
-		</web>
-	</module>
+  <module>
+    <web>
+      <web-uri>PosAztlanWeb.war</web-uri>
+      <context-root>PosAztlanWeb</context-root>
+    </web>
+  </module>
   <library-directory>lib</library-directory>
 </application>

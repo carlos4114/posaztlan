@@ -3,30 +3,30 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>appgroupid</groupId>
-		<artifactId>Muvitul</artifactId>
+		<artifactId>PosAztlan</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>MuvitulEA</artifactId>
+	<artifactId>PosAztlanEA</artifactId>
 	<packaging>ear</packaging>
 
 	<dependencies>
 		<!-- LIBRERIAS "IN HOUSE" -->
 		<dependency>
 			<groupId>appgroupid</groupId>
-			<artifactId>MuvitulInfraServices</artifactId>
+			<artifactId>PosAztlanInfraServices</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>appgroupid</groupId>
-			<artifactId>MuvitulServices</artifactId>
+			<artifactId>PosAztlanServices</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<type>war</type>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>appgroupid</groupId>
-			<artifactId>MuvitulWeb</artifactId>
+			<artifactId>PosAztlanWeb</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<type>war</type>
 			<scope>runtime</scope>

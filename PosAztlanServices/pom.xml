@@ -5,14 +5,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>appgroupid</groupId>
-		<artifactId>Muvitul</artifactId>
+		<artifactId>PosAztlan</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<groupId>appgroupid</groupId>
-	<artifactId>MuvitulServices</artifactId>
+	<artifactId>PosAztlanServices</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>MuvitulServices</name>
+	<name>PosAztlanServices</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
@@ -31,7 +31,7 @@
 
 		<dependency>
 			<groupId>appgroupid</groupId>
-			<artifactId>MuvitulInfraServices</artifactId>
+			<artifactId>PosAztlanInfraServices</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
