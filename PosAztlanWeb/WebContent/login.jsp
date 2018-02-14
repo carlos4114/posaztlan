@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <title>MUVITUL | Punto de Venta para Cines</title>
+    <title>Pos Aztlan | Punto de Venta</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     	

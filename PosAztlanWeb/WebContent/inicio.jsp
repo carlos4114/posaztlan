@@ -12,7 +12,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Muvitul | Inicio</title>
+        <title>Pos Aztlan | Inicio</title>
         <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
         <!-- Bootstrap -->

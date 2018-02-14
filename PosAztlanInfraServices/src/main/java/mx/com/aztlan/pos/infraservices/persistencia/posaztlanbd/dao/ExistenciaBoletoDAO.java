@@ -1,0 +1,35 @@
+package mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao;
+
+import java.util.Date;
+import java.util.List;
+
+import org.hibernate.Query;
+import org.springframework.stereotype.Repository;
+
+import mx.com.aztlan.pos.infraservices.persistencia.GlobalHibernateDAO;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ExistenciaBoletos;
+
+@Repository 
+public class ExistenciaBoletoDAO extends GlobalHibernateDAO<ExistenciaBoletos> implements ExistenciaBoletoDAOI {
+
+	@Override
+	public ExistenciaBoletos findByIdProgramacion(Integer idProgramacion, Date fechaExhibicion) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select exb from ExistenciaBoletos exb join exb.programacion pgr join pgr.sala sla ");
+		hql.append("where pgr.idProgramacion=:idProgramacion and exb.fechaExhibicion=:fechaExhibicion and pgr.activo=1 " );
+		hql.append("order by exb.idExistenciaBoletos desc ");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setParameter("idProgramacion", idProgramacion);
+		query.setParameter("fechaExhibicion", fechaExhibicion);
+		List<ExistenciaBoletos> result =query.list();
+		
+		if (!result.isEmpty()){
+			return result.get(0);
+		}
+		
+		return null;
+	}
+
+
+}

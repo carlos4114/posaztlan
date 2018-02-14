@@ -36,7 +36,7 @@
 			<property name="sessionFactory" ref="hibernateSessionFactory" />
 	  </bean>
 	  
-	<bean id="correoElectronicoLoggerBO" class="mx.com.tecnetia.muvitul.infraservices.servicios.CorreoElectronicoBO">
+	<bean id="correoElectronicoLoggerBO" class="mx.com.aztlan.pos.infraservices.servicios.CorreoElectronicoBO">
 		  <property name="mailSender" ref="appMailSender"/>
 		  <property name="to">
 				<list>
@@ -53,18 +53,18 @@
 	<bean id="restTemplate" class="org.springframework.web.client.RestTemplate" />
 		
 	<!-- MANEJADOR DE ERRORES -->
-	<bean id="exceptionLoggerBO" class="mx.com.tecnetia.muvitul.infraservices.servicios.ExceptionLoggerBO">
+	<bean id="exceptionLoggerBO" class="mx.com.aztlan.pos.infraservices.servicios.ExceptionLoggerBO">
 	      <property name="correoElectronicoLoggerBO" ref="correoElectronicoLoggerBO" />
 	</bean>		
 	<aop:config>
 		<aop:aspect id="infraExceptionLoggerAspect" ref="exceptionLoggerBO">
     		<aop:pointcut id="infraExceptionLoggerPointcut" 
-    			expression="execution(* mx.com.tecnetia.muvitul.infraservices.servicios.*.controller.*Controller*.*(..))" />
+    			expression="execution(* mx.com.aztlan.pos.infraservices.servicios.*.controller.*Controller*.*(..))" />
     		<aop:after-throwing method="handleException" throwing="throwable" pointcut-ref="infraExceptionLoggerPointcut"  />			
 		</aop:aspect>
 		<aop:aspect id="exceptionLoggerAspect" ref="exceptionLoggerBO">
     		<aop:pointcut id="exceptionLoggerPointcut" 
-    			expression="execution(* mx.com.tecnetia.muvitul.servicios.*.controller.*Controller*.*(..))" />
+    			expression="execution(* mx.com.aztlan.pos.servicios.*.controller.*Controller*.*(..))" />
     		<aop:after-throwing method="handleException" throwing="throwable" pointcut-ref="exceptionLoggerPointcut"  />			
 		</aop:aspect>
 	</aop:config>

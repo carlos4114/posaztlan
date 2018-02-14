@@ -1,7 +1,7 @@
 angular.module('indexModule').constant("constante", {
 
-	// baseUrl: "http://localhost:8080/MuvitulServices/rest"
-	urlWs : "/MuvitulServices/rest",
+	// baseUrl: "http://localhost:8080/PosAztlanServices/rest"
+	urlWs : "/PosAztlanServices/rest",
 	urlSeguridadWs : "/SeguridadServices/rest"
 });
 

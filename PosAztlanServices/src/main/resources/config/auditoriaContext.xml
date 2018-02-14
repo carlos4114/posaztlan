@@ -11,18 +11,18 @@
 		
 	<!-- *** *BEANS PARA CONFIGURACION DEL PRODUCTOR DE MENSAJES PARA AUDITORIA DE METODOS *********************************-->	
 <!-- 		
-     <bean id="auditoriaDelegate" class="mx.com.tecnetia.muvitul.infraservices.presentacion.auditoria.delegate.AuditoriaDelegate" >
+     <bean id="auditoriaDelegate" class="mx.com.aztlan.pos.infraservices.presentacion.auditoria.delegate.AuditoriaDelegate" >
 		<property name="restTemplate" ref="restTemplate" />
 		<property name="urlServicesAuditoria"><value>${url.services.auditoria}</value></property>
 	</bean> 	
 
-	<bean id="auditoriaConfigMetodoDAO" class="mx.com.tecnetia.muvitul.infraservices.persistencia.auditoria.dao.AuditoriaConfigMetodoDAO" parent="globalHibernateDAO" />
+	<bean id="auditoriaConfigMetodoDAO" class="mx.com.aztlan.pos.infraservices.persistencia.auditoria.dao.AuditoriaConfigMetodoDAO" parent="globalHibernateDAO" />
 	
-	<bean id="auditoriaAtributoObjetoDAO" class="mx.com.tecnetia.muvitul.infraservices.persistencia.auditoria.dao.AuditoriaAtributoObjetoDAO" parent="globalHibernateDAO" />
+	<bean id="auditoriaAtributoObjetoDAO" class="mx.com.aztlan.pos.infraservices.persistencia.auditoria.dao.AuditoriaAtributoObjetoDAO" parent="globalHibernateDAO" />
 	
-	<bean id="auditoriaObjetoDAO" class="mx.com.tecnetia.muvitul.infraservices.persistencia.auditoria.dao.AuditoriaObjetoDAO" parent="globalHibernateDAO" />
+	<bean id="auditoriaObjetoDAO" class="mx.com.aztlan.pos.infraservices.persistencia.auditoria.dao.AuditoriaObjetoDAO" parent="globalHibernateDAO" />
 	
-	<bean id="globalHibernateDAO" abstract="true" class="mx.com.tecnetia.muvitul.infraservices.persistencia.GlobalHibernateDAO" >
+	<bean id="globalHibernateDAO" abstract="true" class="mx.com.aztlan.pos.infraservices.persistencia.GlobalHibernateDAO" >
 		<property name="sessionFactory">
 			<ref bean="hibernateSessionFactory" />
 		</property>
@@ -33,18 +33,18 @@
 		value="classpath:META-INF/ehcache/config/log/log-ehcache.xml" />
 	</bean>	
 	
-	<bean id="businessServiceInterceptor" class="mx.com.tecnetia.muvitul.infraservices.negocio.auditoria.business.BusinessServiceInterceptorBO">
+	<bean id="businessServiceInterceptor" class="mx.com.aztlan.pos.infraservices.negocio.auditoria.business.BusinessServiceInterceptorBO">
 		<property name="auditMessageValidationBO" ref="auditMessageValidationBO" />
 		<property name="messageSenderBO" ref="messageSenderBO" />
 		<property name="sessionVO" ref="sessionVO" />	
 	</bean>
 
 	 	 
-	<bean id="auditMessageValidationBO" class="mx.com.tecnetia.muvitul.infraservices.negocio.auditoria.business.AuditMessageValidationBO">
+	<bean id="auditMessageValidationBO" class="mx.com.aztlan.pos.infraservices.negocio.auditoria.business.AuditMessageValidationBO">
 		<property name="auditCacheConfiguration" ref="auditCacheConfiguration" />
 	</bean>
 
-	<bean id="auditCacheConfiguration" class="mx.com.tecnetia.muvitul.infraservices.negocio.auditoria.business.AuditCacheConfigurationBO">
+	<bean id="auditCacheConfiguration" class="mx.com.aztlan.pos.infraservices.negocio.auditoria.business.AuditCacheConfigurationBO">
 	    <property name="cacheManager" ref="auditAppCacheManager"/>
 	    <property name="auditoriaConfigMetodoDAO" ref="auditoriaConfigMetodoDAO"/>
 		<property name="auditoriaClientController" ref="auditoriaDelegate"/>
@@ -53,12 +53,12 @@
 	
 	
 	<aop:config>
-		<aop:advisor advice-ref="businessServiceInterceptor" pointcut="execution(* mx.com.tecnetia.muvitul.servicios.*.controller.*Controller*.*(..))" order="1" />
+		<aop:advisor advice-ref="businessServiceInterceptor" pointcut="execution(* mx.com.aztlan.pos.servicios.*.controller.*Controller*.*(..))" order="1" />
 	</aop:config>
 	
 	<aop:config>
 		<aop:advisor advice-ref="hibernateInterceptor" order="1"
-			pointcut="execution(* mx.com.tecnetia.muvitul.infraservices.persistencia.auditoria.dao.*DAO*.*(..))" />
+			pointcut="execution(* mx.com.aztlan.pos.infraservices.persistencia.auditoria.dao.*DAO*.*(..))" />
   	</aop:config>	
   	
  -->  	 

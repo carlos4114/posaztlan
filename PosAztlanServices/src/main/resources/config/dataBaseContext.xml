@@ -8,7 +8,7 @@
 
 	<!-- Estas propiedades para conectarse a la base de datos -->
 	<bean id="negocioDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
-		<property name="jndiName" value="java:jboss/datasources/MuvitulDS" />
+		<property name="jndiName" value="java:jboss/datasources/PosAztlanBDDS" />
 	</bean>
 
 	<!-- Estas propiedades son utilizadas en la definicion del SessionFactory 
@@ -33,213 +33,213 @@
 		<property name="hibernateProperties" ref="hibernateProperties" />
 		<property name="annotatedClasses">
 			<list>
-				 <value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.FolioBoleto
+				 <value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.FolioBoleto
 				</value>
-				 <value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.FolioBoletoId
+				 <value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.FolioBoletoId
 				</value>
-				 <value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.EstatusAsiento
+				 <value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.EstatusAsiento
 				</value>
-			 	<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.AsientosXSala
+			 	<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.AsientosXSala
 				</value>
-			 	<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.AsistenciaXSala
+			 	<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.AsistenciaXSala
 				</value>		
-			 	<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.AsistenciaXSalaId
+			 	<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.AsistenciaXSalaId
 				</value>		
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.CargoAjuste
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.CargoAjuste
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.CorteCaja
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.CorteCaja
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Caja
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Caja
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Articulo
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Articulo
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ArticulosXProducto
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ArticulosXProducto
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ArticulosXProductoId
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ArticulosXProductoId
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ArticulosXPuntoVenta
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ArticulosXPuntoVenta
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ArticulosXPuntoVentaId
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ArticulosXPuntoVentaId
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Autorizacion
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Autorizacion
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.AutorizacionMovimiento
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.AutorizacionMovimiento
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.AutorizacionMovimientoId
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.AutorizacionMovimientoId
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.BoletosXTicketId
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.BoletosXTicketId
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.BoletosXTicket
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.BoletosXTicket
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.CancelacionPago
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.CancelacionPago
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Cine
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Cine
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ClasificacionArt
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ClasificacionArt
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Contacto
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Contacto
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.CupoXSala
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.CupoXSala
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.DetallePromocion
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.DetallePromocion
 				</value>
-<!-- 				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.DetallePromoXPromo -->
+<!-- 				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.DetallePromoXPromo -->
 <!-- 				</value> -->
-<!-- 				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.DetallePromoXPromoId -->
+<!-- 				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.DetallePromoXPromoId -->
 <!-- 				</value> -->
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Devolucion
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Devolucion
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.DevolucionXProducto
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.DevolucionXProducto
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Distribuidora
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Distribuidora
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Empresa
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Empresa
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Estado
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Estado
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.EstadoProducto
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.EstadoProducto
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.EstatusEmpresa
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.EstatusEmpresa
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.EstatusPago
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.EstatusPago
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.EstatusUsuario
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.EstatusUsuario
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ExistenciaBoletos
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ExistenciaBoletos
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.FormaPago
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.FormaPago
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Formato
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Formato
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ImpuestoBoleto
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ImpuestoBoleto
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ImpuestosXTicketPaquete
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ImpuestosXTicketPaquete
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ImpuestosXTicketProducto
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ImpuestosXTicketProducto
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ImpuestosXTicketProductoId
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ImpuestosXTicketProductoId
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ImpuestosXTicketTaquilla
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ImpuestosXTicketTaquilla
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ImpuestosXTicketTaquillaId
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ImpuestosXTicketTaquillaId
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ImpuestoXProducto
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ImpuestoXProducto
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.MateriaPrima
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.MateriaPrima
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Menu
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Menu
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.MotivoCancelacion
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.MotivoCancelacion
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.MotivoDevolucion
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.MotivoDevolucion
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.MovimientoInventario
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.MovimientoInventario
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Pago
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Pago
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Pais
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Pais
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Paquete
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Paquete
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.PaquetesXPuntoVenta
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.PaquetesXPuntoVenta
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.PaquetesXPuntoVentaId
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.PaquetesXPuntoVentaId
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.PaquetesXTicket
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.PaquetesXTicket
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.PaquetesXTicketId
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.PaquetesXTicketId
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Pelicula
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Pelicula
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Perfil
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Perfil
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.PerfilesXUsuario
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.PerfilesXUsuario
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.PerfilesXUsuarioId
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.PerfilesXUsuarioId
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.PrecioXFormato
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.PrecioXFormato
 				</value>
-<!-- 				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.PrecioXPaquete -->
+<!-- 				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.PrecioXPaquete -->
 <!-- 				</value> -->
-<!-- 				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.PrecioXProducto -->
+<!-- 				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.PrecioXProducto -->
 <!-- 				</value> -->
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Producto
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Producto
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ProductosXPaquete
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ProductosXPaquete
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ProductosXTicketId
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ProductosXTicketId
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ProductosXPuntoVenta
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ProductosXPuntoVenta
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ProductosXPuntoVentaId
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ProductosXPuntoVentaId
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ProductosXTicket
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ProductosXTicket
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ProductosXTicketId
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ProductosXTicketId
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Programacion
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Programacion
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Promocion
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Promocion
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.PromocionesXTicket
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.PromocionesXTicket
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.PromocionesXTicketId
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.PromocionesXTicketId
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.PromocionPara
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.PromocionPara
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.PropiedadConfig
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.PropiedadConfig
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Proveedor
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Proveedor
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.PuntoVenta
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.PuntoVenta
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Recurso
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Recurso
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.RecursosXPerfil
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.RecursosXPerfil
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.RecursosXPerfilId
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.RecursosXPerfilId
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Regalo
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Regalo
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Sala
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Sala
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.TicketVenta
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.TicketVenta
 				</value>
-<!-- 				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.TipoAutorizacionMov -->
+<!-- 				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.TipoAutorizacionMov -->
 <!-- 				</value> -->
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.TipoAutorizacion
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.TipoAutorizacion
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.TipoAutorizacionXPerfil
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.TipoAutorizacionXPerfil
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.TipoAutorizacionXPerfilId
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.TipoAutorizacionXPerfilId
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.TipoCliente
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.TipoCliente
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.TipoDevolucion
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.TipoDevolucion
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.TipoMovimientoInv
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.TipoMovimientoInv
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.TipoPromocion
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.TipoPromocion
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.TipoPuntoVenta
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.TipoPuntoVenta
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.UnidadMedida
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.UnidadMedida
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Usuario
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Usuario
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Version
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Version
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Documento
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Documento
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ArticulosCorte
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ArticulosCorte
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.Inventario
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Inventario
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ArticulosCorteAjuste
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ArticulosCorteAjuste
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ReportesCineXDistribuidora
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ReportesCineXDistribuidora
 				</value>
-				<value>mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dto.ReportesDistribuidora
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ReportesDistribuidora
 				</value>
 				
 				
@@ -274,7 +274,7 @@
 	<!-- de Hibernate cuando algÃºn servicio no es invocado desde un http -->
 	<!-- request. Es una especie de patron "open session in view". -->
 	<bean id="hibernateInterceptor"
-		class="mx.com.tecnetia.muvitul.infraservices.negocio.auditoria.business.HibernateInterceptorBO">
+		class="mx.com.aztlan.pos.infraservices.negocio.auditoria.business.HibernateInterceptorBO">
 		<property name="sessionFactory" ref="hibernateSessionFactory" />
 	</bean>
 

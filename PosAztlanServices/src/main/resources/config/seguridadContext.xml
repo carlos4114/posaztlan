@@ -14,8 +14,8 @@
 			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 			http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
 			">
-	<context:component-scan base-package="mx.com.tecnetia.muvitul.infraservices.presentacion.seguridad.frontcontroller" /> 
+	<context:component-scan base-package="mx.com.aztlan.pos.infraservices.presentacion.seguridad.frontcontroller" /> 
 	<context:component-scan base-package="org.springframework.web.filter" /> 
-	<context:component-scan base-package="mx.com.tecnetia.muvitul.infraservices.presentacion.seguridad.delegate" />
+	<context:component-scan base-package="mx.com.aztlan.pos.infraservices.presentacion.seguridad.delegate" />
 	
 </beans>

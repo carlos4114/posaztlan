@@ -12,14 +12,14 @@ angular.module('globalModule').factory('GlobalFactory',['$window','$location','$
 	var contextPath = pathArray[3];    
     var httpProtocol = $location.protocol();    
     var appProperties = {
-    					 servicesPath : 'http://localhost:8080/MuvitulServices/rest/',
+    					 servicesPath : 'http://localhost:8080/PosAztlanServices/rest/',
 			    		 securityPath : 'http://localhost:8080/SeguridadServices/rest/',
 			    		 httpProtocol: httpProtocol,
 			    		 contextPath: contextPath,
 			    		 mainPage: paginaPrincipal
 			    		}
     var appPropertiesProduccion = {
-			 servicesPath : 'http://18.221.6.221:8080/MuvitulServices/rest/',
+			 servicesPath : 'http://18.221.6.221:8080/PosAztlanServices/rest/',
    		 securityPath : 'http://18.221.6.221:8080/SeguridadServices/rest/',
    		 httpProtocol: httpProtocol,
    		 contextPath: contextPath,

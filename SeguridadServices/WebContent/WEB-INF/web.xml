@@ -18,7 +18,7 @@
 
   <filter>
     <filter-name>JwtServicesFilter</filter-name>
-    <filter-class>mx.com.tecnetia.muvitul.infraservices.presentacion.seguridad.frontcontroller.JwtServicesFilterFController</filter-class>
+    <filter-class>mx.com.aztlan.pos.infraservices.presentacion.seguridad.frontcontroller.JwtServicesFilterFController</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>JwtServicesFilter</filter-name>

@@ -262,7 +262,7 @@
 
 	</dependencies>
 	<build>
-		<!-- <finalName>muvitul-seguridad</finalName> -->
+		<!-- <finalName>posaztlan-seguridad</finalName> -->
 
 		<plugins>
 			<plugin>

@@ -53,7 +53,7 @@
 
 	</dependencies>
 	<build>
-		<!-- <finalName>muvitul-web</finalName> -->
+		<!-- <finalName>posaztlan-web</finalName> -->
 
 		<plugins>
 			<plugin>

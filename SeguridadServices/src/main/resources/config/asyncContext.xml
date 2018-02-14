@@ -53,7 +53,7 @@
 	  <property name="password" value="innova2016" />  
 	</bean>  
 
-	<bean id="messageSenderBO" class="mx.com.tecnetia.muvitul.infraservices.negocio.auditoria.business.MessageSenderBO">
+	<bean id="messageSenderBO" class="mx.com.aztlan.pos.infraservices.negocio.auditoria.business.MessageSenderBO">
 		<property name="connFactory" ref="asyncJMSConnectionFactory" />
 		<property name="jmsUser"><value>${jmsUser}</value></property>
 		<property name="jmsPwd"><value>${jmsPassword}</value></property>

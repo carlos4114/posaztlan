@@ -16,11 +16,11 @@
 			">
 
 	<!-- Escanea Spring todas las anotaciones que viven en estos paquetes: para realizar el Autowiring -->
-	<context:component-scan base-package="mx.com.tecnetia.muvitul.infraservices.negocio.seguridad.vo" />
-	<context:component-scan base-package="mx.com.tecnetia.muvitul.infraservices.persistencia.seguridadservices.dto" /> 
+	<context:component-scan base-package="mx.com.aztlan.pos.infraservices.negocio.seguridad.vo" />
+	<context:component-scan base-package="mx.com.aztlan.pos.infraservices.persistencia.seguridadservices.dto" /> 
 	
-	<context:component-scan base-package="mx.com.tecnetia.muvitul.seguridadservices.servicios.seguridad.controller" />
-	<context:component-scan base-package="mx.com.tecnetia.muvitul.seguridadservices.negocio.seguridad.business" />
-	<context:component-scan base-package="mx.com.tecnetia.muvitul.seguridadservices.persistencia.muvitul.dao" />
+	<context:component-scan base-package="mx.com.aztlan.pos.seguridadservices.servicios.seguridad.controller" />
+	<context:component-scan base-package="mx.com.aztlan.pos.seguridadservices.negocio.seguridad.business" />
+	<context:component-scan base-package="mx.com.aztlan.pos.seguridadservices.persistencia.posaztlanbd.dao" />
 
 </beans>

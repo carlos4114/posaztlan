@@ -23,29 +23,29 @@
     <task:annotation-driven />
    
 	<!-- CONFIGURACION PARA DAOS DE REPOSITORIO -->
-     <context:component-scan base-package="mx.com.tecnetia.muvitul.servicios.facade" />
-     <context:component-scan base-package="mx.com.tecnetia.muvitul.servicios.ventas.controller" /> 	
-     <context:component-scan base-package="mx.com.tecnetia.muvitul.servicios.taquilla.controller" /> 
-     <context:component-scan base-package="mx.com.tecnetia.muvitul.servicios.dulceria.controller" />
-     <context:component-scan base-package="mx.com.tecnetia.muvitul.servicios.configuracion.controller" />
-     <context:component-scan base-package="mx.com.tecnetia.muvitul.servicios.devolucion.controller" />
-     <context:component-scan base-package="mx.com.tecnetia.muvitul.servicios.cancelacion.controller" />
-     <context:component-scan base-package="mx.com.tecnetia.muvitul.servicios.inventarios.controller" />
-     <context:component-scan base-package="mx.com.tecnetia.muvitul.servicios.dashboard.controller" />
-     <context:component-scan base-package="mx.com.tecnetia.muvitul.servicios.reportes.controller" />
-     <context:component-scan base-package="mx.com.tecnetia.muvitul.servicios.caja.controller" /> 	     
+     <context:component-scan base-package="mx.com.aztlan.pos.servicios.facade" />
+     <context:component-scan base-package="mx.com.aztlan.pos.servicios.ventas.controller" /> 	
+     <context:component-scan base-package="mx.com.aztlan.pos.servicios.taquilla.controller" /> 
+     <context:component-scan base-package="mx.com.aztlan.pos.servicios.dulceria.controller" />
+     <context:component-scan base-package="mx.com.aztlan.pos.servicios.configuracion.controller" />
+     <context:component-scan base-package="mx.com.aztlan.pos.servicios.devolucion.controller" />
+     <context:component-scan base-package="mx.com.aztlan.pos.servicios.cancelacion.controller" />
+     <context:component-scan base-package="mx.com.aztlan.pos.servicios.inventarios.controller" />
+     <context:component-scan base-package="mx.com.aztlan.pos.servicios.dashboard.controller" />
+     <context:component-scan base-package="mx.com.aztlan.pos.servicios.reportes.controller" />
+     <context:component-scan base-package="mx.com.aztlan.pos.servicios.caja.controller" /> 	     
       
-     <context:component-scan base-package="mx.com.tecnetia.muvitul.negocio.ventas.business" />
-     <context:component-scan base-package="mx.com.tecnetia.muvitul.negocio.taquilla.business" />
-     <context:component-scan base-package="mx.com.tecnetia.muvitul.negocio.dulceria.business" />
-     <context:component-scan base-package="mx.com.tecnetia.muvitul.negocio.configuracion.business" />
-     <context:component-scan base-package="mx.com.tecnetia.muvitul.negocio.devolucion.business" />
-     <context:component-scan base-package="mx.com.tecnetia.muvitul.negocio.cancelacion.business" />
-     <context:component-scan base-package="mx.com.tecnetia.muvitul.negocio.dashboard.business" /> 
-     <context:component-scan base-package="mx.com.tecnetia.muvitul.negocio.inventarios.business" />
-     <context:component-scan base-package="mx.com.tecnetia.muvitul.negocio.reportes.business" />
+     <context:component-scan base-package="mx.com.aztlan.pos.negocio.ventas.business" />
+     <context:component-scan base-package="mx.com.aztlan.pos.negocio.taquilla.business" />
+     <context:component-scan base-package="mx.com.aztlan.pos.negocio.dulceria.business" />
+     <context:component-scan base-package="mx.com.aztlan.pos.negocio.configuracion.business" />
+     <context:component-scan base-package="mx.com.aztlan.pos.negocio.devolucion.business" />
+     <context:component-scan base-package="mx.com.aztlan.pos.negocio.cancelacion.business" />
+     <context:component-scan base-package="mx.com.aztlan.pos.negocio.dashboard.business" /> 
+     <context:component-scan base-package="mx.com.aztlan.pos.negocio.inventarios.business" />
+     <context:component-scan base-package="mx.com.aztlan.pos.negocio.reportes.business" />
      
      
-     <context:component-scan base-package="mx.com.tecnetia.muvitul.infraservices.persistencia.muvitul.dao" />  
+     <context:component-scan base-package="mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao" />  
  	
  </beans>

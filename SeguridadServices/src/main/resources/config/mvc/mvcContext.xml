@@ -17,7 +17,7 @@
 
 	<!-- Escanea Spring todas las anotaciones que viven en estos paquetes: para realizar el Autowiring para los servicios REST-->
 		<mvc:annotation-driven />
-		<context:component-scan base-package="mx.com.tecnetia.muvitul.seguridadservices.servicios.facade" /> 
+		<context:component-scan base-package="mx.com.aztlan.pos.seguridadservices.servicios.facade" /> 
 		<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix">
 				<value>/rest/</value>
