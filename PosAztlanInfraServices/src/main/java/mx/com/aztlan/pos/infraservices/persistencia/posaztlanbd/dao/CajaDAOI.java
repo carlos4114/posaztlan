@@ -7,5 +7,5 @@ import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Caja;
 
 public interface CajaDAOI extends GlobalHibernateDAOI<Caja>{
 
-	List<Caja> getActivos(Integer idPuntoVenta);
+	List<Caja> getActivos(Integer idAlmacen);
 }

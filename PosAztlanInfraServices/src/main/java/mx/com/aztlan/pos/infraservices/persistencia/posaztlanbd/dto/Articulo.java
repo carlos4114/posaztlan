@@ -34,6 +34,10 @@ public class Articulo implements java.io.Serializable {
 
 	public Articulo() {
 	}
+	
+	public Articulo(Integer idArticulo) {
+		this.idArticulo = idArticulo;
+	}
 
 	public Articulo(Cine cine, ClasificacionArt clasificacionArt, UnidadMedida unidadMedida, String nombre,
 			boolean activo, long puntoReorden) {

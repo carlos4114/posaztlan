@@ -10,19 +10,20 @@ angular.module('indexModule').service("UsuariosService", ['$http', '$q','GlobalF
 		var URI_OBTENER_USUARIOS = URI_SERVICIO_SEGURIDAD + '/seguridad/obtenerUsuarios';
 		var URI_OBTENER_PERFILES = URI_SERVICIO_SEGURIDAD + '/seguridad/obtenerPerfiles';
 		var URI_OBTENER_CAJAS = URI_SERVICIO + '/catalogo/cajas';
-		var URI_OBTENER_CINES = URI_SERVICIO + "/catalogo/cinesEmpresa"
-		var URI_OBTENER_PUNTOS_VENTA = URI_SERVICIO + "/catalogo/puntosVenta"
+		var URI_OBTENER_CANALES = URI_SERVICIO + '/catalogo/canalesEmpresa';
+		var URI_OBTENER_ALMACENES = URI_SERVICIO + "/catalogo/almacenes"
 		var URI_OBTENER_ESTATUS_USUARIO = URI_SERVICIO_SEGURIDAD + "/seguridad/estatusUsuario"
 				 	
 	    var factory = {
 	        guardarUsuarioNuevo: guardarUsuarioNuevo,
 	        actualizarUsuario: actualizarUsuario,
 	        obtenerUsuarios: obtenerUsuarios,
-	        consultaCinesXEmpresa: consultaCinesXEmpresa,
+	        //consultaCinesXEmpresa: consultaCinesXEmpresa,
 	        consultaPerfilesXEmpresa: consultaPerfilesXEmpresa,
-	        consultaPuntosVentaXCine: consultaPuntosVentaXCine,
-	        consultaCajasXPuntoVenta: consultaCajasXPuntoVenta,
-	        consultaEstatusUsuario: consultaEstatusUsuario
+	        consultaCajasXAlmacen: consultaCajasXAlmacen,
+	        consultaEstatusUsuario: consultaEstatusUsuario,
+	        consultaCanalesXEmpresa: consultaCanalesXEmpresa,
+	        consultaAlmacenesXCanal : consultaAlmacenesXCanal
 	    };
 	 
 	    return factory;
@@ -76,22 +77,22 @@ angular.module('indexModule').service("UsuariosService", ['$http', '$q','GlobalF
 	        return invocarServicioGet(URI_OBTENER_USUARIOS+"/"+idCine);	    				 	        
 	    }
 	    
-	    function consultaCinesXEmpresa(idEmpresa){
-	        return invocarServicioGet(URI_OBTENER_CINES+"/"+idEmpresa);	    				 
+	    function consultaCanalesXEmpresa(idEmpresa){
+	        return invocarServicioGet(URI_OBTENER_CANALES+"/"+idEmpresa);	    				 
 		 }
 
 	    
-	    function consultaCajasXPuntoVenta(idPuntoVenta){
-	        return invocarServicioGet(URI_OBTENER_CAJAS+"/"+idPuntoVenta);	    				 
+	    function consultaCajasXAlmacen(idAlmacen){
+	        return invocarServicioGet(URI_OBTENER_CAJAS+"/"+idAlmacen);	    				 
 		 }
-
+		 
+	    function consultaAlmacenesXCanal(idCanal){		    	    		        
+	        return invocarServicioGet(URI_OBTENER_ALMACENES+"/"+idCanal);
+		 }
+	    
 	    function consultaPerfilesXEmpresa(idEmpresa){		    	    		        
 	        return invocarServicioGet(URI_OBTENER_PERFILES+"/"+idEmpresa);
-		 }
-	    
-	    function consultaPuntosVentaXCine(idCine){		    	    		        
-	        return invocarServicioGet(URI_OBTENER_PUNTOS_VENTA+"/"+idCine);
-		 }
+		 }   
 	    
 	    function consultaEstatusUsuario(){		    	    		        
 	        return invocarServicioGet(URI_OBTENER_ESTATUS_USUARIO);

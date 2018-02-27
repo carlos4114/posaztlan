@@ -19,7 +19,6 @@ import io.jsonwebtoken.Claims;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.enumeration.ClaimsEnum;
 import mx.com.aztlan.pos.infraservices.servicios.BusinessGlobalException;
 import mx.com.aztlan.pos.infraservices.servicios.NotFoundException;
-import mx.com.aztlan.pos.negocio.dulceria.vo.MovimientoInventarioVO;
 import mx.com.aztlan.pos.negocio.dulceria.vo.TipoMovimientoInvVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ArticulosCorteVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ArticulosXPuntoVentaVO;

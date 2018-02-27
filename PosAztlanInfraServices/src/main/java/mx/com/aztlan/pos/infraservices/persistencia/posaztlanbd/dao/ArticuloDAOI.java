@@ -10,4 +10,11 @@ public interface ArticuloDAOI extends GlobalHibernateDAOI<Articulo>{
 
 	List<ArticuloExistenciaVO> getDisponible(Integer idPuntoVenta);
 
+	List<Articulo> getArticulosByName(Integer idCine, String nombre);
+	
+	List<Articulo> findByIdCine(Integer idCine);
+	
+	List<Articulo> findByIdArticulo(Integer idArticulo);
+	
+	List<Articulo> findByIdCinePuntosVenta(List<Integer> puntosVenta);
 }

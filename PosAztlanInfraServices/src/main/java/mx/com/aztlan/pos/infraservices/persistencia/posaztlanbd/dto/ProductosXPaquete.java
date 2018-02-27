@@ -22,15 +22,17 @@ public class ProductosXPaquete implements java.io.Serializable {
 	private Paquete paquete;
 	private Producto producto;
 	private long cantidad;
+	private Integer indice;
 
 	public ProductosXPaquete() {
 	}
 
-	public ProductosXPaquete(ProductosXPaqueteId id, Paquete paquete, Producto producto, long cantidad) {
+	public ProductosXPaquete(ProductosXPaqueteId id, Paquete paquete, Producto producto, long cantidad, Integer indice) {
 		this.id = id;
 		this.paquete = paquete;
 		this.producto = producto;
 		this.cantidad = cantidad;
+		this.indice = indice; 
 	}
 
 	@EmbeddedId
@@ -74,5 +76,13 @@ public class ProductosXPaquete implements java.io.Serializable {
 	public void setCantidad(long cantidad) {
 		this.cantidad = cantidad;
 	}
+	
+	@Column(name = "indice", nullable = false)
+	public Integer getIndice() {
+		return this.indice;
+	}
 
+	public void setIndice(Integer indice) {
+		this.indice = indice;
+	}
 }

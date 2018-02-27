@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import mx.com.aztlan.pos.infraservices.servicios.BusinessGlobalException;
-import mx.com.aztlan.pos.infraservices.servicios.NotFoundException;
 import mx.com.aztlan.pos.negocio.configuracion.business.AutorizacionBO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.EstatusAutorizacionVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.RequestAutorizacionVO;

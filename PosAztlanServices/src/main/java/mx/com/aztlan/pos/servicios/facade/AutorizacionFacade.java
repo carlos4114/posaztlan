@@ -30,10 +30,10 @@ public class AutorizacionFacade implements AutorizacionFacadeI {
 			@RequestBody RequestAutorizacionVO requestAutorizacionVO) throws BusinessGlobalException, NotFoundException {
 
 		Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
-		Integer idCine = (Integer) claims.get(ClaimsEnum.CINE);
+		Integer idCanal = (Integer) claims.get(ClaimsEnum.CANAL);
 		Integer idUsuario = (Integer) claims.get(ClaimsEnum.USUARIO);
 		
-		logger.info("GetAutorizacionMovimiento:::IdUsuario[{}]:::IdCine[{}]", idUsuario, idCine);
+		logger.info("GetAutorizacionMovimiento:::IdUsuario[{}]:::IdCanal[{}]", idUsuario, idCanal);
 
 		EstatusAutorizacionVO estatusAutorizacionVO = autorizacionController.createAutorizacion(requestAutorizacionVO);
 		

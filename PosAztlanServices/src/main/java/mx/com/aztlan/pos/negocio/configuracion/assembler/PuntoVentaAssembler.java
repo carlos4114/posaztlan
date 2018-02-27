@@ -9,6 +9,17 @@ import mx.com.aztlan.pos.negocio.configuracion.vo.PuntoVentaVO;
 public class PuntoVentaAssembler {
 
 
+	public static PuntoVenta getPuntoVenta(Integer idPuntoVenta){
+
+		if(idPuntoVenta==null )
+			return null;
+
+		PuntoVenta puntoVenta= new PuntoVenta();
+		puntoVenta.setIdPuntoVenta(idPuntoVenta);
+		
+		return puntoVenta;
+	}
+	
 	public static PuntoVentaVO getPuntoVentaVO(PuntoVenta puntoVenta) {
 		if(puntoVenta == null )
 			return null;

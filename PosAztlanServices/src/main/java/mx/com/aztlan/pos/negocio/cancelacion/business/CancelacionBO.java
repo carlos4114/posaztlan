@@ -1,7 +1,5 @@
 package mx.com.aztlan.pos.negocio.cancelacion.business;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +21,7 @@ import mx.com.aztlan.pos.servicios.util.EstatusPagoType;
 @Service
 @Transactional
 public class CancelacionBO {
-	private static final Logger logger = LoggerFactory.getLogger(CancelacionBO.class);
+	
 	
 	@Autowired
 	private TicketVentaDAOI ticketVentaDAO;

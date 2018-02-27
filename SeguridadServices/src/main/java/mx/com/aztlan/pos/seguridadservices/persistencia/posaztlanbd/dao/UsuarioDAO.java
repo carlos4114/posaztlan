@@ -16,11 +16,11 @@ public class UsuarioDAO extends GlobalHibernateDAO<Usuario> implements UsuarioDA
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Usuario> getUsuarios(Integer idCine) throws Exception {
+	public List<Usuario> getUsuarios(Integer idCanal) throws Exception {
 
 		Criteria criteria = getSession().createCriteria(Usuario.class);
 		
-		criteria.add(Restrictions.eq("cine.idCine", idCine));
+		criteria.add(Restrictions.eq("canal.idCanal", idCanal));
 		
 		
 		return criteria.list();

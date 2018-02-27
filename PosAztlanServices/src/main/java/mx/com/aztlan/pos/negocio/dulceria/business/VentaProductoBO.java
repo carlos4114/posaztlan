@@ -111,9 +111,6 @@ public class VentaProductoBO {
 	private PagoDAOI pagoDAO;
 
 	@Autowired
-	private MovimientoInventarioDAOI movimientoInventarioDAO;
-
-	@Autowired
 	private TipoMovimientoInvDAOI tipoMovimientoInvDAO;
 
 	@Autowired

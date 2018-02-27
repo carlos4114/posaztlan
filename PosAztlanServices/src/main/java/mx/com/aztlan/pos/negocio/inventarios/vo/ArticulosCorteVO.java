@@ -6,9 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import mx.com.aztlan.pos.negocio.devolucion.vo.ArticuloVO;
 import mx.com.aztlan.pos.negocio.devolucion.vo.AutorizacionVO;
-import mx.com.aztlan.pos.negocio.dulceria.vo.MovimientoInventarioVO;
 import mx.com.aztlan.pos.negocio.dulceria.vo.PuntoVentaVO;
-import mx.com.aztlan.pos.negocio.dulceria.vo.TipoMovimientoInvVO;
 import mx.com.aztlan.pos.negocio.dulceria.vo.UsuarioVO;
 
 @JsonIgnoreProperties(ignoreUnknown = true)

@@ -5,7 +5,6 @@ import java.util.List;
 
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ArticulosCorte;
 import mx.com.aztlan.pos.negocio.devolucion.assembler.ArticuloAssembler;
-import mx.com.aztlan.pos.negocio.dulceria.assembler.MovimientoInventarioAssembler;
 import mx.com.aztlan.pos.negocio.dulceria.assembler.PuntoVentaAssembler;
 import mx.com.aztlan.pos.negocio.dulceria.assembler.UsuarioAssembler;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ArticulosCorteVO;

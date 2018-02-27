@@ -22,7 +22,7 @@ import javax.persistence.Table;
 public class Caja implements java.io.Serializable {
 
 	private Integer idCaja;
-	private PuntoVenta puntoVenta;
+	private Almacen almacen;
 	private String nombre;
 	private boolean activo;
 	private Set<TicketVenta> ticketVentas = new HashSet<TicketVenta>(0);
@@ -48,13 +48,13 @@ public class Caja implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_punto_venta", nullable = false)
-	public PuntoVenta getPuntoVenta() {
-		return this.puntoVenta;
+	@JoinColumn(name = "id_almacen", nullable = false)
+	public Almacen getAlmacen() {
+		return this.almacen;
 	}
 
-	public void setPuntoVenta(PuntoVenta puntoVenta) {
-		this.puntoVenta = puntoVenta;
+	public void setAlmacen(Almacen almacen) {
+		this.almacen = almacen;
 	}
 	
 	@Column(name = "activo", nullable = false)

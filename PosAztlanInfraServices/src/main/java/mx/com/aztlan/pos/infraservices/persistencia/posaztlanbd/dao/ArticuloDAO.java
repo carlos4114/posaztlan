@@ -31,4 +31,57 @@ public class ArticuloDAO extends GlobalHibernateDAO<Articulo> implements Articul
 
 	}
 	
+	@Override
+	public List<Articulo> getArticulosByName(Integer idCine, String nombre) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select art ");
+		hql.append("from Articulo art ");
+		hql.append("where art.nombre =:nombre and art.cine.idCine =:idCine ");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setParameter("nombre", nombre);
+		query.setParameter("idCine", idCine);
+		
+		return query.list();
+	}
+
+	
+	@Override
+	public List<Articulo> findByIdCine(Integer idCine) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select art ");
+		hql.append("from Articulo art ");
+		hql.append("where art.cine.idCine =:idCine ");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setParameter("idCine", idCine);
+		
+		return query.list();
+	}
+	
+	@Override
+	public List<Articulo> findByIdArticulo(Integer idArticulo) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select art from Articulo art ");
+		hql.append("where art.idArticulo=:idArticulo");
+
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setParameter("idArticulo", idArticulo);
+		
+		return query.list();
+	}
+	
+	@Override
+	public List<Articulo> findByIdCinePuntosVenta(List<Integer> puntosVenta) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select art ");
+		hql.append("from Articulo art ");
+		hql.append("where art.cine.idCine =:idCine and art.articulosXPuntoVentas.puntoVenta.idPuntoVenta in (:puntosVenta)");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setParameter("puntosVenta", puntosVenta);
+		
+		return query.list();
+	}
 }

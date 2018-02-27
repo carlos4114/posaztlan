@@ -14,12 +14,9 @@ import org.apache.velocity.app.VelocityEngine;
 import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import mx.com.aztlan.pos.infraservices.servicios.BusinessGlobalException;
 import mx.com.aztlan.pos.infraservices.servicios.CorreoElectronicoBO;
@@ -28,7 +25,6 @@ import mx.com.aztlan.pos.negocio.reportes.business.ReporteDistribuidoraBO;
 import mx.com.aztlan.pos.negocio.reportes.business.ReporteJasperBO;
 import mx.com.aztlan.pos.negocio.reportes.vo.ReporteJasperVO;
 import mx.com.aztlan.pos.negocio.reportes.vo.ReportesCineXDistribuidoraVO;
-import mx.com.aztlan.pos.servicios.util.Fecha;
 import net.sf.jasperreports.engine.JRException;
 
 @Service

@@ -1,5 +1,7 @@
 package mx.com.aztlan.pos.negocio.configuracion.vo;
 
+import java.util.List;
+
 public class ArticuloVO {
 	private Integer idArticulo;
 	private CineVO cineVO;
@@ -8,7 +10,11 @@ public class ArticuloVO {
 	private String nombre;
 	private boolean activo;
 	private long puntoReorden;
-
+	private List<Integer> puntosVentaList;
+	private Integer idCine;
+	private Integer idClasificacionArt;
+	private Integer idUnidadMedida;
+	
 	public ArticuloVO() {
 	}
 
@@ -67,5 +73,39 @@ public class ArticuloVO {
 	public void setPuntoReorden(long puntoReorden) {
 		this.puntoReorden = puntoReorden;
 	}
+
+	public List<Integer> getPuntosVentaList() {
+		return puntosVentaList;
+	}
+
+	public void setPuntosVentaList(List<Integer> puntosVentaList) {
+		this.puntosVentaList = puntosVentaList;
+	}
+
+	public Integer getIdCine() {
+		return idCine;
+	}
+
+	public void setIdCine(Integer idCine) {
+		this.idCine = idCine;
+	}
+
+	public Integer getIdClasificacionArt() {
+		return idClasificacionArt;
+	}
+
+	public void setIdClasificacionArt(Integer idClasificacionArt) {
+		this.idClasificacionArt = idClasificacionArt;
+	}
+
+	public Integer getIdUnidadMedida() {
+		return idUnidadMedida;
+	}
+
+	public void setIdUnidadMedida(Integer idUnidadMedida) {
+		this.idUnidadMedida = idUnidadMedida;
+	}
+	
+	
 
 }

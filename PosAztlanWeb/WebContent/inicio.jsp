@@ -53,7 +53,7 @@
                 <div class="main_container">
                     <div class="col-md-3 left_col">
 
-                        <!-- AQUÃ VA EL MENÃ DE LA APLICACIÃN -->
+                        <!-- AQUI VA EL MENU DE LA APLICACION -->
                         <div class="left_col scroll-view">
 				            <div class="navbar nav_title" align="center" style="border: 0; background-color: white;"  class="text-center">
 				              <a href="inicio.jsp" class="site_title">
@@ -149,7 +149,7 @@
                     <footer>
                         <!-- AQUÃ VA EL FOOTER DE LA APLICACIÃN -->
                         <div class="pull-right">
-                            2018. Grupo Tecnetia SA de CV. <a href="http://tecnetia.com.mx/aviso-de-privacidad/" target="_blank">Aviso
+                            2018. DRH SA de CV. <a href="http://tecnetia.com.mx/aviso-de-privacidad/" target="_blank">Aviso
 						de Privacidad.</a>
                         </div>
                         <div class="clearfix"></div>
@@ -321,7 +321,6 @@
             <script src="<c:url value='/resources/js/aplicacion/configuracion/service/menusDulceriaService.js' />"></script>
             <script src="<c:url value='/resources/js/aplicacion/configuracion/controller/peliculasController.js' />"></script>
             <script src="<c:url value='/resources/js/aplicacion/configuracion/controller/preciosVentaController.js' />"></script>
-            <script src="<c:url value='/resources/js/aplicacion/configuracion/controller/productosDulceriaController.js' />"></script>
             <script src="<c:url value='/resources/js/aplicacion/configuracion/controller/programacionController.js' />"></script>
             <script src="<c:url value='/resources/js/aplicacion/configuracion/service/programacionesTaquillaService.js' />"></script>
             <script src="<c:url value='/resources/js/aplicacion/configuracion/controller/promocionesTaquillaController.js' />"></script>
@@ -348,6 +347,17 @@
             <script src="<c:url value='/resources/js/comun/dialog/modalController.js'/>"></script>
             <script src="<c:url value='/resources/js/comun/dialog/modalControllerPrintTicket.js'/>"></script>
             
+            <!-- Controller del modulo Catalogo de articulos -->
+			<script src="<c:url value='/resources/js/aplicacion/configuracion/service/articulosService.js' />"></script> 
+            <script src="<c:url value='/resources/js/aplicacion/configuracion/controller/articulosController.js' />"></script>
+            
+            <!-- Controller del modulo catalogo de paquetes -->
+			<script src="<c:url value='/resources/js/aplicacion/configuracion/service/paquetesService.js' />"></script> 
+            <script src="<c:url value='/resources/js/aplicacion/configuracion/controller/paquetesController.js' />"></script>
+            
+            <!-- Controller del modulo catalogo de productos -->
+            <script src="<c:url value='/resources/js/aplicacion/configuracion/service/productosService.js' />"></script>
+            <script src="<c:url value='/resources/js/aplicacion/configuracion/controller/productosController.js' />"></script>
         </body>
 
         </html>

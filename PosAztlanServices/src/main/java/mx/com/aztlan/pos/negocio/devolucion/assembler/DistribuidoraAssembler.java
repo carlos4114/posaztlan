@@ -1,6 +1,5 @@
 package mx.com.aztlan.pos.negocio.devolucion.assembler;
 
-import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Cine;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Distribuidora;
 import mx.com.aztlan.pos.negocio.devolucion.vo.DistribuidoraVO;
 

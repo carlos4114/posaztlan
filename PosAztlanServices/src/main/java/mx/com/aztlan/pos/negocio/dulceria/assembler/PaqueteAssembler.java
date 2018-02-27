@@ -54,11 +54,11 @@ public class PaqueteAssembler {
 		
 		PaqueteVO paqueteVO = new PaqueteVO();
 		paqueteVO.setIdPaquete(producto.getIdProducto());
-		paqueteVO.setCineVO(CineAssembler.getCineVO(producto.getCine()));
+		//paqueteVO.setCineVO(CineAssembler.getCineVO(producto.getCine()));
 		paqueteVO.setNombre(producto.getNombre());
 		paqueteVO.setIcono(producto.getIcono());
 		paqueteVO.setActivo(producto.isActivo());
-		paqueteVO.setPrecio(producto.getPrecio());
+	//	paqueteVO.setPrecio(producto.getPrecio());
 		paqueteVO.setProductosXPaqueteVO(ProductoXPaqueteAssembler.getProductosXPaqueteVO(producto));
 		//paqueteVO.setPreciosXPaqueteVO(PrecioXPaqueteAssembler.getPreciosXPaqueteVOXProducto(producto.getPrecioXProductos()));
 

@@ -16,9 +16,11 @@ public interface MenuIbatisDAOI {
     		  " Menu m inner join Recursos_x_perfil rxp on rxp.id_recurso=m.id_recurso "+
     			" inner join Perfiles_x_usuario pxu on pxu.id_perfil=rxp.id_perfil "+
     			" inner join Usuario u on u.id_usuario=pxu.id_usuario "+
+    			" inner join Recurso r on r.id_recurso = rxp.id_recurso "+
     			" where "+ 
     			" u.correo=#{correo} and "+
     			" m.id_recurso_padre is null "+
+    			" and r.activo =1 "+
     			" order by m.id_Menu ")
 	@Results(value = {
 	@Result(property="idMenu", column="id_menu"),	

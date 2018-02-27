@@ -25,4 +25,17 @@ public class ProductoXPuntoVentaDAO extends GlobalHibernateDAO<ProductosXPuntoVe
 		return query.list();
 	}
 	
+	@Override
+	public List<ProductosXPuntoVenta> findByIdProducto(Integer idProducto) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select ppv from ProductosXPuntoVenta ppv join ppv.puntoVenta ");
+		hql.append("where ppv.producto.idProducto=:idProducto");
+
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setParameter("idProducto", idProducto);
+		
+		return query.list();
+	}
+	
 }

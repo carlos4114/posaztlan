@@ -241,6 +241,24 @@
 				</value>
 				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ReportesDistribuidora
 				</value>
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Almacen
+				</value>
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Canal
+				</value>
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.TipoAlmacen
+				</value>
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Medida
+				</value>
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Marca
+				</value>
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Familia
+				</value>
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.TipoProducto
+				</value>
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.PrecioXCanal
+				</value>
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.PrecioXCanalId
+				</value>
 			</list>
 		</property>
 	</bean>

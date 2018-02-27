@@ -7,6 +7,6 @@ import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Usuario;
 
 public interface UsuarioDAOI extends GlobalHibernateDAOI<Usuario>{
 	Usuario getUsuario(String correo) throws Exception;
-	List<Usuario> getUsuarios(Integer idCine) throws Exception;
+	List<Usuario> getUsuarios(Integer idCanal) throws Exception;
 
 }

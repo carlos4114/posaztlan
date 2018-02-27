@@ -19,8 +19,9 @@
     <div class="col-md-4">
       <section class="login-form">
 		<form ng-submit="login()" name="myForm" role="login">
-          <img src="<c:url value='/resources/img/MuvitulT.png' />" class="img-responsive" alt="" />
-
+        	<div align="center">
+          		<img src="<c:url value='/resources/img/DRH.jpg' />" class="img-responsive" alt="" />
+			</div>
           <input type="email" ng-model="userName" placeholder="Correo Electrónico" required="required" class="form-control input-lg" value="" />     
           <input type="password" ng-model="password" placeholder="Contraseña" required="required" class="form-control input-lg" value="" ng-minlength="3" />          
           
@@ -42,7 +43,7 @@
         
         <div class="text-center">
               <!--  <img src="<c:url value='/resources/img/tecnetia.png' />" height="75px" width="150px" class="center-block" alt="" >-->
-             <h6>2018. Grupo Tecnetia SA de CV. <a href="http://tecnetia.com.mx/aviso-de-privacidad/" target="_blank"><u>Aviso de Privacidad.</u></a></h6>
+             <h6>2018. DRH SA de CV. <a href="http://tecnetia.com.mx/aviso-de-privacidad/" target="_blank"><u>Aviso de Privacidad.</u></a></h6>
  		</div>
       </section>  
       </div>

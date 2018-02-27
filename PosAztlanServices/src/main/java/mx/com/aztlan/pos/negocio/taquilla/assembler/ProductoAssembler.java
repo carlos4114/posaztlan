@@ -16,7 +16,7 @@ public class ProductoAssembler {
 		
 		ProductoVO productoVO = new ProductoVO();
 		productoVO.setIdProducto(producto.getIdProducto());
-		productoVO.setCineVO(CineAssembler.getCineVO(producto.getCine()));
+		//productoVO.setCineVO(CineAssembler.getCineVO(producto.getCine()));
 		productoVO.setNombre(producto.getNombre());
 		productoVO.setIcono(producto.getIcono());
 		productoVO.setActivo(producto.isActivo());

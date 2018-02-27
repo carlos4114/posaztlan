@@ -9,4 +9,5 @@ public interface ProductoXPuntoVentaDAOI extends GlobalHibernateDAOI<ProductosXP
 
 	List<ProductosXPuntoVenta> findByPuntoVenta(Integer idPuntoVenta);
 
+	List<ProductosXPuntoVenta> findByIdProducto(Integer idProducto);
 }

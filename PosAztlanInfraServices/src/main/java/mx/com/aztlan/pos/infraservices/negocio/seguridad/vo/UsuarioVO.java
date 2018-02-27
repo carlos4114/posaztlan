@@ -24,10 +24,45 @@ public class UsuarioVO implements Serializable{
 	private Integer idPerfil;
 	private String perfil;
 	private Integer idPuntoVenta;
+	private Integer idCanal;
+	private Integer idAlmacen;
+	private String Almacen;
 	private String puntoVenta;
+	private String canal;
 	private Integer idCine;
 	private Integer idCaja;
 	private File foto;
+	
+	
+	
+	public Integer getIdAlmacen() {
+		return idAlmacen;
+	}
+
+	public void setIdAlmacen(Integer idAlmacen) {
+		this.idAlmacen = idAlmacen;
+	}
+
+	public void setAlmacen(String almacen) {
+		Almacen = almacen;
+	}
+
+	public String getAlmacen() {
+		return Almacen;
+	}
+	
+	public String getCanal() {
+		return canal;
+	}
+	public void setCanal(String canal) {
+		this.canal = canal;
+	}
+	public Integer getIdCanal() {
+		return idCanal;
+	}
+	public void setIdCanal(Integer idCanal) {
+		this.idCanal = idCanal;
+	}
 	
 	public String getCorreo() {
 		return correo;

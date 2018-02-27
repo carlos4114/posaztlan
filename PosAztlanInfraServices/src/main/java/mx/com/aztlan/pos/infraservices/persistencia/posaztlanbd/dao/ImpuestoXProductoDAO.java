@@ -24,5 +24,30 @@ public class ImpuestoXProductoDAO extends GlobalHibernateDAO<ImpuestoXProducto> 
 		
 		return query.list();
 	}
+	
+	@Override
+	public List<ImpuestoXProducto> findByIdProducto(Integer idProducto) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select ixp  from ImpuestoXProducto ixp ");
+		hql.append("where ixp.producto.idProducto=:idProducto " );
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setParameter("idProducto", idProducto);
+		
+		return query.list();
+	}
+
+	@Override
+	public List<ImpuestoXProducto> findByIdCine(Integer idCine) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select ixp.idImpuestoXProducto, ixp.nombre from ImpuestoXProducto ixp ");
+		hql.append("where ixp.cine.idCine=:idCine and ixp.activo=1 " );
+		hql.append("order by ixp.idImpuestoXProducto asc ");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setParameter("idCine", idCine);
+		
+		return query.list();
+	}
 
 }

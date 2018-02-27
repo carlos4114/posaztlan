@@ -8,5 +8,7 @@ import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Paquete;
 public interface PaqueteDAOI extends GlobalHibernateDAOI<Paquete>{
 
 	List<Paquete> findByCine(Integer idCine);
+	
+	List<Paquete> findByName(String nombre, Integer IdCine);
 
 }

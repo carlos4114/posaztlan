@@ -1,5 +1,8 @@
 package mx.com.aztlan.pos.negocio.configuracion.assembler;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.UnidadMedida;
 import mx.com.aztlan.pos.negocio.configuracion.vo.UnidadMedidaVO;
 
@@ -17,6 +20,16 @@ public class UnidadMedidaAssembler {
 		return unidadMedidaVO;
 	}
 	
+	public static List<UnidadMedidaVO> getUnidadesMedidaVO(List<UnidadMedida> unidadesMedida){
 
+		List<UnidadMedidaVO> unidadMedidaVO = new ArrayList<UnidadMedidaVO>();
+		
+		for (UnidadMedida uMedida : unidadesMedida) {
+			unidadMedidaVO.add(UnidadMedidaAssembler.getUnidadMedidaVO(uMedida));
+		}
+
+		return unidadMedidaVO;
+
+	}
 	
 }

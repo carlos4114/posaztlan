@@ -24,9 +24,9 @@ import javax.persistence.Table;
 public class Usuario implements java.io.Serializable {
 
 	private Integer idUsuario;
-	private Cine cine;
+	private Canal canal;
 	private EstatusUsuario estatusUsuario;
-	private PuntoVenta puntoVenta;
+	private Almacen almacen;
 	private Caja caja;
 	private String nombre;
 	private String paterno;
@@ -50,9 +50,9 @@ public class Usuario implements java.io.Serializable {
 		this.idUsuario = idUsuario;
 	}
 
-	public Usuario(Cine cine, EstatusUsuario estatusUsuario, String nombre, String paterno, String correo,
+	public Usuario(Canal canal, EstatusUsuario estatusUsuario, String nombre, String paterno, String correo,
 			String contrasenia) {
-		this.cine = cine;
+		this.canal = canal;
 		this.estatusUsuario = estatusUsuario;
 		this.nombre = nombre;
 		this.paterno = paterno;
@@ -60,13 +60,13 @@ public class Usuario implements java.io.Serializable {
 		this.contrasenia = contrasenia;
 	}
 
-	public Usuario(Cine cine, EstatusUsuario estatusUsuario, PuntoVenta puntoVenta, String nombre, String paterno,
+	public Usuario(Canal canal, EstatusUsuario estatusUsuario, Almacen almacen, String nombre, String paterno,
 			String materno, String correo, String contrasenia, String foto, Set<TicketVenta> ticketVentas,
 			Set<Devolucion> devolucions, Set<PerfilesXUsuario> perfilesXUsuarios, Set<CancelacionPago> cancelacionPagos,
 			Set<Autorizacion> autorizacions, Set<MovimientoInventario> movimientoInventarios) {
-		this.cine = cine;
+		this.canal = canal;
 		this.estatusUsuario = estatusUsuario;
-		this.puntoVenta = puntoVenta;
+		this.almacen = almacen;
 		this.nombre = nombre;
 		this.paterno = paterno;
 		this.materno = materno;
@@ -94,13 +94,13 @@ public class Usuario implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_cine", nullable = false)
-	public Cine getCine() {
-		return this.cine;
+	@JoinColumn(name = "id_canal", nullable = false)
+	public Canal getCanal() {
+		return this.canal;
 	}
 
-	public void setCine(Cine cine) {
-		this.cine = cine;
+	public void setCanal(Canal canal) {
+		this.canal = canal;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -114,13 +114,13 @@ public class Usuario implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_punto_venta")
-	public PuntoVenta getPuntoVenta() {
-		return this.puntoVenta;
+	@JoinColumn(name = "id_almacen")
+	public Almacen getAlmacen() {
+		return this.almacen;
 	}
 
-	public void setPuntoVenta(PuntoVenta puntoVenta) {
-		this.puntoVenta = puntoVenta;
+	public void setAlmacen(Almacen almacen) {
+		this.almacen = almacen;
 	}
 	
 	@ManyToOne(fetch = FetchType.LAZY)

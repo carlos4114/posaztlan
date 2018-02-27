@@ -31,7 +31,7 @@ public class Cine implements java.io.Serializable {
 	private Set<Sala> salas = new HashSet<Sala>(0);
 	private Set<PuntoVenta> puntoVentas = new HashSet<PuntoVenta>(0);
 	private Set<Formato> formatos = new HashSet<Formato>(0);
-	private Set<Usuario> usuarios = new HashSet<Usuario>(0);
+	//private Set<Usuario> usuarios = new HashSet<Usuario>(0);
 	private Set<Proveedor> proveedors = new HashSet<Proveedor>(0);
 	private Set<Promocion> promocions = new HashSet<Promocion>(0);
 	private Set<Pelicula> peliculas = new HashSet<Pelicula>(0);
@@ -39,8 +39,8 @@ public class Cine implements java.io.Serializable {
 	private Set<Regalo> regalos = new HashSet<Regalo>(0);
 	private Set<Paquete> paquetes = new HashSet<Paquete>(0);
 	private Set<ImpuestoBoleto> impuestoBoletos = new HashSet<ImpuestoBoleto>(0);
-	private Set<ImpuestoXProducto> impuestoXProductos = new HashSet<ImpuestoXProducto>(0);
-	private Set<Producto> productos = new HashSet<Producto>(0);
+	//private Set<ImpuestoXProducto> impuestoXProductos = new HashSet<ImpuestoXProducto>(0);
+	//private Set<Producto> productos = new HashSet<Producto>(0);
 
 	public Cine() {
 	}
@@ -59,8 +59,7 @@ public class Cine implements java.io.Serializable {
 			Set<ClasificacionArt> clasificacionArts, Set<Articulo> articulos, Set<Sala> salas,
 			Set<PuntoVenta> puntoVentas, Set<Formato> formatos, Set<Usuario> usuarios, Set<Proveedor> proveedors,
 			Set<Promocion> promocions, Set<Pelicula> peliculas, Set<MateriaPrima> materiaPrimas, Set<Regalo> regalos,
-			Set<Paquete> paquetes, Set<ImpuestoBoleto> impuestoBoletos, Set<ImpuestoXProducto> impuestoXProductos,
-			Set<Producto> productos) {
+			Set<Paquete> paquetes, Set<ImpuestoBoleto> impuestoBoletos) {
 		this.contacto = contacto;
 		this.empresa = empresa;
 		this.nombre = nombre;
@@ -70,7 +69,7 @@ public class Cine implements java.io.Serializable {
 		this.salas = salas;
 		this.puntoVentas = puntoVentas;
 		this.formatos = formatos;
-		this.usuarios = usuarios;
+		//this.usuarios = usuarios;
 		this.proveedors = proveedors;
 		this.promocions = promocions;
 		this.peliculas = peliculas;
@@ -78,8 +77,8 @@ public class Cine implements java.io.Serializable {
 		this.regalos = regalos;
 		this.paquetes = paquetes;
 		this.impuestoBoletos = impuestoBoletos;
-		this.impuestoXProductos = impuestoXProductos;
-		this.productos = productos;
+	//	this.impuestoXProductos = impuestoXProductos;
+		//this.productos = productos;
 	}
 
 	@Id
@@ -177,14 +176,14 @@ public class Cine implements java.io.Serializable {
 		this.formatos = formatos;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cine")
+/*	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cine")
 	public Set<Usuario> getUsuarios() {
 		return this.usuarios;
 	}
 
 	public void setUsuarios(Set<Usuario> usuarios) {
 		this.usuarios = usuarios;
-	}
+	}*/
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cine")
 	public Set<Proveedor> getProveedors() {
@@ -249,7 +248,7 @@ public class Cine implements java.io.Serializable {
 		this.impuestoBoletos = impuestoBoletos;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cine")
+	/*@OneToMany(fetch = FetchType.LAZY, mappedBy = "cine")
 	public Set<ImpuestoXProducto> getImpuestoXProductos() {
 		return this.impuestoXProductos;
 	}
@@ -265,6 +264,6 @@ public class Cine implements java.io.Serializable {
 
 	public void setProductos(Set<Producto> productos) {
 		this.productos = productos;
-	}
+	}*/
 
 }

@@ -28,11 +28,20 @@ public class Empresa implements java.io.Serializable {
 	private String rfc;
 	private String slogan;
 	private byte[] icono;
-	private Set<Cine> cines = new HashSet<Cine>(0);
+	private Set<Canal> canales = new HashSet<Canal>(0);
+	private Set<Marca> marcas = new HashSet<Marca>(0);
+	private Set<UnidadMedida> unidadesMedida = new HashSet<UnidadMedida>(0);
+	private Set<Medida> medidas = new HashSet<Medida>(0);
+	private Set<Familia> familias = new HashSet<Familia>(0);
+	private Set<TipoProducto> tiposProducto = new HashSet<TipoProducto>(0);
 
 	public Empresa() {
 	}
 
+	public Empresa(Integer idEmpresa) {
+		this.idEmpresa = idEmpresa;
+	}
+	
 	public Empresa(Contacto contacto, EstatusEmpresa estatusEmpresa, String nombre, String rfc, String slogan,
 			byte[] icono) {
 		this.contacto = contacto;
@@ -44,14 +53,15 @@ public class Empresa implements java.io.Serializable {
 	}
 
 	public Empresa(Contacto contacto, EstatusEmpresa estatusEmpresa, String nombre, String rfc, String slogan,
-			byte[] icono, Set<Cine> cines) {
+			byte[] icono, Set<Canal> canales, Set<Familia> familias) {
 		this.contacto = contacto;
 		this.estatusEmpresa = estatusEmpresa;
 		this.nombre = nombre;
 		this.rfc = rfc;
 		this.slogan = slogan;
 		this.icono = icono;
-		this.cines = cines;
+		this.canales = canales;
+		this.familias = familias;
 	}
 
 	@Id
@@ -123,12 +133,53 @@ public class Empresa implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "empresa")
-	public Set<Cine> getCines() {
-		return this.cines;
+	public Set<Canal> getCanales() {
+		return this.canales;
 	}
 
-	public void setCines(Set<Cine> cines) {
-		this.cines = cines;
+	public void setCanales(Set<Canal> canales) {
+		this.canales = canales;
 	}
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "empresa")
+	public Set<TipoProducto> getTiposProducto() {
+		return this.tiposProducto;
+	}
+
+	public void setTiposProducto(Set<TipoProducto> tiposProducto) {
+		this.tiposProducto = tiposProducto;
+	}
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "empresa")
+	public Set<Familia> getFamilias() {
+		return this.familias;
+	}
+
+	public void setFamilias(Set<Familia> familias) {
+		this.familias = familias;
+	}
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "empresa")
+	public Set<Marca> getMarcas() {
+		return this.marcas;
+	}
+
+	public void setMarcas(Set<Marca> marcas) {
+		this.marcas = marcas;
+	}
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "empresa")
+	public Set<UnidadMedida> getUnidadesMedida() {
+		return this.unidadesMedida;
+	}
+
+	public void setUnidadesMedida(Set<UnidadMedida> unidadesMedida) {
+		this.unidadesMedida = unidadesMedida;
+	}
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "empresa")
+	public Set<Medida> getMedidas() {
+		return this.medidas;
+	}
+
+	public void setMedidas(Set<Medida> medidas) {
+		this.medidas = medidas;
+	}
 }

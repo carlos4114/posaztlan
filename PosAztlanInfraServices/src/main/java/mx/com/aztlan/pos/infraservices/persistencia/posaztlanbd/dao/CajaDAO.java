@@ -15,12 +15,12 @@ public class CajaDAO extends GlobalHibernateDAO<Caja> implements CajaDAOI {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Caja> getActivos(Integer idPuntoVenta) {
+	public List<Caja> getActivos(Integer idAlmacen) {
 
 		Criteria criteria = getSession().createCriteria(Caja.class);
 		
 		criteria.add(Restrictions.eq("activo", true));
-		criteria.add(Restrictions.eq("puntoVenta.idPuntoVenta", idPuntoVenta));
+		criteria.add(Restrictions.eq("almacen.idAlmacen", idAlmacen));
 		criteria.addOrder(Order.asc("nombre"));
 		
 		return criteria.list();

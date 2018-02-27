@@ -9,6 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -22,11 +24,16 @@ public class UnidadMedida implements java.io.Serializable {
 	private Integer idUnidadMedida;
 	private String nombre;
 	private boolean activo;
+	private Empresa empresa;
 	private Set<Articulo> articulos = new HashSet<Articulo>(0);
 
 	public UnidadMedida() {
 	}
 
+	public UnidadMedida(Integer idUnidadMedida) {
+		this.idUnidadMedida = idUnidadMedida;
+	}
+	
 	public UnidadMedida(String nombre, boolean activo) {
 		this.nombre = nombre;
 		this.activo = activo;
@@ -66,6 +73,16 @@ public class UnidadMedida implements java.io.Serializable {
 
 	public void setActivo(boolean activo) {
 		this.activo = activo;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_empresa", nullable = false)
+	public Empresa getEmpresa() {
+		return this.empresa;
+	}
+
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "unidadMedida")

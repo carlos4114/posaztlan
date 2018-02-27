@@ -15,5 +15,5 @@ public interface InventarioDAOI extends GlobalHibernateDAOI<Inventario>{
 	BigDecimal getCostoUltimasSalidasByArticulo(Integer idPuntoVenta, Integer idArticulo);
 	List<Inventario> findByIdPuntoVentaWithOutCount(Integer idPuntoVenta, String nombreArticulo);
 	List<Inventario> findByArticuloByProveedores(Integer idPuntoVenta,Integer idArticulo);
-	
+	BigDecimal getPrecioUnitario(Integer idArticulo);
 }

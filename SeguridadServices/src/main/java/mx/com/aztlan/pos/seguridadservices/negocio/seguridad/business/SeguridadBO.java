@@ -182,14 +182,29 @@ public class SeguridadBO extends GlobalService{
   	  			 .claim(ClaimsEnum.ROLES, (List<Integer>) claims.get(ClaimsEnum.ROLES))
   	  			 .setIssuedAt(claims.getIssuedAt())
   	  			 .claim(ClaimsEnum.USUARIO, (Integer)claims.get(ClaimsEnum.USUARIO))
-  	  			 .claim(ClaimsEnum.CINE, (Integer)claims.get(ClaimsEnum.CINE))
-	  			 .claim(ClaimsEnum.PUNTO_VENTA, (Integer)claims.get(ClaimsEnum.PUNTO_VENTA))
+  	  			 .claim(ClaimsEnum.CANAL, (Integer)claims.get(ClaimsEnum.CANAL))
+	  			 .claim(ClaimsEnum.ALMACEN, (Integer)claims.get(ClaimsEnum.ALMACEN))
    	  			 .claim(ClaimsEnum.CAJA, (Integer)claims.get(ClaimsEnum.CAJA))
 	  			 .claim(ClaimsEnum.NOMBRE_COMPLETO_USR, claims.get(ClaimsEnum.NOMBRE_COMPLETO_USR))
  	  			 .setExpiration(fechaExpriacion)
   	  			 .signWith(SignatureAlgorithm.HS256, pwdEncryptor)
   	  			 .compact());
+		
+	/*	return new LoginResponseVO(				  
+				 (String)claims.get(ClaimsEnum.NOMBRE_COMPLETO_USR),
+				  Jwts.builder().setSubject(claims.getSubject())
+ 	  			 .claim(ClaimsEnum.ROLES, (List<Integer>) claims.get(ClaimsEnum.ROLES))
+ 	  			 .setIssuedAt(claims.getIssuedAt())
+ 	  			 .claim(ClaimsEnum.USUARIO, (Integer)claims.get(ClaimsEnum.USUARIO))
+ 	  			 .claim(ClaimsEnum.CANAL, (Integer)claims.get(ClaimsEnum.CANAL))
+	  			 .claim(ClaimsEnum.ALMACEN, (Integer)claims.get(ClaimsEnum.ALMACEN))
+  	  			 .claim(ClaimsEnum.SUBALMACEN, (Integer)claims.get(ClaimsEnum.SUBALMACEN))
+	  			 .claim(ClaimsEnum.NOMBRE_COMPLETO_USR, claims.get(ClaimsEnum.NOMBRE_COMPLETO_USR))
+	  			 .setExpiration(fechaExpriacion)
+ 	  			 .signWith(SignatureAlgorithm.HS256, pwdEncryptor)
+ 	  			 .compact());*/
 	}
+	
 	
 	@Transactional(readOnly=true)
 	public String encriptarConSHA1(String texto) throws BusinessGlobalException, Exception{

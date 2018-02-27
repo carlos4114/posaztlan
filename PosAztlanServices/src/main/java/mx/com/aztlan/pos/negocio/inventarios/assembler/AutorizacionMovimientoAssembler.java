@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.AutorizacionMovimiento;
-import mx.com.aztlan.pos.negocio.dulceria.assembler.MovimientoInventarioAssembler;
 import mx.com.aztlan.pos.negocio.inventarios.vo.AutorizacionMovimientoVO;
 
 public class AutorizacionMovimientoAssembler {

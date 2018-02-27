@@ -113,9 +113,9 @@ public class UsuarioBO extends GlobalService{
 		        return new LoginResponseVO(ErroresSeguridadEnum.CONTRASENIA_INCORRECTA);	
 
 		 // Validamos que la empresa a la que pertenece el usuario esté en un estatus válido para entrar
-		 if (EstatusEmpresaEnum.EN_DEUDA == usuario.getCine().getEmpresa().getEstatusEmpresa().getIdEstatus())
+		 if (EstatusEmpresaEnum.EN_DEUDA == usuario.getCanal().getEmpresa().getEstatusEmpresa().getIdEstatus())
 		        return new LoginResponseVO(ErroresSeguridadEnum.EMPRESA_EN_DEUDA);	
-		 if (EstatusEmpresaEnum.BAJA_DECISION_PROPIA == usuario.getCine().getEmpresa().getEstatusEmpresa().getIdEstatus())
+		 if (EstatusEmpresaEnum.BAJA_DECISION_PROPIA == usuario.getCanal().getEmpresa().getEstatusEmpresa().getIdEstatus())
 		        return new LoginResponseVO(ErroresSeguridadEnum.EMPRESA_INACTIVA);	
 		 
 		 // Validamos que el usuario esté activo
@@ -131,20 +131,20 @@ public class UsuarioBO extends GlobalService{
 		 Date fechaExpriacion = FechasUtilsBO.addMinutesToDate(fechaActual, expirationMinutes);
 		 		 
 		 return new LoginResponseVO(
-				       usuario.getCine().getEmpresa().getIdEmpresa(),
+				       usuario.getCanal().getEmpresa().getIdEmpresa(),
 			       	   usuario.getNombre(),
 				       Jwts.builder().setSubject(usuarioVO.getUsuario())
 				       	  			 .claim(ClaimsEnum.ROLES, roles)
 				       	  			 .claim(ClaimsEnum.USUARIO, usuario.getIdUsuario())
-				       	  			 .claim(ClaimsEnum.CINE, usuario.getCine().getIdCine())
-				       	  			 .claim(ClaimsEnum.PUNTO_VENTA, usuario.getPuntoVenta()==null?null:usuario.getPuntoVenta().getIdPuntoVenta())
+				       	  			 .claim(ClaimsEnum.CANAL, usuario.getCanal().getIdCanal())
+				       	  			 .claim(ClaimsEnum.ALMACEN, usuario.getAlmacen()==null?null:usuario.getAlmacen().getIdAlmacen())
 				       	  			 .claim(ClaimsEnum.CAJA, usuario.getCaja()==null?null:usuario.getCaja().getIdCaja())
 				       	  			 .claim(ClaimsEnum.NOMBRE_COMPLETO_USR, usuario.getNombre())
 				       	  			 .setIssuedAt(fechaActual)
 				       	  			 .setExpiration(fechaExpriacion)
 				       	  			 .signWith(SignatureAlgorithm.HS256, pwdEncryptor)
 				       	  			 .compact()
-				       ,usuario.getCine().getEmpresa().getIcono()
+				       ,usuario.getCanal().getEmpresa().getIcono()
 				 );
 	}
 	

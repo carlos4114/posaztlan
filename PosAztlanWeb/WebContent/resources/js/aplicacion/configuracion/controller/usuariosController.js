@@ -15,8 +15,8 @@ angular.module('indexModule').controller("UsuariosController",['$scope','GlobalF
           });
      }
 	 
-	 $scope.consultaCajasXPuntoVenta = function(idPuntoVenta) {
-		 UsuariosService.consultaCajasXPuntoVenta(idPuntoVenta)
+	$scope.consultaCajasXAlmacen = function(idAlmacen) {
+		 UsuariosService.consultaCajasXAlmacen(idAlmacen)
 		 .then(
 	      function(d) {
         	  $scope.listaCajas = d;
@@ -24,12 +24,12 @@ angular.module('indexModule').controller("UsuariosController",['$scope','GlobalF
           function(errResponse){
           });
      }
-	
-	 $scope.consultaCinesXEmpresa = function(idEmpresa) {
-		 UsuariosService.consultaCinesXEmpresa(idEmpresa)
+	 
+	 $scope.consultaCanalesXEmpresa = function(idEmpresa) {
+		 UsuariosService.consultaCanalesXEmpresa(idEmpresa)
 		 .then(
 	      function(d) {
-        	  $scope.listaCines = d;
+        	  $scope.listaCanales = d;
 	      },
           function(errResponse){
           });
@@ -45,11 +45,11 @@ angular.module('indexModule').controller("UsuariosController",['$scope','GlobalF
           });
      }
 
-	 $scope.consultaPuntosVentaXCine = function(idCine) {
-		 UsuariosService.consultaPuntosVentaXCine(idCine)
+	 $scope.consultaAlmacenes = function(idCanal) {
+		 UsuariosService.consultaAlmacenesXCanal(idCanal)
 		 .then(
            function(d) {
-        	 $scope.listaPuntosVenta = d;
+        	 $scope.listaAlmacenes = d;
  	      },
           function(errResponse){
           });
@@ -60,9 +60,9 @@ angular.module('indexModule').controller("UsuariosController",['$scope','GlobalF
 		 $scope.listaEstatus = null;	
 		 $scope.listaUsuarios = null;		 	
 	 	 $scope.listaPerfiles = null;
-	 	 $scope.listaPuntosVenta = null;	 	 
-	 	 $scope.listaCines = null;
-	     $scope.usuarioVO = {idUsuario:null,correo:'',nombre:'',paterno:'',materno:'',idEstatus:null,estatus:'',idPerfil:null,perfil:'',idPuntoVenta:null,puntoVenta:'',idCine:null};
+	 	 $scope.listaAlmacenes = null;	 	 
+	 	 $scope.listaCanales = null;
+	     $scope.usuarioVO = {idUsuario:null,correo:'',nombre:'',paterno:'',materno:'',idEstatus:null,estatus:'',idPerfil:null,perfil:'',idAlmacen:null,almacen:'',idCanal:null};
 	 	 $scope.correoConfirma='';
 	     $scope.errorGeneral='';
 		 $scope.mensajeGeneral='';
@@ -132,11 +132,11 @@ angular.module('indexModule').controller("UsuariosController",['$scope','GlobalF
 	        
 			for(var i = 0; i < $scope.listaUsuarios.length; i++){
 	            if($scope.listaUsuarios[i].idUsuario === idUsuario) {
-	            	$scope.consultaCajasXPuntoVenta($scope.listaUsuarios[i].idPuntoVenta); 
+	            	$scope.consultaCajasXAlmacen($scope.listaUsuarios[i].idAlmacen); 
 	            	$scope.usuarioVO = angular.copy($scope.listaUsuarios[i]);
 	            	$scope.correoConfirma=$scope.usuarioVO.correo;	            	
-	            	$("#puntoVenta").val($scope.usuarioVO.idPuntoVenta);
-	            	$scope.consultaPuntosVentaXCine($scope.usuarioVO.idCine);
+	            	$("#almacen").val($scope.usuarioVO.idAlmacen);
+	            	$scope.consultaAlmacenes($scope.usuarioVO.idCanal);
 	                break;
 	            }
 	        }	        
@@ -150,29 +150,29 @@ angular.module('indexModule').controller("UsuariosController",['$scope','GlobalF
 	        }
 	 }
 
-	 $scope.cambiarCine = function(idCine){
-		 $scope.consultaPuntosVentaXCine(idCine);
-		 $scope.obtenerUsuarios(idCine);		 
+	 $scope.cambiarCanal = function(idCanal){
+		 $scope.consultaAlmacenes(idCanal);
+		 $scope.obtenerUsuarios(idCanal);	
+		 
 	 }
 	 
-	 $scope.cambiarPuntoVenta = function(idPuntoVenta){
-		 $scope.consultaCajasXPuntoVenta(idPuntoVenta);
+	 $scope.cambiarAlmacen = function(idAlmacen){
+		 $scope.consultaCajasXAlmacen(idAlmacen);
 	 }
 	 
 	 $scope.limpiarFormulario = function(){     	
-		 $scope.fromUsuarios.$setPristine();
-	     $scope.usuarioVO = {idUsuario:null,correo:'',nombre:'',paterno:'',materno:'',idEstatus:null,estatus:'',idPerfil:null,perfil:'',idPuntoVenta:null,puntoVenta:'',idCine:null};
-	     $scope.listaUsuarios=null;
-		 $scope.listaCajas = null;		 	
-	     $scope.listaPuntosVenta=null;
-	     $scope.correoConfirma='';
-	     $scope.listaCines=null;
-	     $scope.consultaCinesXEmpresa(idEmpresa);
-	     
+		 $scope.formUsuarios.$setPristine();
+		 $scope.listaCajas = null;		
+		 $scope.listaUsuarios = null;		 	
+	 	 $scope.listaAlmacenes = null;	 	 
+	 	 $scope.listaCanales = null;
+	 	 $scope.correoConfirma='';
+	     $scope.usuarioVO = {idUsuario:null,correo:'',nombre:'',paterno:'',materno:'',idEstatus:null,estatus:null,idPerfil:null,perfil:'',idAlmacen:null,almacen:'',idCanal:null};
+	     $scope.consultaCanalesXEmpresa(idEmpresa);
 	 }
 	 		
 	 $scope.inicializarValores();	
-	 $scope.consultaCinesXEmpresa(idEmpresa);
+	 $scope.consultaCanalesXEmpresa(idEmpresa);
 	 $scope.consultaPerfilesXEmpresa(idEmpresa); 	
 	 $scope.consultaEstatusUsuario(); 	
 

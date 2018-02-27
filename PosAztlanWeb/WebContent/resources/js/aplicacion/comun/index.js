@@ -7,7 +7,7 @@ angular.module('indexModule').config(function($routeProvider){
         $routeProvider
         	/******VENTA DE BOLETOS*****/
 
-            .when("/ventaBoletos", {
+        /*    .when("/ventaBoletos", {
                 controller: "ventaBoletos",
                 controllerAs: "vm",
                 templateUrl: "vistas/taquilla/ventaboleto/venta_boletos.jsp" 
@@ -26,13 +26,13 @@ angular.module('indexModule').config(function($routeProvider){
                 controller: "devolucionBoletoController",
                 templateUrl: "vistas/taquilla/devolucion/devolucion_boleto.jsp" 
             
-            })
+            })*/
             
             /****FIN VENTA DE BOLETOS******/
             
             /******VENTA DE PRODUCTO*****/
 
-            .when("/ventaProducto", {
+        /*    .when("/ventaProducto", {
                 controller: "ventaProductoController",
                 controllerAs: "vm",
                 templateUrl: "vistas/dulceria/ventaproducto/venta_producto.jsp"
@@ -47,12 +47,12 @@ angular.module('indexModule').config(function($routeProvider){
                 controller: "devolucionDulceriaController",
                 templateUrl: "vistas/dulceria/devolucion/devolucion_producto.jsp" 
             
-            })
+            })*/
             
              /******FIN VENTA DE PRODUCTO*****/
 
              /******CONFIGURACIONES*****/
-            
+            /*
             .when("/salas", {
                 controller: "SalasController",
                 controllerAs: "vm",
@@ -73,11 +73,7 @@ angular.module('indexModule').config(function($routeProvider){
                 controllerAs: "vm",
                 templateUrl: "vistas/configuracion/peliculas.jsp"
             })
-            .when("/productosDulceria", {
-                controller: "ProductosDulceriaController",
-                controllerAs: "vm",
-                templateUrl: "vistas/configuracion/productos_dulceria.jsp"
-            })
+            
             .when("/menusDulceria", {
                 controller: "MenusDulceriaController",
                 controllerAs: "vm",
@@ -87,7 +83,13 @@ angular.module('indexModule').config(function($routeProvider){
                 controller: "PromocionesTaquillaController",
                 controllerAs: "vm",
                 templateUrl: "vistas/configuracion/promocion_taquilla.jsp"
-            })
+            })*/
+        
+        	.when("/productos", {
+        		controller: "ProductosController",
+        		controllerAs: "vm",
+        		templateUrl: "vistas/configuracion/productos.jsp"
+        	})
             .when("/cambiarContrasenia", {
                 controller: "CambiarContraseniaController",
                 controllerAs: "vm",
@@ -96,6 +98,11 @@ angular.module('indexModule').config(function($routeProvider){
                 controller: "UsuariosController",
                 controllerAs: "vm",
                 templateUrl: "vistas/configuracion/usuarios.jsp"
+            })
+            .when("/articulos", {
+                controller: "ArticulosController",
+                controllerAs: "vm",
+                templateUrl: "vistas/configuracion/articulos.jsp"
             })
 
             /******FIN CONFIGURACIONES*****/
@@ -127,7 +134,7 @@ angular.module('indexModule').config(function($routeProvider){
             /******FIN INVENTARIOS*****/            
             
             /******ESTADISTICAS*****/            
-            .when("/dashboardDulceria", {
+         /*   .when("/dashboardDulceria", {
 	            controller: "dashboardDulceriaController",
  	            templateUrl: "vistas/dashboard/dashboard_dulceria.jsp"
 	        })
@@ -138,7 +145,7 @@ angular.module('indexModule').config(function($routeProvider){
 	        .when("/reportesExcel", {
 	            controller: "reportesController",
  	            templateUrl: "vistas/reportes/reportes_excel.jsp"
-	        });
+	        });*/
             /******FIN ESTADISTICAS*****/            
         
     });

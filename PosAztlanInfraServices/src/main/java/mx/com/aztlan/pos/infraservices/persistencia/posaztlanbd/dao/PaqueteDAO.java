@@ -27,4 +27,20 @@ public class PaqueteDAO extends GlobalHibernateDAO<Paquete> implements PaqueteDA
 
 	}
 	
+	@Override
+	public List<Paquete> findByName(String nombre, Integer idCine) {
+		
+		StringBuilder hql = new StringBuilder();
+		hql.append("select pqt ");
+		hql.append("from Paquete pqt ");
+		hql.append("where pqt.nombre =:nombre and pqt.cine.idCine =:idCine and pqt.activo = 1");
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setParameter("idCine", idCine);
+		query.setParameter("nombre", nombre);
+		
+		return query.list();
+
+	}
+	
 }

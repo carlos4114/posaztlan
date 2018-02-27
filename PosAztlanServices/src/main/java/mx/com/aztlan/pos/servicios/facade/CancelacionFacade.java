@@ -30,12 +30,12 @@ public class CancelacionFacade implements CancelacionFacadeI {
 			throws BusinessGlobalException, NotFoundException {
 
 		Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
-		Integer idCine = (Integer) claims.get(ClaimsEnum.CINE);
+		Integer idCanal = (Integer) claims.get(ClaimsEnum.CANAL);
 		Integer idUsuario = (Integer) claims.get(ClaimsEnum.USUARIO);
 		
-		logger.info("GetTicketVenta:::IdUsuario[{}]:::IdCine[{}]", idUsuario, idCine);
+		logger.info("GetTicketVenta:::IdUsuario[{}]:::IdCanal[{}]", idUsuario, idCanal);
 
-		TicketVentaVO ticketVentaVO = cancelacionController.getTicketVenta(idCine, idTicket, clavePuntoVenta);
+		TicketVentaVO ticketVentaVO = cancelacionController.getTicketVenta(idCanal, idTicket, clavePuntoVenta);
 		
 		if (ticketVentaVO == null ) {
 			throw new NotFoundException("No encontrado");
@@ -50,12 +50,12 @@ public class CancelacionFacade implements CancelacionFacadeI {
 			@RequestBody CancelacionPagoVO cancelacionPagoVO) throws BusinessGlobalException, NotFoundException {
 		
 		Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
-		Integer idCine = (Integer) claims.get(ClaimsEnum.CINE);
+		Integer idCanal = (Integer) claims.get(ClaimsEnum.CANAL);
 		Integer idUsuario = (Integer) claims.get(ClaimsEnum.USUARIO);
 		
-		logger.info("CreateDevolucionProducto:::IdUsuario[{}]:::IdCine[{}]", idUsuario, idCine);
+		logger.info("CreateDevolucionProducto:::IdUsuario[{}]:::IdCanal[{}]", idUsuario, idCanal);
 
-		TicketVentaVO ticketVentaVO = cancelacionController.createCancelacionPago(idCine, idUsuario, cancelacionPagoVO);
+		TicketVentaVO ticketVentaVO = cancelacionController.createCancelacionPago(idCanal, idUsuario, cancelacionPagoVO);
 		
 		if (ticketVentaVO == null ) {
 			throw new NotFoundException("No encontrado");

@@ -13,14 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import mx.com.aztlan.pos.infraservices.servicios.BusinessGlobalException;
 import mx.com.aztlan.pos.infraservices.servicios.NotFoundException;
+import mx.com.aztlan.pos.negocio.configuracion.vo.AlmacenVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.ArticuloVO;
+import mx.com.aztlan.pos.negocio.configuracion.vo.CanalVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.CatalogoVO;
-import mx.com.aztlan.pos.negocio.configuracion.vo.CineVO;
+import mx.com.aztlan.pos.negocio.configuracion.vo.ClasificacionArtVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.EstadoProductoVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.FormaPagoVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.MotivoCancelacionVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.MotivoDevolucionVO;
-import mx.com.aztlan.pos.negocio.configuracion.vo.PuntoVentaVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.TipoDevolucionVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ProveedorVO;
 
@@ -30,8 +31,8 @@ import mx.com.aztlan.pos.negocio.inventarios.vo.ProveedorVO;
 public interface CatalogoFacadeI {
 
 
-	@RequestMapping(value = "/cajas/{idPuntoVenta}", method = RequestMethod.GET)
-	public ResponseEntity<List<CatalogoVO>> getCajas(@PathVariable("idPuntoVenta") Integer idPuntoVenta)
+	@RequestMapping(value = "/cajas/{idAlmacen}", method = RequestMethod.GET)
+	public ResponseEntity<List<CatalogoVO>> getCajas(@PathVariable("idAlmacen") Integer idAlmacen)
 			throws BusinessGlobalException;
 
 	@RequestMapping(value = "/cargoAjuste", method = RequestMethod.GET)
@@ -46,12 +47,8 @@ public interface CatalogoFacadeI {
 	public ResponseEntity<List<ArticuloVO>> getArticulos(HttpServletRequest request)
 			throws BusinessGlobalException, NotFoundException;
 
-	@RequestMapping(value = "/puntosVenta", method = RequestMethod.GET)
-	public ResponseEntity<List<PuntoVentaVO>> getPuntosVenta(HttpServletRequest request)
-			throws BusinessGlobalException, NotFoundException;
-	
-	@RequestMapping(value = "/puntosVenta/{idCine}", method = RequestMethod.GET)
-	public ResponseEntity<List<PuntoVentaVO>> getPuntosVenta(@PathVariable("idCine") Integer idCine) 
+	@RequestMapping(value = "/almacenes", method = RequestMethod.GET)
+	public ResponseEntity<List<AlmacenVO>> getAlmacenes(HttpServletRequest request)
 			throws BusinessGlobalException, NotFoundException;
 	
 	@RequestMapping(value = "/proveedor", method = RequestMethod.GET)
@@ -74,11 +71,37 @@ public interface CatalogoFacadeI {
 	public ResponseEntity<List<MotivoCancelacionVO>> getMotivosCancelacion(HttpServletRequest request)
 			throws BusinessGlobalException, NotFoundException;
 	
-	@RequestMapping(value = "/cinesEmpresa", method = RequestMethod.GET)
-	public ResponseEntity<List<CineVO>> getCinesEmpresa(HttpServletRequest request)
+	@RequestMapping(value = "/canalesEmpresa/{idEmpresa}", method = RequestMethod.GET)
+	public ResponseEntity<List<CanalVO>> getCanalesEmpresa(@PathVariable("idEmpresa") Integer idEmpresa)
 			throws BusinessGlobalException, NotFoundException;
 	
-	@RequestMapping(value = "/cinesEmpresa/{idEmpresa}", method = RequestMethod.GET)
-	public ResponseEntity<List<CineVO>> getCinesEmpresa(@PathVariable("idEmpresa") Integer idEmpresa)
+	@RequestMapping(value = "/almacenes/{idCanal}", method = RequestMethod.GET)
+	public ResponseEntity<List<AlmacenVO>> getAlmacenes(@PathVariable("idCanal") Integer idCanal) 
 			throws BusinessGlobalException, NotFoundException;
+
+	@RequestMapping(value = "/clasificaciones/{idCine}", method = RequestMethod.GET)
+	public ResponseEntity<List<ClasificacionArtVO>> getClasificacionesArt(@PathVariable("idCine") Integer idCine) 
+			throws BusinessGlobalException, NotFoundException;
+	
+	@RequestMapping(value = "/unidadesMedida/{idEmpresa}", method = RequestMethod.GET)
+	public ResponseEntity<List<CatalogoVO>> getUnidadesMedida(@PathVariable("idEmpresa") Integer idEmpresa)
+			throws BusinessGlobalException, NotFoundException;
+	
+	@RequestMapping(value = "/familias/{idEmpresa}", method = RequestMethod.GET)
+	public ResponseEntity<List<CatalogoVO>> getFamilias(@PathVariable("idEmpresa") Integer idEmpresa)
+			throws BusinessGlobalException, NotFoundException;
+	
+	@RequestMapping(value = "/marcas/{idEmpresa}", method = RequestMethod.GET)
+	public ResponseEntity<List<CatalogoVO>> getMarcas(@PathVariable("idEmpresa") Integer idEmpresa)
+			throws BusinessGlobalException, NotFoundException;
+
+	@RequestMapping(value = "/tipos/{idEmpresa}", method = RequestMethod.GET)
+	public ResponseEntity<List<CatalogoVO>> getTipos(@PathVariable("idEmpresa") Integer idEmpresa)
+			throws BusinessGlobalException, NotFoundException;
+	
+	@RequestMapping(value = "/medidas/{idEmpresa}", method = RequestMethod.GET)
+	public ResponseEntity<List<CatalogoVO>> getMedidas(@PathVariable("idEmpresa") Integer idEmpresa)
+			throws BusinessGlobalException, NotFoundException;
+	
+	
 }

@@ -13,11 +13,11 @@ import mx.com.aztlan.pos.infraservices.negocio.seguridad.vo.PerfilVO;
 import mx.com.aztlan.pos.infraservices.negocio.seguridad.vo.UserDetailsVO;
 import mx.com.aztlan.pos.infraservices.negocio.seguridad.vo.UsuarioFirmadoVO;
 import mx.com.aztlan.pos.infraservices.negocio.seguridad.vo.UsuarioVO;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Almacen;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Caja;
-import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Cine;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Canal;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.EstatusUsuario;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Perfil;
-import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.PuntoVenta;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Usuario;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.enumeration.UsuarioEstatusEnum;
 
@@ -63,13 +63,13 @@ public class UsuarioAssembler {
 		usuarioVO.setCorreo(usuario.getCorreo()==null?"":usuario.getCorreo());
 		usuarioVO.setContrasenia(usuario.getContrasenia()==null?"":usuario.getContrasenia());
 		usuarioVO.setFoto(null);
-		usuarioVO.setIdCine(usuario.getCine()==null?null:usuario.getCine().getIdCine());
+		usuarioVO.setIdCanal(usuario.getCanal()==null?null:usuario.getCanal().getIdCanal());
 		usuarioVO.setIdEstatus(usuario.getEstatusUsuario()==null?null:usuario.getEstatusUsuario().getIdEstatus());
 		usuarioVO.setEstatus(usuario.getEstatusUsuario()==null?null:usuario.getEstatusUsuario().getNombre());
 		usuarioVO.setIdPerfil(usuario.getPerfils()==null?null:usuario.getPerfils().toArray(new Perfil[usuario.getPerfils().size()])[0].getIdPerfil());
 		usuarioVO.setPerfil(usuario.getPerfils()==null?null:usuario.getPerfils().toArray(new Perfil[usuario.getPerfils().size()])[0].getNombre());
-		usuarioVO.setIdPuntoVenta(usuario.getPuntoVenta()==null?null:usuario.getPuntoVenta().getIdPuntoVenta());
-		usuarioVO.setPuntoVenta(usuario.getPuntoVenta()==null?null:usuario.getPuntoVenta().getNombre());
+		usuarioVO.setIdAlmacen(usuario.getAlmacen()==null?null:usuario.getAlmacen().getIdAlmacen());
+		usuarioVO.setAlmacen(usuario.getAlmacen()==null?null:usuario.getAlmacen().getNombre());
 		usuarioVO.setIdUsuario(usuario.getIdUsuario());
 		usuarioVO.setMaterno(usuario.getMaterno());
 		usuarioVO.setNombre(usuario.getNombre());
@@ -124,8 +124,8 @@ public class UsuarioAssembler {
 		usuario.setPaterno(usuarioVO.getPaterno());
 		usuario.setNombre(usuarioVO.getNombre());
 		usuario.setFoto(null);
-		usuario.setCine(new Cine(usuarioVO.getIdCine()));
-		usuario.setPuntoVenta(new PuntoVenta(usuarioVO.getIdPuntoVenta()));	
+		usuario.setCanal(new Canal(usuarioVO.getIdCanal()));
+		usuario.setAlmacen(new Almacen(usuarioVO.getIdAlmacen()));	
 		usuario.setCaja(new Caja(usuarioVO.getIdCaja()));
 		
 		Set<Perfil> perfiles = new HashSet<Perfil>();
@@ -148,8 +148,8 @@ public class UsuarioAssembler {
 		usuario.setPaterno(usuarioVO.getPaterno());
 		usuario.setNombre(usuarioVO.getNombre());
 		usuario.setFoto(null);
-		usuario.setCine(new Cine(usuarioVO.getIdCine()));
-		usuario.setPuntoVenta(new PuntoVenta(usuarioVO.getIdPuntoVenta()));
+		usuario.setCanal(new Canal(usuarioVO.getIdCanal()));
+		usuario.setAlmacen(new Almacen(usuarioVO.getIdAlmacen()));
 		usuario.setCaja(new Caja(usuarioVO.getIdCaja()));
 		
 		Set<Perfil> perfiles = new HashSet<Perfil>();

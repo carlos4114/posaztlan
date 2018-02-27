@@ -22,8 +22,10 @@ public interface UsuarioIbatisDAOI {
 		
 	@Select("select count(u.id_usuario) as noUsuarios from "+
 			 " usuario u inner join perfiles_x_usuario pxu on pxu.id_usuario=u.id_usuario "+
-             " inner join recursos_x_perfil rxp on pxu.id_perfil=rxp.id_perfil "
-             + " and rxp.id_recurso=#{idRecurso} "+
+             " inner join recursos_x_perfil rxp on pxu.id_perfil=rxp.id_perfil "+
+			 " inner join recurso r on r.id_recurso = rxp.id_recurso "+
+             " and rxp.id_recurso=#{idRecurso} "+
+			 " and r.activo = 1" +
              " and u.correo = #{correo}")
 	Integer existeRecursoParaUsuario(@Param("correo")String correo, @Param("idRecurso")Integer idRecurso);
 }

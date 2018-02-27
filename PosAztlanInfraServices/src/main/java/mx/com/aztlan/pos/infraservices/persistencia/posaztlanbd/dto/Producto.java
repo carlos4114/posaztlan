@@ -23,40 +23,53 @@ import javax.persistence.Table;
 public class Producto implements java.io.Serializable {
 
 	private Integer idProducto;
-	private Cine cine;
 	private String nombre;
+	private String descripcion;
 	private byte[] icono;
 	private boolean activo;
-	private BigDecimal precio;
+	private Empresa empresa;
+	private BigDecimal precioUnico;
+	private Familia familia;
+	private Marca marca;
+	private TipoProducto tipoProducto;
+	private Medida medida;
+	private UnidadMedida unidadMedida;
+	private boolean nacional;
 	private Set<ProductosXPaquete> productosXPaquetes = new HashSet<ProductosXPaquete>(0);
 	private Set<ProductosXTicket> productosXTickets = new HashSet<ProductosXTicket>(0);
 	private Set<DetallePromocion> detallePromocions = new HashSet<DetallePromocion>(0);
 	private Set<ProductosXPuntoVenta> productosXPuntoVentas = new HashSet<ProductosXPuntoVenta>(0);
+	//private Set<ProductosXAlmacen> productosXAlmacenes= new HashSet<ProductosXAlmacen>(0);
 	private Set<ArticulosXProducto> articulosXProductos = new HashSet<ArticulosXProducto>(0);
 	private Set<DevolucionXProducto> devolucionXProductos = new HashSet<DevolucionXProducto>(0);
 	private Set<ImpuestoXProducto> impuestoXProductos = new HashSet<ImpuestoXProducto>(0);
-
+	private Set<PrecioXCanal> precioXCanal = new HashSet<PrecioXCanal>(0);
+	
 	public Producto() {
 	}
 
-	public Producto(Cine cine, String nombre, byte[] icono, boolean activo, BigDecimal precio) {
-		this.cine = cine;
+	public Producto(Integer idProducto) {
+		this.idProducto = idProducto;
+	}
+	
+	public Producto(Empresa empresa, String nombre, byte[] icono, boolean activo, BigDecimal precioUnico) {
+		this.empresa = empresa;
 		this.nombre = nombre;
 		this.icono = icono;
 		this.activo = activo;
-		this.precio = precio;
+		this.precioUnico = precioUnico;
 	}
 
-	public Producto(Cine cine, String nombre, byte[] icono, boolean activo, BigDecimal precio,
+	public Producto(Empresa empresa, String nombre, byte[] icono, boolean activo, BigDecimal precioUnico,
 			Set<ProductosXPaquete> productosXPaquetes, Set<ProductosXTicket> productosXTickets,
 			Set<DetallePromocion> detallePromocions, Set<ProductosXPuntoVenta> productosXPuntoVentas,
 			Set<ArticulosXProducto> articulosXProductos, Set<DevolucionXProducto> devolucionXProductos,
 			Set<ImpuestoXProducto> impuestoXProductos) {
-		this.cine = cine;
+		this.empresa = empresa;
 		this.nombre = nombre;
 		this.icono = icono;
 		this.activo = activo;
-		this.precio = precio;
+		this.precioUnico = precioUnico;
 		this.productosXPaquetes = productosXPaquetes;
 		this.productosXTickets = productosXTickets;
 		this.detallePromocions = detallePromocions;
@@ -79,13 +92,13 @@ public class Producto implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_Cine", nullable = false)
-	public Cine getCine() {
-		return this.cine;
+	@JoinColumn(name = "id_Empresa", nullable = false)
+	public Empresa getEmpresa() {
+		return this.empresa;
 	}
 
-	public void setCine(Cine cine) {
-		this.cine = cine;
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
 	}
 
 	@Column(name = "nombre", nullable = false, length = 200)
@@ -97,6 +110,15 @@ public class Producto implements java.io.Serializable {
 		this.nombre = nombre;
 	}
 
+	@Column(name = "descripcion", nullable = false, length = 250)
+	public String getDescripcion() {
+		return this.descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+	
 	@Column(name = "icono", nullable = false)
 	public byte[] getIcono() {
 		return this.icono;
@@ -106,6 +128,15 @@ public class Producto implements java.io.Serializable {
 		this.icono = icono;
 	}
 
+	@Column(name = "nacional", nullable = false)
+	public boolean isNacional() {
+		return this.nacional;
+	}
+
+	public void setNacional(boolean nacional) {
+		this.nacional = nacional;
+	}
+	
 	@Column(name = "activo", nullable = false)
 	public boolean isActivo() {
 		return this.activo;
@@ -115,13 +146,13 @@ public class Producto implements java.io.Serializable {
 		this.activo = activo;
 	}
 
-	@Column(name = "precio", nullable = false, precision = 15)
-	public BigDecimal getPrecio() {
-		return this.precio;
+	@Column(name = "precio_unico", nullable = false, precision = 15)
+	public BigDecimal getPrecioUnico() {
+		return this.precioUnico;
 	}
 
-	public void setPrecio(BigDecimal precio) {
-		this.precio = precio;
+	public void setPrecioUnico(BigDecimal precioUnico) {
+		this.precioUnico = precioUnico;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "producto")
@@ -186,5 +217,63 @@ public class Producto implements java.io.Serializable {
 	public void setImpuestoXProductos(Set<ImpuestoXProducto> impuestoXProductos) {
 		this.impuestoXProductos = impuestoXProductos;
 	}
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "producto")
+	public Set<PrecioXCanal> getPrecioXCanal() {
+		return this.precioXCanal;
+	}
 
+	public void setPrecioXCanal(Set<PrecioXCanal> precioXCanal) {
+		this.precioXCanal = precioXCanal;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_marca", nullable = false)
+	public Marca getMarca() {
+		return this.marca;
+	}
+
+	public void setMarca(Marca marca) {
+		this.marca = marca;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_familia", nullable = false)
+	public Familia getFamilia() {
+		return this.familia;
+	}
+
+	public void setFamilia(Familia familia) {
+		this.familia = familia;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_tipo_producto", nullable = false)
+	public TipoProducto getTipoProducto() {
+		return this.tipoProducto;
+	}
+
+	public void setTipoProducto(TipoProducto tipoProducto) {
+		this.tipoProducto = tipoProducto;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_medida", nullable = false)
+	public Medida getMedida() {
+		return this.medida;
+	}
+
+	public void setMedida(Medida medida) {
+		this.medida = medida;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_unidad_medida", nullable = false)
+	public UnidadMedida getUnidadMedida() {
+		return this.unidadMedida;
+	}
+
+	public void setUnidadMedida(UnidadMedida unidadMedida) {
+		this.unidadMedida = unidadMedida;
+	}
 }

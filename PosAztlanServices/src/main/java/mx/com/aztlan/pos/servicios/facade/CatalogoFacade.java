@@ -18,17 +18,20 @@ import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.enumeration.Clai
 import mx.com.aztlan.pos.infraservices.presentacion.seguridad.frontcontroller.UsuarioFirmadoBean;
 import mx.com.aztlan.pos.infraservices.servicios.BusinessGlobalException;
 import mx.com.aztlan.pos.infraservices.servicios.NotFoundException;
+import mx.com.aztlan.pos.negocio.configuracion.vo.AlmacenVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.ArticuloVO;
+import mx.com.aztlan.pos.negocio.configuracion.vo.CanalVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.CatalogoVO;
-import mx.com.aztlan.pos.negocio.configuracion.vo.CineVO;
+import mx.com.aztlan.pos.negocio.configuracion.vo.ClasificacionArtVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.EstadoProductoVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.FormaPagoVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.MotivoCancelacionVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.MotivoDevolucionVO;
-import mx.com.aztlan.pos.negocio.configuracion.vo.PuntoVentaVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.TipoDevolucionVO;
+import mx.com.aztlan.pos.negocio.configuracion.vo.UnidadMedidaVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ProveedorVO;
 import mx.com.aztlan.pos.servicios.configuracion.controller.CatalogoController;
+
 
 @Service
 public class CatalogoFacade implements CatalogoFacadeI {
@@ -42,8 +45,8 @@ public class CatalogoFacade implements CatalogoFacadeI {
 	
 	@Override
 	@Transactional (readOnly = true)
-	public ResponseEntity<List<CatalogoVO>> getCajas(@PathVariable("idPuntoVenta") Integer idPuntoVenta) throws BusinessGlobalException {
-		return new ResponseEntity<List<CatalogoVO>>(this.catalogoController.getCajas(idPuntoVenta), HttpStatus.OK);		
+	public ResponseEntity<List<CatalogoVO>> getCajas(@PathVariable("idAlmacen") Integer idAlmacen) throws BusinessGlobalException {
+		return new ResponseEntity<List<CatalogoVO>>(this.catalogoController.getCajas(idAlmacen), HttpStatus.OK);		
 	}
 	
 	@Override
@@ -52,14 +55,14 @@ public class CatalogoFacade implements CatalogoFacadeI {
 		return new ResponseEntity<List<CatalogoVO>>(this.catalogoController.getCargoAjuste(), HttpStatus.OK);		
 	}
 	
-	@Override
+	/*@Override
 	public ResponseEntity<List<CineVO>> getCinesEmpresa(@PathVariable("idEmpresa") Integer idEmpresa) throws BusinessGlobalException, NotFoundException {
 		return new ResponseEntity<List<CineVO>>(this.catalogoController.getCines(idEmpresa), HttpStatus.OK);		
-	}
+	}*/
 	
 	@Override
-	public ResponseEntity<List<PuntoVentaVO>> getPuntosVenta(@PathVariable("idCine") Integer idCine) throws BusinessGlobalException, NotFoundException {
-		return new ResponseEntity<List<PuntoVentaVO>>(this.catalogoController.getPuntosVenta(idCine), HttpStatus.OK);		
+	public ResponseEntity<List<AlmacenVO>> getAlmacenes(@PathVariable("idCanal") Integer idCanal) throws BusinessGlobalException, NotFoundException {
+		return new ResponseEntity<List<AlmacenVO>>(this.catalogoController.getAlmacenes(idCanal), HttpStatus.OK);		
 	}
 	
 	@Override
@@ -68,10 +71,10 @@ public class CatalogoFacade implements CatalogoFacadeI {
 
 		Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
 		Integer idUsuario = (Integer) claims.get(ClaimsEnum.USUARIO);
-		Integer idCine = (Integer) claims.get(ClaimsEnum.CINE);
-		Integer idPuntoVenta = (Integer) claims.get(ClaimsEnum.PUNTO_VENTA);
+		Integer idCanal = (Integer) claims.get(ClaimsEnum.CANAL);
+		Integer idAlmacen = (Integer) claims.get(ClaimsEnum.ALMACEN);
 
-		logger.info("GetFormasPago:::IdUsuario[{}]:::IdCine[{}]:::IdPuntoVenta[{}]", idUsuario, idCine, idPuntoVenta);
+		logger.info("GetFormasPago:::IdUsuario[{}]:::IdCanal[{}]:::IdAlmacen[{}]", idUsuario, idCanal, idAlmacen);
 
 		List<FormaPagoVO> formasPago = catalogoController.getFormasPagos();
 
@@ -89,12 +92,12 @@ public class CatalogoFacade implements CatalogoFacadeI {
 
 		Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
 		Integer idUsuario = (Integer) claims.get(ClaimsEnum.USUARIO);
-		Integer idCine = (Integer) claims.get(ClaimsEnum.CINE);
-		Integer idPuntoVenta = (Integer) claims.get(ClaimsEnum.PUNTO_VENTA);
+		Integer idCanal = (Integer) claims.get(ClaimsEnum.CANAL);
+		Integer idAlmacen = (Integer) claims.get(ClaimsEnum.ALMACEN);
 
-		logger.info("GetArticulos:::IdUsuario[{}]:::IdCine[{}]:::IdPuntoVenta[{}]", idUsuario, idCine, idPuntoVenta);
+		logger.info("GetArticulos:::IdUsuario[{}]:::IdCanal[{}]:::IdAlmacen[{}]", idUsuario, idCanal, idAlmacen);
 
-		List<ArticuloVO> articulos = catalogoController.getArticulos( idCine, idPuntoVenta);
+		List<ArticuloVO> articulos = catalogoController.getArticulos( idCanal, idAlmacen);
 		
 		if (articulos == null || articulos.isEmpty()) {
 			throw new NotFoundException("No encontrado");
@@ -105,22 +108,20 @@ public class CatalogoFacade implements CatalogoFacadeI {
 	
 	
 	@Override
-	public ResponseEntity<List<PuntoVentaVO>> getPuntosVenta(HttpServletRequest request)
+	public ResponseEntity<List<AlmacenVO>> getAlmacenes(HttpServletRequest request)
 			throws BusinessGlobalException, NotFoundException {
 		Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
 		Integer idUsuario = (Integer) claims.get(ClaimsEnum.USUARIO);
-		Integer idCine = (Integer) claims.get(ClaimsEnum.CINE);
-		Integer idPuntoVenta = (Integer) claims.get(ClaimsEnum.PUNTO_VENTA);
+		Integer idCanal = (Integer) claims.get(ClaimsEnum.CANAL);
+		Integer idAlmacen = (Integer) claims.get(ClaimsEnum.ALMACEN);
 
-		logger.info("GetPPuntosVenta:::IdUsuario[{}]:::IdCine[{}]:::IdPuntoVenta[{}]", idUsuario, idCine, idPuntoVenta);
+		List<AlmacenVO> almacenes = catalogoController.getAlmacenes(idCanal);
 
-		List<PuntoVentaVO> puntosVenta = catalogoController.getPuntosVenta(idCine);
-
-		if (puntosVenta == null || puntosVenta.isEmpty()) {
+		if (almacenes == null || almacenes.isEmpty()) {
 			throw new NotFoundException("No encontrado");
 		}
 
-		return new ResponseEntity<List<PuntoVentaVO>>(puntosVenta, HttpStatus.OK);
+		return new ResponseEntity<List<AlmacenVO>>(almacenes, HttpStatus.OK);
 	}
 	
 	@Override
@@ -128,12 +129,12 @@ public class CatalogoFacade implements CatalogoFacadeI {
 			throws BusinessGlobalException, NotFoundException {
 		Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
 		Integer idUsuario = (Integer) claims.get(ClaimsEnum.USUARIO);
-		Integer idCine = (Integer) claims.get(ClaimsEnum.CINE);
-		Integer idPuntoVenta = (Integer) claims.get(ClaimsEnum.PUNTO_VENTA);
+		Integer idCanal = (Integer) claims.get(ClaimsEnum.CANAL);
+		Integer idAlmacen = (Integer) claims.get(ClaimsEnum.ALMACEN);
 
-		logger.info("GetProveedor:::IdUsuario[{}]:::IdCine[{}]:::IdPuntoVenta[{}]", idUsuario, idCine, idPuntoVenta);
+		logger.info("GetProveedor:::IdUsuario[{}]:::IdCanal[{}]:::IdAlmacen[{}]", idUsuario, idCanal, idAlmacen);
 
-		List<ProveedorVO> proveedor = catalogoController.getProveedor(idCine);
+		List<ProveedorVO> proveedor = catalogoController.getProveedor(idCanal);
 
 		if (proveedor == null || proveedor.isEmpty()) {
 			throw new NotFoundException("No encontrado");
@@ -148,12 +149,12 @@ public class CatalogoFacade implements CatalogoFacadeI {
 
 		Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
 		Integer idUsuario = (Integer) claims.get(ClaimsEnum.USUARIO);
-		Integer idCine = (Integer) claims.get(ClaimsEnum.CINE);
-		//Integer idPuntoVenta = (Integer) claims.get(ClaimsEnum.PUNTO_VENTA);
+		Integer idCanal = (Integer) claims.get(ClaimsEnum.CANAL);
+		Integer idAlmacen = (Integer) claims.get(ClaimsEnum.ALMACEN);
 
-		logger.info("GetMotivosDevolucion:::IdUsuario[{}]:::IdCine[{}]:::IdPuntoVenta[{}]", idUsuario, idCine);
+		logger.info("GetMotivosDevolucion:::IdUsuario[{}]:::IdCanal[{}]:::IdAlmacen[{}]", idUsuario, idCanal);
 
-		List<MotivoDevolucionVO> motivosDevolucion = catalogoController.getMotivosDevolucion(idPuntoVenta);
+		List<MotivoDevolucionVO> motivosDevolucion = catalogoController.getMotivosDevolucion(idAlmacen);
 
 		if (motivosDevolucion == null || motivosDevolucion.isEmpty()) {
 			throw new NotFoundException("No encontrado");
@@ -169,8 +170,8 @@ public class CatalogoFacade implements CatalogoFacadeI {
 		
 		Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
 		Integer idUsuario = (Integer) claims.get(ClaimsEnum.USUARIO);
-		Integer idCine = (Integer) claims.get(ClaimsEnum.CINE);
-		Integer idPuntoVenta = (Integer) claims.get(ClaimsEnum.PUNTO_VENTA);
+		Integer idCine = (Integer) claims.get(ClaimsEnum.CANAL);
+		Integer idPuntoVenta = (Integer) claims.get(ClaimsEnum.ALMACEN);
 
 		logger.info("GetTiposDevolucion:::IdUsuario[{}]:::IdCine[{}]:::IdPuntoVenta[{}]", idUsuario, idCine, idPuntoVenta);
 
@@ -188,8 +189,8 @@ public class CatalogoFacade implements CatalogoFacadeI {
 			throws BusinessGlobalException, NotFoundException {
 		Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
 		Integer idUsuario = (Integer) claims.get(ClaimsEnum.USUARIO);
-		Integer idCine = (Integer) claims.get(ClaimsEnum.CINE);
-		Integer idPuntoVenta = (Integer) claims.get(ClaimsEnum.PUNTO_VENTA);
+		Integer idCine = (Integer) claims.get(ClaimsEnum.CANAL);
+		Integer idPuntoVenta = (Integer) claims.get(ClaimsEnum.ALMACEN);
 
 		logger.info("GetEstadosProducto:::IdUsuario[{}]:::IdCine[{}]:::IdPuntoVenta[{}]", idUsuario, idCine, idPuntoVenta);
 
@@ -208,8 +209,8 @@ public class CatalogoFacade implements CatalogoFacadeI {
 
 		Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
 		Integer idUsuario = (Integer) claims.get(ClaimsEnum.USUARIO);
-		Integer idCine = (Integer) claims.get(ClaimsEnum.CINE);
-		Integer idPuntoVenta = (Integer) claims.get(ClaimsEnum.PUNTO_VENTA);
+		Integer idCine = (Integer) claims.get(ClaimsEnum.CANAL);
+		Integer idPuntoVenta = (Integer) claims.get(ClaimsEnum.ALMACEN);
 
 		logger.info("GetMotivosCancelacion:::IdUsuario[{}]:::IdCine[{}]:::IdPuntoVenta[{}]", idUsuario, idCine, idPuntoVenta);
 
@@ -223,23 +224,37 @@ public class CatalogoFacade implements CatalogoFacadeI {
 	}
 
 	@Override
-	public ResponseEntity<List<CineVO>> getCinesEmpresa(HttpServletRequest request)
-			throws BusinessGlobalException, NotFoundException {
-		
-		Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
-		Integer idUsuario = (Integer) claims.get(ClaimsEnum.USUARIO);
-		Integer idCine = (Integer) claims.get(ClaimsEnum.CINE);
-		Integer idPuntoVenta = (Integer) claims.get(ClaimsEnum.PUNTO_VENTA);
-
-		logger.info("GetCinesEmpresa:::IdUsuario[{}]:::IdCine[{}]:::IdPuntoVenta[{}]", idUsuario, idCine, idPuntoVenta);
-		
-		List<CineVO> cines = catalogoController.getCinesEmpresa(idCine);
-		
-		if (cines == null || cines.isEmpty()) {
-			throw new NotFoundException("No encontrado");
-		}
-
-		return new ResponseEntity<List<CineVO>>(cines, HttpStatus.OK);
+	public ResponseEntity<List<CanalVO>> getCanalesEmpresa(@PathVariable("idEmpresa") Integer idEmpresa) throws BusinessGlobalException, NotFoundException {
+		return new ResponseEntity<List<CanalVO>>(this.catalogoController.getCanales(idEmpresa), HttpStatus.OK);		
 	}
-
+	
+	@Override
+	public ResponseEntity<List<ClasificacionArtVO>> getClasificacionesArt(@PathVariable("idCine") Integer idCine) throws BusinessGlobalException, NotFoundException {
+		return new ResponseEntity<List<ClasificacionArtVO>>(this.catalogoController.getClasificacionesArt(idCine), HttpStatus.OK);		
+	}
+	
+	@Override
+	public ResponseEntity<List<CatalogoVO>> getUnidadesMedida(@PathVariable("idEmpresa") Integer idEmpresa) throws BusinessGlobalException, NotFoundException {
+		return new ResponseEntity<List<CatalogoVO>>(this.catalogoController.getUnidadesMedida(idEmpresa), HttpStatus.OK);		
+	}
+	
+	@Override
+	public ResponseEntity<List<CatalogoVO>> getFamilias(@PathVariable("idEmpresa") Integer idEmpresa) throws BusinessGlobalException, NotFoundException {
+		return new ResponseEntity<List<CatalogoVO>>(this.catalogoController.getFamilias(idEmpresa), HttpStatus.OK);		
+	}
+	
+	@Override
+	public ResponseEntity<List<CatalogoVO>> getMarcas(@PathVariable("idEmpresa") Integer idEmpresa) throws BusinessGlobalException, NotFoundException {
+		return new ResponseEntity<List<CatalogoVO>>(this.catalogoController.getMarcas(idEmpresa), HttpStatus.OK);		
+	}
+	
+	@Override
+	public ResponseEntity<List<CatalogoVO>> getMedidas(@PathVariable("idEmpresa") Integer idEmpresa) throws BusinessGlobalException, NotFoundException {
+		return new ResponseEntity<List<CatalogoVO>>(this.catalogoController.getMedidas(idEmpresa), HttpStatus.OK);		
+	}
+	
+	@Override
+	public ResponseEntity<List<CatalogoVO>> getTipos(@PathVariable("idEmpresa") Integer idEmpresa) throws BusinessGlobalException, NotFoundException {
+		return new ResponseEntity<List<CatalogoVO>>(this.catalogoController.getTipos(idEmpresa), HttpStatus.OK);		
+	}
 }

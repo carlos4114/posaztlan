@@ -8,16 +8,16 @@
 					<div class="x_content">
                       <br />
                       <div class="x_panel">
-		                   <form ng-submit="submit()" name="fromUsuarios" id="fromUsuarios" data-parsley-validate class="form-horizontal form-label-left">
+		                   <form ng-submit="submit()" name="formUsuarios" id="formUsuarios" data-parsley-validate class="form-horizontal form-label-left">
 							  <div class="form-group">
-		                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="perfil">Cine<span class="required">*</span>
+		                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="perfil">Canal<span class="required">*</span>
 		                        </label>
 		                        <div class="col-md-6 col-sm-6 col-xs-12">
-									<select class="form-control col-md-7 col-xs-12" id="cine" name="cine" directiva-select2 required
-										ng-change="cambiarCine(usuarioVO.idCine)"
-										ng-options="cine.idCine as cine.nombre for cine in listaCines"
-										ng-model="usuarioVO.idCine">
-										<option value="" selected="selected">Selecciona un cine
+									<select class="form-control col-md-7 col-xs-12" id="canal" name="canal" directiva-select2
+										ng-change="cambiarCanal(usuarioVO.idCanal)"
+										ng-options="canal.idCanal as canal.nombre for canal in listaCanales"
+										ng-model="usuarioVO.idCanal">
+										<option value="" selected="selected">Selecciona un canal
 										</option>
 									</select>
 								</div>
@@ -84,19 +84,19 @@
 								</div>
 		                      </div>	
 		                      <div class="form-group">
-		                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="puntoVenta">Punto de Venta<span class="required">*</span>
+		                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="almacen">Almacen<span class="required">*</span>
 		                        </label>
 		                        <div class="col-md-6 col-sm-6 col-xs-12">
-									<select class="form-control col-md-7 col-xs-12" name="puntoVenta" id="puntoVenta" directiva-select2 required
-										ng-options="puntoVenta.idPuntoVenta as puntoVenta.nombre for puntoVenta in listaPuntosVenta"
-										ng-change="cambiarPuntoVenta(usuarioVO.idPuntoVenta)"
-										ng-model="usuarioVO.idPuntoVenta">
-										<option value="" selected="selected">Selecciona un punto de venta
+									<select class="form-control col-md-7 col-xs-12" name="almacen" id="almacen" directiva-select2 required
+										ng-options="almacen.idAlmacen as almacen.nombre for almacen in listaAlmacenes"
+										ng-change="cambiarAlmacen(usuarioVO.idAlmacen)"
+										ng-model="usuarioVO.idAlmacen">
+										<option value="" selected="selected">Selecciona un almacen
 										</option>
 									</select>
 								</div>
 		                      </div>
-		                      <div class="form-group">
+		                     <div class="form-group">
 		                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="caja">Caja<span class="required">*</span>
 		                        </label>
 		                        <div class="col-md-6 col-sm-6 col-xs-12">
@@ -107,7 +107,7 @@
 										</option>
 									</select>
 								</div>
-		                      </div>		                      
+		                      </div> 		                      
 		                      <div ng-if="usuarioVO.idUsuario">   	
 			                      <div class="form-group">
 			                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="estatus">Estatus<span class="required">*</span>
@@ -126,7 +126,7 @@
 	                      	  <br/>
 		                      <div class="form-group">
 		                        <div class="col-md-6 col-sm-6 col-xs-6 col-md-offset-3">
-		                          <button type="submit" class="btn btn-success" ng-disabled="fromUsuarios.$invalid"><i class="fa fa-users"></i>{{!usuarioVO.idUsuario ? 'Guardar' : 'Actualizar'}}</button>
+		                          <button type="submit" class="btn btn-success" ng-disabled="formUsuarios.$invalid"><i class="fa fa-users"></i>{{!usuarioVO.idUsuario ? 'Guardar' : 'Actualizar'}}</button>
 		                          <button type="button" ng-click="limpiarFormulario()" class="btn btn-primary" >Nuevo</button>
 		                        </div>
 		                      </div>		                      		                      
@@ -153,7 +153,7 @@
 									                            <th class="text-center">Ap. Materno </th>
 									                            <th class="text-center">Correo Electr&oacute;nico </th>
 									                            <th class="text-center">Perfil </th>
-									                            <th class="text-center">Punto de Venta </th>
+									                            <th class="text-center">Almacen </th>
 									                            <th class="text-center">Estatus </th>
 									                            <th class="text-center">Editar </th>
 															  </tr>
@@ -169,7 +169,7 @@
 									                            <td class="text-center"><span ng-bind="u.materno"></span></td>
 									                            <td class="text-center"><span ng-bind="u.correo"></span></td>
 									                            <td class="text-center"><span ng-bind="u.perfil"></span></td>
-									                            <td class="text-center"><span ng-bind="u.puntoVenta"></span></td>
+									                            <td class="text-center"><span ng-bind="u.almacen"></span></td>
 									                            <td class="text-center"><span ng-bind="u.estatus"></span></td>
 									                            <td class="text-center">
 									                              <button type="button" ng-click="editarUsuario(u.idUsuario)" class="btn btn-round btn-default btn-md"><i class="fa fa-edit"></i></button>

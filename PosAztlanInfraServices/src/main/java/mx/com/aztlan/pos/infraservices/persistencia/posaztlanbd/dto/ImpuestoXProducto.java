@@ -23,7 +23,7 @@ import javax.persistence.Table;
 public class ImpuestoXProducto implements java.io.Serializable {
 
 	private Integer idImpuestoXProducto;
-	private Cine cine;
+	private Empresa empresa;
 	private Producto producto;
 	private String nombre;
 	private BigDecimal porcentaje;
@@ -33,17 +33,17 @@ public class ImpuestoXProducto implements java.io.Serializable {
 	public ImpuestoXProducto() {
 	}
 
-	public ImpuestoXProducto(Cine cine, Producto producto, String nombre, BigDecimal porcentaje, boolean activo) {
-		this.cine = cine;
+	public ImpuestoXProducto(Empresa empresa, Producto producto, String nombre, BigDecimal porcentaje, boolean activo) {
+		this.empresa = empresa;
 		this.producto = producto;
 		this.nombre = nombre;
 		this.porcentaje = porcentaje;
 		this.activo = activo;
 	}
 
-	public ImpuestoXProducto(Cine cine, Producto producto, String nombre, BigDecimal porcentaje, boolean activo,
+	public ImpuestoXProducto(Empresa empresa, Producto producto, String nombre, BigDecimal porcentaje, boolean activo,
 			Set<ImpuestosXTicketProducto> impuestosXTicketProductos) {
-		this.cine = cine;
+		this.empresa = empresa;
 		this.producto = producto;
 		this.nombre = nombre;
 		this.porcentaje = porcentaje;
@@ -64,13 +64,13 @@ public class ImpuestoXProducto implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_cine", nullable = false)
-	public Cine getCine() {
-		return this.cine;
+	@JoinColumn(name = "id_empresa", nullable = false)
+	public Empresa getEmpresa() {
+		return this.empresa;
 	}
 
-	public void setCine(Cine cine) {
-		this.cine = cine;
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)

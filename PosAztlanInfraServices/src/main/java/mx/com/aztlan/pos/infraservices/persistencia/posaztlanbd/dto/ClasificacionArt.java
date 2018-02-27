@@ -30,6 +30,10 @@ public class ClasificacionArt implements java.io.Serializable {
 	public ClasificacionArt() {
 	}
 
+	public ClasificacionArt(Integer idClasificacionArt) {
+		this.idClasificacionArt = idClasificacionArt;
+	}
+	
 	public ClasificacionArt(Cine cine, String nombre, boolean activo) {
 		this.cine = cine;
 		this.nombre = nombre;

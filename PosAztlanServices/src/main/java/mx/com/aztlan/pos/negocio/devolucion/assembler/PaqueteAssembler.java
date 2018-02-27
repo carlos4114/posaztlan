@@ -6,6 +6,7 @@ import java.util.List;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Paquete;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.PaquetesXPuntoVenta;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Producto;
+import mx.com.aztlan.pos.negocio.configuracion.assembler.CanalAssembler;
 import mx.com.aztlan.pos.negocio.devolucion.vo.PaqueteVO;
 
 public class PaqueteAssembler {
@@ -65,11 +66,12 @@ public class PaqueteAssembler {
 		
 		PaqueteVO paqueteVO = new PaqueteVO();
 		paqueteVO.setIdPaquete(producto.getIdProducto());
-		paqueteVO.setCineVO(CineAssembler.getCineVO(producto.getCine()));
+		//paqueteVO.setCineVO(CineAssembler.getCineVO(producto.getCine()));
+		//paqueteVO.setCanalVO(CanalAssembler.getCanalVO(producto.getCanal()));
 		paqueteVO.setNombre(producto.getNombre());
 		paqueteVO.setIcono(producto.getIcono());
 		paqueteVO.setActivo(producto.isActivo());
-		paqueteVO.setPrecio(producto.getPrecio());
+		//paqueteVO.setPrecio(producto.getPrecio());
 		paqueteVO.setProductosXPaqueteVO(ProductoXPaqueteAssembler.getProductosXPaqueteVO(producto));
 		//paqueteVO.setPreciosXPaqueteVO(PrecioXPaqueteAssembler.getPreciosXPaqueteVO(paquete.getPrecioXPaquetes()));
 

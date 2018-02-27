@@ -7,6 +7,5 @@ import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.TipoPromocio
 
 @Repository 
 public class TipoPromocionDAO extends GlobalHibernateDAO<TipoPromocion> implements TipoPromocionDAOI {
-
-
+	
 }

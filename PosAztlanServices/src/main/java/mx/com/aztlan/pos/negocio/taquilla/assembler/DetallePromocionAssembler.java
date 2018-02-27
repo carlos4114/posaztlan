@@ -1,10 +1,5 @@
 package mx.com.aztlan.pos.negocio.taquilla.assembler;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
-import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.DetallePromoXPromo;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.DetallePromocion;
 import mx.com.aztlan.pos.negocio.taquilla.vo.DetallePromocionVO;
 

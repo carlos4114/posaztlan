@@ -7,4 +7,8 @@ import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ImpuestoXPro
 
 public interface ImpuestoXProductoDAOI extends GlobalHibernateDAOI<ImpuestoXProducto>{
 	List<ImpuestoXProducto> findByIdCineAndIdProducto(Integer idCine, Integer IdProducto);
+	
+	List<ImpuestoXProducto> findByIdCine(Integer idCine);
+	
+    List<ImpuestoXProducto> findByIdProducto(Integer idProducto);
 }

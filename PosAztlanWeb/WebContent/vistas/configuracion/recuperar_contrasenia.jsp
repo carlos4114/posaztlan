@@ -19,7 +19,9 @@
     <div class="col-md-4">
       
 		<form ng-submit="ctrl.submit()" name="myForm" ng-controller="RecuperarContraseniaController as ctrl">
-          <img src="<c:url value='/resources/img/MuvitulT.png' />" class="img-responsive" alt="" >
+          <div align ="center">
+          	<img src="<c:url value='/resources/img/DRH.jpg' />" class="img-responsive" alt="" >
+          </div>
 		  <br/>
               
           <h4 class="text-center">Recupera tu contraseña</h4>
@@ -51,7 +53,7 @@
         
         <div class="text-center">
              <!--  <img src="<c:url value='/resources/img/tecnetia.png' />" height="75px" width="150px" class="center-block" alt="" >-->
-             <h6>2017. Grupo Tecnetia SA de CV. <a href="http://tecnetia.com.mx/aviso-de-privacidad/" target="_blank"><u>Aviso de Privacidad.</u></a></h6>
+             <h6>2018. DRH SA de CV. <a href="http://tecnetia.com.mx/aviso-de-privacidad/" target="_blank"><u>Aviso de Privacidad.</u></a></h6>
  		</div>
       
       </div>

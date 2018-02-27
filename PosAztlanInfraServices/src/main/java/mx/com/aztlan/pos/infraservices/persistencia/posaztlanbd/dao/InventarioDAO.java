@@ -188,5 +188,26 @@ public class InventarioDAO extends GlobalHibernateDAO<Inventario> implements Inv
 		return inventarios;
 	}
 	
+	@Override
+	public BigDecimal getPrecioUnitario(Integer idArticulo) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select inv.importe/inv.cantidad from Inventario inv ");
+		hql.append("where inv.articulo.idArticulo = :idArticulo " );
 
+		Query query = getSession().createQuery(hql.toString());
+		query.setParameter("idArticulo", idArticulo);
+		
+		List result = query.list();
+		BigDecimal importe = new BigDecimal(0);
+		
+		for(Object obj: result){			
+			if(obj!=null){
+				importe = importe.add((BigDecimal)obj);
+				break;
+			}
+		}
+		
+		return importe;
+	}
+	
 }
