@@ -30,4 +30,6 @@ public interface OrdenCompraFacadeI {
 	public ResponseEntity<List<ProductoVO>> buscar(@RequestBody FiltrosVO filtrosVO) 
 			throws BusinessGlobalException, NotFoundException;
 	
+	@RequestMapping(value = "/guardar", method = RequestMethod.POST)
+	public HttpResponseVO guardar(@RequestBody OrdenCompraVO ordenCompraVO) throws BusinessGlobalException, Exception;
 }

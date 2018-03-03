@@ -16,11 +16,7 @@ angular.module('indexModule').controller("OrdenesCompraController",['$scope','Gl
 			        modal.element.modal();
 			        modal.close.then(function(result) {
 			        	if(result){
-			        		if($scope.productoVO.idProducto === null){
-			    	            $scope.guardarProducto($scope.productoVO);
-			    	        }else{
-			    	        	$scope.actualizarProducto($scope.productoVO);        	
-			    	        }
+			        		$scope.guardar($scope.ordenCompraVO);        				    	        
 			        	}
 			        }); 
 			    });
@@ -28,6 +24,25 @@ angular.module('indexModule').controller("OrdenesCompraController",['$scope','Gl
 			
 		   $scope.showConfirmacion ("¿Est\u00e1 seguro que desea guardar el producto?");
 	};
+	
+	$scope.guardar = function(ordenCompraVO) {
+		
+		 $scope.errorGeneral='';
+		 $scope.mensajeGeneral='';
+		 OrdenesCompraService.guardar(ordenCompraVO)
+		 .then(
+	      function(d) {
+	    	  if(d.errorCode){
+	        	  $scope.errorGeneral = d.message;
+	    	  }else{	 
+		 		  $scope.mensajeGeneral = 'Se ha guardado la orden de compra';
+		 		  $scope.limpiarFormulario();
+	    	  }
+	      },
+         function(errResponse){
+  		   		$scope.errorGeneral = "No se pudo guardar la orden de compra. "+ErrorFactory.getErrorMessage(errResponse.status);
+         });
+    }
 	
 	 $scope.consultaFamilias = function(idEmpresa) {
 		 OrdenesCompraService.consultaFamilias(idEmpresa)
@@ -103,44 +118,32 @@ angular.module('indexModule').controller("OrdenesCompraController",['$scope','Gl
 	 $scope.seleccionarTodos = function() {
 		 
      }
+	
 	 
-	 $scope.seleccionar= function(idProducto, seleccionado) {
-		 var found = false;
-		 
-		 for(var i = 0; i < $scope.productosList.length; i++){
-			 if($scope.productosList[i].idProducto == idProducto) {
-				 $scope.productosList[i] = seleccionado;
-				 found = true;
+	 /*$scope.agregar = function(){
+		 for(var i = 0; i < $scope.listaProductos.length; i++){
+			 if($scope.listaProductos[i].seleccionado == true) {
+				 $scope.ordenCompraVO.productos.push($scope.listaProductos[i]);
 			 }
 		 }
-		 
-		 if(found == false){
+	 }*/
+	 
+	 $scope.agregar = function(){
+		 	var found = false; 
+		 	
 			 for(var i = 0; i < $scope.listaProductos.length; i++){
-				 if($scope.listaProductos[i].idProducto == idProducto) {
-					 $scope.productoVO = angular.copy($scope.listaProductos[i]);
-					 $scope.productoVO.seleccionado = seleccionado;
-					 $scope.productosList.push($scope.productoVO);
+				 if($scope.listaProductos[i].seleccionado == true) {
+				 	 for(var j = 0; j < $scope.ordenCompraVO.productos.length; j++){
+				 	 	if($scope.ordenCompraVO.productos[j].idProducto == $scope.listaProductos[i].idProducto){
+							found = true;			
+				 	 	}
+				 	 }
+					 if(found == false){
+					 	$scope.ordenCompraVO.productos.push($scope.listaProductos[i]);
+					 }
 				 }
 			 }
 		 }
-     }
-	 
-	 $scope.cambiarCantidad = function(idProducto,cantidad){
-		 for(var i = 0; i < $scope.ordenCompraVO.productos.length; i++){
-			 if($scope.ordenCompraVO.productos[i].idProducto == idProducto) {
-				 $scope.ordenCompraVO.productos[i].cantidad = cantidad;
-			 }
-		 }
-	 }
-
-	 $scope.agregar = function(){
-		 for(var i = 0; i < $scope.productosList.length; i++){
-			 if($scope.productosList[i].seleccionado == true) {
-				 $scope.ordenCompraVO.productos.push($scope.productosList[i]);
-				 $scope.productosList = [];
-			 }
-		 }
-	 }
 	 
 	 $scope.quitar = function(idProducto) { 
 	 		
@@ -153,16 +156,12 @@ angular.module('indexModule').controller("OrdenesCompraController",['$scope','Gl
 		
 	 
 	 $scope.inicializarValores = function(){
-		 $scope.productosList = [];
-		 $scope.seleccionado = null;
 		 $scope.listaProductos = null;
 		 $scope.listaProveedores = null;
 	 	 $scope.listaFamilias = null;
 	 	 $scope.listaMarcas = null;
 	 	 $scope.listaTipos = null;
 	 	 $scope.listaMedidas = null;
-	 	 $scope.precioUnitario = null;
-	 	 $scope.cantidad = null;
 	 	 $scope.filtrosVO = {idEmpresa: idEmpresa, idMarca:null, idFamilia:null, idTipoProducto:null, idMedida:null, nombre:null};
 	 	 $scope.productoVO = {idEmpresa: idEmpresa, idProducto:null, nombre:'', descripcion:'', 
 	    		 idFamilia:null, nombreFamilia:null, idTipoProducto:null, nombreTipoProducto:null, 
@@ -175,16 +174,12 @@ angular.module('indexModule').controller("OrdenesCompraController",['$scope','Gl
 	 }	 
 	 
 	 $scope.limpiarFormulario = function(){  
-		 $scope.productosList = [];
-		 $scope.seleccionado = null;
 		 $scope.listaProductos = null;
 		 $scope.listaProveedores = null;
 		 $scope.listaFamilias = null;
 	 	 $scope.listaMarcas = null;
 	 	 $scope.listaTipos = null;
 	 	 $scope.listaMedidas = null;
-	 	 $scope.precioUnitario = null;
-	 	 $scope.cantidad = null;
 	 	 $scope.filtrosVO = {idEmpresa: idEmpresa, idMarca:null, idFamilia:null, idTipoProducto:null, idMedida:null, nombre:null};
 	 	 $scope.productoVO = {idEmpresa: idEmpresa, idProducto:null, nombre:'', descripcion:'', 
 	    		 idFamilia:null, nombreFamilia:null, idTipoProducto:null, nombreTipoProducto:null, 

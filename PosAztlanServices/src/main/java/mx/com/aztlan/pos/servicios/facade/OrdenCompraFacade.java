@@ -38,5 +38,11 @@ public class OrdenCompraFacade implements OrdenCompraFacadeI {
 	public ResponseEntity<List<ProductoVO>> buscar(@RequestBody FiltrosVO filtrosVO) throws BusinessGlobalException, NotFoundException {
 		return new ResponseEntity<List<ProductoVO>>(this.ordenCompraController.buscar(filtrosVO), HttpStatus.OK);		
 	}
+	
+	@Override
+	@Transactional(readOnly = false)
+	public HttpResponseVO guardar(@RequestBody OrdenCompraVO ordenCompraVO) throws BusinessGlobalException, Exception{
+		 return this.ordenCompraController.guardar(ordenCompraVO);
+	}
 }
 

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import mx.com.aztlan.pos.infraservices.negocio.seguridad.vo.HttpResponseVO;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.OrdenCompra;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Producto;
 import mx.com.aztlan.pos.infraservices.servicios.BusinessGlobalException;
 import mx.com.aztlan.pos.negocio.administracion.business.OrdenCompraBO;
@@ -29,5 +30,19 @@ public class OrdenCompraController {
 	@Transactional(readOnly = true)
 	public List<ProductoVO> buscar(FiltrosVO filtrosVO)  throws BusinessGlobalException{
 		return ordenCompraBO.findByFiltros(filtrosVO);
+	}
+	
+	@Transactional(readOnly = false)
+	public HttpResponseVO guardar(OrdenCompraVO ordenCompraVO) throws BusinessGlobalException, Exception{
+		if (ordenCompraVO == null) 
+            throw new BusinessGlobalException("Error al guardar la orden de compra. La orden de compra no puede ser nula.");
+		
+		HttpResponseVO responseVO = new HttpResponseVO();
+		
+		OrdenCompra ordenCompra = this.ordenCompraBO.guardar(ordenCompraVO);
+		
+		this.ordenCompraBO.guardarDetalle(ordenCompra, ordenCompraVO);
+		
+		return responseVO;
 	}
 }

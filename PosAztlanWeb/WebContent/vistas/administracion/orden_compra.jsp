@@ -96,83 +96,7 @@
 		              			</div>
 		              		</div>
 		              		
-		              	<!--<div class="col-md-12 col-md-offset-0" align="center">
-		                   <div class="x_panel">
-		                  		 <div class="form-group">
-		                   		 <label class="control-label col-md-2 col-sm-2 col-xs-2" for="familia">Familia
-		                        </label>
-		                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="marca">Marca
-		                        </label>
-		                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="tipo">Tipo
-		                        </label>
-		                       <label class="control-label col-md-3 col-sm-3 col-xs-12" for="tipo">Medida
-		                        </label>
-		                   </div>
-		                   	<div class="form-group">
-		                   		<div class="col-md-3 col-sm-3 col-xs-3">
-									<select class="form-control col-md-7 col-xs-12" id="familia" name="familia" directiva-select2
-									ng-options="familia.id as familia.nombre for familia in listaFamilias" 
-										ng-model="filtrosVO.idFamilia">
-										<option value="" selected="selected">Selecciona una familia
-										</option>
-									</select>
-								</div>
-								<div class="col-md-3 col-sm-3 col-xs-3">
-									<select class="form-control col-md-7 col-xs-12" id="marca" name="marca" directiva-select2
-									ng-options="marca.id as marca.nombre for marca in listaMarcas" 
-									ng-model="filtrosVO.idMarca">
-										<option value="" selected="selected">Selecciona una Marca
-										</option>
-									</select>
-								</div>
-								<div class="col-md-3 col-sm-3 col-xs-3">
-									<select class="form-control col-md-7 col-xs-12" id="tipo" name="tipo" directiva-select2
-									ng-options="tipo.id as tipo.nombre for tipo in listaTipos" 
-									ng-model="filtrosVO.idTipoProducto">
-										<option value="" selected="selected">Selecciona un tipo
-										</option>
-									</select>
-								</div>
-								
-								<div class="col-md-2 col-sm-2 col-xs-2">
-									<select class="form-control col-md-7 col-xs-12" id="medida" name="medida" directiva-select2
-									ng-options="medida.id as medida.nombre for medida in listaMedidas" 
-									ng-model="filtrosVO.idMedida">
-										<option value="" selected="selected">Selecciona una medida
-										</option>
-									</select>
-								</div>
-								
-								<div class="col-md-1 col-sm-1 col-xs-1 col-md-offset-0">
-		                          		<button type="button" name="buscar" id="buscar" class="btn btn-success" 
-		                          		ng-click="buscar(filtrosVO)">
-		                          		<i class="fa fa-search"></i> </button>
-		                        </div>
-		                   	</div>
-		                   <br>
-		                   
-		                  <div class="form-group">
-		                        <label class="control-label col-md-1 col-sm-1 col-xs-1" for="proveedor">Proveedor
-		                        </label>
-		                        <div class="col-md-3 col-sm-3 col-xs-3">
-									<select class="form-control col-md-7 col-xs-12" id="proveedor" name="proveedor"
-										ng-options="proveedor.id as proveedor.nombre for proveedor in listaProveedores"
-										ng-model="ordenCompraVO.idProveedor">
-										<option value="" selected="selected">Selecciona un proveedor
-										</option>
-									</select>
-								</div>
-								
-								<label class="control-label col-md-2 col-sm-2 col-xs-2" for="descuento">Descuento
-		                        </label>
-								<div class="col-md-2 col-sm-2 col-xs-2">
-		                          <input type="text" id="descuento" class="form-control col-md-7 col-xs-12"
-		                          ng-model="ordenCompraVO.descuento">
-		                        </div>
-		                   </div>
-		                 -->
-		                <!-- </div> <!-- Panel -->
-		                <!-- </div> -->  
+		                
 		                   <div class ="col-sm-12">
 		                   		<table id ="datatable-checkbox" class="table table-striped table-bordered bulk_action dataTable no-footer" role ="grid" aria-describedby="datatable-checkbox_info">
 		                   			<thead>
@@ -198,9 +122,7 @@
 										<tr ng-repeat="producto in listaProductos">
 											<td>
 												<div>
-													<input type="checkbox" class="icheckbox_flat-green" ng-model="producto.seleccionado"
-														ng-click="seleccionar(producto.idProducto, producto.seleccionado)">
-													
+													<input type="checkbox" class="icheckbox_flat-green" ng-model="producto.seleccionado">
 												</div>
 											</td>
 											<td class="text-center">{{producto.nombre}}</td>
@@ -212,12 +134,12 @@
 											<td>{{producto.descripcion}}</td>
 											<td>
 												<div>
-													<input type="text" ng-model="precioUnitario" ng-change="cambiarPrecioUnitario(producto.idProducto, precioUnitario)" class="col-xs-10">
+													<input type="text" ng-model="precioUnitario" ng-model="producto.precioUnitario" class="col-xs-10">
 												</div>
 											</td>
 											<td>
 												<div>
-													<input type="text" ng-model="cantidad" ng-focus ="cambiarCantidad(producto.idProducto, cantidad)" class="col-xs-10">
+													<input type="text" ng-model="cantidad" ng-model="producto.cantidad" class="col-xs-10">
 												</div>
 											</td>
 											
@@ -278,7 +200,7 @@
 							
 							<div class="form-group">
 		                        <div class="col-md-12 col-sm-12 col-xs-12 col-md-offset-0 text-center">
-		                          <button type="button" ng-click="" class="btn btn-success" ><i class="fa fa-save"></i>Guardar</button>
+		                          <button type="button" ng-click="guardar()" class="btn btn-success" ><i class="fa fa-save"></i>Guardar</button>
 		                        </div>
 		                      </div>
 		                      

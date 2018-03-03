@@ -5,22 +5,22 @@ angular.module('indexModule').service("OrdenesCompraService", ['$http', '$q','Gl
 		
 		var URI_SERVICIO = config.baseUrl;		
 		var URI_OBTENER_PRODUCTOS = URI_SERVICIO + "/ordenesCompra/obtenerProductos";
-		var URI_CONSULTA_UNIDADES_MEDIDA = URI_SERVICIO + "/catalogo/unidadesMedida";
 		var URI_CONSULTA_FAMILIAS = URI_SERVICIO + "/catalogo/familias";
 		var URI_CONSULTA_MARCAS = URI_SERVICIO + "/catalogo/marcas";
 		var URI_CONSULTA_TIPOS = URI_SERVICIO + "/catalogo/tipos";
 		var URI_CONSULTA_MEDIDAS = URI_SERVICIO + "/catalogo/medidas";
 		var URI_CONSULTA_PROVEEDORES = URI_SERVICIO + "/catalogo/proveedores";
 		var URI_BUSCAR = URI_SERVICIO + "/ordenesCompra/buscar";
+		var URI_GUARDAR_ORDEN_COMPRA = URI_SERVICIO + "/ordenesCompra/guardar";
 		
 	    var factory = {
 	        obtenerProductos: obtenerProductos,
-	        consultaUnidadesMedida: consultaUnidadesMedida,
 	        consultaFamilias: consultaFamilias,
 	        consultaMarcas: consultaMarcas,
 	        consultaTipos: consultaTipos,
 	        consultaMedidas: consultaMedidas,
 	        buscar: buscar,
+	        guardar:guardar,
 	        consultaProveedores: consultaProveedores
 	    };
 	 
@@ -72,10 +72,6 @@ angular.module('indexModule').service("OrdenesCompraService", ['$http', '$q','Gl
 	        return invocarServicioGet(URI_OBTENER_PRODUCTOS+"/"+idEmpresa);	    				 	        
 	    }
 	    
-	    function consultaUnidadesMedida(idEmpresa){		    	    		        
-	        return invocarServicioGet(URI_CONSULTA_UNIDADES_MEDIDA+"/"+idEmpresa);
-	    }
-	    
 	    function consultaFamilias(idEmpresa){		    	    		        
 	        return invocarServicioGet(URI_CONSULTA_FAMILIAS+"/"+idEmpresa);
 	    }
@@ -94,5 +90,9 @@ angular.module('indexModule').service("OrdenesCompraService", ['$http', '$q','Gl
 	    
 	    function consultaMedidas(idEmpresa){		    	    		        
 	        return invocarServicioGet(URI_CONSULTA_MEDIDAS+"/"+idEmpresa);
+	    }
+	    
+	    function guardar(ordenCompraVO) {	    	
+	        return invocarServicioPost(URI_GUARDAR_ORDEN_COMPRA,ordenCompraVO);	    				 	        
 	    }
 }]);

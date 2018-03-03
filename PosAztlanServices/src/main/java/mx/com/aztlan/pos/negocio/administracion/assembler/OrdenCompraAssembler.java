@@ -1,5 +1,6 @@
 package mx.com.aztlan.pos.negocio.administracion.assembler;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
