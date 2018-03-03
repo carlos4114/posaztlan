@@ -103,5 +103,9 @@ public interface CatalogoFacadeI {
 	public ResponseEntity<List<CatalogoVO>> getMedidas(@PathVariable("idEmpresa") Integer idEmpresa)
 			throws BusinessGlobalException, NotFoundException;
 	
+	@RequestMapping(value = "/proveedores/{idEmpresa}", method = RequestMethod.GET)
+	public ResponseEntity<List<CatalogoVO>> getProveedores(@PathVariable("idEmpresa") Integer idEmpresa)
+			throws BusinessGlobalException, NotFoundException;
+	
 	
 }

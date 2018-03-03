@@ -18,6 +18,7 @@ import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.MarcaDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.MedidaDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.MotivoCancelacionDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.MotivoDevolucionDAOI;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.ProveedorDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.PuntoVentaDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.TipoDevolucionDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.TipoProductoDAOI;
@@ -26,6 +27,7 @@ import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Canal;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Familia;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Marca;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Medida;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Proveedor;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.TipoProducto;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.UnidadMedida;
 import mx.com.aztlan.pos.infraservices.servicios.BusinessGlobalException;
@@ -100,6 +102,9 @@ public class CatalogoBO {
 	
 	@Autowired
 	MedidaDAOI medidaDAO;
+	
+	@Autowired
+	ProveedorDAOI proveedorDAO;
 	
 	public List<FormaPagoVO> getFormasPagos() throws BusinessGlobalException {
 		return FormaPagoAssembler.getFormasPagosVO(formaPagoDAO.findAll());
@@ -235,6 +240,23 @@ public class CatalogoBO {
 			CatalogoVO catalogoVO = new CatalogoVO();
 			catalogoVO.setId(unidad.getIdUnidadMedida());
 			catalogoVO.setNombre(unidad.getNombre());
+
+			catalogos.add(catalogoVO);
+		}
+		
+		return catalogos;
+	}
+	
+	@Transactional(readOnly = true)
+	public List<CatalogoVO> getProveedores(Integer idEmpresa) throws BusinessGlobalException  {
+		List<CatalogoVO> catalogos = new ArrayList<CatalogoVO>();
+		
+		List<Proveedor> proveedores = proveedorDAO.findByEmpresa(idEmpresa);
+		
+		for(Proveedor proveedor: proveedores) {
+			CatalogoVO catalogoVO = new CatalogoVO();
+			catalogoVO.setId(proveedor.getIdProveedor());
+			catalogoVO.setNombre(proveedor.getNombre());
 
 			catalogos.add(catalogoVO);
 		}

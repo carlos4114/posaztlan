@@ -25,4 +25,16 @@ public class ProveedorDAO extends GlobalHibernateDAO<Proveedor> implements Prove
 	}
 
 
+	@Override
+	public List<Proveedor> findByEmpresa(Integer idEmpresa) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select pv from Proveedor pv ");
+		hql.append("where pv.empresa.idEmpresa=:idEmpresa ");
+		hql.append("order by pv.nombre asc");
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setParameter("idEmpresa", idEmpresa);
+		
+		return query.list();
+	}
 }

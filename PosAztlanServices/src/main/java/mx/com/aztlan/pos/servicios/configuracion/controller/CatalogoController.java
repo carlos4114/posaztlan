@@ -129,6 +129,10 @@ public class CatalogoController {
 		return catalogoBO.getTipos(idEmpresa);
 	}
 	
+	public List<CatalogoVO> getProveedores(Integer idEmpresa)  throws BusinessGlobalException{
+		return catalogoBO.getProveedores(idEmpresa);
+	}
+	
 	public List<CatalogoVO> getPuntosVentaXArticulo(Integer idArticulo)  throws BusinessGlobalException{
 		List<CatalogoVO> catalogoVO = new ArrayList<CatalogoVO>();
 		

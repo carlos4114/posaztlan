@@ -32,7 +32,7 @@ public class Cine implements java.io.Serializable {
 	private Set<PuntoVenta> puntoVentas = new HashSet<PuntoVenta>(0);
 	private Set<Formato> formatos = new HashSet<Formato>(0);
 	//private Set<Usuario> usuarios = new HashSet<Usuario>(0);
-	private Set<Proveedor> proveedors = new HashSet<Proveedor>(0);
+	//private Set<Proveedor> proveedors = new HashSet<Proveedor>(0);
 	private Set<Promocion> promocions = new HashSet<Promocion>(0);
 	private Set<Pelicula> peliculas = new HashSet<Pelicula>(0);
 	private Set<MateriaPrima> materiaPrimas = new HashSet<MateriaPrima>(0);
@@ -57,7 +57,7 @@ public class Cine implements java.io.Serializable {
 
 	public Cine(Contacto contacto, Empresa empresa, String nombre, boolean activo,
 			Set<ClasificacionArt> clasificacionArts, Set<Articulo> articulos, Set<Sala> salas,
-			Set<PuntoVenta> puntoVentas, Set<Formato> formatos, Set<Usuario> usuarios, Set<Proveedor> proveedors,
+			Set<PuntoVenta> puntoVentas, Set<Formato> formatos, Set<Usuario> usuarios, 
 			Set<Promocion> promocions, Set<Pelicula> peliculas, Set<MateriaPrima> materiaPrimas, Set<Regalo> regalos,
 			Set<Paquete> paquetes, Set<ImpuestoBoleto> impuestoBoletos) {
 		this.contacto = contacto;
@@ -70,7 +70,7 @@ public class Cine implements java.io.Serializable {
 		this.puntoVentas = puntoVentas;
 		this.formatos = formatos;
 		//this.usuarios = usuarios;
-		this.proveedors = proveedors;
+		//this.proveedors = proveedors;
 		this.promocions = promocions;
 		this.peliculas = peliculas;
 		this.materiaPrimas = materiaPrimas;
@@ -185,14 +185,14 @@ public class Cine implements java.io.Serializable {
 		this.usuarios = usuarios;
 	}*/
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cine")
+	/*@OneToMany(fetch = FetchType.LAZY, mappedBy = "cine")
 	public Set<Proveedor> getProveedors() {
 		return this.proveedors;
 	}
 
 	public void setProveedors(Set<Proveedor> proveedors) {
 		this.proveedors = proveedors;
-	}
+	}*/
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cine")
 	public Set<Promocion> getPromocions() {

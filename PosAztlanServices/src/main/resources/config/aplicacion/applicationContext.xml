@@ -34,6 +34,7 @@
      <context:component-scan base-package="mx.com.aztlan.pos.servicios.dashboard.controller" />
      <context:component-scan base-package="mx.com.aztlan.pos.servicios.reportes.controller" />
      <context:component-scan base-package="mx.com.aztlan.pos.servicios.caja.controller" /> 	     
+     <context:component-scan base-package="mx.com.aztlan.pos.servicios.administracion.controller" />
       
      <context:component-scan base-package="mx.com.aztlan.pos.negocio.ventas.business" />
      <context:component-scan base-package="mx.com.aztlan.pos.negocio.taquilla.business" />
@@ -44,6 +45,7 @@
      <context:component-scan base-package="mx.com.aztlan.pos.negocio.dashboard.business" /> 
      <context:component-scan base-package="mx.com.aztlan.pos.negocio.inventarios.business" />
      <context:component-scan base-package="mx.com.aztlan.pos.negocio.reportes.business" />
+     <context:component-scan base-package="mx.com.aztlan.pos.negocio.administracion.business" />
      
      
      <context:component-scan base-package="mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao" />  

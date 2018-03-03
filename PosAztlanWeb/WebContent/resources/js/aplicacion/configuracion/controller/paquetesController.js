@@ -110,14 +110,16 @@ angular.module('indexModule').controller("PaquetesController",['$scope','GlobalF
 	
 	$scope.calcularPrecioSugerido = function(productosAgregadosList){
 		var precio = 0;
+		var cantidad = 0;
 		
 		for(var i = 0; i < productosAgregadosList.length; i++){
 			if(productosAgregadosList[i].precio > precio){
 				precio =productosAgregadosList[i].precio;
+				cantidad = productosAgregadosList[i].cantidad;
 			}
 		}
 		
-		$scope.precioSugerido = $scope.precioSugerido + precio;
+		$scope.precioSugerido = $scope.precioSugerido  + (precio * cantidad);
 	}
 	
 	$scope.restarPrecioSugerido = function(productosAgregadosList){

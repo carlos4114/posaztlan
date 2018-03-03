@@ -22,7 +22,7 @@ import javax.persistence.Table;
 public class Proveedor implements java.io.Serializable {
 
 	private Integer idProveedor;
-	private Cine cine;
+	private Empresa empresa;
 	private String nombre;
 	private String razonSocial;
 	private String rfc;
@@ -32,17 +32,17 @@ public class Proveedor implements java.io.Serializable {
 	public Proveedor() {
 	}
 
-	public Proveedor(Cine cine, String nombre, String razonSocial, String rfc, boolean activo) {
-		this.cine = cine;
+	public Proveedor(Empresa empresa, String nombre, String razonSocial, String rfc, boolean activo) {
+		this.empresa = empresa;
 		this.nombre = nombre;
 		this.razonSocial = razonSocial;
 		this.rfc = rfc;
 		this.activo = activo;
 	}
 
-	public Proveedor(Cine cine, String nombre, String razonSocial, String rfc, boolean activo,
+	public Proveedor(Empresa empresa, String nombre, String razonSocial, String rfc, boolean activo,
 			Set<MovimientoInventario> movimientoInventarios) {
-		this.cine = cine;
+		this.empresa = empresa;
 		this.nombre = nombre;
 		this.razonSocial = razonSocial;
 		this.rfc = rfc;
@@ -63,13 +63,13 @@ public class Proveedor implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_cine", nullable = false)
-	public Cine getCine() {
-		return this.cine;
+	@JoinColumn(name = "id_empresa", nullable = false)
+	public Empresa getEmpresa() {
+		return this.empresa;
 	}
 
-	public void setCine(Cine cine) {
-		this.cine = cine;
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
 	}
 
 	@Column(name = "nombre", nullable = false, length = 100)

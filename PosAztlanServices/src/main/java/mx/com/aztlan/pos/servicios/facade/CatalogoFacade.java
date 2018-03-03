@@ -257,4 +257,9 @@ public class CatalogoFacade implements CatalogoFacadeI {
 	public ResponseEntity<List<CatalogoVO>> getTipos(@PathVariable("idEmpresa") Integer idEmpresa) throws BusinessGlobalException, NotFoundException {
 		return new ResponseEntity<List<CatalogoVO>>(this.catalogoController.getTipos(idEmpresa), HttpStatus.OK);		
 	}
+	
+	@Override
+	public ResponseEntity<List<CatalogoVO>> getProveedores(@PathVariable("idEmpresa") Integer idEmpresa) throws BusinessGlobalException, NotFoundException {
+		return new ResponseEntity<List<CatalogoVO>>(this.catalogoController.getProveedores(idEmpresa), HttpStatus.OK);		
+	}
 }

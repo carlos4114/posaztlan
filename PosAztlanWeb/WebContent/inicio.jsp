@@ -358,6 +358,10 @@
             <!-- Controller del modulo catalogo de productos -->
             <script src="<c:url value='/resources/js/aplicacion/configuracion/service/productosService.js' />"></script>
             <script src="<c:url value='/resources/js/aplicacion/configuracion/controller/productosController.js' />"></script>
+            
+            <!-- Controller del modulo ordenes de compra -->
+            <script src="<c:url value='/resources/js/aplicacion/administracion/service/ordenesCompraService.js' />"></script>
+            <script src="<c:url value='/resources/js/aplicacion/administracion/controller/ordenesCompraController.js' />"></script>
         </body>
 
         </html>

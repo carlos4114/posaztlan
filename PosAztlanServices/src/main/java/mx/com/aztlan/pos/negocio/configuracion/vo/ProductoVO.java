@@ -19,6 +19,13 @@ public class ProductoVO {
 	private List<PreciosXCanalVO> preciosXCanalList;
 	private List<ImpuestoVO> impuestosList;
 	private boolean nacional;
+	private String nombreUnidadMedida;
+	private BigDecimal precioUnitario;
+	private Integer cantidad;
+	private String nombreFamilia;
+	private String nombreMarca;
+	private String nombreTipo;
+	private String nombreMedida;
 	
 	public Integer getIdProducto() {
 		return idProducto;
@@ -109,6 +116,48 @@ public class ProductoVO {
 	}
 	public void setNacional(boolean nacional) {
 		this.nacional = nacional;
+	}
+	public String getNombreUnidadMedida() {
+		return nombreUnidadMedida;
+	}
+	public void setNombreUnidadMedida(String nombreUnidadMedida) {
+		this.nombreUnidadMedida = nombreUnidadMedida;
+	}
+	public BigDecimal getPrecioUnitario() {
+		return precioUnitario;
+	}
+	public void setPrecioUnitario(BigDecimal precioUnitario) {
+		this.precioUnitario = precioUnitario;
+	}
+	public Integer getCantidad() {
+		return cantidad;
+	}
+	public void setCantidad(Integer cantidad) {
+		this.cantidad = cantidad;
+	}
+	public String getNombreFamilia() {
+		return nombreFamilia;
+	}
+	public void setNombreFamilia(String nombreFamilia) {
+		this.nombreFamilia = nombreFamilia;
+	}
+	public String getNombreMarca() {
+		return nombreMarca;
+	}
+	public void setNombreMarca(String nombreMarca) {
+		this.nombreMarca = nombreMarca;
+	}
+	public String getNombreTipo() {
+		return nombreTipo;
+	}
+	public void setNombreTipo(String nombreTipo) {
+		this.nombreTipo = nombreTipo;
+	}
+	public String getNombreMedida() {
+		return nombreMedida;
+	}
+	public void setNombreMedida(String nombreMedida) {
+		this.nombreMedida = nombreMedida;
 	}
 	
 	

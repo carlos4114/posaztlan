@@ -188,7 +188,7 @@ angular.module('indexModule').controller("ProductosController",['$scope','Global
 			$scope.mensajeGeneral='';
 	        
 			for(var i = 0; i < $scope.listaProductos.length; i++){
-	            if($scope.listaProductos[i].idProducto === idProducto) { 
+	            if($scope.listaProductos[i].idProducto == idProducto) { 
 	            	$scope.productoVO = angular.copy($scope.listaProductos[i]);
 	            	
 	            	if($scope.productoVO.activo == true){
@@ -311,6 +311,7 @@ angular.module('indexModule').controller("ProductosController",['$scope','Global
 		 $scope.consultaMarcas(idEmpresa);
 		 $scope.consultaMedidas(idEmpresa);
 		 $scope.consultaTipos(idEmpresa);
+		 $scope.obtenerProductos(idEmpresa);
 	 }
 	 		
 	 $scope.inicializarValores();	

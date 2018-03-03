@@ -259,6 +259,14 @@
 				</value>
 				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.PrecioXCanalId
 				</value>
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.OrdenCompra
+				</value>
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.OrdenCompraDetalle
+				</value>
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.OrdenCompraDetalleId
+				</value>
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.EstatusOrdenCompra
+				</value>
 			</list>
 		</property>
 	</bean>

@@ -99,11 +99,7 @@ angular.module('indexModule').config(function($routeProvider){
                 controllerAs: "vm",
                 templateUrl: "vistas/configuracion/usuarios.jsp"
             })
-            .when("/articulos", {
-                controller: "ArticulosController",
-                controllerAs: "vm",
-                templateUrl: "vistas/configuracion/articulos.jsp"
-            })
+           
 
             /******FIN CONFIGURACIONES*****/
             
@@ -112,6 +108,11 @@ angular.module('indexModule').config(function($routeProvider){
                 controller: "CorteCajaController",
                 controllerAs: "vm",
                 templateUrl: "vistas/administracion/corte_caja.jsp"
+            })
+             .when("/ordenesCompra", {
+                controller: "OrdenesCompraController",
+                controllerAs: "vm",
+                templateUrl: "vistas/administracion/orden_compra.jsp"
             })
             /********* FIN ADMINISTRACION***********/
 

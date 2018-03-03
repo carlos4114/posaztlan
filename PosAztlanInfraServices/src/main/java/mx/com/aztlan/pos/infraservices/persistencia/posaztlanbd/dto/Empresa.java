@@ -34,7 +34,9 @@ public class Empresa implements java.io.Serializable {
 	private Set<Medida> medidas = new HashSet<Medida>(0);
 	private Set<Familia> familias = new HashSet<Familia>(0);
 	private Set<TipoProducto> tiposProducto = new HashSet<TipoProducto>(0);
-
+	private Set<OrdenCompra> ordenesCompra = new HashSet<OrdenCompra>(0);
+	private Set<Proveedor> proveedores = new HashSet<Proveedor>(0);
+	
 	public Empresa() {
 	}
 
@@ -181,5 +183,23 @@ public class Empresa implements java.io.Serializable {
 
 	public void setMedidas(Set<Medida> medidas) {
 		this.medidas = medidas;
+	}
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "empresa")
+	public Set<OrdenCompra> getOrdenesCompra() {
+		return this.ordenesCompra;
+	}
+
+	public void setOrdenesCompra(Set<OrdenCompra> ordenesCompra) {
+		this.ordenesCompra = ordenesCompra;
+	}
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "empresa")
+	public Set<Proveedor> getProveedores() {
+		return this.proveedores;
+	}
+
+	public void setProveedores(Set<Proveedor> proveedores) {
+		this.proveedores = proveedores;
 	}
 }

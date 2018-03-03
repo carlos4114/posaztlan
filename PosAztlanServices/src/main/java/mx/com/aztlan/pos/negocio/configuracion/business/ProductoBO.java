@@ -1,15 +1,12 @@
 package mx.com.aztlan.pos.negocio.configuracion.business;
 
 import java.math.BigDecimal;
-import java.util.Iterator;
 import java.util.List;
 
-import org.jfree.util.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import mx.com.aztlan.pos.infraservices.negocio.seguridad.vo.HttpResponseVO;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.ArticuloDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.ArticulosXProductoDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.ImpuestoXProductoDAOI;
@@ -18,27 +15,18 @@ import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.PrecioXCanal
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.ProductoDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.ProductoXPuntoVentaDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Articulo;
-import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ArticulosXProducto;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Canal;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ImpuestoXProducto;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.PrecioXCanal;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.PrecioXCanalId;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Producto;
-import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ProductosXPuntoVenta;
-import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ProductosXPuntoVentaId;
-import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.PuntoVenta;
 import mx.com.aztlan.pos.infraservices.servicios.BusinessGlobalException;
-import mx.com.aztlan.pos.negocio.configuracion.assembler.ArticuloAssembler;
-import mx.com.aztlan.pos.negocio.configuracion.assembler.ArticulosXProductoAssembler;
 import mx.com.aztlan.pos.negocio.configuracion.assembler.ImpuestoXProductoAssembler;
 import mx.com.aztlan.pos.negocio.configuracion.assembler.ProductoAssembler;
 import mx.com.aztlan.pos.negocio.configuracion.assembler.UnidadMedidaAssembler;
-import mx.com.aztlan.pos.negocio.configuracion.vo.ArticuloVO;
-import mx.com.aztlan.pos.negocio.configuracion.vo.ArticulosXProductoVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.ImpuestoVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.PreciosXCanalVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.ProductoVO;
-import mx.com.aztlan.pos.negocio.configuracion.vo.PuntosVentaListVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.UnidadMedidaVO;
 
 @Service

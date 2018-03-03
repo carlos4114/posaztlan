@@ -40,7 +40,7 @@ public class ProveedorAssembler {
 		
 		ProveedorVO proveedorVO= new ProveedorVO();
 		proveedorVO.setIdProveedor(proveedor.getIdProveedor());
-		proveedorVO.setCineVO(CineAssembler.getCineVO(proveedor.getCine()));
+		//proveedorVO.setCineVO(CineAssembler.getCineVO(proveedor.getCine()));
 		proveedorVO.setNombre(proveedor.getNombre());
 		proveedorVO.setRazonSocial(proveedor.getRazonSocial());
 		proveedorVO.setRfc(proveedor.getRfc());

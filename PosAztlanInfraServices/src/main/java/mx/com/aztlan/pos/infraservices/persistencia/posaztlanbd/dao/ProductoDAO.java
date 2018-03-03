@@ -67,4 +67,60 @@ public class ProductoDAO extends GlobalHibernateDAO<Producto> implements Product
 		
 		return query.list();
 	}
+	
+	@Override
+	public List<Producto> findByFiltros(Integer idEmpresa, Integer idFamilia, 
+			Integer idMarca, Integer idTipoProducto, Integer idMedida, String nombre) {
+		boolean F = false;
+		boolean M = false;
+		boolean T = false;
+		boolean Me = false; 
+		boolean N = false; 
+		
+		StringBuilder hql = new StringBuilder();
+		hql.append("select pdt ");
+		hql.append("from Producto pdt ");
+		hql.append("where pdt.empresa.idEmpresa =:idEmpresa ");
+		if (idFamilia > 0) {
+			hql.append("and pdt.familia.idFamilia =:idFamilia ");
+			F = true;
+		}
+		if (idMarca > 0) {
+			hql.append("and pdt.marca.idMarca =:idMarca ");
+			M = true;
+		}
+		if (idTipoProducto > 0) {
+			hql.append("and pdt.tipoProducto.idTipoProducto=:idTipoProducto ");
+			T = true;
+		}
+		if (idMedida > 0) {
+			hql.append("and pdt.medida.idMedida=:idMedida ");
+			Me = true;
+		}
+		if (nombre.length() > 0) {
+			hql.append("and pdt.nombre like :nombre");
+			N = true;
+		}
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setParameter("idEmpresa", idEmpresa);
+		if(F == true) {
+			query.setParameter("idFamilia", idFamilia);
+		}
+		if(M == true) {
+			query.setParameter("idMarca", idMarca);
+		}
+		if(T==true) {
+			query.setParameter("idTipoProducto", idTipoProducto);
+		}
+		if(Me==true) {
+			query.setParameter("idMedida", idMedida);
+		}
+		if(N==true) {
+			query.setParameter("nombre", "%" + nombre + "%");
+		}
+	
+		
+		return query.list();
+	}
 }

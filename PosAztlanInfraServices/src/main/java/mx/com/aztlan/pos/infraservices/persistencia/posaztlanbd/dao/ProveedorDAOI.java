@@ -7,4 +7,6 @@ import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Proveedor;
 
 public interface ProveedorDAOI extends GlobalHibernateDAOI<Proveedor>{
 	List<Proveedor> findByIdCine(Integer idCine);
+	
+	List<Proveedor> findByEmpresa(Integer idEmpresa);
 }
