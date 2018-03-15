@@ -14,6 +14,7 @@ public class OrdenCompraVO {
 	private List<ProductoVO> productos;
 	private BigDecimal total;
 	
+	
 	public Integer getIdOrdenCompra() {
 		return idOrdenCompra;
 	}

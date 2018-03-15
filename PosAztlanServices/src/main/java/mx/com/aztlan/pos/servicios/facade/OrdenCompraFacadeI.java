@@ -1,25 +1,22 @@
 package mx.com.aztlan.pos.servicios.facade;
 
-import java.math.BigDecimal;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import mx.com.aztlan.pos.infraservices.negocio.seguridad.vo.HttpResponseVO;
 import mx.com.aztlan.pos.infraservices.servicios.BusinessGlobalException;
 import mx.com.aztlan.pos.infraservices.servicios.NotFoundException;
 import mx.com.aztlan.pos.negocio.administracion.vo.FiltrosVO;
 import mx.com.aztlan.pos.negocio.administracion.vo.OrdenCompraVO;
-import mx.com.aztlan.pos.negocio.configuracion.vo.ArticuloVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.ProductoVO;
-import mx.com.aztlan.pos.negocio.configuracion.vo.PuntosVentaListVO;
-import mx.com.aztlan.pos.negocio.configuracion.vo.UnidadMedidaVO;
+import mx.com.aztlan.pos.negocio.reportes.vo.HttpResponseOcVO;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -31,5 +28,5 @@ public interface OrdenCompraFacadeI {
 			throws BusinessGlobalException, NotFoundException;
 	
 	@RequestMapping(value = "/guardar", method = RequestMethod.POST)
-	public HttpResponseVO guardar(@RequestBody OrdenCompraVO ordenCompraVO) throws BusinessGlobalException, Exception;
+	public ResponseEntity<HttpResponseOcVO> guardar(@RequestBody OrdenCompraVO ordenCompraVO, HttpServletRequest request) throws BusinessGlobalException, Exception;
 }

@@ -45,7 +45,12 @@
 	<bean id="asistenciaXSalaIbatisDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
 		<property name="mapperInterface" value="mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.AsistenciaPeliculaIbatisDAOI" />
 		<property name="sqlSessionFactory" ref="ibatisSessionFactory" />
-	</bean>	
+	</bean>
+	<bean id="ordenCompraIbatisDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.OrdenCompraIbatisDAOI" />
+		<property name="sqlSessionFactory" ref="ibatisSessionFactory" />
+	</bean>
+		
 	
 	
  </beans>

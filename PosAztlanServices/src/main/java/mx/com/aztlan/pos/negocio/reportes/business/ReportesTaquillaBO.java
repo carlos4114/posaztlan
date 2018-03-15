@@ -8,8 +8,6 @@ import java.util.ResourceBundle;
 import javax.servlet.ServletContext;
 
 import org.hibernate.HibernateException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,14 +17,12 @@ import mx.com.aztlan.pos.infraservices.servicios.BusinessGlobalException;
 import mx.com.aztlan.pos.infraservices.servicios.NotFoundException;
 import mx.com.aztlan.pos.negocio.reportes.vo.ArchivoExcelVO;
 import mx.com.aztlan.pos.negocio.reportes.vo.ReporteJasperVO;
-import mx.com.aztlan.pos.servicios.util.Fecha;
 import net.sf.jasperreports.engine.JRException;
 
 @Service
 @Transactional
 public class ReportesTaquillaBO {
 
-	private static final Logger logger = LoggerFactory.getLogger(ReportesTaquillaBO.class);
 	@Autowired
 	private ServletContext context;
 	@Autowired

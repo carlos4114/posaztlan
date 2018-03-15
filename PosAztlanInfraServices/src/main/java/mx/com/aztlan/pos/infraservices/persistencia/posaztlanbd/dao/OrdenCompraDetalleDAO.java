@@ -7,5 +7,5 @@ import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.OrdenCompraD
 
 @Repository 
 public class OrdenCompraDetalleDAO extends GlobalHibernateDAO<OrdenCompraDetalle> implements OrdenCompraDetalleDAOI {
-
+	
 }

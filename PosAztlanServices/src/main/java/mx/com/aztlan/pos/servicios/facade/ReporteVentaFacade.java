@@ -2,8 +2,6 @@ package mx.com.aztlan.pos.servicios.facade;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +15,6 @@ import mx.com.aztlan.pos.servicios.reportes.controller.ReporteVentasTaquillaCont
 
 @Service
 public class ReporteVentaFacade implements ReporteVentaFacadeI {
-	private static final Logger logger = LoggerFactory.getLogger(ReporteVentaFacade.class);
 
 	@Autowired
 	private ReporteVentasTaquillaController reporteJasperController;

@@ -7,6 +7,7 @@ public class FiltrosVO {
 	private Integer idTipoProducto;
 	private Integer idMedida;
 	private String nombre;
+	private Integer idProveedor;
 	
 	public Integer getIdEmpresa() {
 		return idEmpresa;
@@ -43,6 +44,12 @@ public class FiltrosVO {
 	}
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+	public Integer getIdProveedor() {
+		return idProveedor;
+	}
+	public void setIdProveedor(Integer idProveedor) {
+		this.idProveedor = idProveedor;
 	}
 	
 	

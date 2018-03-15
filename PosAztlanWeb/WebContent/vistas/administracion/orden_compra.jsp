@@ -97,13 +97,13 @@
 		              		</div>
 		              		
 		                
-		                   <div class ="col-sm-12">
-		                   		<table id ="datatable-checkbox" class="table table-striped table-bordered bulk_action dataTable no-footer" role ="grid" aria-describedby="datatable-checkbox_info">
+							<div class="table-responsive col-lg-12 col-md-12 col-sm-12 col-xs-12 col-lg-offset-0 col-md-offset-0 col-sm-offset-0">
+		                   		<table id ="datatable-checkbox" class="table table-striped table-bordered dt-responsive nowrap" role ="grid" aria-describedby="datatable-checkbox_info">
 		                   			<thead>
 		                   				<tr role="row" class="odd pointer" >
 		                   					<th>
 		                   						<div>
-		                   							<input type="checkbox" id="check-all" class="icheckbox_flat-green"  ng-click="seleccionarTodos()">
+		                   							<input type="checkbox" id="check-all" class="icheckbox_flat-green" ng-model="seleccionarTodosCh" ng-click="seleccionarTodos()">
 		                   						</div>
 		                   					</th>
 		                   					<th class="sorting_asc" aria-sort="ascending"> Nombre</th>
@@ -134,12 +134,12 @@
 											<td>{{producto.descripcion}}</td>
 											<td>
 												<div>
-													<input type="text" ng-model="precioUnitario" ng-model="producto.precioUnitario" class="col-xs-10">
+													<input type="text" ng-model="producto.precioUnitario" class="col-xs-10">
 												</div>
 											</td>
 											<td>
 												<div>
-													<input type="text" ng-model="cantidad" ng-model="producto.cantidad" class="col-xs-10">
+													<input type="text" ng-model="producto.cantidad" class="col-xs-10">
 												</div>
 											</td>
 											
@@ -148,11 +148,22 @@
 									</tbody>
 		                   		</table>
 		                   </div>
-		                           
+	    	                 
 		                      <div class="form-group">
-		                        <div class="col-md-12 col-sm-12 col-xs-12 col-md-offset-0 text-center">
+			                    <div class="col-md-12 col-sm-12 col-xs-12 col-md-offset-0 text-center">
 		                          <button type="button" ng-click="agregar()" class="btn btn-success" ><i class="fa fa-save"></i>Agregar</button>
-		                          <button type="button" ng-click="limpiarFormulario()" class="btn btn-primary" ><i class="fa fa-file-o"></i>Nuevo</button>
+		                          <button type="button" ng-click="confirmarNuevo()" class="btn btn-primary" ><i class="fa fa-file-o"></i>Nuevo</button>
+		                        </div>
+		                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-md-offset-0 text-center">
+		                        	<div class="alert alert-success" align="center" role="alert" ng-show="mensajeGeneral.length">	  
+									  	 <span  class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+									     {{mensajeGeneral}}
+						            </div>
+		                        	<div class="alert" align="center" role="alert" ng-show="errorGeneral.length">	  
+									  	 <span  class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+									     {{errorGeneral}}
+						            	 <br/>
+		    		          	    </div>
 		                        </div>
 		                      </div>       
 						</form>
@@ -200,7 +211,7 @@
 							
 							<div class="form-group">
 		                        <div class="col-md-12 col-sm-12 col-xs-12 col-md-offset-0 text-center">
-		                          <button type="button" ng-click="guardar()" class="btn btn-success" ><i class="fa fa-save"></i>Guardar</button>
+		                          <button type="button" ng-click="submit()" class="btn btn-success" ><i class="fa fa-save"></i>Guardar</button>
 		                        </div>
 		                      </div>
 		                      

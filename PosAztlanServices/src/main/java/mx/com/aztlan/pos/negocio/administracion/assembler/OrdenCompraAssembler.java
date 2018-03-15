@@ -10,22 +10,26 @@ import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.OrdenCompra;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.OrdenCompraDetalle;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.OrdenCompraDetalleId;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Producto;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Usuario;
+import mx.com.aztlan.pos.infraservices.persistencia.utileria.business.FechasUtilsBO;
 import mx.com.aztlan.pos.negocio.administracion.vo.OrdenCompraVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.ProductoVO;
 
 public class OrdenCompraAssembler {
 
 
-	public static OrdenCompra getOrdenCompra(OrdenCompraVO ordenCompraVO){
+	public static OrdenCompra getOrdenCompra(OrdenCompraVO ordenCompraVO, Integer idUsuario, Integer folio){
 		OrdenCompra ordenCompra = new OrdenCompra();
 		
 		ordenCompra.setIdOrdenCompra(ordenCompra.getIdOrdenCompra());
 		ordenCompra.setEmpresa(new Empresa(ordenCompraVO.getIdEmpresa()));
+		ordenCompra.setFolio(folio);
 		ordenCompra.setIdProveedor(ordenCompraVO.getIdProveedor());
-		ordenCompra.setDescuento(ordenCompraVO.getDescuento());
+		ordenCompra.setDescuento(ordenCompraVO.getDescuento()==null?new BigDecimal(0):ordenCompraVO.getDescuento());
 		ordenCompra.setEstatusOrdenCompra(new EstatusOrdenCompra(ordenCompraVO.getIdEstatusOrdenCompra()));
-		ordenCompra.setTotal(ordenCompraVO.getTotal());
-
+		ordenCompra.setFechaHora(FechasUtilsBO.getCurrentDate());
+		ordenCompra.setUsuarioCreador(new Usuario(idUsuario));
+	
 		return ordenCompra;
 	}
 	
@@ -39,7 +43,7 @@ public class OrdenCompraAssembler {
 		return ordenCompraDetalle;
 	}
 	
-	public static ProductoVO getProductoVO(Producto producto){
+	public static ProductoVO getProductoVO(Producto producto, BigDecimal precio){
 		if(producto==null)
 			return null;
 		
@@ -59,6 +63,7 @@ public class OrdenCompraAssembler {
 		productoVO.setIdUnidadMedida(producto.getUnidadMedida().getIdUnidadMedida());
 		productoVO.setNombreUnidadMedida(producto.getUnidadMedida().getNombre());
 		productoVO.setDescripcion(producto.getDescripcion());
+		productoVO.setPrecioUnitario(precio==null?null:precio);
 		
 		return productoVO;
 	}
@@ -71,7 +76,7 @@ public class OrdenCompraAssembler {
 		List<ProductoVO> productosVO = new ArrayList<ProductoVO>();
 		
 		for (Producto producto : productos) {
-			productosVO.add(OrdenCompraAssembler.getProductoVO(producto));
+			productosVO.add(OrdenCompraAssembler.getProductoVO(producto, null));
 		}
 
 		return productosVO;
