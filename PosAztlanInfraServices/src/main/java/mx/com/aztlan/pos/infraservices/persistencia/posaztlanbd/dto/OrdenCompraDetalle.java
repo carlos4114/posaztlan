@@ -8,6 +8,9 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -19,15 +22,22 @@ public class OrdenCompraDetalle implements java.io.Serializable {
 
 	private OrdenCompraDetalleId id;
 	private BigDecimal precioUnitario;
+	private BigDecimal precioUnitarioFinal;
 	private int cantidad;
+	//private int cantidadFinal;
+	private Producto producto;
 
 	public OrdenCompraDetalle() {
 	}
 
-	public OrdenCompraDetalle(OrdenCompraDetalleId id, BigDecimal precioUnitario, int cantidad) {
+	public OrdenCompraDetalle(OrdenCompraDetalleId id, BigDecimal precioUnitario, BigDecimal precioUnitarioFinal, 
+			int cantidad, int cantidadFinal, Producto producto) {
 		this.id = id;
 		this.precioUnitario = precioUnitario;
 		this.cantidad = cantidad;
+		this.precioUnitarioFinal = precioUnitarioFinal;
+		//this.cantidadFinal = cantidadFinal;
+		this.producto = producto;
 	}
 
 	@EmbeddedId
@@ -52,6 +62,15 @@ public class OrdenCompraDetalle implements java.io.Serializable {
 		this.precioUnitario = precioUnitario;
 	}
 
+	@Column(name = "precio_unitario_final", nullable = false, precision = 15)
+	public BigDecimal getPrecioUnitarioFinal() {
+		return this.precioUnitarioFinal;
+	}
+
+	public void setPrecioUnitarioFinal(BigDecimal precioUnitarioFinal) {
+		this.precioUnitarioFinal = precioUnitarioFinal;
+	}
+	
 	@Column(name = "cantidad", nullable = false)
 	public int getCantidad() {
 		return this.cantidad;
@@ -60,4 +79,24 @@ public class OrdenCompraDetalle implements java.io.Serializable {
 	public void setCantidad(int cantidad) {
 		this.cantidad = cantidad;
 	}
+	
+/*	@Column(name = "cantidad_final", nullable = false)
+	public int getCantidadFinal() {
+		return this.cantidadFinal;
+	}
+
+	public void setCantidadFinal(int cantidadFinal) {
+		this.cantidadFinal = cantidadFinal;
+	}*/
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_producto", nullable = false, insertable = false, updatable = false)
+	public Producto getProducto() {
+		return this.producto;
+	}
+
+	public void setProducto(Producto producto) {
+		this.producto = producto;
+	}
+
 }
