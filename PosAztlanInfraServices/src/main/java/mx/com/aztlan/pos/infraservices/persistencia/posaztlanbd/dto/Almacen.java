@@ -23,6 +23,7 @@ import javax.persistence.Table;
 public class Almacen implements java.io.Serializable {
 
 	private Integer idAlmacen;
+	private Empresa empresa;
 	private Canal canal;
 	private String nombre;
 	private TipoAlmacen tipoAlmacen;
@@ -63,13 +64,23 @@ public class Almacen implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_canal", nullable = false)
+	@JoinColumn(name = "id_canal", nullable = true)
 	public Canal getCanal() {
 		return this.canal;
 	}
 
 	public void setCanal(Canal canal) {
 		this.canal = canal;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_empresa", nullable = false)
+	public Empresa getEmpresa() {
+		return this.empresa;
+	}
+
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
 	}
 
 	@Column(name = "nombre", nullable = false, length = 100)

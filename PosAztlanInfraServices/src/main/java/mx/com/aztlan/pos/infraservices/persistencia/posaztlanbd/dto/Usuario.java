@@ -24,6 +24,7 @@ import javax.persistence.Table;
 public class Usuario implements java.io.Serializable {
 
 	private Integer idUsuario;
+	private Empresa empresa;
 	private Canal canal;
 	private EstatusUsuario estatusUsuario;
 	private Almacen almacen;
@@ -92,9 +93,19 @@ public class Usuario implements java.io.Serializable {
 	public void setIdUsuario(Integer idUsuario) {
 		this.idUsuario = idUsuario;
 	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_empresa", nullable = true)
+	public Empresa getEmpresa() {
+		return this.empresa;
+	}
+
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
+	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_canal", nullable = false)
+	@JoinColumn(name = "id_canal", nullable = true)
 	public Canal getCanal() {
 		return this.canal;
 	}
@@ -114,7 +125,7 @@ public class Usuario implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_almacen")
+	@JoinColumn(name = "id_almacen", nullable = true)
 	public Almacen getAlmacen() {
 		return this.almacen;
 	}
@@ -124,7 +135,7 @@ public class Usuario implements java.io.Serializable {
 	}
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_caja")
+	@JoinColumn(name = "id_caja", nullable = false)
 	public Caja getCaja() {
 		return this.caja;
 	}
