@@ -28,6 +28,7 @@ public class Paquete implements java.io.Serializable {
 	private byte[] icono;
 	private boolean activo;
 	private BigDecimal precio;
+	private String sku;
 	private Set<ProductosXPaquete> productosXPaquetes = new HashSet<ProductosXPaquete>(0);
 	private Set<PaquetesXPuntoVenta> paquetesXPuntoVentas = new HashSet<PaquetesXPuntoVenta>(0);
 	private Set<PaquetesXTicket> paquetesXTickets = new HashSet<PaquetesXTicket>(0);
@@ -114,6 +115,15 @@ public class Paquete implements java.io.Serializable {
 		this.precio = precio;
 	}
 
+	@Column(name = "sku", nullable = true, length = 45)
+	public String getSku() {
+		return this.sku;
+	}
+
+	public void setSku(String sku) {
+		this.sku = sku;
+	}
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "paquete")
 	public Set<ProductosXPaquete> getProductosXPaquetes() {
 		return this.productosXPaquetes;

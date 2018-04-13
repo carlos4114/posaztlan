@@ -35,15 +35,18 @@ public class Producto implements java.io.Serializable {
 	private Medida medida;
 	private UnidadMedida unidadMedida;
 	private boolean nacional;
+	private String sku;
 	private Set<ProductosXPaquete> productosXPaquetes = new HashSet<ProductosXPaquete>(0);
 	private Set<ProductosXTicket> productosXTickets = new HashSet<ProductosXTicket>(0);
 	private Set<DetallePromocion> detallePromocions = new HashSet<DetallePromocion>(0);
 	private Set<ProductosXPuntoVenta> productosXPuntoVentas = new HashSet<ProductosXPuntoVenta>(0);
+	private Set<OrdenCompraDetalle> ordenCompraDetalle = new HashSet<OrdenCompraDetalle>(0);
 	//private Set<ProductosXAlmacen> productosXAlmacenes= new HashSet<ProductosXAlmacen>(0);
 	private Set<ArticulosXProducto> articulosXProductos = new HashSet<ArticulosXProducto>(0);
 	private Set<DevolucionXProducto> devolucionXProductos = new HashSet<DevolucionXProducto>(0);
 	private Set<ImpuestoXProducto> impuestoXProductos = new HashSet<ImpuestoXProducto>(0);
 	private Set<PrecioXCanal> precioXCanal = new HashSet<PrecioXCanal>(0);
+	private Set<MovimientoInventario> movimientoInventarios = new HashSet<MovimientoInventario>(0);
 	
 	public Producto() {
 	}
@@ -64,7 +67,7 @@ public class Producto implements java.io.Serializable {
 			Set<ProductosXPaquete> productosXPaquetes, Set<ProductosXTicket> productosXTickets,
 			Set<DetallePromocion> detallePromocions, Set<ProductosXPuntoVenta> productosXPuntoVentas,
 			Set<ArticulosXProducto> articulosXProductos, Set<DevolucionXProducto> devolucionXProductos,
-			Set<ImpuestoXProducto> impuestoXProductos) {
+			Set<ImpuestoXProducto> impuestoXProductos, Set<MovimientoInventario> movimientoInventarios) {
 		this.empresa = empresa;
 		this.nombre = nombre;
 		this.icono = icono;
@@ -77,6 +80,7 @@ public class Producto implements java.io.Serializable {
 		this.articulosXProductos = articulosXProductos;
 		this.devolucionXProductos = devolucionXProductos;
 		this.impuestoXProductos = impuestoXProductos;
+		this.movimientoInventarios = movimientoInventarios;
 	}
 
 	@Id
@@ -155,6 +159,15 @@ public class Producto implements java.io.Serializable {
 		this.precioUnico = precioUnico;
 	}
 
+	@Column(name = "sku", nullable = true, length = 45)
+	public String getSku() {
+		return this.sku;
+	}
+
+	public void setSku(String sku) {
+		this.sku = sku;
+	}
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "producto")
 	public Set<ProductosXPaquete> getProductosXPaquetes() {
 		return this.productosXPaquetes;
@@ -191,6 +204,15 @@ public class Producto implements java.io.Serializable {
 		this.productosXPuntoVentas = productosXPuntoVentas;
 	}
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "producto")
+	public Set<OrdenCompraDetalle> getOrdenCompraDetalle() {
+		return this.ordenCompraDetalle;
+	}
+
+	public void setOrdenCompraDetalle(Set<OrdenCompraDetalle> ordenCompraDetalle) {
+		this.ordenCompraDetalle = ordenCompraDetalle;
+	}
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "producto")
 	public Set<ArticulosXProducto> getArticulosXProductos() {
 		return this.articulosXProductos;
@@ -275,5 +297,14 @@ public class Producto implements java.io.Serializable {
 
 	public void setUnidadMedida(UnidadMedida unidadMedida) {
 		this.unidadMedida = unidadMedida;
+	}
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "producto")
+	public Set<MovimientoInventario> getMovimientoInventarios() {
+		return this.movimientoInventarios;
+	}
+
+	public void setMovimientoInventarios(Set<MovimientoInventario> movimientoInventarios) {
+		this.movimientoInventarios = movimientoInventarios;
 	}
 }

@@ -28,7 +28,7 @@ import javax.persistence.TemporalType;
 public class MovimientoInventario implements java.io.Serializable {
 
 	private Integer idMovimiento;
-	private Articulo articulo;
+	private Producto producto;
 	private Proveedor proveedor;
 	private TipoMovimientoInv tipoMovimientoInv;
 	private Usuario usuario;
@@ -38,16 +38,16 @@ public class MovimientoInventario implements java.io.Serializable {
 	private String documentoRespaldo;
 	private long existenciaActual;
 	private Set<AutorizacionMovimiento> autorizacionMovimientos = new HashSet<AutorizacionMovimiento>(0);
-	private PuntoVenta puntoVenta;
-	private PuntoVenta puntoVentaConsigna;
+	private Almacen almacen;
+	private Almacen almacenConsigna;
     private Inventario inventario;
 	
 	public MovimientoInventario() {
 	}
 
-	public MovimientoInventario(Articulo articulo, TipoMovimientoInv tipoMovimientoInv, Usuario usuario, long cantidad,
+	public MovimientoInventario(Producto producto, TipoMovimientoInv tipoMovimientoInv, Usuario usuario, long cantidad,
 			Date fecha, BigDecimal importe, long existenciaActual) {
-		this.articulo = articulo;
+		this.producto = producto;
 		this.tipoMovimientoInv = tipoMovimientoInv;
 		this.usuario = usuario;
 		this.cantidad = cantidad;
@@ -56,10 +56,10 @@ public class MovimientoInventario implements java.io.Serializable {
 		this.existenciaActual = existenciaActual;
 	}
 
-	public MovimientoInventario(Articulo articulo, Proveedor proveedor, TipoMovimientoInv tipoMovimientoInv,
+	public MovimientoInventario(Producto producto, Proveedor proveedor, TipoMovimientoInv tipoMovimientoInv,
 			Usuario usuario, long cantidad, Date fecha, BigDecimal importe, String documentoRespaldo,
 			long existenciaActual, Set<AutorizacionMovimiento> autorizacionMovimientos) {
-		this.articulo = articulo;
+		this.producto = producto;
 		this.proveedor = proveedor;
 		this.tipoMovimientoInv = tipoMovimientoInv;
 		this.usuario = usuario;
@@ -84,13 +84,13 @@ public class MovimientoInventario implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_articulo", nullable = false)
-	public Articulo getArticulo() {
-		return this.articulo;
+	@JoinColumn(name = "id_producto", nullable = false)
+	public Producto getProducto() {
+		return this.producto;
 	}
 
-	public void setArticulo(Articulo articulo) {
-		this.articulo = articulo;
+	public void setProducto(Producto producto) {
+		this.producto = producto;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -179,23 +179,23 @@ public class MovimientoInventario implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_punto_venta", nullable = false)
-	public PuntoVenta getPuntoVenta() {
-		return puntoVenta;
+	@JoinColumn(name = "id_almacen", nullable = false)
+	public Almacen getAlmacen() {
+		return almacen;
 	}
 
-	public void setPuntoVenta(PuntoVenta puntoVenta) {
-		this.puntoVenta = puntoVenta;
+	public void setAlmacen(Almacen almacen) {
+		this.almacen = almacen;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_punto_venta_consigna", nullable = true)
-	public PuntoVenta getPuntoVentaConsigna() {
-		return puntoVentaConsigna;
+	@JoinColumn(name = "id_almacen_consigna", nullable = true)
+	public Almacen getAlmacenConsigna() {
+		return almacenConsigna;
 	}
 
-	public void setPuntoVentaConsigna(PuntoVenta puntoVentaConsigna) {
-		this.puntoVentaConsigna = puntoVentaConsigna;
+	public void setAlmacenConsigna(Almacen almacenConsigna) {
+		this.almacenConsigna = almacenConsigna;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)

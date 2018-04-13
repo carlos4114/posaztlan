@@ -28,9 +28,9 @@ import javax.persistence.TemporalType;
 public class Inventario implements java.io.Serializable {
 
 	private Integer idInventario;
-	private PuntoVenta puntoVenta;
+	private Almacen almacen;
 	private Proveedor proveedor;
-	private Articulo articulo;	
+	private Producto producto;	
 	private TipoMovimientoInv tipoMovimientoInv;
 	private Date fecha;	
 	private String lote;
@@ -45,9 +45,9 @@ public class Inventario implements java.io.Serializable {
 	public Inventario() {
 	}
 
-	public Inventario(Articulo articulo, TipoMovimientoInv tipoMovimientoInv, Usuario usuario, long cantidad,
+	public Inventario(Producto producto, TipoMovimientoInv tipoMovimientoInv, Usuario usuario, long cantidad,
 			Date fecha, BigDecimal importe, long existenciaActual) {
-		this.articulo = articulo;
+		this.producto = producto;
 		this.tipoMovimientoInv = tipoMovimientoInv;
 		this.usuario = usuario;
 		this.cantidad = cantidad;
@@ -56,10 +56,10 @@ public class Inventario implements java.io.Serializable {
 		this.existenciaActual = existenciaActual;
 	}
 
-	public Inventario(Articulo articulo, Proveedor proveedor, TipoMovimientoInv tipoMovimientoInv,
+	public Inventario(Producto producto, Proveedor proveedor, TipoMovimientoInv tipoMovimientoInv,
 			Usuario usuario, long cantidad, Date fecha, BigDecimal importe, String documentoRespaldo,
 			long existenciaActual, Set<AutorizacionMovimiento> autorizacionMovimientos) {
-		this.articulo = articulo;
+		this.producto = producto;
 		this.proveedor = proveedor;
 		this.tipoMovimientoInv = tipoMovimientoInv;
 		this.usuario = usuario;
@@ -82,13 +82,13 @@ public class Inventario implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_articulo", nullable = false)
-	public Articulo getArticulo() {
-		return this.articulo;
+	@JoinColumn(name = "id_producto", nullable = false)
+	public Producto getProducto() {
+		return this.producto;
 	}
 
-	public void setArticulo(Articulo articulo) {
-		this.articulo = articulo;
+	public void setProducto(Producto producto) {
+		this.producto = producto;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -168,13 +168,13 @@ public class Inventario implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_punto_venta", nullable = false)
-	public PuntoVenta getPuntoVenta() {
-		return puntoVenta;
+	@JoinColumn(name = "id_almacen", nullable = false)
+	public Almacen getAlmacen() {
+		return almacen;
 	}
 
-	public void setPuntoVenta(PuntoVenta puntoVenta) {
-		this.puntoVenta = puntoVenta;
+	public void setAlmacen(Almacen almacen) {
+		this.almacen = almacen;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
