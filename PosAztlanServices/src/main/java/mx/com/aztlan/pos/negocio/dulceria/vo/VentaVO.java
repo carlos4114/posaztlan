@@ -4,9 +4,10 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class VentaVO {
+	private Integer idEmpresa;
 	private Integer idUsuario;
-	private Integer idPuntoVenta;
-	private Integer idCine;
+	private Integer idAlmacen;
+	private Integer idCanal;
 	private Integer idCaja;
 	
 	private List<PaqueteVO> paquetesVO;
@@ -25,17 +26,17 @@ public class VentaVO {
 	public void setIdUsuario(Integer idUsuario) {
 		this.idUsuario = idUsuario;
 	}
-	public Integer getIdPuntoVenta() {
-		return idPuntoVenta;
+	public Integer getIdAlmacen() {
+		return idAlmacen;
 	}
-	public void setIdPuntoVenta(Integer idPuntoVenta) {
-		this.idPuntoVenta = idPuntoVenta;
+	public void setIdAlmacen(Integer idAlmacen) {
+		this.idAlmacen = idAlmacen;
 	}
-	public Integer getIdCine() {
-		return idCine;
+	public Integer getIdCanal() {
+		return idCanal;
 	}
-	public void setIdCine(Integer idCine) {
-		this.idCine = idCine;
+	public void setIdCanal(Integer idCanal) {
+		this.idCanal = idCanal;
 	}
 	public List<PaqueteVO> getPaquetesVO() {
 		return paquetesVO;
@@ -54,6 +55,12 @@ public class VentaVO {
 	}
 	public void setIdCaja(Integer idCaja) {
 		this.idCaja = idCaja;
+	}
+	public Integer getIdEmpresa() {
+		return idEmpresa;
+	}
+	public void setIdEmpresa(Integer idEmpresa) {
+		this.idEmpresa = idEmpresa;
 	}
 	
 }

@@ -28,7 +28,6 @@ import mx.com.aztlan.pos.negocio.configuracion.vo.FormaPagoVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.MotivoCancelacionVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.MotivoDevolucionVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.TipoDevolucionVO;
-import mx.com.aztlan.pos.negocio.configuracion.vo.UnidadMedidaVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ProveedorVO;
 import mx.com.aztlan.pos.servicios.configuracion.controller.CatalogoController;
 
@@ -61,9 +60,17 @@ public class CatalogoFacade implements CatalogoFacadeI {
 	}*/
 	
 	@Override
+	@Transactional (readOnly=true)
 	public ResponseEntity<List<AlmacenVO>> getAlmacenes(@PathVariable("idCanal") Integer idCanal) throws BusinessGlobalException, NotFoundException {
 		return new ResponseEntity<List<AlmacenVO>>(this.catalogoController.getAlmacenes(idCanal), HttpStatus.OK);		
 	}
+	
+	@Override
+	@Transactional (readOnly=true)
+	public ResponseEntity<List<AlmacenVO>> getSubAlmacenes(@PathVariable("idCanal") Integer idCanal) throws BusinessGlobalException {
+		return new ResponseEntity<List<AlmacenVO>>(this.catalogoController.getSubAlmacenes(idCanal), HttpStatus.OK);		
+	}
+
 	
 	@Override
 	public ResponseEntity<List<FormaPagoVO>> getFormasPago(HttpServletRequest request)
@@ -111,10 +118,8 @@ public class CatalogoFacade implements CatalogoFacadeI {
 	public ResponseEntity<List<AlmacenVO>> getAlmacenes(HttpServletRequest request)
 			throws BusinessGlobalException, NotFoundException {
 		Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
-		Integer idUsuario = (Integer) claims.get(ClaimsEnum.USUARIO);
 		Integer idCanal = (Integer) claims.get(ClaimsEnum.CANAL);
-		Integer idAlmacen = (Integer) claims.get(ClaimsEnum.ALMACEN);
-
+		
 		List<AlmacenVO> almacenes = catalogoController.getAlmacenes(idCanal);
 
 		if (almacenes == null || almacenes.isEmpty()) {
@@ -221,6 +226,12 @@ public class CatalogoFacade implements CatalogoFacadeI {
 		}
 
 		return new ResponseEntity<List<MotivoCancelacionVO>>(motivosCancelacion, HttpStatus.OK);
+	}
+	
+	@Override
+	@Transactional (readOnly = true)
+	public ResponseEntity<List<CatalogoVO>> getEmpresas() throws BusinessGlobalException {
+		return new ResponseEntity<List<CatalogoVO>>(this.catalogoController.getEmpresas(), HttpStatus.OK);		
 	}
 
 	@Override

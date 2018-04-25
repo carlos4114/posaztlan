@@ -6,18 +6,19 @@ import java.util.Date;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.MovimientoInventario;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Proveedor;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.TipoMovimientoInv;
+import mx.com.aztlan.pos.negocio.configuracion.assembler.AlmacenAssembler;
 
 public class MovimientoInventarioAssembler {
 
-	public static MovimientoInventario getMovimientoInventario(Integer idArticulo, Proveedor provedor,
+	public static MovimientoInventario getMovimientoInventario(Integer idProducto, Proveedor provedor,
 			TipoMovimientoInv tipoMovimientoInv, Integer idUsuario ,  long cantidad,
-			BigDecimal importe, long existenciaActual,Integer idPuntoVenta,Integer idPuntoVentaConsigna ) {
+			BigDecimal importe, long existenciaActual,Integer idAlmacen,Integer idAlmacenConsigna ) {
 		
-		if(idArticulo==null  || provedor == null || tipoMovimientoInv==null || idUsuario==null  )
+		if(idProducto==null  || provedor == null || tipoMovimientoInv==null || idUsuario==null  )
 			return null;
 
 		MovimientoInventario movimientoInventario= new MovimientoInventario();
-		movimientoInventario.setArticulo(ArticuloAssembler.getArticulo(idArticulo));
+		movimientoInventario.setProducto(ProductoAssembler.getProducto(idProducto));
 		movimientoInventario.setProveedor(provedor);
 		movimientoInventario.setTipoMovimientoInv(tipoMovimientoInv);
 		movimientoInventario.setUsuario(UsuarioAssembler.getUsuario(idUsuario));
@@ -26,8 +27,8 @@ public class MovimientoInventarioAssembler {
 		movimientoInventario.setImporte(importe);
 		movimientoInventario.setDocumentoRespaldo(null);
 		movimientoInventario.setExistenciaActual(existenciaActual);
-		movimientoInventario.setPuntoVenta(PuntoVentaAssembler.getPuntoVenta(idPuntoVenta));		
-		movimientoInventario.setPuntoVentaConsigna(PuntoVentaAssembler.getPuntoVenta(idPuntoVentaConsigna));		
+		//movimientoInventario.setAlmacen(AlmacenAssembler.getAlmacen(idAlmacen));		
+		//movimientoInventario.setAlmacenConsigna(AlmacenAssembler.getAlmacen(idAlmacenConsigna));		
 
 		return movimientoInventario;
 	}

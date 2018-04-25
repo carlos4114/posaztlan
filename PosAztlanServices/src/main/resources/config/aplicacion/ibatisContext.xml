@@ -50,6 +50,10 @@
 		<property name="mapperInterface" value="mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.OrdenCompraIbatisDAOI" />
 		<property name="sqlSessionFactory" ref="ibatisSessionFactory" />
 	</bean>
+	<bean id="inventarioIbatisDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.InventarioIbatisDAOI" />
+		<property name="sqlSessionFactory" ref="ibatisSessionFactory" />
+	</bean>
 		
 	
 	

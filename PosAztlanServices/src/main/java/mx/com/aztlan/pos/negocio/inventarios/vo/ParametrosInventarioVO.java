@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class ParametrosInventarioVO {
 
 	private Integer idInventario;
-	private Integer idArticulo;
+	private Integer idProducto;
 	private String lote;
 	private Integer cantidad;
 	private Integer idTipoMovimiento;
@@ -18,7 +18,7 @@ public class ParametrosInventarioVO {
 	private String contentType;
 	private String nombreArchivo;
 	private Integer sizeArchivo;
-	private Integer idPuntoVentaConsigna;
+	private Integer idAlmacenConsigna;
 		
 	public Integer getIdInventario() {
 		return idInventario;
@@ -26,8 +26,8 @@ public class ParametrosInventarioVO {
 	public void setIdInventario(Integer idInventario) {
 		this.idInventario = idInventario;
 	}
-	public Integer getIdArticulo() {
-		return idArticulo;
+	public Integer getIdProducto() {
+		return idProducto;
 	}
 	public String getLote() {
 		return lote;
@@ -35,8 +35,8 @@ public class ParametrosInventarioVO {
 	public void setLote(String lote) {
 		this.lote = lote;
 	}
-	public void setIdArticulo(Integer idArticulo) {
-		this.idArticulo = idArticulo;
+	public void setIdProducto(Integer idProducto) {
+		this.idProducto = idProducto;
 	}
 	public Integer getCantidad() {
 		return cantidad;
@@ -98,11 +98,11 @@ public class ParametrosInventarioVO {
 	public void setSizeArchivo(Integer sizeArchivo) {
 		this.sizeArchivo = sizeArchivo;
 	}
-	public Integer getIdPuntoVentaConsigna() {
-		return idPuntoVentaConsigna;
+	public Integer getIdAlmacenConsigna() {
+		return idAlmacenConsigna;
 	}
-	public void setIdPuntoVentaConsigna(Integer idPuntoVentaConsigna) {
-		this.idPuntoVentaConsigna = idPuntoVentaConsigna;
+	public void setIdAlmacenConsigna(Integer idAlmacenConsigna) {
+		this.idAlmacenConsigna = idAlmacenConsigna;
 	}
 	
 	

@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import mx.com.aztlan.pos.negocio.dulceria.vo.ArticuloVO;
-import mx.com.aztlan.pos.negocio.dulceria.vo.PuntoVentaVO;
+import mx.com.aztlan.pos.negocio.configuracion.vo.AlmacenVO;
+import mx.com.aztlan.pos.negocio.configuracion.vo.ProductoVO;
 import mx.com.aztlan.pos.negocio.dulceria.vo.TipoMovimientoInvVO;
 import mx.com.aztlan.pos.negocio.dulceria.vo.UsuarioVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ProveedorVO;
@@ -17,7 +17,7 @@ public class InventarioVO implements Serializable{
 	 */
 	private static final long serialVersionUID = -8668884778156013191L;
 	private Integer idInventario;
-	private ArticuloVO articulo;
+	private ProductoVO producto;
 	private ProveedorVO proveedor;
 	private TipoMovimientoInvVO tipoMovimientoInvVO;
 	private UsuarioVO usuario;
@@ -26,7 +26,7 @@ public class InventarioVO implements Serializable{
 	private long cantidad;
 	private BigDecimal importe;
 	private long existenciaActual;
-	private PuntoVentaVO puntoVentaVO;
+	private AlmacenVO almacenVO;
 	private Date ultimoMovimiento;
 	private UsuarioVO usuarioUltimoMovimiento;
 	
@@ -36,11 +36,11 @@ public class InventarioVO implements Serializable{
 	public void setIdInventario(Integer idInventario) {
 		this.idInventario = idInventario;
 	}
-	public ArticuloVO getArticulo() {
-		return articulo;
+	public ProductoVO getProducto() {
+		return producto;
 	}
-	public void setArticulo(ArticuloVO articulo) {
-		this.articulo = articulo;
+	public void setProducto(ProductoVO Producto) {
+		this.producto = Producto;
 	}
 	public ProveedorVO getProveedor() {
 		return proveedor;
@@ -90,11 +90,11 @@ public class InventarioVO implements Serializable{
 	public void setExistenciaActual(long existenciaActual) {
 		this.existenciaActual = existenciaActual;
 	}
-	public PuntoVentaVO getPuntoVentaVO() {
-		return puntoVentaVO;
+	public AlmacenVO getAlmacenVO() {
+		return almacenVO;
 	}
-	public void setPuntoVentaVO(PuntoVentaVO puntoVentaVO) {
-		this.puntoVentaVO = puntoVentaVO;
+	public void setAlmacenVO(AlmacenVO almacenVO) {
+		this.almacenVO = almacenVO;
 	}
 	public Date getUltimoMovimiento() {
 		return ultimoMovimiento;

@@ -8,8 +8,10 @@ import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
 import mx.com.aztlan.pos.infraservices.persistencia.GlobalHibernateDAO;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Almacen;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Articulo;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Inventario;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Producto;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Proveedor;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.PuntoVenta;
 
@@ -37,7 +39,7 @@ public class InventarioDAO extends GlobalHibernateDAO<Inventario> implements Inv
 		for(Object obj: result){
 			ob = (Object[]) obj;
 			inventario = new Inventario();
-			inventario.setArticulo((Articulo)ob[0]);
+			inventario.setProducto((Producto)ob[0]);
 			inventario.setCantidad((long) ob[1]);
 			inventario.setImporte(new BigDecimal ((double)(ob[2])));
 			inventario.setExistenciaActual((long) ob[3]);			
@@ -69,7 +71,7 @@ public class InventarioDAO extends GlobalHibernateDAO<Inventario> implements Inv
 			ob = (Object[]) obj;
 			inventario = new Inventario();
 			inventario.setProveedor((Proveedor)ob[0]);
-			inventario.setArticulo((Articulo)ob[1]);
+			inventario.setProducto((Producto)ob[1]);
 			inventario.setCantidad((long) ob[2]);
 			inventario.setImporte(new BigDecimal ((double)(ob[3])));
 			inventario.setExistenciaActual((long) ob[4]);
@@ -177,11 +179,11 @@ public class InventarioDAO extends GlobalHibernateDAO<Inventario> implements Inv
 		for(Object obj: result){
 			ob = (Object[]) obj;
 			inventario = new Inventario();
-			inventario.setArticulo((Articulo)ob[0]);
+			inventario.setProducto((Producto)ob[0]);
 			inventario.setCantidad((long) ob[1]);
 			inventario.setImporte(new BigDecimal ((double)(ob[2])));
 			inventario.setExistenciaActual((long) ob[3]);
-			inventario.setPuntoVenta((PuntoVenta)ob[4]);
+			inventario.setAlmacen((Almacen)ob[4]);
 			inventarios.add(inventario);
 		}
 						

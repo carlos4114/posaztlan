@@ -3,10 +3,12 @@ package mx.com.aztlan.pos.negocio.dulceria.vo;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import mx.com.aztlan.pos.negocio.configuracion.vo.AlmacenVO;
+
 public class TicketVentaVO {
 	private Integer idTicket;
 	private Integer idCaja;
-	private PuntoVentaVO puntoVentaVO;
+	private AlmacenVO almacenVO;
 	private UsuarioVO usuarioVO;
 	private Date fecha;
 	private BigDecimal descuento;
@@ -19,11 +21,11 @@ public class TicketVentaVO {
 	public void setIdTicket(Integer idTicket) {
 		this.idTicket = idTicket;
 	}
-	public PuntoVentaVO getPuntoVentaVO() {
-		return puntoVentaVO;
+	public AlmacenVO getAlmacenVO() {
+		return almacenVO;
 	}
-	public void setPuntoVentaVO(PuntoVentaVO puntoVentaVO) {
-		this.puntoVentaVO = puntoVentaVO;
+	public void setAlmacenVO(AlmacenVO almacenVO) {
+		this.almacenVO = almacenVO;
 	}
 	public UsuarioVO getUsuarioVO() {
 		return usuarioVO;

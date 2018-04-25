@@ -256,15 +256,19 @@
             <script src="<c:url value='/resources/js/comun/directivas/directivasCancelacionDevolucionBoleto.js' />"></script>
             <script src="<c:url value='/resources/js/comun/directivas/directivasCancelacionDevolucionProducto.js' />"></script>
 
-            <!-- Controller del modulo de taquilla - venta boletos -->
-            <script src="<c:url value='/resources/js/aplicacion/taquilla/ventaboleto/service/taquillaAngularService.js'/>"></script>
+            <!-- Controller del modulo de taquilla - venta -->
+
+            <script src="<c:url value='/resources/js/aplicacion/venta/controller/ventaManualController.js' />"></script>
+            <script src="<c:url value='/resources/js/aplicacion/venta/service/ventaManualService.js' />"></script>
+            
+            <!-- <script src="<c:url value='/resources/js/aplicacion/taquilla/ventaboleto/service/taquillaAngularService.js'/>"></script>
             <script src="<c:url value='/resources/js/aplicacion/taquilla/ventaboleto/controller/ventaBoletosPaso1Controller.js' />"></script>
             <script src="<c:url value='/resources/js/aplicacion/taquilla/ventaboleto/controller/ventaBoletosPaso2Controller.js' />"></script>
             <script src="<c:url value='/resources/js/aplicacion/taquilla/ventaboleto/controller/ventaBoletosPaso3Controller.js' />"></script>
             <script src="<c:url value='/resources/js/aplicacion/taquilla/ventaboleto/controller/ventaBoletosPaso4Controller.js' />"></script>
             <script src="<c:url value='/resources/js/aplicacion/taquilla/ventaboleto/controller/ventaBoletosPaso5Controller.js' />"></script>
             <script src="<c:url value='/resources/js/aplicacion/taquilla/ventaboleto/controller/ventaBoletosPaso6Controller.js' />"></script>
-
+ -->
             <!-- Controller del modulo de taquilla - devolucion boletos -->
 
             <script src="<c:url value='/resources/js/aplicacion/taquilla/devolucion/controller/devolucionPaso1Controller.js' />"></script>

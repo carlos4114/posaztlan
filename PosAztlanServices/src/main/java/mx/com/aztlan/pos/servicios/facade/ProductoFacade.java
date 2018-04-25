@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import mx.com.aztlan.pos.infraservices.negocio.seguridad.vo.HttpResponseVO;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.vo.ProductoExistenciaVO;
 import mx.com.aztlan.pos.infraservices.servicios.BusinessGlobalException;
 import mx.com.aztlan.pos.infraservices.servicios.NotFoundException;
-import mx.com.aztlan.pos.negocio.configuracion.vo.ArticuloVO;
+import mx.com.aztlan.pos.negocio.administracion.vo.FiltrosVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.ProductoVO;
-import mx.com.aztlan.pos.negocio.configuracion.vo.PuntosVentaListVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.UnidadMedidaVO;
 import mx.com.aztlan.pos.servicios.configuracion.controller.ProductoController;
 
@@ -27,7 +27,13 @@ public class ProductoFacade implements ProductoFacadeI {
 
 	@Autowired
 	ProductoController productoController;
-		
+	
+	@Override
+	@Transactional (readOnly=true)
+	public List<ProductoExistenciaVO> getProductosExistencia(@RequestBody FiltrosVO filtrosVO) throws Exception{
+		return this.productoController.getProductosExistencia(filtrosVO);
+	}
+	
 	@Override
 	@Transactional(readOnly = false)
 	public HttpResponseVO guardar(@RequestBody ProductoVO productoVO) throws BusinessGlobalException, Exception{

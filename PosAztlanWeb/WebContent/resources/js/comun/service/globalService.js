@@ -85,6 +85,36 @@ angular.module('globalModule').factory('GlobalFactory',['$window','$location','$
         getIdEmpresa: function(){        		        	
             return localStorage.getItem("idEmpresa");
         }, 
+        setIdCanal: function(idCanal){        	
+            localStorage.setItem("idCanal", idCanal);
+        },
+        getIdCanal: function(){        		        	
+            return localStorage.getItem("idCanal");
+        }, 
+        setIdAlmacen: function(idAlmacen){        	
+            localStorage.setItem("idAlmacen", idAlmacen);
+        },
+        getIdAlmacen: function(){        		        	
+            return localStorage.getItem("idAlmacen");
+        }, 
+        setIsAdminGral: function(isAdminGral){        	
+            localStorage.setItem("isAdminGral", isAdminGral);
+        },
+        getIsAdminGral: function(){        		        	
+            return localStorage.getItem("isAdminGral");
+        }, 
+        setIsAdminGralEmpresa: function(isAdminGralEmpresa){        	
+            localStorage.setItem("isAdminGralEmpresa", isAdminGralEmpresa);
+        },
+        getIsAdminGralEmpresa: function(){        		        	
+            return localStorage.getItem("isAdminGralEmpresa");
+        }, 
+        setIsAdminCanal: function(isAdminCanal){        	
+            localStorage.setItem("isAdminCanal", isAdminCanal);
+        },
+        getIsAdminCanal: function(){        		        	
+            return localStorage.getItem("isAdminCanal");
+        }, 
         setFotoUsuario: function(fotoUsuario){        	
             localStorage.setItem("fotoUsuario", fotoUsuario);
         },

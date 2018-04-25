@@ -72,16 +72,16 @@ public class VentaProductoFacade implements VentaProductoFacadeI {
 		
 		Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
 		Integer idUsuario=(Integer) claims.get(ClaimsEnum.USUARIO);
-		Integer idCine = (Integer) claims.get(ClaimsEnum.CINE);
-		Integer idPuntoVenta=(Integer) claims.get(ClaimsEnum.PUNTO_VENTA);
+		Integer idCanal = (Integer) claims.get(ClaimsEnum.CANAL);
+		Integer idAlmacen=(Integer) claims.get(ClaimsEnum.ALMACEN);
 		Integer idCaja=(Integer) claims.get(ClaimsEnum.CAJA);
 		
 		ventaVO.setIdUsuario(idUsuario);
-		ventaVO.setIdCine(idCine);
-		ventaVO.setIdPuntoVenta(idPuntoVenta);
+		ventaVO.setIdCanal(idCanal);
+		ventaVO.setIdAlmacen(idAlmacen);
 		ventaVO.setIdCaja(idCaja);
 		
-		logger.info("CreateVenta:::IdUsuario[{}]:::IdCine[{}]:::IdPuntoVenta[{}]",idUsuario,idCine,idPuntoVenta);
+		logger.info("CreateVenta:::IdUsuario[{}]:::IdCine[{}]:::IdPuntoVenta[{}]",idUsuario,idCanal,idAlmacen);
 		
 		TicketVentaVO ticketVentaVO = ventaProductoController.createVenta(ventaVO);
 		return new ResponseEntity<TicketVentaVO>(ticketVentaVO, HttpStatus.CREATED);

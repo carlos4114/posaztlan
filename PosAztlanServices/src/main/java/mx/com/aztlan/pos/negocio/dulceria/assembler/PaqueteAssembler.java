@@ -20,7 +20,7 @@ public class PaqueteAssembler {
 		PaqueteVO paqueteVO = new PaqueteVO();
 		paqueteVO.setIdPaquete(paquete.getIdPaquete());
 		paqueteVO.setPaquete(true);
-		paqueteVO.setCineVO(CineAssembler.getCineVO(paquete.getCine()));
+		//paqueteVO.setCanalVO(CanalAssembler.getCanalVO(paquete.getCanal()));
 		paqueteVO.setNombre(paquete.getNombre());
 		paqueteVO.setIcono(paquete.getIcono());
 		paqueteVO.setActivo(paquete.isActivo());

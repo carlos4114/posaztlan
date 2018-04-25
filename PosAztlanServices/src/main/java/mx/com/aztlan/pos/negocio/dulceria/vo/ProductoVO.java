@@ -1,16 +1,16 @@
 package mx.com.aztlan.pos.negocio.dulceria.vo;
 
 import java.math.BigDecimal;
-import java.util.List;
+
+import mx.com.aztlan.pos.negocio.configuracion.vo.CanalVO;
 
 public class ProductoVO {
 	private Integer idProducto;
-	private CineVO cineVO;
+	private CanalVO canalVO;
 	private String nombre;
 	private byte[] icono;
 	private boolean activo;
 	private BigDecimal precio;
-	private List<ArticuloXProductoVO> articulosXProductosVO;
 	
 //	private Set<ProductosXPaquete> productosXPaquetes = new HashSet<ProductosXPaquete>(0);
 //	private Set<ProductosXTicket> productosXTickets = new HashSet<ProductosXTicket>(0);
@@ -25,11 +25,11 @@ public class ProductoVO {
 	public void setIdProducto(Integer idProducto) {
 		this.idProducto = idProducto;
 	}
-	public CineVO getCineVO() {
-		return cineVO;
+	public CanalVO getCanalVO() {
+		return canalVO;
 	}
-	public void setCineVO(CineVO cineVO) {
-		this.cineVO = cineVO;
+	public void setCanalVO(CanalVO canalVO) {
+		this.canalVO = canalVO;
 	}
 	public String getNombre() {
 		return nombre;
@@ -55,10 +55,5 @@ public class ProductoVO {
 	public void setPrecio(BigDecimal precio) {
 		this.precio = precio;
 	}
-	public List<ArticuloXProductoVO> getArticulosXProductosVO() {
-		return articulosXProductosVO;
-	}
-	public void setArticulosXProductosVO(List<ArticuloXProductoVO> articulosXProductosVO) {
-		this.articulosXProductosVO = articulosXProductosVO;
-	}
+
 }

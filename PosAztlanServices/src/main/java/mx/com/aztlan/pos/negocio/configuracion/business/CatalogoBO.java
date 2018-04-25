@@ -11,6 +11,7 @@ import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.AlmacenDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.ArticulosXPuntoVentaDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.CanalDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.ClasificacionArtDAOI;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.EmpresaDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.EstadoProductoDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.FamiliaDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.FormaPagoDAOI;
@@ -30,12 +31,14 @@ import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Medida;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Proveedor;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.TipoProducto;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.UnidadMedida;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.enumeration.EstatusEmpresaEnum;
 import mx.com.aztlan.pos.infraservices.servicios.BusinessGlobalException;
 import mx.com.aztlan.pos.negocio.configuracion.assembler.AlmacenAssembler;
 import mx.com.aztlan.pos.negocio.configuracion.assembler.ArticuloAssembler;
 import mx.com.aztlan.pos.negocio.configuracion.assembler.ArticuloXPuntoVentaAssembler;
 import mx.com.aztlan.pos.negocio.configuracion.assembler.CanalAssembler;
 import mx.com.aztlan.pos.negocio.configuracion.assembler.ClasificacionArtAssembler;
+import mx.com.aztlan.pos.negocio.configuracion.assembler.EmpresaAssembler;
 import mx.com.aztlan.pos.negocio.configuracion.assembler.EstadoProductoAssembler;
 import mx.com.aztlan.pos.negocio.configuracion.assembler.FormaPagoAssembler;
 import mx.com.aztlan.pos.negocio.configuracion.assembler.MotivoCancelacionAssembler;
@@ -83,6 +86,9 @@ public class CatalogoBO {
 	private CanalDAOI canalDAO;
 	
 	@Autowired
+	private EmpresaDAOI empresaDAO;
+	
+	@Autowired
 	private ClasificacionArtDAOI clasificacionArtDAO;
 	
 	@Autowired
@@ -114,9 +120,16 @@ public class CatalogoBO {
 		return ArticuloAssembler.getArticulosVO(articulosXPuntoVentaDAO.findByIdCineAndIdPuntoVenta(idCine, idPuntoVenta));
 	}
 	
+	@Transactional (readOnly=true)
 	public List<AlmacenVO> findByCanalAlmacenes(Integer idCanal) throws BusinessGlobalException  {
 		return AlmacenAssembler.getAlmacenesVO(almacenDAO.findByIdCanal(idCanal));
 	}
+	
+	@Transactional (readOnly=true)
+	public List<AlmacenVO> findByCanalSubAlmacenes(Integer idCanal) throws BusinessGlobalException  {
+		return AlmacenAssembler.getAlmacenesVO(almacenDAO.findSubAlmacenesByIdCanal(idCanal));
+	}
+
 
 	public List<MotivoDevolucionVO> getMotivosDevolucion(Integer idPuntoVenta) throws BusinessGlobalException {
 		return MotivoDevolucionAssembler.getMotivosDevolucionVO(motivoDevolucionDAO.findByPuntoVenta(idPuntoVenta));
@@ -145,6 +158,11 @@ public class CatalogoBO {
 		return canalesVO;
 	}
 
+	public List<CatalogoVO> getEmpresasActivas() throws BusinessGlobalException {
+		 List<CatalogoVO> catalogoVO= EmpresaAssembler.getCatalogoEmpresas(empresaDAO.findByEstatus(EstatusEmpresaEnum.ACTIVA));
+		return catalogoVO;
+	}
+	
 	public List<CanalVO> getCanales(Integer idEmpresa) throws BusinessGlobalException {
 		 List<CanalVO> canalVO= CanalAssembler.getCanalesVO(canalDAO.findByEmpresa(idEmpresa));
 		return canalVO;

@@ -7,12 +7,13 @@ import java.util.List;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import mx.com.aztlan.pos.negocio.configuracion.vo.AlmacenVO;
 import mx.com.aztlan.pos.servicios.util.DateStringToDateDeserializer;
 import mx.com.aztlan.pos.servicios.util.DateToDateStringSerializer;
 
 public class TicketVentaProductoVO {
 	private Integer idTicket;
-	private PuntoVentaVO puntoVentaVO;
+	private AlmacenVO almacenVO;
 	private UsuarioVO usuarioVO;
 	@JsonDeserialize(using = DateStringToDateDeserializer.class)
 	@JsonSerialize(using = DateToDateStringSerializer.class)
@@ -57,11 +58,11 @@ public class TicketVentaProductoVO {
 	public void setIdTicket(Integer idTicket) {
 		this.idTicket = idTicket;
 	}
-	public PuntoVentaVO getPuntoVentaVO() {
-		return puntoVentaVO;
+	public AlmacenVO getAlmacenVO() {
+		return almacenVO;
 	}
-	public void setPuntoVentaVO(PuntoVentaVO puntoVentaVO) {
-		this.puntoVentaVO = puntoVentaVO;
+	public void setAlmacenVO(AlmacenVO almacenVO) {
+		this.almacenVO = almacenVO;
 	}
 	public UsuarioVO getUsuarioVO() {
 		return usuarioVO;

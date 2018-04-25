@@ -26,7 +26,7 @@ import javax.persistence.TemporalType;
 public class TicketVenta implements java.io.Serializable {
 
 	private Integer idTicket;
-	private PuntoVenta puntoVenta;
+	private Almacen almacen;
 	private Caja caja;
 	private Usuario usuario;
 	private Date fecha;
@@ -48,9 +48,9 @@ public class TicketVenta implements java.io.Serializable {
 	public TicketVenta() {
 	}
 
-	public TicketVenta(PuntoVenta puntoVenta, Usuario usuario, Date fecha, BigDecimal descuento, BigDecimal importe,
+	public TicketVenta(Almacen almacen, Usuario usuario, Date fecha, BigDecimal descuento, BigDecimal importe,
 			BigDecimal total) {
-		this.puntoVenta = puntoVenta;
+		this.almacen = almacen;
 		this.usuario = usuario;
 		this.fecha = fecha;
 		this.descuento = descuento;
@@ -58,14 +58,14 @@ public class TicketVenta implements java.io.Serializable {
 		this.total = total;
 	}
 
-	public TicketVenta(PuntoVenta puntoVenta, Usuario usuario, Date fecha, BigDecimal descuento, BigDecimal importe,
+	public TicketVenta(Almacen almacen, Usuario usuario, Date fecha, BigDecimal descuento, BigDecimal importe,
 			BigDecimal total, Set<ProductosXTicket> productosXTickets,
 			Set<ImpuestosXTicketTaquilla> impuestosXTicketTaquillas, Set<PromocionesXTicket> promocionesXTickets,
 			Set<BoletosXTicket> boletosXTickets, Set<ImpuestosXTicketPaquete> impuestosXTicketPaquetes,
 			Set<Devolucion> devolucions, Set<Pago> pagos, Set<PaquetesXTicket> paquetesXTickets,
 			Set<ImpuestosXTicketProducto> impuestosXTicketProductos, Set<DevolucionXProducto> devolucionXProductos,
 			Set<CancelacionPago> cancelacionPagos) {
-		this.puntoVenta = puntoVenta;
+		this.almacen = almacen;
 		this.usuario = usuario;
 		this.fecha = fecha;
 		this.descuento = descuento;
@@ -97,13 +97,13 @@ public class TicketVenta implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_punto_venta", nullable = false)
-	public PuntoVenta getPuntoVenta() {
-		return this.puntoVenta;
+	@JoinColumn(name = "id_almacen", nullable = false)
+	public Almacen getAlmacen() {
+		return this.almacen;
 	}
 
-	public void setPuntoVenta(PuntoVenta puntoVenta) {
-		this.puntoVenta = puntoVenta;
+	public void setAlmacen(Almacen almacen) {
+		this.almacen = almacen;
 	}
 	
 	@ManyToOne(fetch = FetchType.LAZY)

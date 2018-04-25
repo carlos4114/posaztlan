@@ -16,4 +16,8 @@ public class ClaimsEnum implements java.io.Serializable {
 	public static String NOMBRE_COMPLETO_USR = "nombre_completo_usr";
 	public static String CANAL = "id_canal";
 	public static String ALMACEN = "id_almacen";
+	public static String IS_ADMIN_GRAL = "is_admin_gral";
+	public static String IS_ADMIN_GRAL_EMPRESA = "is_admin_gral_empresa";
+	public static String IS_ADMIN_CANAL = "is_admin_canal";
+	
 }

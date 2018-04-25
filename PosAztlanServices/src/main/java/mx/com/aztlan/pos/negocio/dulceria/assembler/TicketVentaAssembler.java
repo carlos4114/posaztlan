@@ -4,23 +4,25 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Almacen;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Caja;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Cine;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.TicketVenta;
+import mx.com.aztlan.pos.negocio.configuracion.assembler.AlmacenAssembler;
 import mx.com.aztlan.pos.negocio.dulceria.vo.TicketPdfVO;
 import mx.com.aztlan.pos.negocio.dulceria.vo.TicketVentaVO;
 import mx.com.aztlan.pos.servicios.util.Constantes;
 
 public class TicketVentaAssembler {
 
-	public static TicketVenta getTicketVenta(Integer idUsuario, Integer idPuntoVenta, Integer idCaja, BigDecimal descuento,
+	public static TicketVenta getTicketVenta(Integer idUsuario, Integer idAlmacen, Integer idCaja, BigDecimal descuento,
 			BigDecimal importe, BigDecimal total) {
 
-		if (idUsuario == null || idPuntoVenta==null)
+		if (idUsuario == null || idAlmacen==null)
 			return null;
 
 		TicketVenta ticketVenta = new TicketVenta();
-		ticketVenta.setPuntoVenta(PuntoVentaAssembler.getPuntoVenta(idPuntoVenta));
+		ticketVenta.setAlmacen(new Almacen(idAlmacen));
 		ticketVenta.setUsuario(UsuarioAssembler.getUsuario(idUsuario));
 		ticketVenta.setFecha(new Date());
 		ticketVenta.setDescuento(descuento);
@@ -39,7 +41,7 @@ public class TicketVentaAssembler {
 
 		TicketVentaVO ticketVentaVO = new TicketVentaVO();
 		ticketVentaVO.setIdTicket(ticketVenta.getIdTicket());
-		ticketVentaVO.setPuntoVentaVO(PuntoVentaAssembler.getPuntoVentaVO(ticketVenta.getPuntoVenta()));
+		ticketVentaVO.setAlmacenVO(AlmacenAssembler.getAlmacenVO(ticketVenta.getAlmacen()));
 		ticketVentaVO.setUsuarioVO(UsuarioAssembler.getUsuarioVO(ticketVenta.getUsuario().getIdUsuario()));
 		ticketVentaVO.setFecha(ticketVenta.getFecha());
 		ticketVentaVO.setDescuento(ticketVenta.getImporte());

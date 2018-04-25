@@ -22,6 +22,7 @@ import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.Autorizacion
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.CineDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.DocumentoDAO;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.InventarioDAOI;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.InventarioIbatisDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.MovimientoInventarioDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.PropiedadConfigDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.ProveedorDAOI;
@@ -38,8 +39,10 @@ import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.PropiedadCon
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Proveedor;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.TipoMovimientoInv;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.enumeration.PropiedadConfigEnum;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.vo.ProductoExistenciaVO;
 import mx.com.aztlan.pos.infraservices.servicios.BusinessGlobalException;
 import mx.com.aztlan.pos.infraservices.servicios.CorreoElectronicoBO;
+import mx.com.aztlan.pos.negocio.administracion.vo.FiltrosVO;
 import mx.com.aztlan.pos.negocio.dulceria.assembler.MovimientoInventarioAssembler;
 import mx.com.aztlan.pos.negocio.dulceria.assembler.TipoMovimientoInvAssembler;
 import mx.com.aztlan.pos.negocio.dulceria.assembler.UsuarioAssembler;
@@ -71,6 +74,9 @@ public class InventarioBO {
 	
 	@Autowired
 	private ProveedorDAOI proveedorDAO;
+	
+	@Autowired
+	private InventarioIbatisDAOI inventarioIbatisDAO;
 
 	@Autowired
 	private DocumentoDAO documentoDAO;
@@ -95,6 +101,21 @@ public class InventarioBO {
     private JavaMailSenderImpl mailSender;
     @Autowired
     private VelocityEngine velocityEngine;
+    
+    /**
+     * Servicio para obtener productos en base a filtros de busqueda 
+     */
+	@Transactional (readOnly=true)
+	public List<ProductoExistenciaVO> getProductosExistencia(FiltrosVO filtrosVO) throws Exception{
+		List<ProductoExistenciaVO> productosVO;
+		if(filtrosVO.getSku()==null){
+			productosVO = this.inventarioIbatisDAO.getProductosPorNombre(filtrosVO.getIdAlmacen(), "%"+(filtrosVO.getNombre()==null?"":filtrosVO.getNombre().toUpperCase())+"%");
+		}else{
+			productosVO = this.inventarioIbatisDAO.getProductosPorSku(filtrosVO.getIdAlmacen(), filtrosVO.getSku());			
+		}
+		
+		return productosVO;		
+	}
 	
 	/**
      * Servicio para enviar correo electrónico 
@@ -195,7 +216,7 @@ public class InventarioBO {
 			costoActualTotal = costoActualTotal.add(inventario.getImporte());
 		}
 		
-		costoUltimasSalidas = inventarioDAO.getCostoUltimasSalidasByArticulo(inventarios.get(0).getPuntoVenta().getIdPuntoVenta(), inventarios.get(0).getArticulo().getIdArticulo());		
+		costoUltimasSalidas = inventarioDAO.getCostoUltimasSalidasByArticulo(inventarios.get(0).getAlmacen().getIdAlmacen(), inventarios.get(0).getProducto().getIdProducto());		
 		costoActualTotal = costoActualTotal.subtract(costoUltimasSalidas);
 		costoUnitario = costoUnitario.add(costoActualTotal);
 		costoUnitario = costoUnitario.divide(new BigDecimal(existencia), 3, BigDecimal.ROUND_HALF_EVEN);
@@ -203,8 +224,8 @@ public class InventarioBO {
 		return costoUnitario;
 	}
 	
-	public synchronized List<MovimientoInventario> createSalida(ParametrosInventarioVO movimientoInventarioVO, Integer idCine,
-			Integer idPuntoVenta, Integer idUsuario) throws BusinessGlobalException {
+	public synchronized List<MovimientoInventario> createSalida(ParametrosInventarioVO movimientoInventarioVO, Integer idCanal,
+			Integer idAlmacen, Integer idUsuario) throws BusinessGlobalException {
 		//Nota: Para las salidas se considero el metodo de costo promedio de exitencia actual
 		List<MovimientoInventario> movimientosInventario = new ArrayList<MovimientoInventario>();
 		MovimientoInventario movInventarioSalida = null;
@@ -229,7 +250,7 @@ public class InventarioBO {
 		Autorizacion autorizacion = AutorizacionAssembler.getAutorizacion(movimientoInventarioVO.getIdAutorizacion());
 		
 		// Obtiene las existencias del articulo en inventario ordenadas por primeras entradas
-		inventarios = inventarioDAO.findByIdArticuloAndFirtsIn(idPuntoVenta, movimientoInventarioVO.getIdArticulo());
+		inventarios = inventarioDAO.findByIdArticuloAndFirtsIn(idAlmacen, movimientoInventarioVO.getIdProducto());
 		for (Inventario inventario : inventarios) {				
 			existencia = existencia + inventario.getExistenciaActual();
 		}
@@ -239,7 +260,7 @@ public class InventarioBO {
 					
 		if (tipoMovimientoInvSalida.getClave().equalsIgnoreCase(Constantes.SALIDA_X_DEVOLUCION)) {
 			//Obtiene las existencias del articulo en inventario por el proveedor
-			inventarios = inventarioDAO.findByArticuloByProveedor(idPuntoVenta, movimientoInventarioVO.getIdArticulo(),movimientoInventarioVO.getIdProveedor());
+			inventarios = inventarioDAO.findByArticuloByProveedor(idAlmacen, movimientoInventarioVO.getIdProducto(),movimientoInventarioVO.getIdProveedor());
 			// Suma las existencias por entrada de inventario para obtener la existencia total y el costo promedio (costo unitario)
 			for (Inventario inventario : inventarios){
 				existencia = existencia + inventario.getExistenciaActual();
@@ -280,25 +301,27 @@ public class InventarioBO {
 						
 						// Guarda movimiento de salida
 						movInventarioSalida = movimientoInventarioDAO.save(MovimientoInventarioAssembler.getMovimientoInventario(
-								movimientoInventarioVO.getIdArticulo(), inventario.getProveedor(), tipoMovimientoInvSalida,
+								movimientoInventarioVO.getIdProducto(), inventario.getProveedor(), tipoMovimientoInvSalida,
 								idUsuario, Long.valueOf(cantidad), importeSalida,
-								existenciaActualSalida, idPuntoVenta,
-								movimientoInventarioVO.getIdPuntoVentaConsigna() != null
-										? movimientoInventarioVO.getIdPuntoVentaConsigna() : 0,
+								existenciaActualSalida, idAlmacen,
+								movimientoInventarioVO.getIdAlmacenConsigna() != null
+										? movimientoInventarioVO.getIdAlmacenConsigna() : 0,
 								inventario.getIdInventario()));			
 						movimientosInventario.add(movInventarioSalida);
 						
 						//Para el tipo de movimiento de salida por venta no se requiere autorizacion
 						if (!tipoMovimientoInvSalida.getClave().equalsIgnoreCase(Constantes.SALIDA_X_VENTA)) {
 							// Guarda autorizacion de salida
-							autorizacionMovimientoSalida = new AutorizacionMovimiento();
-							autorizacionMovimientoId = new AutorizacionMovimientoId();
-							autorizacionMovimientoId.setIdAutorizacion(autorizacion.getIdAutorizacion());
-							autorizacionMovimientoId.setIdMovimientoInventario(movInventarioSalida.getIdMovimiento());
-							autorizacionMovimientoSalida.setId(autorizacionMovimientoId);
-							autorizacionMovimientoSalida.setMovimientoInventario(movInventarioSalida);
-							autorizacionMovimientoSalida.setAutorizacion(autorizacion);
-							autorizacionMovimientoDAO.save(autorizacionMovimientoSalida);
+							if(autorizacion!=null){
+								autorizacionMovimientoSalida = new AutorizacionMovimiento();
+								autorizacionMovimientoId = new AutorizacionMovimientoId();
+								autorizacionMovimientoId.setIdAutorizacion(autorizacion.getIdAutorizacion());
+								autorizacionMovimientoId.setIdMovimientoInventario(movInventarioSalida.getIdMovimiento());
+								autorizacionMovimientoSalida.setId(autorizacionMovimientoId);
+								autorizacionMovimientoSalida.setMovimientoInventario(movInventarioSalida);
+								autorizacionMovimientoSalida.setAutorizacion(autorizacion);
+								autorizacionMovimientoDAO.save(autorizacionMovimientoSalida);
+							}
 						}
 									
 						// Para el tipo de traspaso de almacenes, adicional se guarda
@@ -311,10 +334,10 @@ public class InventarioBO {
 			
 							// Guarda entrada por traspaso
 							inventarioTraspaso = InventarioAssembler.getInventario(
-									movimientoInventarioVO.getIdArticulo(), inventario.getProveedor(), inventario.getLote(),
+									movimientoInventarioVO.getIdProducto(), inventario.getProveedor(), inventario.getLote(),
 									tipoMovimientoInvEntrada, idUsuario, Long.valueOf(cantidad),
 									importeTraspaso, cantidad,
-									movimientoInventarioVO.getIdPuntoVentaConsigna());							
+									movimientoInventarioVO.getIdAlmacenConsigna());							
 							//Al tratarse de un traspaso se asignara la misma fecha de entrada de inventario para respetar el metodo PEPS
 							inventarioTraspaso.setFecha(inventario.getFecha());
 							inventarioTraspaso = inventarioDAO.save(inventarioTraspaso);
@@ -322,10 +345,10 @@ public class InventarioBO {
 							// Guarda movimiento de entrada por traspaso
 							movInventarioEntrada = movimientoInventarioDAO
 									.save(MovimientoInventarioAssembler.getMovimientoInventario(
-											inventarioTraspaso.getArticulo().getIdArticulo(), inventarioTraspaso.getProveedor(),
+											inventarioTraspaso.getProducto().getIdProducto(), inventarioTraspaso.getProveedor(),
 											tipoMovimientoInvEntrada, idUsuario, Long.valueOf(inventarioTraspaso.getCantidad()),
 											importeTraspaso, inventarioTraspaso.getExistenciaActual(),
-											movimientoInventarioVO.getIdPuntoVentaConsigna(), idPuntoVenta,
+											movimientoInventarioVO.getIdAlmacenConsigna(), idAlmacen,
 											inventarioTraspaso.getIdInventario()));
 							
 							movimientosInventario.add(movInventarioEntrada);
@@ -367,7 +390,7 @@ public class InventarioBO {
 		}
 
 		// Guarda entrada
-		Inventario inventarioEntrada = InventarioAssembler.getInventario(inventarioVO.getIdArticulo(), proveedor,
+		Inventario inventarioEntrada = InventarioAssembler.getInventario(inventarioVO.getIdProducto(), proveedor,
 				inventarioVO.getLote(), tipoMovimientoInvEntrada, idUsuario, Long.valueOf(inventarioVO.getCantidad()),
 				new BigDecimal(inventarioVO.getImporte()), inventarioVO.getCantidad(), idPuntoVenta);
 
@@ -379,7 +402,7 @@ public class InventarioBO {
 
 		// Guarda movimiento de entrada
 		MovimientoInventario movInventarioEntrada = movimientoInventarioDAO.save(
-				MovimientoInventarioAssembler.getMovimientoInventario(inventarioEntrada.getArticulo().getIdArticulo(),
+				MovimientoInventarioAssembler.getMovimientoInventario(inventarioEntrada.getProducto().getIdProducto(),
 						inventarioEntrada.getProveedor(), tipoMovimientoInvEntrada, idUsuario,
 						Long.valueOf(inventarioEntrada.getCantidad()), new BigDecimal(inventarioVO.getImporte()),
 						inventarioEntrada.getExistenciaActual(), idPuntoVenta, 0,
@@ -413,7 +436,7 @@ public class InventarioBO {
 		tipoMovimientoInv = TipoMovimientoInvAssembler.getTipoMovimientoInv(parametrosVO.getIdTipoMovimiento()); 
 		tipoMovimientoInv.setClave(parametrosVO.getClaveTipoMovimiento());
 		//Obtiene las existencias del articulo en inventario ordenadas por primeras entradas
-		inventarios = inventarioDAO.findByIdArticuloAndLastOut(idPuntoVenta, parametrosVO.getIdArticulo());
+		inventarios = inventarioDAO.findByIdArticuloAndLastOut(idPuntoVenta, parametrosVO.getIdProducto());
 			
 			// Realiza ajuste de articulos aplicando PEPS
 			for (Inventario inventario : inventarios){
@@ -447,7 +470,7 @@ public class InventarioBO {
 							
 							// Guarda movimiento de entrada
 							movimientoInventario = movimientoInventarioDAO.save(
-									MovimientoInventarioAssembler.getMovimientoInventario(inventario.getArticulo().getIdArticulo(),
+									MovimientoInventarioAssembler.getMovimientoInventario(inventario.getProducto().getIdProducto(),
 											inventario.getProveedor(), tipoMovimientoInv, idUsuario,
 											Long.valueOf(cantidad),importeEntrada,
 											inventario.getExistenciaActual(), idPuntoVenta, 0,

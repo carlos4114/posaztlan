@@ -31,6 +31,11 @@ angular.module('indexModule').config(function($routeProvider){
             /****FIN VENTA DE BOLETOS******/
             
             /******VENTA DE PRODUCTO*****/
+	        .when("/ventaManual", {
+	            controller: "VentaManualController",
+	            controllerAs: "vm",
+	            templateUrl: "vistas/venta/venta_manual.jsp"
+	        })
 
         /*    .when("/ventaProducto", {
                 controller: "ventaProductoController",

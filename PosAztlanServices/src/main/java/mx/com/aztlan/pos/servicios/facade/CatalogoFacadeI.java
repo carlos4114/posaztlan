@@ -30,6 +30,9 @@ import mx.com.aztlan.pos.negocio.inventarios.vo.ProveedorVO;
 @RequestMapping("/catalogo")
 public interface CatalogoFacadeI {
 
+	@RequestMapping(value = "/empresas", method = RequestMethod.GET)
+	public ResponseEntity<List<CatalogoVO>> getEmpresas()
+			throws BusinessGlobalException;
 
 	@RequestMapping(value = "/cajas/{idAlmacen}", method = RequestMethod.GET)
 	public ResponseEntity<List<CatalogoVO>> getCajas(@PathVariable("idAlmacen") Integer idAlmacen)
@@ -78,6 +81,10 @@ public interface CatalogoFacadeI {
 	@RequestMapping(value = "/almacenes/{idCanal}", method = RequestMethod.GET)
 	public ResponseEntity<List<AlmacenVO>> getAlmacenes(@PathVariable("idCanal") Integer idCanal) 
 			throws BusinessGlobalException, NotFoundException;
+	
+	@RequestMapping(value = "/subalmacenes/{idCanal}", method = RequestMethod.GET)
+	public ResponseEntity<List<AlmacenVO>> getSubAlmacenes(@PathVariable("idCanal") Integer idCanal) 
+			throws BusinessGlobalException;
 
 	@RequestMapping(value = "/clasificaciones/{idCine}", method = RequestMethod.GET)
 	public ResponseEntity<List<ClasificacionArtVO>> getClasificacionesArt(@PathVariable("idCine") Integer idCine) 

@@ -12,17 +12,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import mx.com.aztlan.pos.infraservices.negocio.seguridad.vo.HttpResponseVO;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.vo.ProductoExistenciaVO;
 import mx.com.aztlan.pos.infraservices.servicios.BusinessGlobalException;
 import mx.com.aztlan.pos.infraservices.servicios.NotFoundException;
-import mx.com.aztlan.pos.negocio.configuracion.vo.ArticuloVO;
+import mx.com.aztlan.pos.negocio.administracion.vo.FiltrosVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.ProductoVO;
-import mx.com.aztlan.pos.negocio.configuracion.vo.PuntosVentaListVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.UnidadMedidaVO;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/productos")
 public interface ProductoFacadeI {
+	
+	@RequestMapping(value = "/obtenerExistencia", method = RequestMethod.POST)
+	public List<ProductoExistenciaVO> getProductosExistencia(@RequestBody FiltrosVO filtrosVO) throws Exception;
 
 	@RequestMapping(value = "/guardar", method = RequestMethod.POST)
 	public HttpResponseVO guardar(@RequestBody ProductoVO productoVO) throws BusinessGlobalException, Exception;

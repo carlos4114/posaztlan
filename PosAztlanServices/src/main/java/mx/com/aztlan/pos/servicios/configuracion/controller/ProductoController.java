@@ -9,12 +9,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import mx.com.aztlan.pos.infraservices.negocio.seguridad.vo.HttpResponseVO;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Producto;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.vo.ProductoExistenciaVO;
 import mx.com.aztlan.pos.infraservices.servicios.BusinessGlobalException;
+import mx.com.aztlan.pos.negocio.administracion.vo.FiltrosVO;
 import mx.com.aztlan.pos.negocio.configuracion.business.ProductoBO;
-import mx.com.aztlan.pos.negocio.configuracion.vo.ArticuloVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.ProductoVO;
-import mx.com.aztlan.pos.negocio.configuracion.vo.PuntosVentaListVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.UnidadMedidaVO;
+import mx.com.aztlan.pos.negocio.inventarios.business.InventarioBO;
 
 
 @Service
@@ -22,6 +23,9 @@ public class ProductoController {
 	
 	@Autowired
 	ProductoBO productoBO;	
+	
+	@Autowired
+	InventarioBO inventarioBO;	
 	
 	@Transactional(readOnly = false)
 	public HttpResponseVO guardar(ProductoVO productoVO) throws BusinessGlobalException, Exception{
@@ -52,6 +56,12 @@ public class ProductoController {
 			
 		return responseVO;
 	}
+	
+	@Transactional (readOnly=true)
+	public List<ProductoExistenciaVO> getProductosExistencia(FiltrosVO filtrosVO) throws Exception{
+		return this.inventarioBO.getProductosExistencia(filtrosVO);
+	}
+
 	
 	@Transactional(readOnly = true)
 	public List<ProductoVO> obtener(Integer idEmpresa)  throws BusinessGlobalException{

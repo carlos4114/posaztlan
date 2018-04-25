@@ -113,9 +113,9 @@ public class UsuarioBO extends GlobalService{
 		        return new LoginResponseVO(ErroresSeguridadEnum.CONTRASENIA_INCORRECTA);	
 
 		 // Validamos que la empresa a la que pertenece el usuario esté en un estatus válido para entrar
-		 if (EstatusEmpresaEnum.EN_DEUDA == usuario.getCanal().getEmpresa().getEstatusEmpresa().getIdEstatus())
+		 if (EstatusEmpresaEnum.EN_DEUDA == (usuario.getEmpresa() == null ? -1 : usuario.getEmpresa().getEstatusEmpresa().getIdEstatus()))
 		        return new LoginResponseVO(ErroresSeguridadEnum.EMPRESA_EN_DEUDA);	
-		 if (EstatusEmpresaEnum.BAJA_DECISION_PROPIA == usuario.getCanal().getEmpresa().getEstatusEmpresa().getIdEstatus())
+		 if (EstatusEmpresaEnum.BAJA_DECISION_PROPIA ==(usuario.getEmpresa() == null ? -1 : usuario.getEmpresa().getEstatusEmpresa().getIdEstatus()))
 		        return new LoginResponseVO(ErroresSeguridadEnum.EMPRESA_INACTIVA);	
 		 
 		 // Validamos que el usuario esté activo
@@ -124,6 +124,10 @@ public class UsuarioBO extends GlobalService{
 		 
 		 List<Integer> roles = PerfilAssembler.getPerfilesId(usuario.getPerfils());
 		 
+		 boolean isAdminGral = usuario.getEmpresa()==null;
+		 boolean isAdminEmpresa = usuario.getEmpresa()!=null&&usuario.getCanal()==null;
+		 boolean isAdminCanal = usuario.getEmpresa()!=null&&usuario.getCanal()!=null&&usuario.getAlmacen()==null;
+		 
 		 String pwdEncryptor = env.getProperty("jwt.password");
 		 Integer expirationMinutes = new Integer(env.getProperty("jwt.expiration.minutes"));
 		 
@@ -131,20 +135,28 @@ public class UsuarioBO extends GlobalService{
 		 Date fechaExpriacion = FechasUtilsBO.addMinutesToDate(fechaActual, expirationMinutes);
 		 		 
 		 return new LoginResponseVO(
-				       usuario.getCanal().getEmpresa().getIdEmpresa(),
+				       usuario.getEmpresa()==null?null:usuario.getEmpresa().getIdEmpresa(),
+				       usuario.getCanal()==null?null:usuario.getCanal().getIdCanal(),		   
+					   usuario.getAlmacen()==null?null:usuario.getAlmacen().getIdAlmacen(),		   
 			       	   usuario.getNombre(),
 				       Jwts.builder().setSubject(usuarioVO.getUsuario())
 				       	  			 .claim(ClaimsEnum.ROLES, roles)
 				       	  			 .claim(ClaimsEnum.USUARIO, usuario.getIdUsuario())
-				       	  			 .claim(ClaimsEnum.CANAL, usuario.getCanal().getIdCanal())
+				       	  			 .claim(ClaimsEnum.CANAL, usuario.getCanal()==null?null:usuario.getCanal().getIdCanal())
 				       	  			 .claim(ClaimsEnum.ALMACEN, usuario.getAlmacen()==null?null:usuario.getAlmacen().getIdAlmacen())
 				       	  			 .claim(ClaimsEnum.CAJA, usuario.getCaja()==null?null:usuario.getCaja().getIdCaja())
 				       	  			 .claim(ClaimsEnum.NOMBRE_COMPLETO_USR, usuario.getNombre())
+				       	  			 .claim(ClaimsEnum.IS_ADMIN_GRAL, isAdminGral)
+				       	  			 .claim(ClaimsEnum.IS_ADMIN_GRAL_EMPRESA, isAdminEmpresa)
+				       	  			 .claim(ClaimsEnum.IS_ADMIN_CANAL, isAdminCanal)			       	  			 
 				       	  			 .setIssuedAt(fechaActual)
 				       	  			 .setExpiration(fechaExpriacion)
 				       	  			 .signWith(SignatureAlgorithm.HS256, pwdEncryptor)
 				       	  			 .compact()
-				       ,usuario.getCanal().getEmpresa().getIcono()
+				       ,usuario.getEmpresa()==null?null:usuario.getEmpresa().getIcono()
+				       ,isAdminGral
+				       ,isAdminEmpresa
+				       ,isAdminCanal
 				 );
 	}
 	

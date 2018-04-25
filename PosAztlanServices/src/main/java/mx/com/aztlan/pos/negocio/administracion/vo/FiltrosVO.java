@@ -8,6 +8,9 @@ public class FiltrosVO {
 	private Integer idMedida;
 	private String nombre;
 	private Integer idProveedor;
+	private Integer idCanal;
+	private String sku;
+	private Integer idAlmacen;
 	
 	public Integer getIdEmpresa() {
 		return idEmpresa;
@@ -50,6 +53,24 @@ public class FiltrosVO {
 	}
 	public void setIdProveedor(Integer idProveedor) {
 		this.idProveedor = idProveedor;
+	}
+	public Integer getIdCanal() {
+		return idCanal;
+	}
+	public void setIdCanal(Integer idCanal) {
+		this.idCanal = idCanal;
+	}
+	public String getSku() {
+		return sku;
+	}
+	public void setSku(String sku) {
+		this.sku = sku;
+	}
+	public Integer getIdAlmacen() {
+		return idAlmacen;
+	}
+	public void setIdAlmacen(Integer idAlmacen) {
+		this.idAlmacen = idAlmacen;
 	}
 	
 	

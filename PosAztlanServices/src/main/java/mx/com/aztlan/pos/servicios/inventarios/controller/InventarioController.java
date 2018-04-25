@@ -5,10 +5,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Inventario;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.MovimientoInventario;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.vo.ProductoExistenciaVO;
 import mx.com.aztlan.pos.infraservices.servicios.BusinessGlobalException;
+import mx.com.aztlan.pos.negocio.administracion.vo.FiltrosVO;
 import mx.com.aztlan.pos.negocio.dulceria.vo.TipoMovimientoInvVO;
 import mx.com.aztlan.pos.negocio.inventarios.business.ArticulosCorteBO;
 import mx.com.aztlan.pos.negocio.inventarios.business.CatalogoTipoMovimientoInvBO;
@@ -31,7 +34,7 @@ public class InventarioController {
 	@Autowired
 	private CatalogoTipoMovimientoInvBO catalogoTipoMovimientoInvBO;
 	
-	@Scheduled(fixedDelayString = "${fixedDelay.notifica.punto.reorden}")
+	//@Scheduled(fixedDelayString = "${fixedDelay.notifica.punto.reorden}")
 	public void notificarPuntosReordenInventario() throws BusinessGlobalException, Exception{
     	this.inventarioBO.enviarNotificacionesPuntoReorden();
 	}
@@ -43,6 +46,7 @@ public class InventarioController {
 	public List<InventarioVO> getArticulosInventario(Integer idPuntoVenta, String nombreArticulo) throws BusinessGlobalException {
 		return inventarioBO.getArticulosInventario(idPuntoVenta,nombreArticulo);
 	}
+	
 
 	public List<InventarioVO> getExistenciaArticuloPorProveedores(Integer idPuntoVenta, Integer idArticulo) throws BusinessGlobalException {
 		return inventarioBO.getExistenciaArticuloPorProveedores(idPuntoVenta,idArticulo);
@@ -96,7 +100,7 @@ public class InventarioController {
 		int idArticulosCorte = 0;
 		long existenciaSistemaInicial = articulosCorte.getExistenciaSistema();
 		boolean isEntrada = false;
-		inventarioVO.setIdArticulo(articulosCorte.getArticulo().getIdArticulo());
+		inventarioVO.setIdProducto(articulosCorte.getArticulo().getIdArticulo());
 		inventarioVO.setIdAutorizacion(articulosCorte.getAutorizacion().getIdAutorizacion());
 		
 		long cantidad = 0;

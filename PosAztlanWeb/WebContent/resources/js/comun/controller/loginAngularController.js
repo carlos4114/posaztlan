@@ -10,6 +10,12 @@ angular.module('loginModule').controller('LoginController', ['LoginService','$sc
             GlobalFactory.setUserName('');
             GlobalFactory.setLogoEmpresa('');
             GlobalFactory.setIdEmpresa('');
+            GlobalFactory.setIdCanal('');
+            GlobalFactory.setIdAlmacen('');
+            GlobalFactory.setIsAdminGral(false);
+            GlobalFactory.setIsAdminGralEmpresa(false);
+            GlobalFactory.setIsAdminCanal(false);
+            
             
             var MAIN_PAGE = GlobalFactory.getProperty('mainPage');
             var CONTEXT_PATH = GlobalFactory.getProperty('contextPath');
@@ -23,6 +29,12 @@ angular.module('loginModule').controller('LoginController', ['LoginService','$sc
                 GlobalFactory.setUserName('');
                 GlobalFactory.setLogoEmpresa('');
                 GlobalFactory.setIdEmpresa('');
+                GlobalFactory.setIdCanal('');
+                GlobalFactory.setIdAlmacen('');
+                GlobalFactory.setIsAdminGral(false);
+                GlobalFactory.setIsAdminGralEmpresa(false);
+                GlobalFactory.setIsAdminCanal(false);
+
              }
             
             $scope.login = function() {
@@ -40,6 +52,12 @@ angular.module('loginModule').controller('LoginController', ['LoginService','$sc
                     	GlobalFactory.setUserName(responseLogin.userName);
                         GlobalFactory.setLogoEmpresa(responseLogin.logoEmpresa);
                         GlobalFactory.setIdEmpresa(responseLogin.idEmpresa);
+                        GlobalFactory.setIdCanal(responseLogin.idCanal);
+                        GlobalFactory.setIdAlmacen(responseLogin.idAlmacen);
+                        GlobalFactory.setIsAdminGral(responseLogin.adminGral);
+                        GlobalFactory.setIsAdminGralEmpresa(responseLogin.adminGralEmpresa);
+                        GlobalFactory.setIsAdminCanal(responseLogin.adminCanal);
+                        
             			$window.location.href = '/'+CONTEXT_PATH+"/"+MAIN_PAGE;
                 	}
                 },

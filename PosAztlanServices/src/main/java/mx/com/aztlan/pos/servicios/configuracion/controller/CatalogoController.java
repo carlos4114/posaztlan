@@ -25,7 +25,6 @@ import mx.com.aztlan.pos.negocio.configuracion.vo.MotivoCancelacionVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.MotivoDevolucionVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.PuntoVentaVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.TipoDevolucionVO;
-import mx.com.aztlan.pos.negocio.configuracion.vo.UnidadMedidaVO;
 import mx.com.aztlan.pos.negocio.inventarios.business.CatalogoProveedorBO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ProveedorVO;
 
@@ -69,8 +68,14 @@ public class CatalogoController {
 		return catalogoBO.getArticulos( idCine, idPuntoVenta);
 	}
 
+	@Transactional (readOnly=true)
 	public List<AlmacenVO> getAlmacenes(Integer idCanal)  throws BusinessGlobalException{
 		return catalogoBO.findByCanalAlmacenes(idCanal);
+	}
+	
+	@Transactional (readOnly=true) 
+	public List<AlmacenVO> getSubAlmacenes(Integer idCanal)  throws BusinessGlobalException{
+		return catalogoBO.findByCanalSubAlmacenes(idCanal);
 	}
 	
 	public List<ProveedorVO> getProveedor(Integer idCine)  throws BusinessGlobalException{
@@ -101,6 +106,11 @@ public class CatalogoController {
 		return catalogoBO.getCinesEmpresa(idEmpresa);
 	}*/
 
+	@Transactional (readOnly = true)
+	public List<CatalogoVO> getEmpresas() throws BusinessGlobalException {
+		return catalogoBO.getEmpresasActivas();
+	}
+	
 	public List<CanalVO> getCanales(Integer idEmpresa) throws BusinessGlobalException {
 		return catalogoBO.getCanales(idEmpresa);
 	}

@@ -186,6 +186,9 @@ public class SeguridadBO extends GlobalService{
 	  			 .claim(ClaimsEnum.ALMACEN, (Integer)claims.get(ClaimsEnum.ALMACEN))
    	  			 .claim(ClaimsEnum.CAJA, (Integer)claims.get(ClaimsEnum.CAJA))
 	  			 .claim(ClaimsEnum.NOMBRE_COMPLETO_USR, claims.get(ClaimsEnum.NOMBRE_COMPLETO_USR))
+   	  			 .claim(ClaimsEnum.IS_ADMIN_GRAL, claims.get(ClaimsEnum.IS_ADMIN_GRAL))
+   	  			 .claim(ClaimsEnum.IS_ADMIN_GRAL_EMPRESA, claims.get(ClaimsEnum.IS_ADMIN_GRAL_EMPRESA))
+   	  			 .claim(ClaimsEnum.IS_ADMIN_CANAL, claims.get(ClaimsEnum.IS_ADMIN_CANAL))			       	  			 	  			 
  	  			 .setExpiration(fechaExpriacion)
   	  			 .signWith(SignatureAlgorithm.HS256, pwdEncryptor)
   	  			 .compact());

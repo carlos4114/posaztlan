@@ -9,6 +9,7 @@ import java.util.List;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.PaquetesXTicket;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ProductosXTicket;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.TicketVenta;
+import mx.com.aztlan.pos.negocio.configuracion.assembler.AlmacenAssembler;
 import mx.com.aztlan.pos.negocio.devolucion.vo.BoletoXTicketVO;
 import mx.com.aztlan.pos.negocio.devolucion.vo.PaqueteXTicketVO;
 import mx.com.aztlan.pos.negocio.devolucion.vo.TicketVentaBoletoVO;
@@ -39,7 +40,7 @@ public class TicketVentaAssembler {
 
 		TicketVentaVO ticketVentaVO = new TicketVentaVO();
 		ticketVentaVO.setIdTicket(ticketVenta.getIdTicket());
-		ticketVentaVO.setPuntoVentaVO(PuntoVentaAssembler.getPuntoVentaVO(ticketVenta.getPuntoVenta()));
+		ticketVentaVO.setAlmacenVO(AlmacenAssembler.getAlmacenVO(ticketVenta.getAlmacen()));
 		ticketVentaVO.setUsuarioVO(UsuarioAssembler.getUsuarioVO(ticketVenta.getUsuario().getIdUsuario()));
 		ticketVentaVO.setFecha(ticketVenta.getFecha());
 		ticketVentaVO.setDescuento(ticketVenta.getImporte());
@@ -89,7 +90,7 @@ public class TicketVentaAssembler {
 
 		TicketVentaBoletoVO ticketVentaVO = new TicketVentaBoletoVO();
 		ticketVentaVO.setIdTicket(ticketVenta.getIdTicket());
-		ticketVentaVO.setPuntoVentaVO(PuntoVentaAssembler.getPuntoVentaVO(ticketVenta.getPuntoVenta()));
+		//ticketVentaVO.setAlmacenVO(AlmacenAssembler.getAlmacenVO(ticketVenta.getAlmacen()));
 		ticketVentaVO.setUsuarioVO(UsuarioAssembler.getUsuarioVO(ticketVenta.getUsuario().getIdUsuario()));
 		ticketVentaVO.setFecha(ticketVenta.getFecha());
 		ticketVentaVO.setDescuento(ticketVenta.getImporte());
@@ -143,7 +144,7 @@ public class TicketVentaAssembler {
 		
 		TicketVentaProductoVO ticketVentaVO = new TicketVentaProductoVO();
 		ticketVentaVO.setIdTicket(ticketVenta.getIdTicket());
-		ticketVentaVO.setPuntoVentaVO(PuntoVentaAssembler.getPuntoVentaVO(ticketVenta.getPuntoVenta()));
+		ticketVentaVO.setAlmacenVO(AlmacenAssembler.getAlmacenVO(ticketVenta.getAlmacen()));
 		ticketVentaVO.setUsuarioVO(UsuarioAssembler.getUsuarioVO(ticketVenta.getUsuario().getIdUsuario()));
 		ticketVentaVO.setFecha(ticketVenta.getFecha());
 		ticketVentaVO.setDescuento(ticketVenta.getImporte());

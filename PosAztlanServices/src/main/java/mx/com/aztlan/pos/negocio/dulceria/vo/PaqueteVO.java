@@ -3,10 +3,12 @@ package mx.com.aztlan.pos.negocio.dulceria.vo;
 import java.math.BigDecimal;
 import java.util.List;
 
+import mx.com.aztlan.pos.negocio.configuracion.vo.CanalVO;
+
 public class PaqueteVO {
 	private Integer idPaquete;
 	private boolean paquete;
-	private CineVO cineVO;
+	private CanalVO canalVO;
 	private String nombre;
 	private byte[] icono;
 	private boolean activo;
@@ -34,12 +36,6 @@ public class PaqueteVO {
 	}
 	public void setPaquete(boolean paquete) {
 		this.paquete = paquete;
-	}
-	public CineVO getCineVO() {
-		return cineVO;
-	}
-	public void setCineVO(CineVO cineVO) {
-		this.cineVO = cineVO;
 	}
 	public String getNombre() {
 		return nombre;
@@ -97,4 +93,12 @@ public class PaqueteVO {
 	public void setDeshabilitado(boolean deshabilitado) {
 		this.deshabilitado = deshabilitado;
 	}
+	public CanalVO getCanalVO() {
+		return canalVO;
+	}
+	public void setCanalVO(CanalVO canalVO) {
+		this.canalVO = canalVO;
+	}
+	
+	
 }
