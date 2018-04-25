@@ -5,8 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ParametrosInventarioVO {
 
+	private Integer idEmpresa;
 	private Integer idInventario;
-	private Integer idArticulo;
+	private Integer idProducto;
 	private String lote;
 	private Integer cantidad;
 	private Integer idTipoMovimiento;
@@ -19,15 +20,16 @@ public class ParametrosInventarioVO {
 	private String nombreArchivo;
 	private Integer sizeArchivo;
 	private Integer idPuntoVentaConsigna;
-		
+	private Integer idOrdenCompra; 
+	
 	public Integer getIdInventario() {
 		return idInventario;
 	}
 	public void setIdInventario(Integer idInventario) {
 		this.idInventario = idInventario;
 	}
-	public Integer getIdArticulo() {
-		return idArticulo;
+	public Integer getIdProducto() {
+		return idProducto;
 	}
 	public String getLote() {
 		return lote;
@@ -35,8 +37,8 @@ public class ParametrosInventarioVO {
 	public void setLote(String lote) {
 		this.lote = lote;
 	}
-	public void setIdArticulo(Integer idArticulo) {
-		this.idArticulo = idArticulo;
+	public void setIdProducto(Integer idProducto) {
+		this.idProducto = idProducto;
 	}
 	public Integer getCantidad() {
 		return cantidad;
@@ -103,6 +105,18 @@ public class ParametrosInventarioVO {
 	}
 	public void setIdPuntoVentaConsigna(Integer idPuntoVentaConsigna) {
 		this.idPuntoVentaConsigna = idPuntoVentaConsigna;
+	}
+	public Integer getIdEmpresa() {
+		return idEmpresa;
+	}
+	public void setIdEmpresa(Integer idEmpresa) {
+		this.idEmpresa = idEmpresa;
+	}
+	public Integer getIdOrdenCompra() {
+		return idOrdenCompra;
+	}
+	public void setIdOrdenCompra(Integer idOrdenCompra) {
+		this.idOrdenCompra = idOrdenCompra;
 	}
 	
 	

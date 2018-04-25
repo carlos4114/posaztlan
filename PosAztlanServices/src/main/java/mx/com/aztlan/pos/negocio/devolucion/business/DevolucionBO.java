@@ -360,7 +360,7 @@ public class DevolucionBO {
 
 				// Moviminento entrada
 				ParametrosInventarioVO inventarioInVO= new ParametrosInventarioVO();
-				inventarioInVO.setIdArticulo(articuloXProductoVO.getArticuloVO().getIdArticulo());
+				//-inventarioInVO.setIdArticulo(articuloXProductoVO.getArticuloVO().getIdArticulo());
 				inventarioInVO.setCantidad((int) cantidad);
 				inventarioInVO.setIdTipoMovimiento(devolucionClienteIn.getIdTipoMovimientoInv());
 				inventarioInVO.setClaveTipoMovimiento(devolucionClienteIn.getClave());
@@ -382,13 +382,13 @@ public class DevolucionBO {
 					//existenciaActual = movInventarioActual.getExistenciaActual() - cantidad;
 					
 					ParametrosInventarioVO inventarioCortesiaOutVO= new ParametrosInventarioVO();
-					inventarioCortesiaOutVO.setIdArticulo(articuloXProductoVO.getArticuloVO().getIdArticulo());
+				//-	inventarioCortesiaOutVO.setIdArticulo(articuloXProductoVO.getArticuloVO().getIdArticulo());
 					inventarioCortesiaOutVO.setCantidad((int) cantidad);
 					inventarioCortesiaOutVO.setIdTipoMovimiento(cortesiaOut.getIdTipoMovimientoInv());
 					inventarioCortesiaOutVO.setClaveTipoMovimiento(cortesiaOut.getClave());
 					inventarioCortesiaOutVO.setIdAutorizacion(devolucionProductoVO.getIdAutorizacion());
 					
-					inventarioBO.createSalida(inventarioCortesiaOutVO, cine.getIdCine(), devolucionProductoVO.getIdPuntoVenta(), idUsuario);
+				//-	inventarioBO.createSalida(inventarioCortesiaOutVO, cine.getIdCine(), devolucionProductoVO.getIdPuntoVenta(), idUsuario);
 					
 //					MovimientoInventario movimientoCortesiaOut = MovimientoInventarioAssembler.getMovimientoInventario(
 //							articuloXProductoVO.getArticuloVO().getIdArticulo(), movInventarioActual.getProveedor(),
@@ -430,7 +430,7 @@ public class DevolucionBO {
 //				autorizacionMovimientoDAO.save(autorizacionDevClienteIn);
 				
 				ParametrosInventarioVO inventarioInVO= new ParametrosInventarioVO();
-				inventarioInVO.setIdArticulo(articuloXProductoVO.getArticuloVO().getIdArticulo());
+				//-inventarioInVO.setIdArticulo(articuloXProductoVO.getArticuloVO().getIdArticulo());
 				inventarioInVO.setCantidad((int) cantidad);
 				inventarioInVO.setIdTipoMovimiento(devolucionClienteIn.getIdTipoMovimientoInv());
 				inventarioInVO.setClaveTipoMovimiento(devolucionClienteIn.getClave());
@@ -449,13 +449,13 @@ public class DevolucionBO {
 //				autorizacionMovimientoDAO.save(autorizacionMermaOut);
 				
 				ParametrosInventarioVO inventarioMermaOutVO= new ParametrosInventarioVO();
-				inventarioMermaOutVO.setIdArticulo(articuloXProductoVO.getArticuloVO().getIdArticulo());
+				//-inventarioMermaOutVO.setIdArticulo(articuloXProductoVO.getArticuloVO().getIdArticulo());
 				inventarioMermaOutVO.setCantidad((int) cantidad);
 				inventarioMermaOutVO.setIdTipoMovimiento(mermaOut.getIdTipoMovimientoInv());
 				inventarioMermaOutVO.setClaveTipoMovimiento(mermaOut.getClave());
 				inventarioMermaOutVO.setIdAutorizacion(devolucionProductoVO.getIdAutorizacion());
 				
-				inventarioBO.createSalida(inventarioMermaOutVO, cine.getIdCine(), devolucionProductoVO.getIdPuntoVenta(), idUsuario);
+				//-inventarioBO.createSalida(inventarioMermaOutVO, cine.getIdCine(), devolucionProductoVO.getIdPuntoVenta(), idUsuario);
 				
 				
 				// Moviminento Salida
@@ -470,13 +470,13 @@ public class DevolucionBO {
 //					autorizacionMovimientoDAO.save(autorizacionCortesiaOut);
 					
 					ParametrosInventarioVO inventarioCortesiaOutVO= new ParametrosInventarioVO();
-					inventarioCortesiaOutVO.setIdArticulo(articuloXProductoVO.getArticuloVO().getIdArticulo());
+					//-inventarioCortesiaOutVO.setIdArticulo(articuloXProductoVO.getArticuloVO().getIdArticulo());
 					inventarioCortesiaOutVO.setCantidad((int) cantidad);
 					inventarioCortesiaOutVO.setIdTipoMovimiento(cortesiaOut.getIdTipoMovimientoInv());
 					inventarioCortesiaOutVO.setClaveTipoMovimiento(cortesiaOut.getClave());
 					inventarioCortesiaOutVO.setIdAutorizacion(devolucionProductoVO.getIdAutorizacion());
 					
-					inventarioBO.createSalida(inventarioCortesiaOutVO, cine.getIdCine(), devolucionProductoVO.getIdPuntoVenta(), idUsuario);
+					//-inventarioBO.createSalida(inventarioCortesiaOutVO, cine.getIdCine(), devolucionProductoVO.getIdPuntoVenta(), idUsuario);
 				}
 			}
 

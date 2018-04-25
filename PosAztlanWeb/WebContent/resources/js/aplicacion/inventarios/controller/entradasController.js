@@ -1,16 +1,15 @@
 'use strict';
 
-var EntradasDulceriaController = angular.module('indexModule').controller("EntradasDulceriaController", function($scope,$controller,$filter,DataUtils,ModalService,dulceriaService,inventarioService,PropertiesFactory){
-
+var EntradasController = angular.module('indexModule').controller("EntradasController", function($scope,$controller,$filter,DataUtils,ModalService,dulceriaService,inventarioService,PropertiesFactory,GlobalFactory){
+	var idEmpresa = GlobalFactory.getIdEmpresa();
 	$controller('modalController',{$scope : $scope });
-	$scope.parametroBusqueda = {articulo: ""};
-	$scope.listaArticulos = [];
-	$scope.listaArticulosExistencia = [];
+	$scope.listaProductos = [];
+	$scope.listaProductosExistencia = [];
 	$scope.listaTiposMovimientosEntrada = [] ;	
 	$scope.listaProveedores = [];
 	$scope.movimientoInventario = {};
 	$scope.tipoEntrada = {};
-	
+	$scope.parametrosBusquedaVO = {nombre: "", idEmpresa:idEmpresa, sku:""};
 	$scope.resultado = "";		
 	
 	$scope.activeForm = false;
@@ -24,8 +23,8 @@ var EntradasDulceriaController = angular.module('indexModule').controller("Entra
 			$scope.fileUrl = null;
 			$scope.movimientoInventario = {};
 			$scope.parametrosInventario = {};
-			$scope.listaArticulos = [];
-			$scope.listaArticulosExistencia = [];
+			$scope.listaProductos = [];
+			$scope.listaProductosExistencia = [];
 			$scope.tipoEntrada = {};
 	}
 	
@@ -39,7 +38,7 @@ var EntradasDulceriaController = angular.module('indexModule').controller("Entra
 	}
 	
 	$scope.consultarProveedores = function() {
-		inventarioService.consultarProveedores().success(function(data) {
+		inventarioService.consultarProveedores(idEmpresa).success(function(data) {
 			 $scope.listaProveedores = data;
 			 $scope.activeForm = false;
 		}).error(function(data) {
@@ -47,32 +46,41 @@ var EntradasDulceriaController = angular.module('indexModule').controller("Entra
 		});
 	}
 	
-	$scope.buscarArticulos = function() {
-		inventarioService.busquedaArticulosPuntoVenta($scope.parametroBusqueda.articulo).success(function(data) {
-			$scope.listaArticulos = data;			
+	$scope.buscarProductos = function() {
+		inventarioService.busquedaProductos($scope.parametrosBusquedaVO).success(function(data) {
+			$scope.listaProductos = data;			
 		}).error(function(data) {
 
 		});
 	}	
 	
-	$scope.setDatosDeArticulo = function(articuloPuntoVenta){
-		$scope.movimientoInventario.articulo = articuloPuntoVenta.articulo;
-		$scope.parametrosInventario.idArticulo = articuloPuntoVenta.articulo.idArticulo;
+	$scope.buscarProductosXsku = function() {
+		inventarioService.busquedaProductosXsku($scope.parametrosBusquedaVO).success(function(data) {
+			$scope.listaProductos = data;			
+		}).error(function(data) {
+
+		});
+	}	
+	
+	$scope.setDatosDeProducto = function(productoEmpresa){
+		$scope.movimientoInventario.nombre = productoEmpresa.nombre;
+		$scope.parametrosInventario.idProducto = productoEmpresa.idProducto;
 		$scope.activeForm = true;
 	}
 	
-	$scope.buscarArticulosExistencia = function() {
-		inventarioService.busquedaArticulosExistencia($scope.parametrosInventario.idArticulo).success(function(data) {
-			$scope.listaArticulosExistencia = data;			
+	$scope.buscarProductosExistencia = function() {
+		inventarioService.busquedaProductosExistencia($scope.parametrosInventario.idProducto).success(function(data) {
+			$scope.listaProductosExistencia = data;			
 		}).error(function(data) {
 
 		});
 	}
 	
 	$scope.guardarEntrada= function() {				
+		$scope.parametrosInventario.idEmpresa = idEmpresa;
 		$scope.parametrosInventario.idTipoMovimiento = $scope.tipoEntrada.idTipoMovimientoInv;
 		$scope.parametrosInventario.claveTipoMovimiento = $scope.tipoEntrada.clave;
-		$scope.parametrosInventario.idPuntoVentaConsigna = 0;
+		$scope.parametrosInventario.idAlmacenConsigna = 0;
 		$scope.parametrosInventario.idAutorizacion = 0,
 		inventarioService.registrarEntrada($scope.parametrosInventario
 				).success(function(data) {

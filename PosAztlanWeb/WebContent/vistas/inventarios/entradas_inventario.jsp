@@ -19,37 +19,61 @@
 						<div class="col-sm-3"></div>
 						<div class="col-sm-6">
 							<div class="form-group"
-								ng-class="{'has-error': formEntradas.Articulo.$invalid && formEntradas.nombreArticulo.$dirty}">
-								<label>Artículo <span class="required">*</span>
-								</label>
+								ng-class="{'has-error': formEntradas.Producto.$invalid && formEntradas.nombreProducto.$dirty}">
+								<label>Producto </label>
 								<div class="input-group">
 									<span class="input-group-addon"><i
 										class="fa fa-search"></i></span> <input type="text"
-										name="nombreArticulo" class="form-control"
-										placeholder="Buscar articulo..."
-										ng-model="parametroBusqueda.articulo"> <span
+										name="nombreProducto" class="form-control"
+										placeholder="Buscar producto..."
+										ng-model="parametrosBusquedaVO.nombre"> <span
 										class="input-group-btn">
 										<button class="btn btn-default" type="button"
-											ng-click="buscarArticulos()" data-toggle="modal"
-											data-target="#modalArticulos">Ir!</button>
+											ng-click="buscarProductos()" data-toggle="modal"
+											data-target="#modalProductos">Ir!</button>
 									</span>
 								</div>
 							</div>
 						</div>
+						
 						<div class="col-sm-3"></div>
 					</div>
-
+					
+					<div class="row">
+						<div class="col-sm-3"></div>
+						<div class="col-sm-6">
+							<div class="form-group"
+								ng-class="{'has-error': formEntradas.Producto.$invalid && formEntradas.sku.$dirty}">
+								<label>Sku </label>
+								<div class="input-group">
+									<span class="input-group-addon"><i
+										class="fa fa-search"></i></span> <input type="text"
+										name="sku" class="form-control"
+										placeholder="Buscar sku..."
+										ng-model="parametrosBusquedaVO.sku"> <span
+										class="input-group-btn">
+										<button class="btn btn-default" type="button"
+											ng-click="buscarProductosXsku()" data-toggle="modal"
+											data-target="#modalProductos">Ir!</button>
+									</span>
+								</div>
+							</div>
+						</div>
+						
+						<div class="col-sm-3"></div>
+					</div>
+					
 					<div ng-show="activeForm">
 						<div class="row">
 							<div class="col-sm-3"></div>
 							<div class="col-sm-6">
 								<div class="form-group">
-									<label for="articulo">Artículo </label>									
+									<label for="producto">Producto </label>									
 									<div class="input-group">
 										<span class="input-group-addon"><i class="fa fa-cube"></i></span>
-										<input type="text" id="articulo" readonly="readonly"
+										<input type="text" id="producto" readonly="readonly"
 											class="form-control col-md-7 col-xs-12" placeholder="0"
-											ng-model="movimientoInventario.articulo.nombre">
+											ng-model="movimientoInventario.nombre">
 									</div>									
 								</div>
 							</div>
@@ -91,7 +115,7 @@
 										<span class="input-group-addon"><i
 											class="fa fa-truck"></i></span><select class="form-control"
 											id="proveedor" name="proveedor" directiva-select2 required="required" ng-required="true" 
-											ng-options="proveedor.idProveedor as proveedor.nombre for proveedor in listaProveedores"
+											ng-options="proveedor.id as proveedor.nombre for proveedor in listaProveedores"
 											ng-model="parametrosInventario.idProveedor">											
 										</select>									
 									</div>
@@ -118,7 +142,7 @@
 												ng-required="true" class="form-control col-md-7 col-xs-12"
 												placeholder="0" ng-model="parametrosInventario.cantidad">
 											<span class="input-group-btn">
-												&nbsp; {{movimientoInventario.articulo.unidadMedidaVO.nombre}}.
+												&nbsp; {{movimientoInventario.unidadMedidaVO.nombre}}.
 											</span>
 										</div>																							
 										<div
@@ -204,7 +228,7 @@
 <!-- xpanel -->
 
 <!-- modal -->
-<div class="modal fade" id="modalArticulos" role="dialog"
+<div class="modal fade" id="modalProductos" role="dialog"
 	style="overflow-y: auto;" data-keyboard="false" data-backdrop="static">
 	<div class="modal-dialog modal-lg">
 
@@ -227,17 +251,17 @@
 							<thead>
 								<tr>
 									<th class="text-center">Id</th>
-									<th class="text-center">Articulo</th>
+									<th class="text-center">Producto</th>
 								</tr>
 							</thead>
 
 							<tbody>
 								<tr
-									dir-paginate="movimientoInventarioVO in listaArticulos |  filter: filterSearch |itemsPerPage: listaArticulos.length  "
-									ng-click="setDatosDeArticulo(movimientoInventarioVO)"
+									dir-paginate="movimientoInventarioVO in listaProductos |  filter: filterSearch |itemsPerPage: listaProductos.length  "
+									ng-click="setDatosDeProducto(movimientoInventarioVO)"
 									style="cursor: pointer; cursor: hand;" data-dismiss="modal">
-									<td class="text-center">{{movimientoInventarioVO.articulo.idArticulo}}</td>
-									<td class="text-center">{{movimientoInventarioVO.articulo.nombre}}</td>
+									<td class="text-center">{{movimientoInventarioVO.idProducto}}</td>
+									<td class="text-center">{{movimientoInventarioVO.nombre}}</td>
 								</tr>
 							</tbody>
 						</table>

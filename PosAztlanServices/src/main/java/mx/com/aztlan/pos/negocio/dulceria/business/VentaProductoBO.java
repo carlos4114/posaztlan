@@ -357,13 +357,13 @@ public class VentaProductoBO {
 			// ventaVO.getIdPuntoVenta(),null));
 
 			ParametrosInventarioVO inventarioVO = new ParametrosInventarioVO();
-			inventarioVO.setIdArticulo(entryMovInventario.getKey());
+			inventarioVO.setIdProducto(entryMovInventario.getKey());
 			inventarioVO.setCantidad((int) entryMovInventario.getValue().getCantidad());
 			inventarioVO.setIdTipoMovimiento(tipoMovimientoInvOut.getIdTipoMovimientoInv());
 			inventarioVO.setClaveTipoMovimiento(tipoMovimientoInvOut.getClave());
 
-			inventarioBO.createSalida(inventarioVO, ventaVO.getIdCine(), ventaVO.getIdPuntoVenta(),
-					ventaVO.getIdUsuario());
+			/* -inventarioBO.createSalida(inventarioVO, ventaVO.getIdCine(), ventaVO.getIdPuntoVenta(),
+					ventaVO.getIdUsuario());*/
 		}
 
 		subtotal = subtotal.add(total);

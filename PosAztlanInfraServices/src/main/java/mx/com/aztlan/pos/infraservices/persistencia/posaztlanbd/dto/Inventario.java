@@ -41,6 +41,7 @@ public class Inventario implements java.io.Serializable {
 	private Usuario usuario;
 	private Date ultimoMovimiento;
 	private Usuario usuarioUltimoMovimiento;
+	private OrdenCompra ordenCompra;
 	
 	public Inventario() {
 	}
@@ -206,5 +207,14 @@ public class Inventario implements java.io.Serializable {
 	public void setUsuarioUltimoMovimiento(Usuario usuarioUltimoMovimiento) {
 		this.usuarioUltimoMovimiento = usuarioUltimoMovimiento;
 	}
-	
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_orden_compra", nullable = true)
+	public OrdenCompra getOrdenCompra() {
+		return this.ordenCompra;
+	}
+
+	public void setOrdenCompra(OrdenCompra ordenCompra) {
+		this.ordenCompra = ordenCompra;
+	}
 }

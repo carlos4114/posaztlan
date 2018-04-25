@@ -26,6 +26,12 @@ public class ProductoVO {
 	private String nombreMarca;
 	private String nombreTipo;
 	private String nombreMedida;
+	private BigDecimal precioUnitarioFinal;
+	private Integer cantidadFinal;
+	private String nombreEstatus;
+	private Integer cantidadRestante;
+	private String sku;
+	
 	
 	public Integer getIdProducto() {
 		return idProducto;
@@ -158,6 +164,36 @@ public class ProductoVO {
 	}
 	public void setNombreMedida(String nombreMedida) {
 		this.nombreMedida = nombreMedida;
+	}
+	public BigDecimal getPrecioUnitarioFinal() {
+		return precioUnitarioFinal;
+	}
+	public void setPrecioUnitarioFinal(BigDecimal precioUnitarioFinal) {
+		this.precioUnitarioFinal = precioUnitarioFinal;
+	}
+	public Integer getCantidadFinal() {
+		return cantidadFinal;
+	}
+	public void setCantidadFinal(Integer cantidadFinal) {
+		this.cantidadFinal = cantidadFinal;
+	}
+	public String getNombreEstatus() {
+		return nombreEstatus;
+	}
+	public void setNombreEstatus(String nombreEstatus) {
+		this.nombreEstatus = nombreEstatus;
+	}
+	public Integer getCantidadRestante() {
+		return cantidadRestante;
+	}
+	public void setCantidadRestante(Integer cantidadRestante) {
+		this.cantidadRestante = cantidadRestante;
+	}
+	public String getSku() {
+		return sku;
+	}
+	public void setSku(String sku) {
+		this.sku = sku;
 	}
 	
 	

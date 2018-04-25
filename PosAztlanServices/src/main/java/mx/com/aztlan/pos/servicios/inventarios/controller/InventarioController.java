@@ -1,5 +1,6 @@
 package mx.com.aztlan.pos.servicios.inventarios.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,12 @@ import org.springframework.stereotype.Service;
 
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Inventario;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.MovimientoInventario;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Producto;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.enumeration.TipoMovimientoEnum;
 import mx.com.aztlan.pos.infraservices.servicios.BusinessGlobalException;
+import mx.com.aztlan.pos.negocio.administracion.business.OrdenCompraBO;
+import mx.com.aztlan.pos.negocio.administracion.vo.OrdenCompraVO;
+import mx.com.aztlan.pos.negocio.configuracion.vo.ProductoVO;
 import mx.com.aztlan.pos.negocio.dulceria.vo.TipoMovimientoInvVO;
 import mx.com.aztlan.pos.negocio.inventarios.business.ArticulosCorteBO;
 import mx.com.aztlan.pos.negocio.inventarios.business.CatalogoTipoMovimientoInvBO;
@@ -26,6 +32,9 @@ public class InventarioController {
 	private InventarioBO inventarioBO;
 	
 	@Autowired
+	private OrdenCompraBO ordenCompraBO;
+	
+	@Autowired
 	private ArticulosCorteBO articulosCorteBO;
 	
 	@Autowired
@@ -40,6 +49,14 @@ public class InventarioController {
 		return inventarioBO.getArticulosPuntoVenta(idPuntoVenta,nombreArticulo);
 	}
 	
+	public List<ProductoVO> getProductos(String nombre, Integer idEmpresa) throws BusinessGlobalException {
+		return inventarioBO.getProductos(nombre, idEmpresa);
+	}
+	
+	public List<ProductoVO> getProductosXsku(String sku, Integer idEmpresa) throws BusinessGlobalException {
+		return inventarioBO.getProductosXsku(sku, idEmpresa);
+	}
+	
 	public List<InventarioVO> getArticulosInventario(Integer idPuntoVenta, String nombreArticulo) throws BusinessGlobalException {
 		return inventarioBO.getArticulosInventario(idPuntoVenta,nombreArticulo);
 	}
@@ -48,7 +65,7 @@ public class InventarioController {
 		return inventarioBO.getExistenciaArticuloPorProveedores(idPuntoVenta,idArticulo);
 	}
 	
-	public Integer createSalida(ParametrosInventarioVO movimientoInventarioVO,Integer idCine,Integer idPuntoVenta,Integer idUsuario) throws BusinessGlobalException {
+	/*public Integer createSalida(ParametrosInventarioVO movimientoInventarioVO,Integer idCine,Integer idPuntoVenta,Integer idUsuario) throws BusinessGlobalException {
 		List<MovimientoInventario> movimientosInventario = inventarioBO.createSalida(movimientoInventarioVO,idCine,idPuntoVenta,idUsuario);
 		if(movimientosInventario!=null && !movimientosInventario.isEmpty()){
 			return movimientosInventario.size();
@@ -56,15 +73,30 @@ public class InventarioController {
 			return 0;
 		}
 		 
-	}
+	}*/
 	
-	public Integer createEntrada(ParametrosInventarioVO movimientoInventarioVO,Integer idCine,Integer idPuntoVenta,Integer idUsuario) throws BusinessGlobalException {
-		Inventario movimientoInventario = inventarioBO.createEntrada(movimientoInventarioVO,idCine,idPuntoVenta,idUsuario);
+	public Integer createEntrada(ParametrosInventarioVO movimientoInventarioVO, Integer idUsuario) throws BusinessGlobalException {
+			
+		Inventario movimientoInventario = inventarioBO.createEntrada(movimientoInventarioVO,idUsuario);
+			
 		if(movimientoInventario!=null){
 			return movimientoInventario.getIdInventario();
+			
 		}else{
 			return 0;
 		}
+	}
+	
+	public void createEntradaOrdenCompra(OrdenCompraVO ordenCompraVO, Integer idUsuario) throws BusinessGlobalException {
+		
+		if(ordenCompraVO.getParcial()) {
+			ordenCompraBO.guardarParcial(ordenCompraVO);
+		}else
+		{
+			ordenCompraBO.cerrarOrdenCompra(ordenCompraVO);
+		}
+		
+		inventarioBO.createEntradaOrdenCompra(ordenCompraVO, idUsuario);
 	}
 	
 	public  List<TipoMovimientoInvVO> getTiposMovimientoByIsEntrada(Boolean isEntrada) throws BusinessGlobalException {
@@ -96,7 +128,7 @@ public class InventarioController {
 		int idArticulosCorte = 0;
 		long existenciaSistemaInicial = articulosCorte.getExistenciaSistema();
 		boolean isEntrada = false;
-		inventarioVO.setIdArticulo(articulosCorte.getArticulo().getIdArticulo());
+		//inventarioVO.setIdArticulo(articulosCorte.getArticulo().getIdArticulo());
 		inventarioVO.setIdAutorizacion(articulosCorte.getAutorizacion().getIdAutorizacion());
 		
 		long cantidad = 0;
@@ -122,7 +154,7 @@ public class InventarioController {
 			tipoMovimientoInvVO = inventarioBO.geTipoMovimientoPorClave(Constantes.SALIDA_X_AJUSTE_MANUAL);
 			inventarioVO.setIdTipoMovimiento(tipoMovimientoInvVO.getIdTipoMovimientoInv());
 			inventarioVO.setClaveTipoMovimiento(tipoMovimientoInvVO.getClave());
-			listMovimientosAjuste  = inventarioBO.createSalida(inventarioVO,idCine,idPuntoVenta,idUsuario);
+		//	listMovimientosAjuste  = inventarioBO.createSalida(inventarioVO,idCine,idPuntoVenta,idUsuario);
 		}
 		
 		int numAjuste = 0; 

@@ -1,5 +1,6 @@
 package mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -24,5 +25,27 @@ public class AlmacenDAO extends GlobalHibernateDAO<Almacen> implements AlmacenDA
 		return query.list();
 	}
 
+	@Override
+	public Integer getAlmacenCentral(Integer idEmpresa) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select alm.idAlmacen from Almacen alm ");
+		hql.append("where alm.canal.idCanal is null and alm.idAlmacenPadre is null ");
+		hql.append("and alm.empresa.idEmpresa=:idEmpresa");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setParameter("idEmpresa", idEmpresa);
+		
+		List result = query.list();
+		Integer idAlmacen = 0;
+		
+		for(Object obj: result){			
+			if(obj!=null){
+				idAlmacen = (Integer)obj;
+				break;
+			}
+		}
+		
+		return idAlmacen;
+	}
 
 }

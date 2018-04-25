@@ -9,19 +9,20 @@ import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.MovimientoIn
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Proveedor;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.TipoMovimientoInv;
 import mx.com.aztlan.pos.negocio.dulceria.vo.MovimientoInventarioVO;
+import mx.com.aztlan.pos.negocio.inventarios.assembler.AlmacenAssembler;
 import mx.com.aztlan.pos.negocio.inventarios.assembler.InventarioAssembler;
 import mx.com.aztlan.pos.negocio.inventarios.assembler.ProveedorAssembler;
 
 public class MovimientoInventarioAssembler {
 
-	public static MovimientoInventario getMovimientoInventario(Integer idArticulo, Proveedor provedor,
-			TipoMovimientoInv tipoMovimientoInv, Integer idUsuario ,  long cantidad, BigDecimal importe, long existenciaActual,Integer idPuntoVenta,Integer idPuntoVentaConsigna,Integer idInventario ) {
+	public static MovimientoInventario getMovimientoInventario(Integer idProducto, Proveedor provedor,
+			TipoMovimientoInv tipoMovimientoInv, Integer idUsuario ,  long cantidad, BigDecimal importe, long existenciaActual,Integer idAlmacen,Integer idAlmacenConsigna,Integer idInventario ) {
 		
-		if(idArticulo==null  || provedor == null || tipoMovimientoInv==null || idUsuario==null || idPuntoVenta==null )
+		if(idProducto==null  || provedor == null || tipoMovimientoInv==null || idUsuario==null || idAlmacen==null )
 			return null;
 
 		MovimientoInventario movimientoInventario= new MovimientoInventario();
-		movimientoInventario.setArticulo(ArticuloAssembler.getArticulo(idArticulo));
+		movimientoInventario.setProducto(ProductoAssembler.getProducto(idProducto));
 		movimientoInventario.setProveedor(provedor);
 		movimientoInventario.setTipoMovimientoInv(tipoMovimientoInv);
 		movimientoInventario.setUsuario(UsuarioAssembler.getUsuario(idUsuario));
@@ -30,8 +31,8 @@ public class MovimientoInventarioAssembler {
 		movimientoInventario.setImporte(importe);
 		movimientoInventario.setDocumentoRespaldo(null);
 		movimientoInventario.setExistenciaActual(existenciaActual);
-		movimientoInventario.setPuntoVenta(PuntoVentaAssembler.getPuntoVenta(idPuntoVenta));		
-		movimientoInventario.setPuntoVentaConsigna(PuntoVentaAssembler.getPuntoVenta(idPuntoVentaConsigna));		
+		movimientoInventario.setAlmacen(AlmacenAssembler.getAlmacen(idAlmacen));		
+		movimientoInventario.setAlmacenConsigna(AlmacenAssembler.getAlmacen(idAlmacenConsigna));		
 		movimientoInventario.setInventario(InventarioAssembler.getInventario(idInventario));
 		return movimientoInventario;
 	}
@@ -43,7 +44,7 @@ public class MovimientoInventarioAssembler {
 		MovimientoInventario movimientoInventario = new MovimientoInventario();
 		
 		movimientoInventario.setIdMovimiento(movimientoInventarioVO.getIdMovimiento());
-		movimientoInventario.setArticulo(ArticuloAssembler.getArticulo(movimientoInventarioVO.getArticulo().getIdArticulo()));
+		movimientoInventario.setProducto(ProductoAssembler.getProducto(movimientoInventarioVO.getProducto().getIdProducto()));
 		movimientoInventario.setProveedor(ProveedorAssembler.getProveedor(movimientoInventarioVO.getProveedor()));
 		movimientoInventario.setTipoMovimientoInv(TipoMovimientoInvAssembler.getTipoMovimientoInv(movimientoInventarioVO.getTipoMovimientoInvVO()));
 		movimientoInventario.setUsuario(UsuarioAssembler.getUsuario(movimientoInventarioVO.getUsuario().getIdUsuario()));
@@ -52,8 +53,8 @@ public class MovimientoInventarioAssembler {
 		movimientoInventario.setImporte(movimientoInventarioVO.getImporte());
 		movimientoInventario.setDocumentoRespaldo(movimientoInventarioVO.getDocumentoRespaldo());
 		movimientoInventario.setExistenciaActual(movimientoInventarioVO.getExistenciaActual());
-		movimientoInventario.setPuntoVenta(PuntoVentaAssembler.getPuntoVenta(movimientoInventarioVO.getPuntoVentaVO()));
-		movimientoInventario.setPuntoVentaConsigna(PuntoVentaAssembler.getPuntoVenta(movimientoInventarioVO.getDestinoPuntoVentaVO()));
+		movimientoInventario.setAlmacen(AlmacenAssembler.getAlmacen(movimientoInventarioVO.getAlmacenVO()));
+		movimientoInventario.setAlmacenConsigna(AlmacenAssembler.getAlmacen(movimientoInventarioVO.getDestinoAlmacenVO()));
 		movimientoInventario.setInventario(InventarioAssembler.getInventario(movimientoInventarioVO.getInventario()));
 		
 		return movimientoInventario;
@@ -66,7 +67,7 @@ public class MovimientoInventarioAssembler {
 		MovimientoInventarioVO movimientoInventarioVO = new MovimientoInventarioVO();
 		
 		movimientoInventarioVO.setIdMovimiento(movimientoInventario.getIdMovimiento());
-		movimientoInventarioVO.setArticulo(ArticuloAssembler.getArticuloVO(movimientoInventario.getArticulo()));
+		movimientoInventarioVO.setProducto(ProductoAssembler.getProductoVO(movimientoInventario.getProducto()));
 		movimientoInventarioVO.setProveedor(ProveedorAssembler.getProveedorVO(movimientoInventario.getProveedor()));
 		movimientoInventarioVO.setTipoMovimientoInvVO(TipoMovimientoInvAssembler.getTipoMovimientoInvVO(movimientoInventario.getTipoMovimientoInv()));
 		movimientoInventarioVO.setUsuario(UsuarioAssembler.getUsuarioVO(movimientoInventario.getUsuario().getIdUsuario()));
@@ -75,8 +76,8 @@ public class MovimientoInventarioAssembler {
 		movimientoInventarioVO.setImporte(movimientoInventario.getImporte());
 		movimientoInventarioVO.setDocumentoRespaldo(movimientoInventario.getDocumentoRespaldo());
 		movimientoInventarioVO.setExistenciaActual(movimientoInventario.getExistenciaActual());
-		movimientoInventarioVO.setPuntoVentaVO(PuntoVentaAssembler.getPuntoVentaVO(movimientoInventario.getPuntoVenta()));
-		movimientoInventarioVO.setDestinoPuntoVentaVO(PuntoVentaAssembler.getPuntoVentaVO(movimientoInventario.getPuntoVentaConsigna()));
+		movimientoInventarioVO.setAlmacenVO(AlmacenAssembler.getAlmacenVO(movimientoInventario.getAlmacen()));
+		movimientoInventarioVO.setDestinoAlmacenVO(AlmacenAssembler.getAlmacenVO(movimientoInventario.getAlmacenConsigna()));
 		movimientoInventarioVO.setInventario(InventarioAssembler.getInventarioVO(movimientoInventario.getInventario()));
 		
 		return movimientoInventarioVO;

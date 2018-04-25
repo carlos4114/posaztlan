@@ -23,20 +23,22 @@ public class OrdenCompraDetalle implements java.io.Serializable {
 	private OrdenCompraDetalleId id;
 	private BigDecimal precioUnitario;
 	private BigDecimal precioUnitarioFinal;
-	private int cantidad;
-	//private int cantidadFinal;
+	private Integer cantidad;
+	private Integer cantidadFinal;
 	private Producto producto;
-
+	private EstatusOrdenCompra estatusOrdenCompra;
+	private Integer cantidadRestante; 
+	
 	public OrdenCompraDetalle() {
 	}
 
 	public OrdenCompraDetalle(OrdenCompraDetalleId id, BigDecimal precioUnitario, BigDecimal precioUnitarioFinal, 
-			int cantidad, int cantidadFinal, Producto producto) {
+			Integer cantidad, Integer cantidadFinal, Producto producto) {
 		this.id = id;
 		this.precioUnitario = precioUnitario;
 		this.cantidad = cantidad;
 		this.precioUnitarioFinal = precioUnitarioFinal;
-		//this.cantidadFinal = cantidadFinal;
+		this.cantidadFinal = cantidadFinal;
 		this.producto = producto;
 	}
 
@@ -62,7 +64,7 @@ public class OrdenCompraDetalle implements java.io.Serializable {
 		this.precioUnitario = precioUnitario;
 	}
 
-	@Column(name = "precio_unitario_final", nullable = false, precision = 15)
+	@Column(name = "precio_unitario_final", nullable = true, precision = 15)
 	public BigDecimal getPrecioUnitarioFinal() {
 		return this.precioUnitarioFinal;
 	}
@@ -72,22 +74,22 @@ public class OrdenCompraDetalle implements java.io.Serializable {
 	}
 	
 	@Column(name = "cantidad", nullable = false)
-	public int getCantidad() {
+	public Integer getCantidad() {
 		return this.cantidad;
 	}
 
-	public void setCantidad(int cantidad) {
+	public void setCantidad(Integer cantidad) {
 		this.cantidad = cantidad;
 	}
 	
-/*	@Column(name = "cantidad_final", nullable = false)
-	public int getCantidadFinal() {
+	@Column(name = "cantidad_final", nullable = true)
+	public Integer getCantidadFinal() {
 		return this.cantidadFinal;
 	}
 
-	public void setCantidadFinal(int cantidadFinal) {
+	public void setCantidadFinal(Integer cantidadFinal) {
 		this.cantidadFinal = cantidadFinal;
-	}*/
+	}
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_producto", nullable = false, insertable = false, updatable = false)
@@ -98,5 +100,23 @@ public class OrdenCompraDetalle implements java.io.Serializable {
 	public void setProducto(Producto producto) {
 		this.producto = producto;
 	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_estatus", nullable = false)
+	public EstatusOrdenCompra getEstatusOrdenCompra() {
+		return this.estatusOrdenCompra;
+	}
 
+	public void setEstatusOrdenCompra(EstatusOrdenCompra estatusOrdenCompra) {
+		this.estatusOrdenCompra = estatusOrdenCompra;
+	}
+
+	@Column(name = "cantidad_restante", nullable = false)
+	public Integer getCantidadRestante() {
+		return this.cantidadRestante;
+	}
+
+	public void setCantidadRestante(Integer cantidadRestante) {
+		this.cantidadRestante = cantidadRestante;
+	}
 }

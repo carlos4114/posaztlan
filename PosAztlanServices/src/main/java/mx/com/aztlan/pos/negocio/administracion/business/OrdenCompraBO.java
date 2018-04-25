@@ -15,13 +15,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import mx.com.aztlan.pos.infraservices.negocio.seguridad.vo.HttpResponseVO;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.FolioSecuenciaDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.OrdenCompraDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.OrdenCompraDetalleDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.OrdenCompraIbatisDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.ProductoDAOI;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.EstatusOrdenCompra;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.FolioSecuencia;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.OrdenCompra;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.OrdenCompraDetalle;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.OrdenCompraDetalleId;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Producto;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.enumeration.EstatusOrdenCompraEnum;
 import mx.com.aztlan.pos.infraservices.servicios.BusinessGlobalException;
@@ -140,5 +144,85 @@ public class OrdenCompraBO {
 		}
 		
 		return archivoExcelVO;
+	}
+	
+	@Transactional(readOnly = true)
+	public OrdenCompraVO obtenerOrdenCompra(FiltrosVO filtrosVO) throws BusinessGlobalException  {
+		 
+		Integer idOrdenCompra = ordenCompraDAO.getId(filtrosVO.getIdEmpresa(), filtrosVO.getOrdenCompra());
+	
+		OrdenCompra ordenCompra = ordenCompraDAO.findByIdOrdenCompra(idOrdenCompra).get(0);
+	
+		List<OrdenCompraDetalle> detalle = ordenCompraDetalleDAO.findByIdOrdenCompra(idOrdenCompra);
+		
+		OrdenCompraVO ordenCompraVO = OrdenCompraAssembler.getOrdenCompraVO(ordenCompra, detalle);
+		
+		return ordenCompraVO;
+		
+	}
+	
+	@Transactional(readOnly = false)
+	public HttpResponseVO cerrarOrdenCompra(OrdenCompraVO ordenCompraVO) throws BusinessGlobalException  {
+		HttpResponseVO responseVO = new HttpResponseVO();
+		
+		OrdenCompra ordenCompra = ordenCompraDAO.findById(ordenCompraVO.getIdOrdenCompra());
+		
+		if(ordenCompra == null) {
+			responseVO.setErrorCode(1);
+			responseVO.setMessage("El folio de la orden de compra no existe. ");
+		}
+		
+		ordenCompra.setEstatusOrdenCompra(new EstatusOrdenCompra(EstatusOrdenCompraEnum.CERRADA));
+		ordenCompraDAO.update(ordenCompra);
+		
+		for(ProductoVO productoVO: ordenCompraVO.getProductos()) {
+			if(productoVO.getCantidadRestante() > 0) {
+				OrdenCompraDetalle detalle = ordenCompraDetalleDAO.findById(
+						new OrdenCompraDetalleId(ordenCompraVO.getIdOrdenCompra(), productoVO.getIdProducto()));
+				detalle.setCantidadFinal(productoVO.getCantidadFinal());
+				detalle.setPrecioUnitarioFinal(productoVO.getPrecioUnitarioFinal());
+				detalle.setEstatusOrdenCompra(new EstatusOrdenCompra(EstatusOrdenCompraEnum.CERRADA));
+				detalle.setCantidadRestante(productoVO.getCantidadRestante() - (productoVO.getCantidadFinal()==null?0:productoVO.getCantidadFinal()));
+				
+				ordenCompraDetalleDAO.update(detalle);
+			}else {
+				OrdenCompraDetalle detalle = ordenCompraDetalleDAO.findById(
+						new OrdenCompraDetalleId(ordenCompraVO.getIdOrdenCompra(), productoVO.getIdProducto()));
+				detalle.setCantidadFinal(productoVO.getCantidad());
+				detalle.setEstatusOrdenCompra(new EstatusOrdenCompra(EstatusOrdenCompraEnum.CERRADA));
+				
+				ordenCompraDetalleDAO.update(detalle);
+			}
+			
+		}
+		
+		return responseVO;
+	}
+	
+	@Transactional(readOnly = false)
+	public HttpResponseVO guardarParcial(OrdenCompraVO ordenCompraVO) throws BusinessGlobalException  {
+		HttpResponseVO responseVO = new HttpResponseVO();
+		
+		OrdenCompra ordenCompra = ordenCompraDAO.getById(ordenCompraVO.getIdOrdenCompra());
+		
+		if(ordenCompra == null) {
+			responseVO.setErrorCode(1);
+			responseVO.setMessage("El folio de la orden de compra no existe. ");
+		}
+		
+		ordenCompra.setEstatusOrdenCompra(new EstatusOrdenCompra(EstatusOrdenCompraEnum.PARCIAL));
+		ordenCompraDAO.update(ordenCompra);
+		
+		for(ProductoVO productoVO: ordenCompraVO.getProductos()) {
+			OrdenCompraDetalle detalle = ordenCompraDetalleDAO.findById(
+					new OrdenCompraDetalleId(ordenCompraVO.getIdOrdenCompra(), productoVO.getIdProducto()));
+			detalle.setCantidadFinal(productoVO.getCantidadFinal());
+			detalle.setPrecioUnitarioFinal(productoVO.getPrecioUnitarioFinal());
+			detalle.setEstatusOrdenCompra(new EstatusOrdenCompra(EstatusOrdenCompraEnum.PARCIAL));
+			detalle.setCantidadRestante(productoVO.getCantidadRestante() - productoVO.getCantidadFinal());
+			ordenCompraDetalleDAO.update(detalle);
+		}
+		
+		return responseVO;
 	}
 }

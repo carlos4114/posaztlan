@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import mx.com.aztlan.pos.infraservices.negocio.seguridad.vo.HttpResponseVO;
 import mx.com.aztlan.pos.infraservices.servicios.BusinessGlobalException;
 import mx.com.aztlan.pos.infraservices.servicios.NotFoundException;
 import mx.com.aztlan.pos.negocio.administracion.vo.FiltrosVO;
@@ -29,4 +30,16 @@ public interface OrdenCompraFacadeI {
 	
 	@RequestMapping(value = "/guardar", method = RequestMethod.POST)
 	public ResponseEntity<HttpResponseOcVO> guardar(@RequestBody OrdenCompraVO ordenCompraVO, HttpServletRequest request) throws BusinessGlobalException, Exception;
+	
+	
+	@RequestMapping(value = "/guardarEntrada", method = RequestMethod.POST)
+	public ResponseEntity<HttpResponseVO> guardarEntrada(@RequestBody OrdenCompraVO ordenCompraVO) throws BusinessGlobalException, Exception;
+	
+	@RequestMapping(value = "/obtenerOrdenCompra", method = RequestMethod.POST)
+	public ResponseEntity<OrdenCompraVO> obtenerOrdenCompra(@RequestBody FiltrosVO filtrosVO) 
+			throws BusinessGlobalException, NotFoundException;
+
+	@RequestMapping(value = "/cerrarOrdenCompra", method = RequestMethod.POST)
+	public ResponseEntity<HttpResponseVO> cerrarOrdenCompra(@RequestBody OrdenCompraVO ordenCompraVO) 
+			throws BusinessGlobalException, NotFoundException;
 }

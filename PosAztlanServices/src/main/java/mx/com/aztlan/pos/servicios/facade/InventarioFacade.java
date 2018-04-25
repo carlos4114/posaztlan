@@ -13,15 +13,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import io.jsonwebtoken.Claims;
+import mx.com.aztlan.pos.infraservices.negocio.seguridad.vo.HttpResponseVO;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.enumeration.ClaimsEnum;
 import mx.com.aztlan.pos.infraservices.servicios.BusinessGlobalException;
 import mx.com.aztlan.pos.infraservices.servicios.NotFoundException;
+import mx.com.aztlan.pos.negocio.administracion.vo.OrdenCompraVO;
+import mx.com.aztlan.pos.negocio.configuracion.vo.ProductoVO;
 import mx.com.aztlan.pos.negocio.dulceria.vo.TipoMovimientoInvVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ArticulosCorteVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ArticulosXPuntoVentaVO;
+import mx.com.aztlan.pos.negocio.inventarios.vo.ParametrosBusquedaVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.InventarioVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ParametrosInventarioVO;
 import mx.com.aztlan.pos.servicios.inventarios.controller.InventarioController;
@@ -51,6 +57,35 @@ public class InventarioFacade implements InventarioFacadeI {
 
 		return new ResponseEntity<List<ArticulosXPuntoVentaVO> >(articulosPuntoVenta, HttpStatus.OK);
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public ResponseEntity<List<ProductoVO>> getProductosByNombre(@RequestBody ParametrosBusquedaVO parametrosBusquedaVO) 
+			throws BusinessGlobalException, NotFoundException {
+		
+		List<ProductoVO> productos = inventarioController.getProductos(parametrosBusquedaVO.getNombre(), parametrosBusquedaVO.getIdEmpresa());
+		
+		if (productos == null || productos.isEmpty()) {
+			throw new NotFoundException("No encontrado");
+		}
+
+		return new ResponseEntity<List<ProductoVO> >(productos, HttpStatus.OK);
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public ResponseEntity<List<ProductoVO>> getProductosBySku(@RequestBody ParametrosBusquedaVO parametrosBusquedaVO) 
+			throws BusinessGlobalException, NotFoundException {
+		
+		List<ProductoVO> productos = inventarioController.getProductosXsku(parametrosBusquedaVO.getSku(), parametrosBusquedaVO.getIdEmpresa());
+		
+		if (productos == null || productos.isEmpty()) {
+			throw new NotFoundException("No encontrado");
+		}
+
+		return new ResponseEntity<List<ProductoVO> >(productos, HttpStatus.OK);
+	}
+	
 	
 	@Override
 	public ResponseEntity<List<InventarioVO> > getArticulosInventario(HttpServletRequest request, String nombreArticulo) throws BusinessGlobalException, NotFoundException {
@@ -99,12 +134,12 @@ public class InventarioFacade implements InventarioFacadeI {
 			logger.info("createSalida:::IdCine[{}]:::IdPuntoVenta[{}]",idCine,idPuntoVenta);
 				
 			int response = 0;			
-			response = inventarioController.createSalida(movimientoInventarioVO,idCine,idPuntoVenta,idUsuario);
+			//response = inventarioController.createSalida(movimientoInventarioVO,idCine,idPuntoVenta,idUsuario);
 		
 		return new ResponseEntity<Integer>(response, HttpStatus.CREATED);
 	}
 
-	@Override
+	/*@Override
 	public ResponseEntity<Integer> createEntrada(HttpServletRequest request,@RequestBody ParametrosInventarioVO movimientoInventarioVO)
 			throws BusinessGlobalException, NotFoundException {
 			
@@ -117,8 +152,31 @@ public class InventarioFacade implements InventarioFacadeI {
 			int response = 0;			
 			response = inventarioController.createEntrada(movimientoInventarioVO,idCine,idPuntoVenta,idUsuario);	
 			return new ResponseEntity<Integer>(response, HttpStatus.CREATED);
+	}*/
+	
+	@Override
+	public ResponseEntity<Integer> createEntrada(HttpServletRequest request,@RequestBody ParametrosInventarioVO movimientoInventarioVO)
+			throws BusinessGlobalException, NotFoundException {
+			
+			Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
+			Integer idUsuario = (Integer) claims.get(ClaimsEnum.USUARIO);
+				
+			int response = 0;			
+			response = inventarioController.createEntrada(movimientoInventarioVO,idUsuario);	
+			return new ResponseEntity<Integer>(response, HttpStatus.CREATED);
 	}
 	
+	
+	@Override
+	public ResponseEntity<Integer> createEntradaOrdenCompra(HttpServletRequest request,@RequestBody OrdenCompraVO ordenCompraVO) throws BusinessGlobalException, NotFoundException
+	{
+			Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
+			Integer idUsuario = (Integer) claims.get(ClaimsEnum.USUARIO);
+				
+			int response = 0;			
+			inventarioController.createEntradaOrdenCompra(ordenCompraVO,idUsuario);	
+			return new ResponseEntity<Integer>(response, HttpStatus.CREATED);
+	}
 	
 	@Override
 	public ResponseEntity<List<TipoMovimientoInvVO>> getTipoMovimientoInvByIsEntrada(HttpServletRequest request,

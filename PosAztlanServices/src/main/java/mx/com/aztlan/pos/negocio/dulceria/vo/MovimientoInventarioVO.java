@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import mx.com.aztlan.pos.negocio.configuracion.vo.AlmacenVO;
 import mx.com.aztlan.pos.negocio.dulceria.vo.PuntoVentaVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.InventarioVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ProveedorVO;
@@ -16,6 +17,7 @@ public class MovimientoInventarioVO implements Serializable{
 	private static final long serialVersionUID = -8668884778156013191L;
 	private Integer idMovimiento;
 	private ArticuloVO articulo;
+	private ProductoVO producto;
 	private ProveedorVO proveedor;
 	private TipoMovimientoInvVO tipoMovimientoInvVO;
 	private UsuarioVO usuario;
@@ -26,7 +28,9 @@ public class MovimientoInventarioVO implements Serializable{
 	private long existenciaActual;
 	private PuntoVentaVO puntoVentaVO;
 	private PuntoVentaVO destinoPuntoVentaVO;
+	private AlmacenVO destinoAlmacenVO;
 	private InventarioVO inventario;
+	private AlmacenVO almacenVO;
 	
 	public Integer getIdMovimiento() {
 		return idMovimiento;
@@ -106,5 +110,24 @@ public class MovimientoInventarioVO implements Serializable{
 	public void setInventario(InventarioVO inventario) {
 		this.inventario = inventario;
 	}
+	public ProductoVO getProducto() {
+		return producto;
+	}
+	public void setProducto(ProductoVO producto) {
+		this.producto = producto;
+	}
+	public AlmacenVO getAlmacenVO() {
+		return almacenVO;
+	}
+	public void setAlmacenVO(AlmacenVO almacenVO) {
+		this.almacenVO = almacenVO;
+	}
+	public AlmacenVO getDestinoAlmacenVO() {
+		return destinoAlmacenVO;
+	}
+	public void setDestinoAlmacenVO(AlmacenVO destinoAlmacenVO) {
+		this.destinoAlmacenVO = destinoAlmacenVO;
+	}
 		
+	
 }

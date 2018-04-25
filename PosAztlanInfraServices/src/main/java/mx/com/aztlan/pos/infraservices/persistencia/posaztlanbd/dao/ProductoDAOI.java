@@ -11,11 +11,12 @@ public interface ProductoDAOI extends GlobalHibernateDAOI<Producto>{
 
 	List<Producto> findByEmpresa(Integer idEmpresa);
 	
-	List<Producto> findByName(Integer idCine, String nombre);
+	List<Producto> findByName(String nombre, Integer idEmpresa);
 	
 	List<Producto> findByIdProducto(Integer idProducto);
 	
 	List<Producto> findByFiltros(Integer idEmpresa, Integer idFamilia, 
 			Integer idMarca, Integer idTipoProducto, Integer idMedida, String nombre);
 	
+	List<Producto> findBySku(String sku, Integer idEmpresa);
 }

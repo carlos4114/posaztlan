@@ -2,12 +2,12 @@
 
 angular.module('indexModule').service('inventarioService', ['$http','GlobalFactory','config', function($http,GlobalFactory,config) {
  	
-	this.busquedaArticulosPuntoVenta = function(nombre){		 
-		 return $http.get(config.baseUrl+"/inventario/puntoVenta/articulo", {
-			 params : {
-				 "nombre" : nombre
-			 }
-		});
+	this.busquedaProductos = function(parametrosBusquedaVO){		 
+		 return $http.post(config.baseUrl+"/inventario/buscarProducto", parametrosBusquedaVO);
+	 }
+	
+	this.busquedaProductosXsku = function(parametrosBusquedaVO){		 
+		 return $http.post(config.baseUrl+"/inventario/buscarProductoXsku", parametrosBusquedaVO);
 	 }
 	
 	 this.busquedaArticulosInventario = function(nombreArticulo){		 
@@ -64,7 +64,7 @@ angular.module('indexModule').service('inventarioService', ['$http','GlobalFacto
 	}
 
 	this.registrarEntrada = function(parametrosInventario){
-			 return $http.post(config.baseUrl + "/inventario/articulo/entrada",parametrosInventario);
+			 return $http.post(config.baseUrl + "/inventario/producto/entrada",parametrosInventario);
 	}
 	
 	this.registrarConteo = function(conteoArticulo){
@@ -111,9 +111,8 @@ angular.module('indexModule').service('inventarioService', ['$http','GlobalFacto
 		return $http.get(config.baseUrl+"/catalogo/puntosVenta");
 	}
 
-	this.consultarProveedores = function(){
-		return $http.get(config.baseUrl+"/catalogo/proveedor");
-	}
-	 
+	this.consultarProveedores = function(idEmpresa){
+		return $http.get(config.baseUrl+"/catalogo/proveedores/" + idEmpresa)
+		}
 }]);
 

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import mx.com.aztlan.pos.infraservices.negocio.seguridad.vo.HttpResponseVO;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.OrdenCompra;
 import mx.com.aztlan.pos.infraservices.servicios.BusinessGlobalException;
 import mx.com.aztlan.pos.negocio.administracion.business.OrdenCompraBO;
@@ -41,5 +42,26 @@ public class OrdenCompraController {
 		responseVO.setArchivoExcelVO(this.ordenCompraBO.crearXlsOc(ordenCompra.getIdOrdenCompra()));
 		
 		return responseVO;
+	}
+	
+	@Transactional(readOnly = true)
+	public OrdenCompraVO obtenerOrdenCompra(FiltrosVO filtrosVO)  throws BusinessGlobalException{
+		return ordenCompraBO.obtenerOrdenCompra(filtrosVO);
+	}
+	
+	@Transactional(readOnly = false)
+	public HttpResponseVO cerrarOrdenCompra(OrdenCompraVO ordenCompraVO)  throws BusinessGlobalException{
+		return ordenCompraBO.cerrarOrdenCompra(ordenCompraVO);
+	}
+	
+	@Transactional(readOnly = false)
+	public HttpResponseVO guardarEntrada(OrdenCompraVO ordenCompraVO)  throws BusinessGlobalException{
+		if(ordenCompraVO.getParcial()) {
+			return ordenCompraBO.guardarParcial(ordenCompraVO);
+		}else
+		{
+			return ordenCompraBO.cerrarOrdenCompra(ordenCompraVO);
+		}
+		
 	}
 }

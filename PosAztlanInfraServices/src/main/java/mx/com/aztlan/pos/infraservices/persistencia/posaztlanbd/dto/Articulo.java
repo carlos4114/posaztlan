@@ -29,7 +29,7 @@ public class Articulo implements java.io.Serializable {
 	private boolean activo;
 	private long puntoReorden;
 	private Set<ArticulosXPuntoVenta> articulosXPuntoVentas = new HashSet<ArticulosXPuntoVenta>(0);
-	private Set<MovimientoInventario> movimientoInventarios = new HashSet<MovimientoInventario>(0);
+	//private Set<MovimientoInventario> movimientoInventarios = new HashSet<MovimientoInventario>(0);
 	private Set<ArticulosXProducto> articulosXProductos = new HashSet<ArticulosXProducto>(0);
 
 	public Articulo() {
@@ -51,7 +51,7 @@ public class Articulo implements java.io.Serializable {
 
 	public Articulo(Cine cine, ClasificacionArt clasificacionArt, UnidadMedida unidadMedida, String nombre,
 			boolean activo, long puntoReorden, Set<ArticulosXPuntoVenta> articulosXPuntoVentas,
-			Set<MovimientoInventario> movimientoInventarios, Set<ArticulosXProducto> articulosXProductos) {
+			 Set<ArticulosXProducto> articulosXProductos) {
 		this.cine = cine;
 		this.clasificacionArt = clasificacionArt;
 		this.unidadMedida = unidadMedida;
@@ -59,7 +59,7 @@ public class Articulo implements java.io.Serializable {
 		this.activo = activo;
 		this.puntoReorden = puntoReorden;
 		this.articulosXPuntoVentas = articulosXPuntoVentas;
-		this.movimientoInventarios = movimientoInventarios;
+		//this.movimientoInventarios = movimientoInventarios;
 		this.articulosXProductos = articulosXProductos;
 	}
 
@@ -141,14 +141,14 @@ public class Articulo implements java.io.Serializable {
 		this.articulosXPuntoVentas = articulosXPuntoVentas;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "articulo")
+	/*@OneToMany(fetch = FetchType.LAZY, mappedBy = "articulo")
 	public Set<MovimientoInventario> getMovimientoInventarios() {
 		return this.movimientoInventarios;
 	}
 
 	public void setMovimientoInventarios(Set<MovimientoInventario> movimientoInventarios) {
 		this.movimientoInventarios = movimientoInventarios;
-	}
+	}*/
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "articulo")
 	public Set<ArticulosXProducto> getArticulosXProductos() {
