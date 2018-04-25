@@ -23,6 +23,20 @@ public class AlmacenDAO extends GlobalHibernateDAO<Almacen> implements AlmacenDA
 		
 		return query.list();
 	}
+	
+	
+	@Override
+	public List<Almacen> findSubAlmacenesByIdCanal(Integer idCanal) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select alm from Almacen alm ");
+		hql.append("where alm.canal.idCanal=:idCanal and alm.idAlmacenPadre is not null ");
+		hql.append("order by alm.nombre asc");
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setParameter("idCanal", idCanal);
+		
+		return query.list();
+	}
 
 
 }
