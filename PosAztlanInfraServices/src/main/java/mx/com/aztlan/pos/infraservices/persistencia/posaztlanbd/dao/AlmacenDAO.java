@@ -1,6 +1,5 @@
 package mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -24,7 +23,6 @@ public class AlmacenDAO extends GlobalHibernateDAO<Almacen> implements AlmacenDA
 		
 		return query.list();
 	}
-	
 	
 	@Override
 	public List<Almacen> findSubAlmacenesByIdCanal(Integer idCanal) {
