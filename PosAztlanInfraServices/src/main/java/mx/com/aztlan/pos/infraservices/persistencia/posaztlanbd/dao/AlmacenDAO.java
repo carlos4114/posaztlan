@@ -1,6 +1,8 @@
 package mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao;
 
+import java.math.BigDecimal;
 import java.util.List;
+
 
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
