@@ -26,8 +26,6 @@ public class PuntoVenta implements java.io.Serializable {
 	private TipoPuntoVenta tipoPuntoVenta;
 	private String nombre;
 	private Set<PaquetesXPuntoVenta> paquetesXPuntoVentas = new HashSet<PaquetesXPuntoVenta>(0);
-	private Set<TicketVenta> ticketVentas = new HashSet<TicketVenta>(0);
-	//private Set<Usuario> usuarios = new HashSet<Usuario>(0);
 	private Set<ProductosXPuntoVenta> productosXPuntoVentas = new HashSet<ProductosXPuntoVenta>(0);
 	private Set<ArticulosXPuntoVenta> articulosXPuntoVentas = new HashSet<ArticulosXPuntoVenta>(0);
 
@@ -51,7 +49,7 @@ public class PuntoVenta implements java.io.Serializable {
 		this.tipoPuntoVenta = tipoPuntoVenta;
 		this.nombre = nombre;
 		this.paquetesXPuntoVentas = paquetesXPuntoVentas;
-		this.ticketVentas = ticketVentas;
+		//this.ticketVentas = ticketVentas;
 	//	this.usuarios = usuarios;
 		this.productosXPuntoVentas = productosXPuntoVentas;
 		this.articulosXPuntoVentas = articulosXPuntoVentas;
@@ -106,24 +104,6 @@ public class PuntoVenta implements java.io.Serializable {
 	public void setPaquetesXPuntoVentas(Set<PaquetesXPuntoVenta> paquetesXPuntoVentas) {
 		this.paquetesXPuntoVentas = paquetesXPuntoVentas;
 	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "puntoVenta")
-	public Set<TicketVenta> getTicketVentas() {
-		return this.ticketVentas;
-	}
-
-	public void setTicketVentas(Set<TicketVenta> ticketVentas) {
-		this.ticketVentas = ticketVentas;
-	}
-
-/*	@OneToMany(fetch = FetchType.LAZY, mappedBy = "puntoVenta")
-	public Set<Usuario> getUsuarios() {
-		return this.usuarios;
-	}
-
-	public void setUsuarios(Set<Usuario> usuarios) {
-		this.usuarios = usuarios;
-	}*/
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "puntoVenta")
 	public Set<ProductosXPuntoVenta> getProductosXPuntoVentas() {
