@@ -8,8 +8,8 @@ import java.util.List;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.MovimientoInventario;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Proveedor;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.TipoMovimientoInv;
-import mx.com.aztlan.pos.negocio.configuracion.assembler.AlmacenAssembler;
 import mx.com.aztlan.pos.negocio.dulceria.vo.MovimientoInventarioVO;
+import mx.com.aztlan.pos.negocio.inventarios.assembler.AlmacenAssembler;
 import mx.com.aztlan.pos.negocio.inventarios.assembler.InventarioAssembler;
 import mx.com.aztlan.pos.negocio.inventarios.assembler.ProveedorAssembler;
 
@@ -31,8 +31,8 @@ public class MovimientoInventarioAssembler {
 		movimientoInventario.setImporte(importe);
 		movimientoInventario.setDocumentoRespaldo(null);
 		movimientoInventario.setExistenciaActual(existenciaActual);
-		//movimientoInventario.setAlmacen(AlmacenAssembler.getAlmacen(idAlmacen));		
-		//movimientoInventario.setAlmacenConsigna(AlmacenAssembler.getAlmacen(idAlmacenConsigna));		
+		movimientoInventario.setAlmacen(AlmacenAssembler.getAlmacen(idAlmacen));		
+		movimientoInventario.setAlmacenConsigna(AlmacenAssembler.getAlmacen(idAlmacenConsigna));		
 		movimientoInventario.setInventario(InventarioAssembler.getInventario(idInventario));
 		return movimientoInventario;
 	}
@@ -53,8 +53,8 @@ public class MovimientoInventarioAssembler {
 		movimientoInventario.setImporte(movimientoInventarioVO.getImporte());
 		movimientoInventario.setDocumentoRespaldo(movimientoInventarioVO.getDocumentoRespaldo());
 		movimientoInventario.setExistenciaActual(movimientoInventarioVO.getExistenciaActual());
-		//movimientoInventario.setAlmacen(AlmacenAssembler.getAlmacen(movimientoInventarioVO.getAlmacenVO()));
-		//movimientoInventario.setAlmacenConsigna(AlmacenAssembler.getAlmacen(movimientoInventarioVO.getDestinoAlmacenVO()));
+		movimientoInventario.setAlmacen(AlmacenAssembler.getAlmacen(movimientoInventarioVO.getAlmacenVO()));
+		movimientoInventario.setAlmacenConsigna(AlmacenAssembler.getAlmacen(movimientoInventarioVO.getDestinoAlmacenVO()));
 		movimientoInventario.setInventario(InventarioAssembler.getInventario(movimientoInventarioVO.getInventario()));
 		
 		return movimientoInventario;

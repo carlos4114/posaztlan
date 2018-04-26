@@ -6,9 +6,9 @@ import java.util.Date;
 import java.util.List;
 
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Inventario;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.OrdenCompra;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Proveedor;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.TipoMovimientoInv;
-import mx.com.aztlan.pos.negocio.configuracion.assembler.AlmacenAssembler;
 import mx.com.aztlan.pos.negocio.configuracion.assembler.ProductoAssembler;
 import mx.com.aztlan.pos.negocio.dulceria.assembler.TipoMovimientoInvAssembler;
 import mx.com.aztlan.pos.negocio.dulceria.assembler.UsuarioAssembler;
@@ -28,7 +28,8 @@ public class InventarioAssembler {
 	}
 	
 	public static Inventario getInventario(Integer idProducto, Proveedor provedor, String lote,
-			TipoMovimientoInv tipoMovimientoInv, Integer idUsuario ,  long cantidad, BigDecimal importe, long existenciaActual,Integer idAlmacen ) {
+			TipoMovimientoInv tipoMovimientoInv, Integer idUsuario ,  long cantidad, BigDecimal importe, 
+			long existenciaActual,Integer idAlmacen, Integer idOrdenCompra ) {
 		
 		if(idProducto==null  || provedor == null || tipoMovimientoInv==null || idUsuario==null || idAlmacen==null )
 			return null;
@@ -43,10 +44,10 @@ public class InventarioAssembler {
 		inventario.setFecha(new Date());
 		inventario.setImporte(importe);
 		inventario.setExistenciaActual(existenciaActual);
-		//inventario.setAlmacen(AlmacenAssembler.getAlmacen(idAlmacen));
+		inventario.setAlmacen(AlmacenAssembler.getAlmacen(idAlmacen));
 		inventario.setUsuarioUltimoMovimiento(UsuarioAssembler.getUsuario(idUsuario));
 		inventario.setUltimoMovimiento(new Date());
-
+		inventario.setOrdenCompra(new OrdenCompra(idOrdenCompra));
 		return inventario;
 	}
 
@@ -66,7 +67,7 @@ public class InventarioAssembler {
 		inventario.setFecha(inventarioVO.getFecha());
 		inventario.setImporte(inventarioVO.getImporte());
 		inventario.setExistenciaActual(inventarioVO.getExistenciaActual());
-		//inventario.setAlmacen(AlmacenAssembler.getAlmacen(inventarioVO.getAlmacenVO()));
+		inventario.setAlmacen(AlmacenAssembler.getAlmacen(inventarioVO.getAlmacenVO()));
 		inventario.setUltimoMovimiento(inventario.getUltimoMovimiento());
 		inventario.setUsuarioUltimoMovimiento(UsuarioAssembler.getUsuario(inventario.getUsuario().getIdUsuario()));
 		
@@ -89,7 +90,7 @@ public class InventarioAssembler {
 		inventarioVO.setFecha(inventario.getFecha());
 		inventarioVO.setImporte(inventario.getImporte());
 		inventarioVO.setExistenciaActual(inventario.getExistenciaActual());
-		inventarioVO.setAlmacenVO(inventario.getAlmacen() == null ? null :AlmacenAssembler.getAlmacenVO(inventario.getAlmacen()));
+		inventarioVO.setAlmacenVO(inventario.getAlmacen() == null ? null :AlmacenAssembler.getAlmacenVO((inventario.getAlmacen())));
 		inventarioVO.setUltimoMovimiento(inventario.getUltimoMovimiento());
 		inventarioVO.setUsuarioUltimoMovimiento(inventario.getUsuario() == null ? null : UsuarioAssembler.getUsuarioVO(inventario.getUsuario().getIdUsuario()));
 		

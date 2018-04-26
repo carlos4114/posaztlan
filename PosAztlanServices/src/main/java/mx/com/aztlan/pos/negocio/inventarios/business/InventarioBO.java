@@ -16,6 +16,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.AlmacenDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.ArticuloIbatisDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.ArticulosXPuntoVentaDAO;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.AutorizacionMovimientoDAOI;
@@ -24,6 +25,7 @@ import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.DocumentoDAO
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.InventarioDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.InventarioIbatisDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.MovimientoInventarioDAOI;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.ProductoDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.PropiedadConfigDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.ProveedorDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.TipoMovimientoInvDAOI;
@@ -35,14 +37,19 @@ import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Cine;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Documento;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Inventario;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.MovimientoInventario;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Producto;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.PropiedadConfig;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Proveedor;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.TipoMovimientoInv;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.enumeration.PropiedadConfigEnum;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.vo.ProductoExistenciaVO;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.enumeration.TipoMovimientoEnum;
 import mx.com.aztlan.pos.infraservices.servicios.BusinessGlobalException;
 import mx.com.aztlan.pos.infraservices.servicios.CorreoElectronicoBO;
 import mx.com.aztlan.pos.negocio.administracion.vo.FiltrosVO;
+import mx.com.aztlan.pos.negocio.administracion.vo.OrdenCompraVO;
+import mx.com.aztlan.pos.negocio.configuracion.assembler.ProductoAssembler;
+import mx.com.aztlan.pos.negocio.configuracion.vo.ProductoVO;
 import mx.com.aztlan.pos.negocio.dulceria.assembler.MovimientoInventarioAssembler;
 import mx.com.aztlan.pos.negocio.dulceria.assembler.TipoMovimientoInvAssembler;
 import mx.com.aztlan.pos.negocio.dulceria.assembler.UsuarioAssembler;
@@ -63,6 +70,9 @@ public class InventarioBO {
 	@Autowired
 	private InventarioDAOI inventarioDAO;
 
+	@Autowired
+	private AlmacenDAOI almacenDAO;
+	
 	@Autowired
 	private MovimientoInventarioDAOI movimientoInventarioDAO;
 
@@ -95,6 +105,9 @@ public class InventarioBO {
 	
 	@Autowired
     PropiedadConfigDAOI propiedadConfigDAO;	
+	
+	@Autowired
+	private ProductoDAOI productoDAO;
 	
 	@Autowired
 	@Qualifier("appMailSender")
@@ -173,6 +186,33 @@ public class InventarioBO {
 
 	}
 
+	public List<ProductoVO> getProductos(String nombre, Integer idEmpresa)
+			throws BusinessGlobalException {
+
+		List<Producto> productos = productoDAO.findByName(nombre, idEmpresa);
+		List<ProductoVO> productosVO = new ArrayList<ProductoVO>();
+		if (productos != null && !productos.isEmpty()) {
+			productosVO.addAll(ProductoAssembler.getProductos(productos));
+		}
+
+		return productosVO;
+
+	}
+	
+	public List<ProductoVO> getProductosXsku(String sku, Integer idEmpresa)
+			throws BusinessGlobalException {
+
+		List<Producto> productos = productoDAO.findBySku(sku, idEmpresa);
+		
+		List<ProductoVO> productosVO = new ArrayList<ProductoVO>();
+		if (productos != null && !productos.isEmpty()) {
+			productosVO.addAll(ProductoAssembler.getProductos(productos));
+		}
+
+		return productosVO;
+
+	}
+	
 	public List<InventarioVO> getArticulosInventario(Integer idPuntoVenta, String nombreArticulo)
 			throws BusinessGlobalException {
 
@@ -333,11 +373,11 @@ public class InventarioBO {
 							importeTraspaso = importeSalida;
 			
 							// Guarda entrada por traspaso
-							inventarioTraspaso = InventarioAssembler.getInventario(
-									movimientoInventarioVO.getIdProducto(), inventario.getProveedor(), inventario.getLote(),
-									tipoMovimientoInvEntrada, idUsuario, Long.valueOf(cantidad),
-									importeTraspaso, cantidad,
-									movimientoInventarioVO.getIdAlmacenConsigna());							
+						// OJO CON ESTO............	inventarioTraspaso = InventarioAssembler.getInventario(
+									//movimientoInventarioVO.getIdProducto(), inventario.getProveedor(), inventario.getLote(),
+									//tipoMovimientoInvEntrada, idUsuario, Long.valueOf(cantidad),
+									//importeTraspaso, cantidad,
+									//movimientoInventarioVO.getIdAlmacenConsigna());							
 							//Al tratarse de un traspaso se asignara la misma fecha de entrada de inventario para respetar el metodo PEPS
 							inventarioTraspaso.setFecha(inventario.getFecha());
 							inventarioTraspaso = inventarioDAO.save(inventarioTraspaso);
@@ -368,12 +408,40 @@ public class InventarioBO {
 		return movimientosInventario;
 
 	}
+		public void createEntradaOrdenCompra(OrdenCompraVO ordenCompraVO, Integer idUsuario) throws BusinessGlobalException {
+		Double importe;
+		
+		String clave = tipoMovimientoInvDAO.getById(TipoMovimientoEnum.COMPRA).getClave();
+		
+		for (ProductoVO producto : ordenCompraVO.getProductos()) {
+			
+			if(producto.getCantidadRestante() > 0) {
+				importe = producto.getPrecioUnitarioFinal().doubleValue() * producto.getCantidadFinal();
+				
+				if(ordenCompraVO.getDescuento().doubleValue() > 0) {
+					importe = importe * (1 - (ordenCompraVO.getDescuento().doubleValue() / 100));
+				}
+				
+				ParametrosInventarioVO movimientoInventarioVO = new ParametrosInventarioVO();
+				movimientoInventarioVO.setCantidad(producto.getCantidadFinal());
+				movimientoInventarioVO.setIdProducto(producto.getIdProducto());
+				movimientoInventarioVO.setImporte(importe.floatValue());
+				movimientoInventarioVO.setIdProveedor(ordenCompraVO.getIdProveedor());
+				movimientoInventarioVO.setIdAutorizacion(0);
+				movimientoInventarioVO.setIdEmpresa(ordenCompraVO.getIdEmpresa());
+				movimientoInventarioVO.setIdTipoMovimiento(TipoMovimientoEnum.COMPRA);
+				movimientoInventarioVO.setClaveTipoMovimiento(clave);
+				movimientoInventarioVO.setIdOrdenCompra(ordenCompraVO.getIdOrdenCompra());
+				this.createEntrada(movimientoInventarioVO,idUsuario);
+			}			
+		}
+	}
 	
-	public Inventario createEntrada(ParametrosInventarioVO inventarioVO, Integer idCine, Integer idPuntoVenta,
-			Integer idUsuario) throws BusinessGlobalException {
+	public Inventario createEntrada(ParametrosInventarioVO inventarioVO, Integer idUsuario) throws BusinessGlobalException {
 		//Nota: Para las salidas se considero el metodo de costo promedio de exitencia actual
 		int idInventarioEntrada = 0;
-
+		
+		Integer idAlmacen = almacenDAO.getAlmacenCentral(inventarioVO.getIdEmpresa());
 		Proveedor proveedor = proveedorDAO.getById(inventarioVO.getIdProveedor());
 
 		// Obtiene tipo de movimiento		
@@ -392,7 +460,7 @@ public class InventarioBO {
 		// Guarda entrada
 		Inventario inventarioEntrada = InventarioAssembler.getInventario(inventarioVO.getIdProducto(), proveedor,
 				inventarioVO.getLote(), tipoMovimientoInvEntrada, idUsuario, Long.valueOf(inventarioVO.getCantidad()),
-				new BigDecimal(inventarioVO.getImporte()), inventarioVO.getCantidad(), idPuntoVenta);
+				new BigDecimal(inventarioVO.getImporte()), inventarioVO.getCantidad(), idAlmacen, inventarioVO.getIdOrdenCompra());
 
 		if (documento != null) {
 			inventarioEntrada.setDocumento(documento);
@@ -405,7 +473,7 @@ public class InventarioBO {
 				MovimientoInventarioAssembler.getMovimientoInventario(inventarioEntrada.getProducto().getIdProducto(),
 						inventarioEntrada.getProveedor(), tipoMovimientoInvEntrada, idUsuario,
 						Long.valueOf(inventarioEntrada.getCantidad()), new BigDecimal(inventarioVO.getImporte()),
-						inventarioEntrada.getExistenciaActual(), idPuntoVenta, 0,
+						inventarioEntrada.getExistenciaActual(), idAlmacen, 0,
 						inventarioEntrada.getIdInventario()));
 
 		idInventarioEntrada = inventarioEntrada.getIdInventario();
@@ -413,7 +481,6 @@ public class InventarioBO {
 		return inventarioEntrada;
 
 	}
-	
 	public List<MovimientoInventario> createEntradaAjuste(ParametrosInventarioVO parametrosVO,Integer idCine, Integer idPuntoVenta,
 			Integer idUsuario) throws BusinessGlobalException {
 		//Nota: Para las salidas se considero el metodo de costo promedio de exitencia actual

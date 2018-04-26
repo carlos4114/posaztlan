@@ -105,10 +105,10 @@
 		                      </div>
 		                      
 		                      <div class="form-group">
-		                        	<label class="control-label col-md-3 col-sm-3 col-xs-3" for="precio-unico">Precio Unico <span class="required">*</span>
+		                        	<label class="control-label col-md-3 col-sm-3 col-xs-3" for="precio-unico">Precio Unico 
 		                        	</label>
 		                        	<div class="col-md-2 col-sm-2 col-xs-2">
-		                          		<input type="text" id="precio-unico" class="form-control col-md-7 col-xs-12" placeholder="0.00" required="required" ng-model="productoVO.precioUnico">
+		                          		<input type="text" id="precio-unico" class="form-control col-md-7 col-xs-12" placeholder="0.00"  ng-model="productoVO.precioUnico">
 		                        	</div>
 		                      </div>
 		                     <div class="col-md-2 col-sm-2 col-xs-2">

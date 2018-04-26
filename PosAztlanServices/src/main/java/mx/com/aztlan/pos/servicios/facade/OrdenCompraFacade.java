@@ -10,8 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import io.jsonwebtoken.Claims;
+import mx.com.aztlan.pos.infraservices.negocio.seguridad.vo.HttpResponseVO;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.enumeration.ClaimsEnum;
 import mx.com.aztlan.pos.infraservices.servicios.BusinessGlobalException;
 import mx.com.aztlan.pos.infraservices.servicios.NotFoundException;
@@ -44,6 +47,24 @@ public class OrdenCompraFacade implements OrdenCompraFacadeI {
 		 Integer idUsuario = (Integer) claims.get(ClaimsEnum.USUARIO);
 		 
 		 return new ResponseEntity<HttpResponseOcVO>(this.ordenCompraController.guardar(ordenCompraVO, idUsuario), HttpStatus.OK);
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public ResponseEntity<OrdenCompraVO> obtenerOrdenCompra(@RequestBody FiltrosVO filtrosVO) throws BusinessGlobalException, NotFoundException {
+		return new ResponseEntity<OrdenCompraVO>(this.ordenCompraController.obtenerOrdenCompra(filtrosVO), HttpStatus.OK);		
+	}
+	
+	@Override
+	@Transactional(readOnly = false)
+	public ResponseEntity<HttpResponseVO> cerrarOrdenCompra(@RequestBody OrdenCompraVO ordenCompraVO) throws BusinessGlobalException, NotFoundException {
+		return new ResponseEntity<HttpResponseVO>(this.ordenCompraController.cerrarOrdenCompra(ordenCompraVO), HttpStatus.OK);		
+	}
+	
+	@Override
+	@Transactional(readOnly = false)
+	public ResponseEntity<HttpResponseVO> guardarEntrada(@RequestBody OrdenCompraVO ordenCompraVO) throws BusinessGlobalException, NotFoundException {
+		return new ResponseEntity<HttpResponseVO>(this.ordenCompraController.guardarEntrada(ordenCompraVO), HttpStatus.OK);		
 	}
 }
 

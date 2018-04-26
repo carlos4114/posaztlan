@@ -3,6 +3,9 @@ package mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,6 +14,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -23,18 +27,23 @@ import javax.persistence.TemporalType;
 public class OrdenCompra implements java.io.Serializable {
 
 	private Integer idOrdenCompra;
-	private int idProveedor;
+	private Integer idProveedor;
 	private BigDecimal descuento;
 	private int folio;
 	private EstatusOrdenCompra estatusOrdenCompra;
 	private Empresa empresa;
 	private Date fechaHora;
 	private Usuario usuarioCreador;
+	//private Set<OrdenCompraDetalle> ordenCompraDetalle = new HashSet<OrdenCompraDetalle>(0);
 	
 	public OrdenCompra() {
 	}
 
-	public OrdenCompra(int idProveedor, BigDecimal descuento, int folio, EstatusOrdenCompra estatusOrdenCompra, Empresa empresa) {
+	public OrdenCompra(Integer idOrdenCompra) {
+		this.idOrdenCompra = idOrdenCompra;
+	}
+	
+	public OrdenCompra(Integer idProveedor, BigDecimal descuento, int folio, EstatusOrdenCompra estatusOrdenCompra, Empresa empresa) {
 		this.idProveedor = idProveedor;
 		this.descuento = descuento;
 		this.folio = folio;
@@ -56,11 +65,11 @@ public class OrdenCompra implements java.io.Serializable {
 	}
 
 	@Column(name = "id_proveedor", nullable = false)
-	public int getIdProveedor() {
+	public Integer getIdProveedor() {
 		return this.idProveedor;
 	}
 
-	public void setIdProveedor(int idProveedor) {
+	public void setIdProveedor(Integer idProveedor) {
 		this.idProveedor = idProveedor;
 	}
 
@@ -122,5 +131,13 @@ public class OrdenCompra implements java.io.Serializable {
 		this.fechaHora = fechaHora;
 	}
 	
-	
+	/*@OneToMany(fetch = FetchType.LAZY, mappedBy = "producto")
+	public Set<OrdenCompraDetalle> getOrdenCompraDetalle() {
+		return this.ordenCompraDetalle;
+	}
+
+	public void setOrdenCompraDetalle(Set<OrdenCompraDetalle> ordenCompraDetalle) {
+		this.ordenCompraDetalle = ordenCompraDetalle;
+	}
+	*/
 }

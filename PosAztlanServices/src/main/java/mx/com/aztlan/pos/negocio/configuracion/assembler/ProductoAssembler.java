@@ -47,7 +47,7 @@ public class ProductoAssembler {
 		productoVO.setNacional(producto.isNacional());
 		productoVO.setImpuestosList(getImpuestos(producto.getImpuestoXProductos()));
 		productoVO.setPreciosXCanalList(getPreciosXCanalVO(producto.getPrecioXCanal()));
-		
+		productoVO.setSku(producto.getSku());
 		
 		return productoVO;
 	}

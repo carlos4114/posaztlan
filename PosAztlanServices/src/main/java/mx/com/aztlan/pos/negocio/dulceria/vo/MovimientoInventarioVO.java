@@ -34,12 +34,7 @@ public class MovimientoInventarioVO implements Serializable{
 	public void setIdMovimiento(Integer idMovimiento) {
 		this.idMovimiento = idMovimiento;
 	}
-	public ProductoVO getProducto() {
-		return producto;
-	}
-	public void setProducto(ProductoVO producto) {
-		this.producto = producto;
-	}
+	
 	public ProveedorVO getProveedor() {
 		return proveedor;
 	}
@@ -91,6 +86,18 @@ public class MovimientoInventarioVO implements Serializable{
 	
 	
 	
+	public InventarioVO getInventario() {
+		return inventario;
+	}
+	public void setInventario(InventarioVO inventario) {
+		this.inventario = inventario;
+	}
+	public ProductoVO getProducto() {
+		return producto;
+	}
+	public void setProducto(ProductoVO producto) {
+		this.producto = producto;
+	}
 	public AlmacenVO getAlmacenVO() {
 		return almacenVO;
 	}
@@ -103,11 +110,6 @@ public class MovimientoInventarioVO implements Serializable{
 	public void setDestinoAlmacenVO(AlmacenVO destinoAlmacenVO) {
 		this.destinoAlmacenVO = destinoAlmacenVO;
 	}
-	public InventarioVO getInventario() {
-		return inventario;
-	}
-	public void setInventario(InventarioVO inventario) {
-		this.inventario = inventario;
-	}
 		
+	
 }

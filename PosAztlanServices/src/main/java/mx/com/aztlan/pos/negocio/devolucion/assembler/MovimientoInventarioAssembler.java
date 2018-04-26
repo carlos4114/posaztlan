@@ -6,7 +6,7 @@ import java.util.Date;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.MovimientoInventario;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Proveedor;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.TipoMovimientoInv;
-import mx.com.aztlan.pos.negocio.configuracion.assembler.AlmacenAssembler;
+import mx.com.aztlan.pos.negocio.inventarios.assembler.AlmacenAssembler;
 
 public class MovimientoInventarioAssembler {
 
@@ -27,8 +27,8 @@ public class MovimientoInventarioAssembler {
 		movimientoInventario.setImporte(importe);
 		movimientoInventario.setDocumentoRespaldo(null);
 		movimientoInventario.setExistenciaActual(existenciaActual);
-		//movimientoInventario.setAlmacen(AlmacenAssembler.getAlmacen(idAlmacen));		
-		//movimientoInventario.setAlmacenConsigna(AlmacenAssembler.getAlmacen(idAlmacenConsigna));		
+		movimientoInventario.setAlmacen(AlmacenAssembler.getAlmacen(idAlmacen));		
+		movimientoInventario.setAlmacenConsigna(AlmacenAssembler.getAlmacen(idAlmacenConsigna));		
 
 		return movimientoInventario;
 	}

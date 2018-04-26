@@ -388,7 +388,7 @@ public class DevolucionBO {
 					inventarioCortesiaOutVO.setClaveTipoMovimiento(cortesiaOut.getClave());
 					inventarioCortesiaOutVO.setIdAutorizacion(devolucionProductoVO.getIdAutorizacion());
 					
-					inventarioBO.createSalida(inventarioCortesiaOutVO, cine.getIdCine(), devolucionProductoVO.getIdPuntoVenta(), idUsuario);
+				//-	inventarioBO.createSalida(inventarioCortesiaOutVO, cine.getIdCine(), devolucionProductoVO.getIdPuntoVenta(), idUsuario);
 					
 //					MovimientoInventario movimientoCortesiaOut = MovimientoInventarioAssembler.getMovimientoInventario(
 //							articuloXProductoVO.getArticuloVO().getIdArticulo(), movInventarioActual.getProveedor(),
@@ -455,7 +455,7 @@ public class DevolucionBO {
 				inventarioMermaOutVO.setClaveTipoMovimiento(mermaOut.getClave());
 				inventarioMermaOutVO.setIdAutorizacion(devolucionProductoVO.getIdAutorizacion());
 				
-				inventarioBO.createSalida(inventarioMermaOutVO, cine.getIdCine(), devolucionProductoVO.getIdPuntoVenta(), idUsuario);
+				//-inventarioBO.createSalida(inventarioMermaOutVO, cine.getIdCine(), devolucionProductoVO.getIdPuntoVenta(), idUsuario);
 				
 				
 				// Moviminento Salida
@@ -476,7 +476,7 @@ public class DevolucionBO {
 					inventarioCortesiaOutVO.setClaveTipoMovimiento(cortesiaOut.getClave());
 					inventarioCortesiaOutVO.setIdAutorizacion(devolucionProductoVO.getIdAutorizacion());
 					
-					inventarioBO.createSalida(inventarioCortesiaOutVO, cine.getIdCine(), devolucionProductoVO.getIdPuntoVenta(), idUsuario);
+					//-inventarioBO.createSalida(inventarioCortesiaOutVO, cine.getIdCine(), devolucionProductoVO.getIdPuntoVenta(), idUsuario);
 				}
 			}
 

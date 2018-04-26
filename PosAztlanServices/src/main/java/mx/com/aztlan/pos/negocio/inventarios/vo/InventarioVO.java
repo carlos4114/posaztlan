@@ -36,12 +36,7 @@ public class InventarioVO implements Serializable{
 	public void setIdInventario(Integer idInventario) {
 		this.idInventario = idInventario;
 	}
-	public ProductoVO getProducto() {
-		return producto;
-	}
-	public void setProducto(ProductoVO Producto) {
-		this.producto = Producto;
-	}
+	
 	public ProveedorVO getProveedor() {
 		return proveedor;
 	}
@@ -90,12 +85,7 @@ public class InventarioVO implements Serializable{
 	public void setExistenciaActual(long existenciaActual) {
 		this.existenciaActual = existenciaActual;
 	}
-	public AlmacenVO getAlmacenVO() {
-		return almacenVO;
-	}
-	public void setAlmacenVO(AlmacenVO almacenVO) {
-		this.almacenVO = almacenVO;
-	}
+
 	public Date getUltimoMovimiento() {
 		return ultimoMovimiento;
 	}
@@ -108,5 +98,18 @@ public class InventarioVO implements Serializable{
 	public void setUsuarioUltimoMovimiento(UsuarioVO usuarioUltimoMovimiento) {
 		this.usuarioUltimoMovimiento = usuarioUltimoMovimiento;
 	}
+	public ProductoVO getProducto() {
+		return producto;
+	}
+	public void setProducto(ProductoVO producto) {
+		this.producto = producto;
+	}
+	public AlmacenVO getAlmacenVO() {
+		return almacenVO;
+	}
+	public void setAlmacenVO(AlmacenVO almacenVO) {
+		this.almacenVO = almacenVO;
+	}
+	
 	
 }

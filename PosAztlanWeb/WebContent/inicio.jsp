@@ -315,7 +315,7 @@
 
 
             <!-- Modulos de Inventarios -->
-            <script src="<c:url value='/resources/js/aplicacion/inventarios/controller/entradasDulceriaController.js' />"></script>
+            <script src="<c:url value='/resources/js/aplicacion/inventarios/controller/entradasController.js' />"></script>
             <script src="<c:url value='/resources/js/aplicacion/inventarios/controller/salidasDulceriaController.js' />"></script>
             <script src="<c:url value='/resources/js/aplicacion/inventarios/controller/conteoInventarioController.js' />"></script>
             <script src="<c:url value='/resources/js/aplicacion/inventarios/service/inventarioAngularService.js' />"></script>
@@ -366,6 +366,10 @@
             <!-- Controller del modulo ordenes de compra -->
             <script src="<c:url value='/resources/js/aplicacion/administracion/service/ordenesCompraService.js' />"></script>
             <script src="<c:url value='/resources/js/aplicacion/administracion/controller/ordenesCompraController.js' />"></script>
+            
+            <!-- Controller del modulo entrada por orden de compra -->
+            <script src="<c:url value='/resources/js/aplicacion/inventarios/service/entradaOrdenCompraService.js' />"></script>
+            <script src="<c:url value='/resources/js/aplicacion/inventarios/controller/entradaOrdenCompraController.js' />"></script>
         </body>
 
         </html>

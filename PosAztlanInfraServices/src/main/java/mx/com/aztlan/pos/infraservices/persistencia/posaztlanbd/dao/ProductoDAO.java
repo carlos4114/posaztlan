@@ -42,19 +42,32 @@ public class ProductoDAO extends GlobalHibernateDAO<Producto> implements Product
 	}
 	
 	@Override
-	public List<Producto> findByName(Integer idCine, String nombre) {
+	public List<Producto> findByName(String nombre, Integer idEmpresa) {
 		StringBuilder hql = new StringBuilder();
 		hql.append("select pdt ");
 		hql.append("from Producto pdt ");
-		hql.append("where pdt.nombre =:nombre and pdt.cine.idCine =:idCine ");
+		hql.append("where pdt.nombre like:nombre and pdt.empresa.idEmpresa =:idEmpresa" );
 
 		Query query = getSession().createQuery(hql.toString());
-		query.setParameter("nombre", nombre);
-		query.setParameter("idCine", idCine);
-		
+		query.setParameter("nombre", "%"+nombre+"%");
+		query.setParameter("idEmpresa", idEmpresa);
 		return query.list();
 	}
 
+	@Override
+	public List<Producto> findBySku(String sku, Integer idEmpresa) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select pdt ");
+		hql.append("from Producto pdt ");
+		hql.append("where pdt.sku =:sku and pdt.empresa.idEmpresa =:idEmpresa" );
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setParameter("sku", sku);
+		query.setParameter("idEmpresa", idEmpresa);
+		
+		return query.list();
+	}
+	
 	@Override
 	public List<Producto> findByIdProducto(Integer idProducto) {
 		StringBuilder hql = new StringBuilder();

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ParametrosInventarioVO {
 
+	private Integer idEmpresa;
 	private Integer idInventario;
 	private Integer idProducto;
 	private String lote;
@@ -19,7 +20,7 @@ public class ParametrosInventarioVO {
 	private String nombreArchivo;
 	private Integer sizeArchivo;
 	private Integer idAlmacenConsigna;
-		
+	private Integer idOrdenCompra; 
 	public Integer getIdInventario() {
 		return idInventario;
 	}
@@ -103,6 +104,18 @@ public class ParametrosInventarioVO {
 	}
 	public void setIdAlmacenConsigna(Integer idAlmacenConsigna) {
 		this.idAlmacenConsigna = idAlmacenConsigna;
+	}
+	public Integer getIdEmpresa() {
+		return idEmpresa;
+	}
+	public void setIdEmpresa(Integer idEmpresa) {
+		this.idEmpresa = idEmpresa;
+	}
+	public Integer getIdOrdenCompra() {
+		return idOrdenCompra;
+	}
+	public void setIdOrdenCompra(Integer idOrdenCompra) {
+		this.idOrdenCompra = idOrdenCompra;
 	}
 	
 	

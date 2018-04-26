@@ -9,11 +9,13 @@ public class OrdenCompraVO {
 	private Integer idEmpresa;
 	private Integer idOrdenCompra;
 	private Integer idProveedor;
+	private String nombreProveedor;
+	private String nombreEstatusOrdenCompra;
 	private BigDecimal descuento; 
 	private Integer idEstatusOrdenCompra;
 	private List<ProductoVO> productos;
 	private BigDecimal total;
-	
+	private Boolean parcial;
 	
 	public Integer getIdOrdenCompra() {
 		return idOrdenCompra;
@@ -57,5 +59,24 @@ public class OrdenCompraVO {
 	public void setIdEmpresa(Integer idEmpresa) {
 		this.idEmpresa = idEmpresa;
 	}
+	public String getNombreProveedor() {
+		return nombreProveedor;
+	}
+	public void setNombreProveedor(String nombreProveedor) {
+		this.nombreProveedor = nombreProveedor;
+	}
+	public String getNombreEstatusOrdenCompra() {
+		return nombreEstatusOrdenCompra;
+	}
+	public void setNombreEstatusOrdenCompra(String nombreEstatusOrdenCompra) {
+		this.nombreEstatusOrdenCompra = nombreEstatusOrdenCompra;
+	}
+	public Boolean getParcial() {
+		return parcial;
+	}
+	public void setParcial(Boolean parcial) {
+		this.parcial = parcial;
+	}
+	
 	
 }

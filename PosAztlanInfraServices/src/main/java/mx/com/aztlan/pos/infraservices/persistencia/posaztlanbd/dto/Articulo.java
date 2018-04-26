@@ -51,7 +51,7 @@ public class Articulo implements java.io.Serializable {
 
 	public Articulo(Cine cine, ClasificacionArt clasificacionArt, UnidadMedida unidadMedida, String nombre,
 			boolean activo, long puntoReorden, Set<ArticulosXPuntoVenta> articulosXPuntoVentas,
-			Set<MovimientoInventario> movimientoInventarios, Set<ArticulosXProducto> articulosXProductos) {
+			 Set<ArticulosXProducto> articulosXProductos) {
 		this.cine = cine;
 		this.clasificacionArt = clasificacionArt;
 		this.unidadMedida = unidadMedida;
@@ -139,8 +139,6 @@ public class Articulo implements java.io.Serializable {
 	public void setArticulosXPuntoVentas(Set<ArticulosXPuntoVenta> articulosXPuntoVentas) {
 		this.articulosXPuntoVentas = articulosXPuntoVentas;
 	}
-
-	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "articulo")
 	public Set<ArticulosXProducto> getArticulosXProductos() {
 		return this.articulosXProductos;
