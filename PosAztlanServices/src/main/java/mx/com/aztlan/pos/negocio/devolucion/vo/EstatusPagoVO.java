@@ -5,6 +5,13 @@ public class EstatusPagoVO {
 	private String nombre;
 	private String clave;
 	
+	public EstatusPagoVO(){
+		
+	}
+	public EstatusPagoVO(Integer idEstatus){
+		this.idEstatus = idEstatus;
+	}
+	
 	public Integer getIdEstatus() {
 		return idEstatus;
 	}

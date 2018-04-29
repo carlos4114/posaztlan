@@ -16,7 +16,7 @@ import mx.com.aztlan.pos.servicios.util.Constantes;
 public class TicketVentaAssembler {
 
 	public static TicketVenta getTicketVenta(Integer idUsuario, Integer idAlmacen, Integer idCaja, BigDecimal descuento,
-			BigDecimal importe, BigDecimal total) {
+			BigDecimal importe, BigDecimal total, Integer noTicket) {
 
 		if (idUsuario == null || idAlmacen==null)
 			return null;
@@ -29,6 +29,7 @@ public class TicketVentaAssembler {
 		ticketVenta.setImporte(importe);
 		ticketVenta.setTotal(total);
 		ticketVenta.setCaja(idCaja==null?null:new Caja(idCaja));
+		ticketVenta.setNoTicket(noTicket);
 
 		return ticketVenta;
 

@@ -20,6 +20,8 @@ public class ProductoExistenciaVO implements Serializable {
 	private String unidadMedida;
 	private Integer existencia;
 	private BigDecimal precio;
+	private boolean validarExistencia;
+	
 	public Integer getIdProducto() {
 		return idProducto;
 	}
@@ -80,6 +82,13 @@ public class ProductoExistenciaVO implements Serializable {
 	public void setPrecio(BigDecimal precio) {
 		this.precio = precio;
 	}
+	public boolean isValidarExistencia() {
+		return validarExistencia;
+	}
+	public void setValidarExistencia(boolean validarExistencia) {
+		this.validarExistencia = validarExistencia;
+	}
+	
 
 	
 }

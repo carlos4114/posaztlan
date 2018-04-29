@@ -81,7 +81,7 @@ angular.module('indexModule').controller("VentaManualController",['$scope','Glob
 			        modal.element.modal();
 			        modal.close.then(function(result) {
 			        	if(result){
-			        		$scope.guardar($scope.ventaVO);        				    	        
+			        		$scope.guardar($scope.ventaManualVO);        				    	        
 			        	}
 			        }); 
 			    });
@@ -90,20 +90,22 @@ angular.module('indexModule').controller("VentaManualController",['$scope','Glob
 		   $scope.showConfirmacion ("¿Est\u00e1 seguro que desea guardar la venta?");
 	};
 	
-	$scope.guardar = function(ventaVO) {
+	$scope.guardar = function(ventaManualVO) {
 		
 		 $scope.errorGeneral='';
 		 $scope.mensajeGeneral='';
-		 ventaVO.idEmpresa = idEmpresa;
-		 
-		 VentaManualService.guardar(ventaVO)
+		 ventaManualVO.idEmpresa = idEmpresa;
+		 ventaManualVO.idAlmacen = idAlmacen;
+		 ventaManualVO.idCanal = idCanal;
+
+		 VentaManualService.guardar(ventaManualVO)
 		 .then(
 	      function(d) {
 	    	  if(d.errorCode){
 	        	  $scope.errorGeneral = d.message;
 	    	  }else{	 
-		 		  $scope.mensajeGeneral = 'Se ha guardado la venta';
 		 		  $scope.limpiarFormulario();
+		 		  $scope.mensajeGeneral = 'Se ha guardado la venta';
 		 		  $scope.guardarReporte(d.archivoExcelVO.archivo,d.archivoExcelVO.nombre);
 	    	  }
 	      },
@@ -167,8 +169,8 @@ angular.module('indexModule').controller("VentaManualController",['$scope','Glob
 		 	
 			 for(var i = 0; i < $scope.listaProductos.length; i++){
 				 if($scope.listaProductos[i].seleccionado == true) {
-				 	 for(var j = 0; j < $scope.ventaVO.productos.length; j++){
-				 	 	if($scope.ventaVO.productos[j].idProducto == $scope.listaProductos[i].idProducto){
+				 	 for(var j = 0; j < $scope.ventaManualVO.productos.length; j++){
+				 	 	if($scope.ventaManualVO.productos[j].idProducto == $scope.listaProductos[i].idProducto){
 							found = true;			
 				 	 	}
 				 	 }
@@ -179,7 +181,7 @@ angular.module('indexModule').controller("VentaManualController",['$scope','Glob
 							if($scope.listaProductos[i].cantidad<=0){
 								$scope.errorGeneral = 'No se puede agregar "'+$scope.listaProductos[i].nombre+'". La cantidad debe ser mayor a cero.';							
 							}else{
-								$scope.ventaVO.productos.push(angular.copy($scope.listaProductos[i]));
+								$scope.ventaManualVO.productos.push(angular.copy($scope.listaProductos[i]));
 								$scope.listaProductos[i].seleccionado = false;
 								$scope.listaProductos[i].cantidad = null;
 								$scope.seleccionarTodosCh = false;											
@@ -194,9 +196,9 @@ angular.module('indexModule').controller("VentaManualController",['$scope','Glob
 	 
 	 $scope.quitar = function(idProducto) { 
 	 		
-	 	for(var i = 0; i < $scope.ventaVO.productos.length; i++){
-	       	if( $scope.ventaVO.productos[i].idProducto == idProducto){
-	       		$scope.ventaVO.productos.splice(i,1);
+	 	for(var i = 0; i < $scope.ventaManualVO.productos.length; i++){
+	       	if( $scope.ventaManualVO.productos[i].idProducto == idProducto){
+	       		$scope.ventaManualVO.productos.splice(i,1);
 	       	}
 	 	} 	
 	 }
@@ -214,7 +216,7 @@ angular.module('indexModule').controller("VentaManualController",['$scope','Glob
 	    		 idMedida: null, nombreMedida:null, idUnidadMedida:null, nombreUnidadMedida:null,
 	    		 idMarca:null, nombreMarca:null, precioUnitario:null, nacional:null, cantidad:null,
 	    		 existencia: null, seleccionado:null };
-	 	 $scope.ventaVO = {idAlmacen: idAlmacen, productos: []}
+	 	 $scope.ventaManualVO = {idEmpresa: idEmpresa, idCanal: idCanal, idAlmacen: idAlmacen, productos: []}
 	     $scope.errorGeneral='';
 		 $scope.mensajeGeneral='';
 	 }	 
@@ -241,7 +243,7 @@ angular.module('indexModule').controller("VentaManualController",['$scope','Glob
 	    		 idMedida: null, nombreMedida:null, idUnidadMedida:null, nombreUnidadMedida:null,
 	    		 idMarca:null, nombreMarca:null, precioUnitario:null, nacional:null, cantidad:null,
 	    		 existencia: null, seleccionado:null };
-	 	 $scope.ventaVO = {idAlmacen: null, productos: []}
+	 	 $scope.ventaManualVO = {idEmpresa: null, idCanal: null, idAlmacen: null, productos: []}
 	 }
 	 
 	 $scope.cambiarEmpresa = function(){
@@ -254,7 +256,10 @@ angular.module('indexModule').controller("VentaManualController",['$scope','Glob
 		 idCanal = $scope.filtrosVO.idCanal;
 		 $scope.consultaAlmacenes(idCanal);
 	 }
-
+	 
+	 $scope.cambiarAlmacen = function(){
+		 idAlmacen = $scope.filtrosVO.idAlmacen;
+	 }
 	 		
 	 $scope.inicializarValores();	
 	 if($scope.isAdminGral=="true")

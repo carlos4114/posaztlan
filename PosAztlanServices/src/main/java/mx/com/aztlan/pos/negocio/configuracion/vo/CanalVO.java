@@ -5,6 +5,15 @@ public class CanalVO {
 	private String nombre;
 	private boolean activo;
 	private boolean canalUsuario;
+	
+	public CanalVO(){
+		
+	}
+	
+	public CanalVO(Integer idCanal){
+		this.idCanal = idCanal;
+	}
+	
 	public Integer getIdCanal() {
 		return idCanal;
 	}

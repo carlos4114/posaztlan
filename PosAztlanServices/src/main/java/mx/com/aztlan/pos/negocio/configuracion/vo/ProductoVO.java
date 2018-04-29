@@ -31,6 +31,7 @@ public class ProductoVO {
 	private String nombreEstatus;
 	private Integer cantidadRestante;
 	private String sku;
+	private BigDecimal precio;
 	
 	
 	public Integer getIdProducto() {
@@ -194,6 +195,12 @@ public class ProductoVO {
 	}
 	public void setSku(String sku) {
 		this.sku = sku;
+	}
+	public BigDecimal getPrecio() {
+		return precio;
+	}
+	public void setPrecio(BigDecimal precio) {
+		this.precio = precio;
 	}
 	
 	

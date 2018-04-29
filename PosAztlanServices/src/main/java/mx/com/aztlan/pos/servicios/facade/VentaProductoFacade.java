@@ -18,11 +18,13 @@ import io.jsonwebtoken.Claims;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.enumeration.ClaimsEnum;
 import mx.com.aztlan.pos.infraservices.servicios.BusinessGlobalException;
 import mx.com.aztlan.pos.infraservices.servicios.NotFoundException;
+import mx.com.aztlan.pos.negocio.administracion.vo.VentaManualVO;
 import mx.com.aztlan.pos.negocio.dulceria.vo.ArchivoPdfVO;
 import mx.com.aztlan.pos.negocio.dulceria.vo.PaqueteAgotadoVO;
 import mx.com.aztlan.pos.negocio.dulceria.vo.PaqueteVO;
 import mx.com.aztlan.pos.negocio.dulceria.vo.TicketVentaVO;
 import mx.com.aztlan.pos.negocio.dulceria.vo.VentaVO;
+import mx.com.aztlan.pos.negocio.reportes.vo.HttpResponseOcVO;
 import mx.com.aztlan.pos.servicios.dulceria.controller.VentaProductoController;
 
 @Service
@@ -85,6 +87,29 @@ public class VentaProductoFacade implements VentaProductoFacadeI {
 		
 		TicketVentaVO ticketVentaVO = ventaProductoController.createVenta(ventaVO);
 		return new ResponseEntity<TicketVentaVO>(ticketVentaVO, HttpStatus.CREATED);
+
+	}
+	
+	@Override
+	public ResponseEntity<HttpResponseOcVO> createVentaManual(HttpServletRequest request, @RequestBody VentaManualVO ventaManualVO) throws BusinessGlobalException, NotFoundException {
+		
+		Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
+		Integer idUsuario=(Integer) claims.get(ClaimsEnum.USUARIO);
+		Integer idCanal = (Integer) claims.get(ClaimsEnum.CANAL) == null ? ventaManualVO.getIdCanal() : (Integer) claims.get(ClaimsEnum.CANAL);
+		Integer idAlmacen=(Integer) claims.get(ClaimsEnum.ALMACEN)==null? ventaManualVO.getIdAlmacen() : (Integer) claims.get(ClaimsEnum.ALMACEN);
+		Integer idCaja=(Integer) claims.get(ClaimsEnum.CAJA);
+		
+		VentaVO ventaVO  = new VentaVO();
+		ventaVO.setIdEmpresa(ventaManualVO.getIdEmpresa());
+		ventaVO.setIdUsuario(idUsuario);
+		ventaVO.setIdCanal(idCanal);
+		ventaVO.setIdAlmacen(idAlmacen);
+		ventaVO.setIdCaja(idCaja);
+		
+		logger.info("CreateVentaManual:::IdUsuario[{}]:::IdCanal[{}]:::IdAlmacen[{}]",idUsuario,idCanal,idAlmacen);
+		
+		HttpResponseOcVO responseVO = ventaProductoController.createVentaManual(ventaManualVO, ventaVO);
+		return new ResponseEntity<HttpResponseOcVO>(responseVO, HttpStatus.CREATED);
 
 	}
 	

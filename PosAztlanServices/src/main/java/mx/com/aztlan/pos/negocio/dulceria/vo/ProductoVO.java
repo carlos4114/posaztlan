@@ -19,6 +19,13 @@ public class ProductoVO {
 
 //	private Set<ImpuestoXProducto> impuestoXProductos = new HashSet<ImpuestoXProducto>(0);
 	
+	public ProductoVO(){
+		
+	}
+	public ProductoVO(Integer idProducto){
+		this.idProducto = idProducto;
+	}
+	
 	public Integer getIdProducto() {
 		return idProducto;
 	}

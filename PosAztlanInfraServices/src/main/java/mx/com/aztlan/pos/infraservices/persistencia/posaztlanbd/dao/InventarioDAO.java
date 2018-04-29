@@ -82,16 +82,16 @@ public class InventarioDAO extends GlobalHibernateDAO<Inventario> implements Inv
 	}
 	
 	@Override
-	public List<Inventario> findByIdArticuloAndFirtsIn(Integer idPuntoVenta,Integer idArticulo) {
+	public List<Inventario> findByIdArticuloAndFirtsIn(Integer idAlmacen,Integer idProducto) {
 		StringBuilder hql = new StringBuilder();
 		hql.append("select inv from Inventario inv  ");
-		hql.append("where inv.puntoVenta.idPuntoVenta = :idPuntoVenta and  inv.articulo.idArticulo = :idArticulo " );
+		hql.append("where inv.almacen.idAlmacen = :idAlmacen and  inv.producto.idProducto = :idProducto " );
 		hql.append("and inv.existenciaActual > 0 ");
 		hql.append("order by inv.fecha asc");
 
 		Query query = getSession().createQuery(hql.toString());
-		query.setParameter("idPuntoVenta", idPuntoVenta);
-		query.setParameter("idArticulo", idArticulo);
+		query.setParameter("idAlmacen", idAlmacen);
+		query.setParameter("idProducto", idProducto);
 				
 		List<Inventario> inventarios = query.list();
 
@@ -117,16 +117,16 @@ public class InventarioDAO extends GlobalHibernateDAO<Inventario> implements Inv
 	}
 	
 	@Override
-	public List<Inventario> findByArticuloByProveedor(Integer idPuntoVenta,Integer idArticulo,Integer idProveedor) {
+	public List<Inventario> findByArticuloByProveedor(Integer idAlmacen,Integer idProducto,Integer idProveedor) {
 		StringBuilder hql = new StringBuilder();
 		hql.append("select inv from Inventario inv  ");
-		hql.append("where inv.puntoVenta.idPuntoVenta = :idPuntoVenta and  inv.articulo.idArticulo = :idArticulo " );
+		hql.append("where inv.almacen.idAlmacen = :idAlmacen and  inv.producto.idProducto = :idProducto " );
 		hql.append("and existenciaActual > 0 and inv.proveedor.idProveedor= :idProveedor ");
 		hql.append("order by inv.fecha asc");
 
 		Query query = getSession().createQuery(hql.toString());
-		query.setParameter("idPuntoVenta", idPuntoVenta);
-		query.setParameter("idArticulo", idArticulo);
+		query.setParameter("idAlmacen", idAlmacen);
+		query.setParameter("idProducto", idProducto);
 		query.setParameter("idProveedor", idProveedor);
 		
 		List<Inventario>  inventario = query.list();
@@ -135,15 +135,15 @@ public class InventarioDAO extends GlobalHibernateDAO<Inventario> implements Inv
 	}
 	
 	@Override
-	public BigDecimal getCostoUltimasSalidasByArticulo(Integer idPuntoVenta, Integer idArticulo) {
+	public BigDecimal getCostoUltimasSalidasByArticulo(Integer idAlmacen, Integer idProducto) {
 		StringBuilder hql = new StringBuilder();
 		hql.append("select sum(mov.importe) from MovimientoInventario mov ");
-		hql.append("where mov.puntoVenta.idPuntoVenta = :idPuntoVenta and mov.articulo.idArticulo = :idArticulo " );
+		hql.append("where mov.almacen.idAlmacen = :idAlmacen and mov.producto.idProducto = :idProducto " );
 		hql.append("and mov.tipoMovimientoInv.esEntrada = false and mov.inventario.existenciaActual > 0 ");
 
 		Query query = getSession().createQuery(hql.toString());
-		query.setParameter("idPuntoVenta", idPuntoVenta);
-		query.setParameter("idArticulo", idArticulo);
+		query.setParameter("idAlmacen", idAlmacen);
+		query.setParameter("idProducto", idProducto);
 		
 		List result = query.list();
 		BigDecimal importe = new BigDecimal(0);

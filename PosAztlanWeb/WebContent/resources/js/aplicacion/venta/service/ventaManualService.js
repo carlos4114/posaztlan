@@ -8,7 +8,7 @@ angular.module('indexModule').service("VentaManualService", ['$http', '$q','Glob
 		var URI_CONSULTA_CANALES = URI_SERVICIO + "/catalogo/canalesEmpresa";
 		var URI_CONSULTA_ALMACENES = URI_SERVICIO + "/catalogo/subalmacenes";
 		var URI_BUSCAR = URI_SERVICIO + "/productos/obtenerExistencia";
-		var URI_GUARDAR_VENTA = URI_SERVICIO + "/ordenesCompra/guardar";
+		var URI_GUARDAR_VENTA = URI_SERVICIO + "/ventaProducto/ventaManual";
 		
 	    var factory = {
 	        consultaEmpresas: consultaEmpresas,
@@ -74,7 +74,7 @@ angular.module('indexModule').service("VentaManualService", ['$http', '$q','Glob
 	        return invocarServicioGet(URI_CONSULTA_ALMACENES+"/"+idCanal);
 	    }
 	    
-	    function guardar(ventaVO) {	    	
-	        return invocarServicioPost(URI_GUARDAR_VENTA,ventaVO);	    				 	        
+	    function guardar(ventaManualVO) {	    	
+	        return invocarServicioPost(URI_GUARDAR_VENTA,ventaManualVO);	    				 	        
 	    }
 }]);

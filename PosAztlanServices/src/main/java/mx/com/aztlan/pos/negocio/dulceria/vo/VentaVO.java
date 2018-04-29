@@ -13,6 +13,7 @@ public class VentaVO {
 	private List<PaqueteVO> paquetesVO;
 	private List<PagoVO> pagosVO;
 	private BigDecimal total;
+	private String tipoVenta; 
 	
 	public BigDecimal getTotal() {
 		return total;
@@ -61,6 +62,12 @@ public class VentaVO {
 	}
 	public void setIdEmpresa(Integer idEmpresa) {
 		this.idEmpresa = idEmpresa;
+	}
+	public String getTipoVenta() {
+		return tipoVenta;
+	}
+	public void setTipoVenta(String tipoVenta) {
+		this.tipoVenta = tipoVenta;
 	}
 	
 }

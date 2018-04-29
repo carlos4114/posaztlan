@@ -33,6 +33,7 @@ public final class Constantes {
 	public static final String SALIDA_X_TRASPASO = "TRA-OUT-009";
 	public static final String SALIDA_X_DEVOLUCION = "DEV-OUT-010";
 	public static final String SALIDA_X_VENTA = "VEN-OUT-007";	
+	public static final String SALIDA_X_VENTA_MAN = "VEN-OUT-MAN-013";	
 	public static final String ENTRADA_X_AJUSTE_MANUAL = "AJU-IN-005";
 	public static final String SALIDA_X_AJUSTE_MANUAL = "AJU-OUT-012";
 	public static final int ARTICULO_EN_CONTEO = 0;

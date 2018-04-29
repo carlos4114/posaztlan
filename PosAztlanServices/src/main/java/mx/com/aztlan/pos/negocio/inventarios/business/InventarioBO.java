@@ -345,12 +345,13 @@ public class InventarioBO {
 								idUsuario, Long.valueOf(cantidad), importeSalida,
 								existenciaActualSalida, idAlmacen,
 								movimientoInventarioVO.getIdAlmacenConsigna() != null
-										? movimientoInventarioVO.getIdAlmacenConsigna() : 0,
+										? movimientoInventarioVO.getIdAlmacenConsigna() : null,
 								inventario.getIdInventario()));			
 						movimientosInventario.add(movInventarioSalida);
 						
 						//Para el tipo de movimiento de salida por venta no se requiere autorizacion
-						if (!tipoMovimientoInvSalida.getClave().equalsIgnoreCase(Constantes.SALIDA_X_VENTA)) {
+						if (!tipoMovimientoInvSalida.getClave().equalsIgnoreCase(Constantes.SALIDA_X_VENTA) && 
+								!tipoMovimientoInvSalida.getClave().equalsIgnoreCase(Constantes.SALIDA_X_VENTA_MAN)) {
 							// Guarda autorizacion de salida
 							if(autorizacion!=null){
 								autorizacionMovimientoSalida = new AutorizacionMovimiento();
@@ -373,11 +374,11 @@ public class InventarioBO {
 							importeTraspaso = importeSalida;
 			
 							// Guarda entrada por traspaso
-						// OJO CON ESTO............	inventarioTraspaso = InventarioAssembler.getInventario(
-									//movimientoInventarioVO.getIdProducto(), inventario.getProveedor(), inventario.getLote(),
-									//tipoMovimientoInvEntrada, idUsuario, Long.valueOf(cantidad),
-									//importeTraspaso, cantidad,
-									//movimientoInventarioVO.getIdAlmacenConsigna());							
+						inventarioTraspaso = InventarioAssembler.getInventario(
+									movimientoInventarioVO.getIdProducto(), inventario.getProveedor(), inventario.getLote(),
+									tipoMovimientoInvEntrada, idUsuario, Long.valueOf(cantidad),
+									importeTraspaso, cantidad,
+									movimientoInventarioVO.getIdAlmacenConsigna(),null);
 							//Al tratarse de un traspaso se asignara la misma fecha de entrada de inventario para respetar el metodo PEPS
 							inventarioTraspaso.setFecha(inventario.getFecha());
 							inventarioTraspaso = inventarioDAO.save(inventarioTraspaso);
@@ -388,7 +389,7 @@ public class InventarioBO {
 											inventarioTraspaso.getProducto().getIdProducto(), inventarioTraspaso.getProveedor(),
 											tipoMovimientoInvEntrada, idUsuario, Long.valueOf(inventarioTraspaso.getCantidad()),
 											importeTraspaso, inventarioTraspaso.getExistenciaActual(),
-											movimientoInventarioVO.getIdAlmacenConsigna(), idAlmacen,
+											movimientoInventarioVO.getIdAlmacenConsigna(),idAlmacen,
 											inventarioTraspaso.getIdInventario()));
 							
 							movimientosInventario.add(movInventarioEntrada);

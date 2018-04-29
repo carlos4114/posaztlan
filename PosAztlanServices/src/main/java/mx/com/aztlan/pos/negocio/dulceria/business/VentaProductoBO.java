@@ -1,11 +1,10 @@
 package mx.com.aztlan.pos.negocio.dulceria.business;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,18 +13,20 @@ import java.util.ResourceBundle;
 
 import javax.servlet.ServletContext;
 
+import org.hibernate.HibernateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.ArticuloDAO;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.CineDAO;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.FolioSecuenciaDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.ImpuestoXProductoDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.ImpuestosXTicketPaqueteDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.ImpuestosXTicketProductoDAOI;
-import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.MovimientoInventarioDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.PagoDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.PaqueteXPuntoVentaDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.PaqueteXTicketDAOI;
@@ -36,6 +37,7 @@ import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.TipoMovimien
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Articulo;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ArticulosXProducto;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Cine;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.FolioSecuencia;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ImpuestoXProducto;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ImpuestosXTicketPaquete;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ImpuestosXTicketProducto;
@@ -50,6 +52,7 @@ import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.TicketVenta;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.TipoMovimientoInv;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.vo.ArticuloExistenciaVO;
 import mx.com.aztlan.pos.infraservices.servicios.BusinessGlobalException;
+import mx.com.aztlan.pos.infraservices.servicios.NotFoundException;
 import mx.com.aztlan.pos.negocio.dulceria.assembler.ImpuestoXTicketPaqueteAssembler;
 import mx.com.aztlan.pos.negocio.dulceria.assembler.ImpuestosXTicketProductoAssembler;
 import mx.com.aztlan.pos.negocio.dulceria.assembler.PagoAssembler;
@@ -58,7 +61,6 @@ import mx.com.aztlan.pos.negocio.dulceria.assembler.PaqueteXTicketAssembler;
 import mx.com.aztlan.pos.negocio.dulceria.assembler.ProductoXTicketAssembler;
 import mx.com.aztlan.pos.negocio.dulceria.assembler.TicketVentaAssembler;
 import mx.com.aztlan.pos.negocio.dulceria.vo.ArchivoPdfVO;
-import mx.com.aztlan.pos.negocio.dulceria.vo.ArticuloXProductoVO;
 import mx.com.aztlan.pos.negocio.dulceria.vo.DetalleImpuestoPdfVO;
 import mx.com.aztlan.pos.negocio.dulceria.vo.DetallePagoPdfVO;
 import mx.com.aztlan.pos.negocio.dulceria.vo.DetalleTicketPdfVO;
@@ -72,8 +74,10 @@ import mx.com.aztlan.pos.negocio.dulceria.vo.TicketVentaVO;
 import mx.com.aztlan.pos.negocio.dulceria.vo.VentaVO;
 import mx.com.aztlan.pos.negocio.inventarios.business.InventarioBO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ParametrosInventarioVO;
+import mx.com.aztlan.pos.negocio.reportes.business.ReporteJasperBO;
+import mx.com.aztlan.pos.negocio.reportes.vo.ArchivoExcelVO;
+import mx.com.aztlan.pos.negocio.reportes.vo.ReporteJasperVO;
 import mx.com.aztlan.pos.servicios.util.Constantes;
-import mx.com.aztlan.pos.servicios.util.MovimientoInvType;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperRunManager;
@@ -125,6 +129,12 @@ public class VentaProductoBO {
 
 	@Autowired
 	private ServletContext context;
+	
+	@Autowired
+	private ReporteJasperBO reporteJasperBO;
+	
+	@Autowired
+	private FolioSecuenciaDAOI folioSecuenciaDAO;	
 
 	public List<PaqueteVO> getPaquetes(Integer idPuntoVenta) throws BusinessGlobalException {
 
@@ -231,7 +241,7 @@ public class VentaProductoBO {
 	}
 
 	
-	/*public TicketVentaVO createVenta(VentaVO ventaVO) throws BusinessGlobalException {
+	/*VENTA DE MUVITUL public TicketVentaVO createVenta(VentaVO ventaVO) throws BusinessGlobalException {
 		BigDecimal total = new BigDecimal(0);
 		BigDecimal subtotal = new BigDecimal(0);
 		BigDecimal descuento = new BigDecimal(0);
@@ -352,6 +362,52 @@ public class VentaProductoBO {
 		return TicketVentaAssembler.getTicketVentaVO(ticketVenta);
 	}*/
 	
+	@Transactional(readOnly = true)
+	public ArchivoExcelVO crearXlsVentaManual(Integer idTicket) throws BusinessGlobalException  {
+		ArchivoExcelVO archivoExcelVO = new ArchivoExcelVO("VentaManual");
+		
+		ResourceBundle cfg = ResourceBundle.getBundle("config");
+		String rutaJasper = cfg.getString("reporte.venta.manual.jasper");
+		String rutaReporteXls = context.getRealPath(cfg.getString("reporte.venta.manual.xls"));
+			  	 
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("ID_TICKET", idTicket);
+ 
+		ReporteJasperVO reporteJasperVO = new ReporteJasperVO();
+		reporteJasperVO.setRutaReporte(rutaJasper);
+		reporteJasperVO.setRutaPdf(rutaReporteXls);
+		reporteJasperVO.setParametros(params);
+		 
+		try {
+			archivoExcelVO.setArchivo(reporteJasperBO.getReporteXls(reporteJasperVO));
+		} catch (HibernateException | BusinessGlobalException | NotFoundException | IOException | JRException e) {
+			
+			e.printStackTrace();
+		}
+		
+		return archivoExcelVO;
+	}
+	
+	@Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
+	public Integer obtenerSiguienteNoTicket(Integer idEmpresa) throws BusinessGlobalException  {
+				
+		//creamos el nuevo numero de ticket (basado en la tabla de secuencias)
+				FolioSecuencia folioSecuencia = this.folioSecuenciaDAO.getById(idEmpresa);
+				Integer folio = null;
+				if(folioSecuencia==null){
+					folio = 1;
+					FolioSecuencia folioSecuenciaNuevo = new FolioSecuencia(idEmpresa);
+					folioSecuenciaNuevo.setUltimoNoTicket(1);
+					this.folioSecuenciaDAO.save(folioSecuenciaNuevo);
+				}else{
+					folio = folioSecuencia.getUltimoNoTicket()+1;
+					folioSecuencia.setUltimoNoTicket(folio);
+					this.folioSecuenciaDAO.update(folioSecuencia);
+				}
+		return folio;
+	}
+	
+	@Transactional(readOnly = false, isolation = Isolation.SERIALIZABLE)
 	public TicketVentaVO createVenta(VentaVO ventaVO) throws BusinessGlobalException {
 		BigDecimal total = new BigDecimal(0);
 		BigDecimal subtotal = new BigDecimal(0);
@@ -378,9 +434,12 @@ public class VentaProductoBO {
 
 			}
 		}
+		
+		//creamos el nuevo numero de ticket (basado en la tabla de secuencias)		
+		Integer folio = obtenerSiguienteNoTicket(ventaVO.getIdEmpresa());
 
 		TicketVenta ticketVenta = ticketVentaDAO.save(TicketVentaAssembler.getTicketVenta(ventaVO.getIdUsuario(),
-				ventaVO.getIdAlmacen(), ventaVO.getIdCaja(), descuento, subtotal, total));
+				ventaVO.getIdAlmacen(), ventaVO.getIdCaja(), descuento, subtotal, total, folio));
 
 		List<PaquetesXTicket> paquetesXTicket = PaqueteXTicketAssembler.getPaquetesXTicket(ventaVO.getPaquetesVO(),
 				ticketVenta);
@@ -446,7 +505,7 @@ public class VentaProductoBO {
 		}
 
 		TipoMovimientoInv tipoMovimientoInvOut = tipoMovimientoInvDAO
-				.findByClave(MovimientoInvType.VENTA_OUT.getType());
+				.findByClave(ventaVO.getTipoVenta());
 
 		for (Entry<Integer, MovimientoInventario> entryMovInventario : mapMovimientoInventario.entrySet()) {
 
@@ -472,8 +531,6 @@ public class VentaProductoBO {
 			BigDecimal cambio, Integer idCine) throws BusinessGlobalException {
 		ResourceBundle cfg = ResourceBundle.getBundle("config");
 		String rutaJasper = cfg.getString("dulceria.ticket.jasper");
-		SimpleDateFormat sdf = new SimpleDateFormat(Constantes.FORMAT_DDMMYYYYHHMMSSSSS);
-		String fecha = sdf.format(new Date());
 		List<ArchivoPdfVO> archivosPdfVO = new ArrayList<ArchivoPdfVO>();
 
 		pagoCon = pagoCon.setScale(2, RoundingMode.CEILING);

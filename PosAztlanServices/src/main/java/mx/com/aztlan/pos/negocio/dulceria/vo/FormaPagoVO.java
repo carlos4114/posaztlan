@@ -6,6 +6,14 @@ public class FormaPagoVO {
 	private boolean requiereNumCuenta;
 	private boolean activo;
 	
+	public FormaPagoVO(){
+		
+	}
+	public FormaPagoVO(Integer idFormaPago){
+		this.idFormaPago = idFormaPago;
+	}
+	
+	
 	public Integer getIdFormaPago() {
 		return idFormaPago;
 	}

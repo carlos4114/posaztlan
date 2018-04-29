@@ -15,8 +15,14 @@ public class FolioSecuencia implements java.io.Serializable {
 
 	private Integer idEmpresa;
 	private Integer ultimoFolioOc;
+	private Integer ultimoNoTicket;
+	
 
 	public FolioSecuencia() {
+	}
+	
+	public FolioSecuencia(Integer idEmpresa) {
+		this.idEmpresa = idEmpresa;
 	}
 	
 	public FolioSecuencia(Integer idEmpresa, Integer ultimoFolioOc) {
@@ -42,6 +48,15 @@ public class FolioSecuencia implements java.io.Serializable {
 
 	public void setUltimoFolioOc(Integer ultimoFolioOc) {
 		this.ultimoFolioOc = ultimoFolioOc;
+	}
+	
+	@Column(name = "ultimo_no_ticket", nullable = false)
+	public Integer getUltimoNoTicket() {
+		return this.ultimoNoTicket;
+	}
+
+	public void setUltimoNoTicket(Integer ultimoNoTicket) {
+		this.ultimoNoTicket = ultimoNoTicket;
 	}
 
 }

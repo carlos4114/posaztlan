@@ -19,7 +19,7 @@ public class ImpuestoXProductoDAO extends GlobalHibernateDAO<ImpuestoXProducto> 
 		hql.append("order by ixp.idImpuestoXProducto desc ");
 
 		Query query = getSession().createQuery(hql.toString());
-		query.setParameter("idCine", idEmpresa);
+		query.setParameter("idEmpresa", idEmpresa);
 		query.setParameter("idProducto", idProducto);
 		
 		return query.list();

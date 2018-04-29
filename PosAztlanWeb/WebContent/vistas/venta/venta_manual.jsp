@@ -48,6 +48,7 @@
 			                        </label>
 			                        <div class="col-md-6 col-sm-6 col-xs-12">
 										<select class="form-control col-md-7 col-xs-12" id="almacen" name="almacen" directiva-select2
+											ng-change="cambiarAlmacen()"
 											ng-options="almacen.idAlmacen as almacen.nombre for almacen in listaAlmacenes"
 											ng-model="filtrosVO.idAlmacen">
 											<option value="" selected="selected">Selecciona un almacén
@@ -116,7 +117,7 @@
 										<tr ng-repeat="producto in listaProductos">
 											<td>
 												<div>
-													<input type="checkbox" class="icheckbox_flat-green" ng-model="producto.seleccionado">
+													<input type="checkbox" ng-disabled="producto.validarExistencia && producto.existencia<=0" class="icheckbox_flat-green" ng-model="producto.seleccionado">
 												</div>
 											</td>
 											<td class="text-center">{{producto.sku}}</td>
@@ -130,7 +131,7 @@
 											<td>{{producto.precio}}</td>
 											<td>
 												<div>
-													<input type="text" ng-model="producto.cantidad" class="col-xs-10">
+													<input type="text" ng-disabled="producto.validarExistencia && producto.existencia<=0" ng-model="producto.cantidad" class="col-xs-10">
 												</div>
 											</td>											
 										</tr>
@@ -179,7 +180,7 @@
 									   	</thead>
 
 										<tbody>
-									    	<tr dir-paginate="p in ventaVO.productos |  filter: filterSearch |itemsPerPage: 10">   
+									    	<tr dir-paginate="p in ventaManualVO.productos |  filter: filterSearch |itemsPerPage: 10">   
 									        	<td class="text-center"><span ng-bind="p.sku"></span></td>
 									        	<td class="text-center"><span ng-bind="p.nombre"></span></td>
 												<td class="text-center"><span ng-bind="p.familia"></span></td>

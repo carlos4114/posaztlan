@@ -33,6 +33,7 @@ public class TicketVenta implements java.io.Serializable {
 	private BigDecimal descuento;
 	private BigDecimal importe;
 	private BigDecimal total;
+	private Integer noTicket;
 	private Set<ProductosXTicket> productosXTickets = new HashSet<ProductosXTicket>(0);
 	private Set<ImpuestosXTicketTaquilla> impuestosXTicketTaquillas = new HashSet<ImpuestosXTicketTaquilla>(0);
 	private Set<PromocionesXTicket> promocionesXTickets = new HashSet<PromocionesXTicket>(0);
@@ -94,6 +95,15 @@ public class TicketVenta implements java.io.Serializable {
 
 	public void setIdTicket(Integer idTicket) {
 		this.idTicket = idTicket;
+	}
+	
+	@Column(name = "no_ticket", nullable = false)
+	public Integer getNoTicket() {
+		return this.noTicket;
+	}
+
+	public void setNoTicket(Integer noTicket) {
+		this.noTicket = noTicket;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
