@@ -47,7 +47,7 @@ public class InventarioAssembler {
 		inventario.setAlmacen(AlmacenAssembler.getAlmacen(idAlmacen));
 		inventario.setUsuarioUltimoMovimiento(UsuarioAssembler.getUsuario(idUsuario));
 		inventario.setUltimoMovimiento(new Date());
-		inventario.setOrdenCompra(new OrdenCompra(idOrdenCompra));
+		inventario.setOrdenCompra(idOrdenCompra==null?null:new OrdenCompra(idOrdenCompra));
 		return inventario;
 	}
 

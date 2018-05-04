@@ -12,4 +12,6 @@ public interface TipoMovimientoInvDAOI extends GlobalHibernateDAOI<TipoMovimient
 	TipoMovimientoInv findByClaveIsEntrada(String clave,Boolean esEntrada);
 	List<TipoMovimientoInv> findByIsEntrada(Boolean esEntrada);
 	List<TipoMovimientoInv> findByTypeClave(String clave);
+	
+	
 }

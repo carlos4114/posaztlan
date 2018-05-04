@@ -19,6 +19,7 @@ import mx.com.aztlan.pos.negocio.inventarios.vo.ArticulosCorteVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ArticulosXPuntoVentaVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.InventarioVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ParametrosInventarioVO;
+import mx.com.aztlan.pos.negocio.inventarios.vo.SalidaVO;
 import mx.com.aztlan.pos.servicios.util.Constantes;
 
 @Service
@@ -62,16 +63,29 @@ public class InventarioController {
 		return inventarioBO.getExistenciaArticuloPorProveedores(idPuntoVenta,idArticulo);
 	}
 	
-	/*public Integer createSalida(ParametrosInventarioVO movimientoInventarioVO,Integer idCine,Integer idPuntoVenta,Integer idUsuario) throws BusinessGlobalException {
-		List<MovimientoInventario> movimientosInventario = inventarioBO.createSalida(movimientoInventarioVO,idCine,idPuntoVenta,idUsuario);
+	public Integer createSalida(ParametrosInventarioVO movimientoInventarioVO,Integer idCanal,Integer idAlmacen,Integer idUsuario) throws BusinessGlobalException {
+		List<MovimientoInventario> movimientosInventario = inventarioBO.createSalida(movimientoInventarioVO,idCanal,idAlmacen,idUsuario);
 		if(movimientosInventario!=null && !movimientosInventario.isEmpty()){
 			return movimientosInventario.size();
 		}else{
 			return 0;
 		}
 		 
-	}*/
+	}
 	
+	public void createSalidas(SalidaVO salidaVO,Integer idUsuario) throws BusinessGlobalException {
+		
+		inventarioBO.createSalidas(salidaVO,idUsuario);
+		 
+	}
+	
+	public void createTraspaso(SalidaVO salidaVO,Integer idUsuario) throws BusinessGlobalException {
+		
+		salidaVO.setClaveTipoMovimiento(Constantes.SALIDA_X_TRASPASO);
+		inventarioBO.createSalidas(salidaVO,idUsuario);
+	}
+	
+
 	public Integer createEntrada(ParametrosInventarioVO movimientoInventarioVO, Integer idUsuario) throws BusinessGlobalException {
 			
 		Inventario movimientoInventario = inventarioBO.createEntrada(movimientoInventarioVO,idUsuario);

@@ -9,4 +9,6 @@ public interface AlmacenDAOI extends GlobalHibernateDAOI<Almacen>{
 	List<Almacen> findByIdCanal(Integer idCanal);
 	List<Almacen> findSubAlmacenesByIdCanal(Integer idCanal);
 	Integer getAlmacenCentral(Integer idEmpresa);
+	List<Almacen> findByAlmacenPadre(Integer idAlmacen);
+	List<Almacen> findByIdEmpresa(Integer idEmpresa);
 }

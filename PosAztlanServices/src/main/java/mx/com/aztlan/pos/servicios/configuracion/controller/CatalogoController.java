@@ -73,6 +73,11 @@ public class CatalogoController {
 		return catalogoBO.findByCanalAlmacenes(idCanal);
 	}
 	
+	@Transactional (readOnly=true)
+	public List<AlmacenVO> getAlmacenesXEmpresa(Integer idEmpresa)  throws BusinessGlobalException{
+		return catalogoBO.findAlmacenesXEmpresa(idEmpresa);
+	}
+	
 	@Transactional (readOnly=true) 
 	public List<AlmacenVO> getSubAlmacenes(Integer idCanal)  throws BusinessGlobalException{
 		return catalogoBO.findByCanalSubAlmacenes(idCanal);
@@ -141,6 +146,10 @@ public class CatalogoController {
 	
 	public List<CatalogoVO> getProveedores(Integer idEmpresa)  throws BusinessGlobalException{
 		return catalogoBO.getProveedores(idEmpresa);
+	}
+	
+	public List<CatalogoVO> getAlmacenesDestino(Integer idAlmacen)  throws BusinessGlobalException{
+		return catalogoBO.getAlmacenesDestino(idAlmacen);
 	}
 	
 	public List<CatalogoVO> getPuntosVentaXArticulo(Integer idArticulo)  throws BusinessGlobalException{

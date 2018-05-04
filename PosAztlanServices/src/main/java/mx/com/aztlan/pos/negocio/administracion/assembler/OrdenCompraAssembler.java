@@ -92,6 +92,7 @@ public class OrdenCompraAssembler {
 		
 		OrdenCompraVO ordenCompraVO = new OrdenCompraVO();
 		
+		ordenCompraVO.setIdEmpresa(ordenCompra.getEmpresa().getIdEmpresa());
 		ordenCompraVO.setIdOrdenCompra(ordenCompra.getIdOrdenCompra());
 		ordenCompraVO.setDescuento(ordenCompra.getDescuento());
 		ordenCompraVO.setIdEstatusOrdenCompra(ordenCompra.getEstatusOrdenCompra().getIdEstatusOrdenCompra());

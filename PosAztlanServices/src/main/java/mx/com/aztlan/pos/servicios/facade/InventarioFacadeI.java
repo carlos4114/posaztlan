@@ -26,6 +26,7 @@ import mx.com.aztlan.pos.negocio.inventarios.vo.ArticulosXPuntoVentaVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ParametrosBusquedaVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.InventarioVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ParametrosInventarioVO;
+import mx.com.aztlan.pos.negocio.inventarios.vo.SalidaVO;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -52,8 +53,12 @@ public interface InventarioFacadeI {
 	ResponseEntity<List<InventarioVO>> getExistenciaArticuloPorProveedor(HttpServletRequest request,@RequestParam(value = "idArticulo") Integer idArticulo)
 			throws BusinessGlobalException, NotFoundException;
 	
-	@RequestMapping(value = "/articulo/salida", method = RequestMethod.POST)
-	ResponseEntity<Integer> createSalida(HttpServletRequest request,@RequestBody ParametrosInventarioVO movimientoInventarioVO)			
+	@RequestMapping(value = "/producto/salida", method = RequestMethod.POST)
+	ResponseEntity<Integer> createSalidas(HttpServletRequest request,@RequestBody SalidaVO salidaVO)			
+			throws BusinessGlobalException, NotFoundException;
+	
+	@RequestMapping(value = "/traspaso", method = RequestMethod.POST)
+	ResponseEntity<Integer> createTraspaso(HttpServletRequest request,@RequestBody SalidaVO salidaVO)			
 			throws BusinessGlobalException, NotFoundException;
 	
 	@RequestMapping(value = "/producto/entrada", method = RequestMethod.POST)
@@ -103,4 +108,7 @@ public interface InventarioFacadeI {
 	@RequestMapping(value = "/entradaOrdenCompra", method = RequestMethod.POST)
 	public ResponseEntity<Integer> createEntradaOrdenCompra(HttpServletRequest request,@RequestBody OrdenCompraVO ordenCompraVO) throws BusinessGlobalException, NotFoundException;
 	
+	@RequestMapping(value = "/consultaTipoMovimientoInv/{isEntrada}", method = RequestMethod.GET)
+	ResponseEntity<List<TipoMovimientoInvVO>> getTipoMovimientoInv(HttpServletRequest request, @PathVariable("isEntrada") Boolean isEntrada)
+			throws BusinessGlobalException, NotFoundException;
 }

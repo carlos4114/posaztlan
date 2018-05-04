@@ -176,25 +176,16 @@ public class OrdenCompraBO {
 		ordenCompraDAO.update(ordenCompra);
 		
 		for(ProductoVO productoVO: ordenCompraVO.getProductos()) {
-			if(productoVO.getCantidadRestante() > 0) {
-				OrdenCompraDetalle detalle = ordenCompraDetalleDAO.findById(
-						new OrdenCompraDetalleId(ordenCompraVO.getIdOrdenCompra(), productoVO.getIdProducto()));
-				detalle.setCantidadFinal(productoVO.getCantidadFinal());
-				detalle.setPrecioUnitarioFinal(productoVO.getPrecioUnitarioFinal());
-				detalle.setEstatusOrdenCompra(new EstatusOrdenCompra(EstatusOrdenCompraEnum.CERRADA));
-				detalle.setCantidadRestante(productoVO.getCantidadRestante() - (productoVO.getCantidadFinal()==null?0:productoVO.getCantidadFinal()));
+			OrdenCompraDetalle detalle = ordenCompraDetalleDAO.findById(
+					new OrdenCompraDetalleId(ordenCompraVO.getIdOrdenCompra(), productoVO.getIdProducto()));
+			detalle.setPrecioUnitarioFinal(productoVO.getPrecioUnitarioFinal());
+			detalle.setEstatusOrdenCompra(new EstatusOrdenCompra(EstatusOrdenCompraEnum.CERRADA));
+			detalle.setCantidadRestante(productoVO.getCantidadRestante() - productoVO.getCantidadFinal());
+			detalle.setCantidadFinal(productoVO.getCantidadFinal() + (detalle.getCantidadFinal()==null?0:detalle.getCantidadFinal()));
 				
-				ordenCompraDetalleDAO.update(detalle);
-			}else {
-				OrdenCompraDetalle detalle = ordenCompraDetalleDAO.findById(
-						new OrdenCompraDetalleId(ordenCompraVO.getIdOrdenCompra(), productoVO.getIdProducto()));
-				detalle.setCantidadFinal(productoVO.getCantidad());
-				detalle.setEstatusOrdenCompra(new EstatusOrdenCompra(EstatusOrdenCompraEnum.CERRADA));
-				
-				ordenCompraDetalleDAO.update(detalle);
-			}
-			
+			ordenCompraDetalleDAO.update(detalle);
 		}
+		
 		
 		return responseVO;
 	}
@@ -216,10 +207,11 @@ public class OrdenCompraBO {
 		for(ProductoVO productoVO: ordenCompraVO.getProductos()) {
 			OrdenCompraDetalle detalle = ordenCompraDetalleDAO.findById(
 					new OrdenCompraDetalleId(ordenCompraVO.getIdOrdenCompra(), productoVO.getIdProducto()));
-			detalle.setCantidadFinal(productoVO.getCantidadFinal());
 			detalle.setPrecioUnitarioFinal(productoVO.getPrecioUnitarioFinal());
 			detalle.setEstatusOrdenCompra(new EstatusOrdenCompra(EstatusOrdenCompraEnum.PARCIAL));
 			detalle.setCantidadRestante(productoVO.getCantidadRestante() - productoVO.getCantidadFinal());
+			detalle.setCantidadFinal(productoVO.getCantidadFinal() + (detalle.getCantidadFinal()==null?0:detalle.getCantidadFinal()));
+				
 			ordenCompraDetalleDAO.update(detalle);
 		}
 		

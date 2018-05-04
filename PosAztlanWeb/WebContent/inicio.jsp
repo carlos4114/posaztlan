@@ -319,7 +319,10 @@
             <script src="<c:url value='/resources/js/aplicacion/inventarios/controller/salidasDulceriaController.js' />"></script>
             <script src="<c:url value='/resources/js/aplicacion/inventarios/controller/conteoInventarioController.js' />"></script>
             <script src="<c:url value='/resources/js/aplicacion/inventarios/service/inventarioAngularService.js' />"></script>
-
+            <script src="<c:url value='/resources/js/aplicacion/inventarios/controller/salidasController.js' />"></script>
+            <script src="<c:url value='/resources/js/aplicacion/inventarios/service/salidasService.js' />"></script>
+			<script src="<c:url value='/resources/js/aplicacion/inventarios/controller/traspasoController.js' />"></script>
+            <script src="<c:url value='/resources/js/aplicacion/inventarios/service/traspasoService.js' />"></script>
             <!-- Modulos de ConfiguraciÃ³n -->
             <script src="<c:url value='/resources/js/aplicacion/configuracion/controller/menusDulceriaController.js' />"></script>
             <script src="<c:url value='/resources/js/aplicacion/configuracion/service/menusDulceriaService.js' />"></script>

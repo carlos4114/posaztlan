@@ -30,6 +30,7 @@ import mx.com.aztlan.pos.negocio.inventarios.vo.ArticulosXPuntoVentaVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ParametrosBusquedaVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.InventarioVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ParametrosInventarioVO;
+import mx.com.aztlan.pos.negocio.inventarios.vo.SalidaVO;
 import mx.com.aztlan.pos.servicios.inventarios.controller.InventarioController;
 
 @Service
@@ -125,20 +126,33 @@ public class InventarioFacade implements InventarioFacadeI {
 	}
 
 	@Override	
-	public ResponseEntity<Integer> createSalida(HttpServletRequest request,@RequestBody ParametrosInventarioVO movimientoInventarioVO) throws BusinessGlobalException, NotFoundException {
+	public ResponseEntity<Integer> createSalidas(HttpServletRequest request,@RequestBody SalidaVO salidaVO) throws BusinessGlobalException, NotFoundException {
 			
 			Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
-			Integer idCine = (Integer) claims.get(ClaimsEnum.CINE);
-			Integer idPuntoVenta = (Integer) claims.get(ClaimsEnum.PUNTO_VENTA);
+			//Integer idCanal = (Integer) claims.get(ClaimsEnum.CANAL);
+			//Integer idAlmacen = (Integer) claims.get(ClaimsEnum.ALMACEN);
 			Integer idUsuario = (Integer) claims.get(ClaimsEnum.USUARIO);
-			logger.info("createSalida:::IdCine[{}]:::IdPuntoVenta[{}]",idCine,idPuntoVenta);
 				
 			int response = 0;			
-			//response = inventarioController.createSalida(movimientoInventarioVO,idCine,idPuntoVenta,idUsuario);
+			
+			inventarioController.createSalidas(salidaVO,idUsuario);
 		
 		return new ResponseEntity<Integer>(response, HttpStatus.CREATED);
 	}
 
+	@Override	
+	public ResponseEntity<Integer> createTraspaso(HttpServletRequest request,@RequestBody SalidaVO salidaVO) throws BusinessGlobalException, NotFoundException {
+			
+			Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
+
+			Integer idUsuario = (Integer) claims.get(ClaimsEnum.USUARIO);
+				
+			int response = 0;			
+			
+			inventarioController.createTraspaso(salidaVO,idUsuario);
+		
+		return new ResponseEntity<Integer>(response, HttpStatus.CREATED);
+	}
 	/*@Override
 	public ResponseEntity<Integer> createEntrada(HttpServletRequest request,@RequestBody ParametrosInventarioVO movimientoInventarioVO)
 			throws BusinessGlobalException, NotFoundException {
@@ -186,6 +200,14 @@ public class InventarioFacade implements InventarioFacadeI {
 			return new ResponseEntity<List<TipoMovimientoInvVO> >(tipoMovimientoInvVO, HttpStatus.OK); 
 	}
 
+	@Override
+	public ResponseEntity<List<TipoMovimientoInvVO>> getTipoMovimientoInv(HttpServletRequest request,
+			@PathVariable("isEntrada") Boolean isEntrada) throws BusinessGlobalException, NotFoundException {
+			List<TipoMovimientoInvVO> 	tipoMovimientoInvVO = inventarioController.getTiposMovimientoByIsEntrada(isEntrada);
+		
+			return new ResponseEntity<List<TipoMovimientoInvVO> >(tipoMovimientoInvVO, HttpStatus.OK); 
+	}
+	
 	@Override
 	public ResponseEntity<List<TipoMovimientoInvVO>> getTipoMovimientoInvByClave(HttpServletRequest request,
 			String clave) throws BusinessGlobalException, NotFoundException {

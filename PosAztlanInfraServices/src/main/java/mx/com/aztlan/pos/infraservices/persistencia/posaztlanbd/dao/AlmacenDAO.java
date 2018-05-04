@@ -26,6 +26,19 @@ public class AlmacenDAO extends GlobalHibernateDAO<Almacen> implements AlmacenDA
 	}
 	
 	@Override
+	public List<Almacen> findByAlmacenPadre(Integer idAlmacen) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select alm from Almacen alm ");
+		hql.append("where alm.idAlmacenPadre=:idAlmacen ");
+		hql.append("order by alm.nombre asc");
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setParameter("idAlmacen", idAlmacen);
+		
+		return query.list();
+	}
+	
+	@Override
 	public List<Almacen> findSubAlmacenesByIdCanal(Integer idCanal) {
 		StringBuilder hql = new StringBuilder();
 		hql.append("select alm from Almacen alm ");
@@ -38,6 +51,19 @@ public class AlmacenDAO extends GlobalHibernateDAO<Almacen> implements AlmacenDA
 		return query.list();
 	}
 
+	@Override
+	public List<Almacen> findByIdEmpresa(Integer idEmpresa) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select alm from Almacen alm ");
+		hql.append("where alm.empresa.idEmpresa=:idEmpresa ");
+		hql.append("order by alm.nombre asc");
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setParameter("idEmpresa", idEmpresa);
+		
+		return query.list();
+	}
+	
 	@Override
 	public Integer getAlmacenCentral(Integer idEmpresa) {
 		StringBuilder hql = new StringBuilder();

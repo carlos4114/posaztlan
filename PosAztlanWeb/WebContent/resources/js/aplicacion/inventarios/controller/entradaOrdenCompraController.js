@@ -88,7 +88,7 @@ angular.module('indexModule').controller("EntradaOrdenCompraController",['$scope
 	    		 idMedida: null, nombreMedida:null, idUnidadMedida:null, nombreUnidadMedida:null,
 	    		 idMarca:null, nombreMarca:null, precioUnitario:null, precioUnitarioFinal:null, 
 	    		 nacional:null, cantidad:null, cantidadFinal:null, seleccionado:null, cantidadRestante:null};
-	 	 $scope.ordenCompraVO = {idOrdenCompra:null,idProveedor:null, descuento: null, parcial:false, productos: []}
+	 	 $scope.ordenCompraVO = {idOrdenCompra:null,idProveedor:null, idEmpresa:idEmpresa, descuento: null, parcial:false, productos: []}
 	     $scope.errorGeneral='';
 		 $scope.mensajeGeneral='';
 	 }	 
@@ -102,7 +102,7 @@ angular.module('indexModule').controller("EntradaOrdenCompraController",['$scope
 	    		 idMedida: null, nombreMedida:null, idUnidadMedida:null, nombreUnidadMedida:null,
 	    		 idMarca:null, nombreMarca:null, precioUnitario:null, precioUnitarioFinal:null, 
 	    		 nacional:null, cantidad:null, cantidadFinal:null, seleccionado:null, cantidadRestante:null};
-	 	 $scope.ordenCompraVO = {idOrdenCompra:null,idProveedor:null, descuento: null, parcial:false, productos: []}
+	 	 $scope.ordenCompraVO = {idOrdenCompra:null,idProveedor:null, idEmpresa:idEmpresa, descuento: null, parcial:false, productos: []}
 	 }
 	 
 	 $scope.guardarParcial= function() {	

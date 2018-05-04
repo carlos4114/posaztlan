@@ -22,13 +22,16 @@ import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.MotivoDevolu
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.ProveedorDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.PuntoVentaDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.TipoDevolucionDAOI;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.TipoMovimientoInvDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.TipoProductoDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.UnidadMedidaDAOI;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Almacen;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Canal;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Familia;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Marca;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Medida;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Proveedor;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.TipoMovimientoInv;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.TipoProducto;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.UnidadMedida;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.enumeration.EstatusEmpresaEnum;
@@ -112,6 +115,9 @@ public class CatalogoBO {
 	@Autowired
 	ProveedorDAOI proveedorDAO;
 	
+	@Autowired
+	TipoMovimientoInvDAOI tipoMovimientoInvDAO;
+	
 	public List<FormaPagoVO> getFormasPagos() throws BusinessGlobalException {
 		return FormaPagoAssembler.getFormasPagosVO(formaPagoDAO.findAll());
 	}
@@ -123,6 +129,11 @@ public class CatalogoBO {
 	@Transactional (readOnly=true)
 	public List<AlmacenVO> findByCanalAlmacenes(Integer idCanal) throws BusinessGlobalException  {
 		return AlmacenAssembler.getAlmacenesVO(almacenDAO.findByIdCanal(idCanal));
+	}
+	
+	@Transactional (readOnly=true)
+	public List<AlmacenVO> findAlmacenesXEmpresa(Integer idEmpresa) throws BusinessGlobalException  {
+		return AlmacenAssembler.getAlmacenesVO(almacenDAO.findByIdEmpresa(idEmpresa));
 	}
 	
 	@Transactional (readOnly=true)
@@ -280,5 +291,46 @@ public class CatalogoBO {
 		}
 		
 		return catalogos;
+	}
+	
+	@Transactional(readOnly = true)
+	public List<CatalogoVO> getAlmacenesDestino(Integer idAlmacen) throws BusinessGlobalException  {
+		Almacen almacen = almacenDAO.findById(idAlmacen);
+		List<CatalogoVO> almacenes = new ArrayList<CatalogoVO>();
+		CatalogoVO catalogoVO;
+		
+		if(almacen.getCanal() == null && almacen.getIdAlmacenPadre() == null) {
+			List<Almacen> almacenesPadre = almacenDAO.findByIdEmpresa(almacen.getEmpresa().getIdEmpresa());
+			
+			for(Almacen almacenP: almacenesPadre) {
+				if(almacenP.getIdAlmacen() != almacen.getIdAlmacen()) {
+					catalogoVO = new CatalogoVO();
+					catalogoVO.setId(almacenP.getIdAlmacen());
+					catalogoVO.setNombre(almacenP.getCanal() ==null?almacenP.getNombre():almacenP.getCanal().getNombre().concat(" - ").concat(almacenP.getNombre()));
+					almacenes.add(catalogoVO);
+				}
+			}
+			
+		}else {
+			
+			List<Almacen> almacenesPadre = almacenDAO.findByAlmacenPadre(almacen.getIdAlmacen());
+			
+			for(Almacen almacenP: almacenesPadre) {
+				catalogoVO = new CatalogoVO();
+				catalogoVO.setId(almacenP.getIdAlmacen());
+				catalogoVO.setNombre(almacenP.getCanal() ==null?almacenP.getNombre():almacenP.getCanal().getNombre().concat(" - ").concat(almacenP.getNombre()));
+				almacenes.add(catalogoVO);
+			}
+		}
+				
+		if(almacen.getIdAlmacenPadre() != null) {
+			Almacen alm = almacenDAO.findById(almacen.getIdAlmacenPadre());
+			catalogoVO = new CatalogoVO();
+			catalogoVO.setId(alm.getIdAlmacen());
+			catalogoVO.setNombre(alm.getCanal() ==null?alm.getNombre():alm.getCanal().getNombre().concat(" - ").concat(alm.getNombre()));
+			almacenes.add(catalogoVO);
+		}
+	
+		return almacenes;
 	}
 }

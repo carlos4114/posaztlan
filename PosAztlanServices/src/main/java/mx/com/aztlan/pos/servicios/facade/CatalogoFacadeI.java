@@ -83,6 +83,10 @@ public interface CatalogoFacadeI {
 	public ResponseEntity<List<AlmacenVO>> getAlmacenes(@PathVariable("idCanal") Integer idCanal) 
 			throws BusinessGlobalException, NotFoundException;
 	
+	@RequestMapping(value = "/almacenesXEmpresa/{idEmpresa}", method = RequestMethod.GET)
+	public ResponseEntity<List<AlmacenVO>> getAlmacenesXEmpresa(@PathVariable("idEmpresa") Integer idEmpresa) 
+			throws BusinessGlobalException, NotFoundException;
+	
 	@RequestMapping(value = "/subalmacenes/{idCanal}", method = RequestMethod.GET)
 	public ResponseEntity<List<AlmacenVO>> getSubAlmacenes(@PathVariable("idCanal") Integer idCanal) 
 			throws BusinessGlobalException;
@@ -114,6 +118,9 @@ public interface CatalogoFacadeI {
 	@RequestMapping(value = "/proveedores/{idEmpresa}", method = RequestMethod.GET)
 	public ResponseEntity<List<CatalogoVO>> getProveedores(@PathVariable("idEmpresa") Integer idEmpresa)
 			throws BusinessGlobalException, NotFoundException;
-	
+
+	@RequestMapping(value = "/almacenesDestino/{idAlmacen}", method = RequestMethod.GET)
+	public ResponseEntity<List<CatalogoVO>> getAlmacenesDestino(@PathVariable("idAlmacen") Integer idAlmacen)
+			throws BusinessGlobalException, NotFoundException;
 	
 }

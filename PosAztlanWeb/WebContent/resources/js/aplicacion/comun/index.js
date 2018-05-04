@@ -129,9 +129,9 @@ angular.module('indexModule').config(function($routeProvider){
                 templateUrl: "vistas/inventarios/entradas_inventario.jsp"
             })
             .when("/salidasInventario", {
-                controller: "SalidasDulceriaController",
+                controller: "SalidasController",
                 controllerAs: "vm",
-                templateUrl: "vistas/inventarios/salidas_dulceria_inventario.jsp"
+                templateUrl: "vistas/inventarios/salidas_inventario.jsp"
             })
             .when("/conteoInventario", {
                 controller: "ConteoInventarioController",
@@ -142,6 +142,11 @@ angular.module('indexModule').config(function($routeProvider){
                 controller: "EntradaOrdenCompraController",
                 controllerAs: "vm",
                 templateUrl: "vistas/inventarios/entrada_orden_compra.jsp"
+            })
+            .when("/traspaso", {
+                controller: "TraspasoController",
+                controllerAs: "vm",
+                templateUrl: "vistas/inventarios/traspaso_inventario.jsp"
             })
             /******FIN INVENTARIOS*****/            
             

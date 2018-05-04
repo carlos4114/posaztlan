@@ -53,6 +53,7 @@ import mx.com.aztlan.pos.negocio.configuracion.vo.ProductoVO;
 import mx.com.aztlan.pos.negocio.dulceria.assembler.MovimientoInventarioAssembler;
 import mx.com.aztlan.pos.negocio.dulceria.assembler.TipoMovimientoInvAssembler;
 import mx.com.aztlan.pos.negocio.dulceria.assembler.UsuarioAssembler;
+import mx.com.aztlan.pos.negocio.dulceria.vo.MovimientoInventarioVO;
 import mx.com.aztlan.pos.negocio.dulceria.vo.TipoMovimientoInvVO;
 import mx.com.aztlan.pos.negocio.inventarios.assembler.ArticulosXPuntoVentaAssembler;
 import mx.com.aztlan.pos.negocio.inventarios.assembler.AutorizacionAssembler;
@@ -60,6 +61,7 @@ import mx.com.aztlan.pos.negocio.inventarios.assembler.InventarioAssembler;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ArticulosXPuntoVentaVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.InventarioVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ParametrosInventarioVO;
+import mx.com.aztlan.pos.negocio.inventarios.vo.SalidaVO;
 import mx.com.aztlan.pos.servicios.util.Constantes;
 
 @Service
@@ -262,6 +264,26 @@ public class InventarioBO {
 		costoUnitario = costoUnitario.divide(new BigDecimal(existencia), 3, BigDecimal.ROUND_HALF_EVEN);
 		
 		return costoUnitario;
+	}
+	
+	public void createSalidas(SalidaVO salidaVO, Integer idUsuario) throws BusinessGlobalException{
+		
+		if(salidaVO.getIdTipoMovimiento() == null ) {
+			salidaVO.setIdTipoMovimiento(tipoMovimientoInvDAO.findByClave(
+					salidaVO.getClaveTipoMovimiento()).getIdTipoMovimientoInv());
+		}
+		
+		for (ProductoVO producto : salidaVO.getProductos()) {
+			ParametrosInventarioVO movimientoInventarioVO = new ParametrosInventarioVO();
+			movimientoInventarioVO.setCantidad(producto.getCantidad());
+			movimientoInventarioVO.setIdProducto(producto.getIdProducto());
+			movimientoInventarioVO.setIdProveedor(salidaVO.getIdProveedor());
+			movimientoInventarioVO.setIdAutorizacion(salidaVO.getIdAutorizacion());
+			movimientoInventarioVO.setIdTipoMovimiento(salidaVO.getIdTipoMovimiento());
+			movimientoInventarioVO.setIdAlmacenConsigna(salidaVO.getIdAlmacenConsigna());
+			movimientoInventarioVO.setClaveTipoMovimiento(salidaVO.getClaveTipoMovimiento());
+			this.createSalida(movimientoInventarioVO, salidaVO.getIdCanal(), salidaVO.getIdAlmacen(), idUsuario);
+		}
 	}
 	
 	public synchronized List<MovimientoInventario> createSalida(ParametrosInventarioVO movimientoInventarioVO, Integer idCanal,

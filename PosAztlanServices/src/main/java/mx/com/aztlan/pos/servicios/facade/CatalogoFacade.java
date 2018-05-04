@@ -67,6 +67,12 @@ public class CatalogoFacade implements CatalogoFacadeI {
 	
 	@Override
 	@Transactional (readOnly=true)
+	public ResponseEntity<List<AlmacenVO>> getAlmacenesXEmpresa(@PathVariable("idEmpresa") Integer idEmpresa) throws BusinessGlobalException, NotFoundException {
+		return new ResponseEntity<List<AlmacenVO>>(this.catalogoController.getAlmacenesXEmpresa(idEmpresa), HttpStatus.OK);		
+	}
+	
+	@Override
+	@Transactional (readOnly=true)
 	public ResponseEntity<List<AlmacenVO>> getSubAlmacenes(@PathVariable("idCanal") Integer idCanal) throws BusinessGlobalException {
 		return new ResponseEntity<List<AlmacenVO>>(this.catalogoController.getSubAlmacenes(idCanal), HttpStatus.OK);		
 	}
@@ -272,5 +278,10 @@ public class CatalogoFacade implements CatalogoFacadeI {
 	@Override
 	public ResponseEntity<List<CatalogoVO>> getProveedores(@PathVariable("idEmpresa") Integer idEmpresa) throws BusinessGlobalException, NotFoundException {
 		return new ResponseEntity<List<CatalogoVO>>(this.catalogoController.getProveedores(idEmpresa), HttpStatus.OK);		
+	}
+
+	@Override
+	public ResponseEntity<List<CatalogoVO>> getAlmacenesDestino(@PathVariable("idAlmacen") Integer idAlmacen) throws BusinessGlobalException, NotFoundException {
+		return new ResponseEntity<List<CatalogoVO>>(this.catalogoController.getAlmacenesDestino(idAlmacen), HttpStatus.OK);		
 	}
 }
