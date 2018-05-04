@@ -265,4 +265,9 @@ angular.module('indexModule').controller("VentaManualController",['$scope','Glob
 	 if($scope.isAdminGral=="true")
 		 $scope.consultaEmpresas();
 	 
+	 if(idEmpresa!=null)
+		 $scope.consultaCanales(idEmpresa);
+	 if(idCanal!=null)
+		 $scope.consultaAlmacenes(idCanal);
+	 
 }]);

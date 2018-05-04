@@ -34,11 +34,13 @@ public class ProductoController {
 		
 		HttpResponseVO responseVO = new HttpResponseVO();
 		
+		String sku = productoBO.crearSku(productoVO);
+		productoVO.setSku(sku);
 		Producto producto = productoBO.guardarProducto(productoVO);
 		
 		productoBO.guardarPreciosXCanal(productoVO, producto);
 		
-		productoBO.guardarImpuestos(productoVO, producto);
+		productoBO.guardarImpuestos(productoVO, producto);		
 		
 		return responseVO;
 	}

@@ -182,6 +182,7 @@ public class ProductoAssembler {
 		producto.setUnidadMedida(new UnidadMedida(productoVO.getIdUnidadMedida()));
 		producto.setPrecioUnico(productoVO.getPrecioUnico());
 		producto.setNacional(productoVO.isNacional());
+		producto.setSku(productoVO.getSku());
 		//producto.setPrecioXCanal(getPreciosXCanal(productoVO.getPreciosXCanalList(), producto));
 		
 		return producto;

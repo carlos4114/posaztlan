@@ -2,6 +2,7 @@ package mx.com.aztlan.pos.negocio.configuracion.business;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,12 +15,16 @@ import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.InventarioDA
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.PrecioXCanalDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.ProductoDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.ProductoXPuntoVentaDAOI;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.PropiedadConfigEmpresaDAOI;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.SkuIbatisDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Articulo;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Canal;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ImpuestoXProducto;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.PrecioXCanal;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.PrecioXCanalId;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Producto;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.PropiedadConfigEmpresa;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.enumeration.SecuenciaSkuEnum;
 import mx.com.aztlan.pos.infraservices.servicios.BusinessGlobalException;
 import mx.com.aztlan.pos.negocio.configuracion.assembler.ImpuestoXProductoAssembler;
 import mx.com.aztlan.pos.negocio.configuracion.assembler.ProductoAssembler;
@@ -54,6 +59,12 @@ public class ProductoBO {
 	@Autowired
 	PrecioXCanalDAOI precioXCanalDAO;
 	
+	@Autowired
+	PropiedadConfigEmpresaDAOI propiedadConfigEmpresaDAO;
+	
+	@Autowired
+	SkuIbatisDAOI skuIbatisDAO;	
+	
 	@Transactional(readOnly = true)
 	public List<ProductoVO> findByEmpresa(Integer idEmpresa) throws BusinessGlobalException  {
 		 
@@ -80,6 +91,48 @@ public class ProductoBO {
 		return responseVO;
 	}
 	*/
+	
+	@Transactional(readOnly = false)
+	public String crearSku(ProductoVO productoVO) throws BusinessGlobalException, Exception{
+
+		if (productoVO == null) 
+            throw new BusinessGlobalException("Error al crear el SKU del producto. El producto no puede ser nulo.");
+		StringBuffer sku = new StringBuffer("");
+		
+		PropiedadConfigEmpresa propiedadConfig = this.propiedadConfigEmpresaDAO.findById(productoVO.getIdEmpresa());
+		StringTokenizer secuenciaSkuTk = new StringTokenizer(propiedadConfig.getSecuenciaCreacionSku(),"|");
+		
+		while(secuenciaSkuTk.hasMoreTokens()){
+			String tk = secuenciaSkuTk.nextToken();
+			String sigSecuencia = "";
+			switch (tk){
+			case SecuenciaSkuEnum.EMPRESA: 
+				sigSecuencia = productoVO.getIdEmpresa().toString();
+				break;
+			case SecuenciaSkuEnum.FAMILIA: 
+				sigSecuencia = productoVO.getIdFamilia().toString();
+				break;
+			case SecuenciaSkuEnum.MARCA: 
+				sigSecuencia = productoVO.getIdMarca().toString();
+				break;
+			case SecuenciaSkuEnum.MEDIDA: 
+				sigSecuencia = productoVO.getIdMedida().toString();
+				break;
+			case SecuenciaSkuEnum.TIPO_PRODUCTO: 
+				sigSecuencia = productoVO.getIdTipoProducto().toString();
+				break;			
+			}
+			sku.append(new String("000"+sigSecuencia).substring((sigSecuencia.length()+3)-3)); 
+		}
+		
+		Integer ultimoFolio = this.skuIbatisDAO.getUltimoFolio(sku.toString(), productoVO.getIdEmpresa());
+		String siguienteFolio = ultimoFolio == null ? "1" : Integer.toString(ultimoFolio+1);
+		sku.append(new String("000"+siguienteFolio).substring((siguienteFolio.length()+3)-3)); 
+		
+		return sku.toString();
+		
+	}
+	
 	
 	@Transactional(readOnly = false)
 	public Producto guardarProducto(ProductoVO productoVO) throws BusinessGlobalException, Exception{
