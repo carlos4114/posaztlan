@@ -251,7 +251,6 @@ angular.module('indexModule').controller("TraspasoController",['$scope','GlobalF
 	 $scope.cambiarEmpresa = function(){
 		 idEmpresa = $scope.filtrosVO.idEmpresa;
 		 $scope.consultaAlmacenes(idEmpresa);
-	 	 $scope.listaAlmacenes = null;
 	 }
 	  
 	 $scope.cambiarTipo = function(){
@@ -279,5 +278,8 @@ angular.module('indexModule').controller("TraspasoController",['$scope','GlobalF
 	 
 	 if($scope.isAdminGral=="true")
 		 $scope.consultaEmpresas();
+	 
+	 if(idEmpresa!=null)
+		 $scope.consultaAlmacenes(idEmpresa);
 	 
 }]);
