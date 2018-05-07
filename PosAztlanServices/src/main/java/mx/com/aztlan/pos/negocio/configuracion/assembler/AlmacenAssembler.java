@@ -38,5 +38,33 @@ public class AlmacenAssembler {
 		return almacenesVO;
 	}
 	
+	public static List<AlmacenVO> getAlmacenesXEmpresaVO(List<Almacen> almacenes){
+
+		if(almacenes==null || almacenes.isEmpty())
+			return null;
+		
+		List<AlmacenVO> almacenesVO = new ArrayList<AlmacenVO>();
+		
+		for (Almacen almacen : almacenes) {
+			almacenesVO.add(AlmacenAssembler.getAlmacenXEmpresaVO(almacen));
+		}
+
+		return almacenesVO;
+	}
+
+	public static AlmacenVO getAlmacenXEmpresaVO(Almacen almacen) {
+		if(almacen == null )
+			return null;
+		
+		AlmacenVO almacenVO= new AlmacenVO();
+		
+		almacenVO.setIdAlmacen(almacen.getIdAlmacen());
+		almacenVO.setCanalVO(CanalAssembler.getCanalVO(almacen.getCanal()));
+		almacenVO.setTipoAlmacenVO(TipoAlmacenAssembler.getTipoAlmacenVO(almacen.getTipoAlmacen()));
+		almacenVO.setNombre(almacen.getCanal() ==null?almacen.getNombre():almacen.getCanal().getNombre().concat(" - ").concat(almacen.getNombre()));
+		
+		
+		return almacenVO;
+	}
 	
 }

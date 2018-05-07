@@ -133,7 +133,8 @@ public class CatalogoBO {
 	
 	@Transactional (readOnly=true)
 	public List<AlmacenVO> findAlmacenesXEmpresa(Integer idEmpresa) throws BusinessGlobalException  {
-		return AlmacenAssembler.getAlmacenesVO(almacenDAO.findByIdEmpresa(idEmpresa));
+		
+		return AlmacenAssembler.getAlmacenesXEmpresaVO(almacenDAO.findByIdEmpresa(idEmpresa));
 	}
 	
 	@Transactional (readOnly=true)
