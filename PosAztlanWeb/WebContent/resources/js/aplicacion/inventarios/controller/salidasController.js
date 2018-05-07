@@ -285,4 +285,9 @@ angular.module('indexModule').controller("SalidasController",['$scope','GlobalFa
 	 if($scope.isAdminGral=="true")
 		 $scope.consultaEmpresas();
 	 
+	 if(idEmpresa!=null)
+		 $scope.consultaCanales(idEmpresa);
+	 if(idCanal!=null)
+		 $scope.consultaAlmacenes(idCanal);
+	 
 }]);

@@ -7,7 +7,15 @@
                       <br />
                       <div class="x_panel">
 		                   <form ng-submit="submit()" name="formProductos" id="formProductos" data-parsley-validate class="form-horizontal form-label-left">
-		                   
+		                   	  
+		                   	  <div class="form-group">
+		                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="sku">SKU 
+		                        </label>
+		                        <div class="col-md-6 col-sm-6 col-xs-12">
+		                          <input type="text" disabled="true" id="sku" class="form-control col-md-7 col-xs-12"
+		                          ng-model="productoVO.sku">
+		                        </div>
+		                      </div>
 		                      <div class="form-group">
 		                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="nombre-producto">Nombre del Producto <span class="required">*</span>
 		                        </label>
@@ -299,6 +307,7 @@
 									<table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
 									   	<thead>
 									   		 <tr>
+									   		 	<th class="text-center">SKU </th>
 									           <th class="text-center">Producto </th>
 									           <th class="text-center">Precio </th>
 									           <th class="text-center">Estatus </th>
@@ -307,7 +316,8 @@
 									   	</thead>
 
 										<tbody>
-									    	<tr dir-paginate="p in listaProductos |  filter: filterSearch |itemsPerPage: 5">   
+									    	<tr dir-paginate="p in listaProductos |  filter: filterSearch |itemsPerPage: 5">
+									    	    <td class="text-center"><span ng-bind="p.sku"></span></td>   
 									        	<td class="text-center"><span ng-bind="p.nombre"></span></td>
 									        	<td class="text-center">{{p.precioUnico | currency}}</td>
 									        	<td class="text-center"><span ng-bind="p.activo ? 'ACTIVO' : 'INACTIVO'"></span></td>
