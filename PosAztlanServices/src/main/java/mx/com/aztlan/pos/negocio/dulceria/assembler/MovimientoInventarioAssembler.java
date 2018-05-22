@@ -33,7 +33,7 @@ public class MovimientoInventarioAssembler {
 		movimientoInventario.setDocumentoRespaldo(null);
 		movimientoInventario.setExistenciaActual(existenciaActual);
 		movimientoInventario.setAlmacen(new Almacen(idAlmacen));
-		movimientoInventario.setAlmacenConsigna(new Almacen(idAlmacenConsigna));		
+		movimientoInventario.setAlmacenConsigna(idAlmacenConsigna == null ? null : new Almacen(idAlmacenConsigna));		
 		movimientoInventario.setInventario(InventarioAssembler.getInventario(idInventario));
 		return movimientoInventario;
 	}

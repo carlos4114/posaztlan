@@ -53,7 +53,6 @@ import mx.com.aztlan.pos.negocio.configuracion.vo.ProductoVO;
 import mx.com.aztlan.pos.negocio.dulceria.assembler.MovimientoInventarioAssembler;
 import mx.com.aztlan.pos.negocio.dulceria.assembler.TipoMovimientoInvAssembler;
 import mx.com.aztlan.pos.negocio.dulceria.assembler.UsuarioAssembler;
-import mx.com.aztlan.pos.negocio.dulceria.vo.MovimientoInventarioVO;
 import mx.com.aztlan.pos.negocio.dulceria.vo.TipoMovimientoInvVO;
 import mx.com.aztlan.pos.negocio.inventarios.assembler.ArticulosXPuntoVentaAssembler;
 import mx.com.aztlan.pos.negocio.inventarios.assembler.AutorizacionAssembler;
@@ -269,8 +268,8 @@ public class InventarioBO {
 	public void createSalidas(SalidaVO salidaVO, Integer idUsuario) throws BusinessGlobalException{
 		
 		if(salidaVO.getIdTipoMovimiento() == null ) {
-			salidaVO.setIdTipoMovimiento(tipoMovimientoInvDAO.findByClave(
-					salidaVO.getClaveTipoMovimiento()).getIdTipoMovimientoInv());
+			TipoMovimientoInv tipoMovInv = tipoMovimientoInvDAO.findByClave(salidaVO.getClaveTipoMovimiento());
+			salidaVO.setIdTipoMovimiento(tipoMovInv==null?null:tipoMovInv.getIdTipoMovimientoInv());
 		}
 		
 		for (ProductoVO producto : salidaVO.getProductos()) {
@@ -496,7 +495,7 @@ public class InventarioBO {
 				MovimientoInventarioAssembler.getMovimientoInventario(inventarioEntrada.getProducto().getIdProducto(),
 						inventarioEntrada.getProveedor(), tipoMovimientoInvEntrada, idUsuario,
 						Long.valueOf(inventarioEntrada.getCantidad()), new BigDecimal(inventarioVO.getImporte()),
-						inventarioEntrada.getExistenciaActual(), idAlmacen, 0,
+						inventarioEntrada.getExistenciaActual(), idAlmacen, null,
 						inventarioEntrada.getIdInventario()));
 
 		idInventarioEntrada = inventarioEntrada.getIdInventario();
