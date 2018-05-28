@@ -232,6 +232,9 @@ angular.module('indexModule').controller("TraspasoController",['$scope','GlobalF
 	 	 $scope.listaAlmacenes = null;
 	 	 $scope.listaAlmacenesDestino = null;
 	 	 
+	 	if(idEmpresa!=null)
+			 $scope.consultaAlmacenes(idEmpresa);
+	 	 
 	 	 if($scope.isAdminGral=="true")
 	 		 $scope.consultaEmpresas();
 	 	 if($scope.isAdminGralEmpresa =="true" && idEmpresa != null)

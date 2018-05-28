@@ -222,7 +222,7 @@
 							
 							<div class="form-group">
 		                        <div class="col-md-12 col-sm-12 col-xs-12 col-md-offset-0 text-center">
-		                          <button type="button" ng-click="submit()" class="btn btn-success" ><i class="fa fa-save"></i>Guardar</button>
+		                          <button type="button" ng-click="submit()" ng-disabled="salidaVO.idTipoMovimiento==null" class="btn btn-success" ><i class="fa fa-save"></i>Guardar</button>
 		                        </div>
 		                      </div>
 		                      
