@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OrdenCompraNueva" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="35cf788c-ab64-4bdf-9448-b540c8c4102a">
 	<property name="ireport.zoom" value="0.9090909090909095"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="36"/>
 	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
 	<style name="table">
 		<box>
@@ -45,7 +45,7 @@
 		</box>
 	</style>
 	<subDataset name="Detalle_DS" uuid="00ae461f-dc0a-47cf-9d9d-84a1fe4f4152">
-		<parameter name="ID_CANAL" class="java.lang.Integer"/>
+		<parameter name="ID_ALMACEN" class="java.lang.Integer"/>
 		<queryString>
 			<![CDATA[select p.id_producto, p.sku,p.nombre, f.nombre as familia, m.nombre as marca, t.nombre as tipo_producto,
 			 me.nombre as medida, um.nombre as unidad_medida,  ifnull(sum(i.existencia_actual),0) as existencia,
@@ -54,8 +54,7 @@
 		  where pxc.id_producto = p.id_producto and al.id_almacen = i.id_almacen)
           ,p.precio_unico) as precio
          from producto p
-        		    left outer join  inventario i on i.id_producto=p.id_producto and i.existencia_actual>0
-        		    left outer join almacen a on a.id_almacen = i.id_almacen and a.id_canal = $P{ID_CANAL}
+        		    left outer join  inventario i on i.id_producto=p.id_producto and i.existencia_actual>0 and i.id_almacen=$P{ID_ALMACEN}
         		    inner join familia f on f.id_familia=p.id_familia
         		    inner join marca m on m.id_marca=p.id_marca
         		    inner join tipo_producto t on t.id_tipo_producto=p.id_tipo_producto
@@ -82,7 +81,7 @@
 			<fieldDescription><![CDATA[]]></fieldDescription>
 		</field>
 	</subDataset>
-	<parameter name="ID_CANAL" class="java.lang.Integer">
+	<parameter name="ID_ALMACEN" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
@@ -90,7 +89,7 @@
 from
    almacen a
     inner join canal c on c.id_canal=a.id_almacen
-where c.id_Canal=$P{ID_CANAL}]]>
+where a.id_almacen=$P{ID_ALMACEN}]]>
 	</queryString>
 	<field name="canal" class="java.lang.String"/>
 	<field name="almacen" class="java.lang.String"/>
@@ -103,7 +102,7 @@ where c.id_Canal=$P{ID_CANAL}]]>
 	<title>
 		<band height="36" splitType="Stretch">
 			<staticText>
-				<reportElement x="238" y="0" width="304" height="20" uuid="f8afbcd8-0337-45f5-b662-f8ad32438eda"/>
+				<reportElement x="0" y="0" width="727" height="20" uuid="f8afbcd8-0337-45f5-b662-f8ad32438eda"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="13" isBold="true"/>
 				</textElement>
@@ -114,12 +113,12 @@ where c.id_Canal=$P{ID_CANAL}]]>
 	<pageHeader>
 		<band height="86" splitType="Stretch">
 			<textField>
-				<reportElement x="503" y="29" width="200" height="20" uuid="11dcfb9c-26de-48ca-8d52-37a05091b086"/>
+				<reportElement x="527" y="29" width="200" height="20" uuid="11dcfb9c-26de-48ca-8d52-37a05091b086"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{fecha_hora}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="423" y="29" width="80" height="20" uuid="f7a46a18-fa57-45a1-86de-ad0f77ebba6b"/>
+				<reportElement x="447" y="29" width="80" height="20" uuid="f7a46a18-fa57-45a1-86de-ad0f77ebba6b"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
 				<text><![CDATA[FECHA: ]]></text>
 			</staticText>
@@ -150,9 +149,9 @@ where c.id_Canal=$P{ID_CANAL}]]>
 			<componentElement>
 				<reportElement key="table 1" style="table 1" x="0" y="0" width="727" height="106" uuid="1990ee7c-8aa3-409a-92fc-6c742fae288c"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="Detalle_DS" uuid="98790e09-6888-4d81-8dc8-63a788bc1873">
-						<datasetParameter name="ID_CANAL">
-							<datasetParameterExpression><![CDATA[$P{ID_CANAL}]]></datasetParameterExpression>
+					<datasetRun subDataset="Detalle_DS" uuid="547b67a7-83e4-4785-84f6-91cf41e1224c">
+						<datasetParameter name="ID_ALMACEN">
+							<datasetParameterExpression><![CDATA[$P{ID_ALMACEN}]]></datasetParameterExpression>
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
