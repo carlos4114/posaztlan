@@ -32,8 +32,21 @@ public class ProductoVO {
 	private Integer cantidadRestante;
 	private String sku;
 	private BigDecimal precio;
+	private long existenciaSistema;
+	private long existenciaFisica;
 	
-	
+	public long getExistenciaSistema() {
+		return existenciaSistema;
+	}
+	public void setExistenciaSistema(long existenciaSistema) {
+		this.existenciaSistema = existenciaSistema;
+	}
+	public long getExistenciaFisica() {
+		return existenciaFisica;
+	}
+	public void setExistenciaFisica(long existenciaFisica) {
+		this.existenciaFisica = existenciaFisica;
+	}
 	public Integer getIdProducto() {
 		return idProducto;
 	}

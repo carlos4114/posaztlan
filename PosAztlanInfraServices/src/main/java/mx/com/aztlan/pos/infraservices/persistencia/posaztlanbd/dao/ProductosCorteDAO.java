@@ -7,35 +7,35 @@ import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
 import mx.com.aztlan.pos.infraservices.persistencia.GlobalHibernateDAO;
-import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ArticulosCorte;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ProductosCorte;
 
 @Repository 
-public class ArticulosCorteDAO extends GlobalHibernateDAO<ArticulosCorte> implements ArticulosCorteDAOI {
+public class ProductosCorteDAO extends GlobalHibernateDAO<ProductosCorte> implements ProductosCorteDAOI {
 	
 	
 	@Override
-	public List<ArticulosCorte> getArticulosCorte(Integer idPuntoVenta,Integer estatusConteo){
+	public List<ProductosCorte> getProductosCorte(Integer idAlmacen,Integer estatusConteo){
 		StringBuilder hql = new StringBuilder();
-		hql.append("select artcort from ArticulosCorte artcort join artcort.puntoVenta ptovta ");
-		hql.append("where ptovta.idPuntoVenta=:idPuntoVenta and artcort.estatusConteo=:estatusConteo ");
-		hql.append("order by artcort.fecha desc ");
+		hql.append("select prdcort from ProductosCorte prdcort join artcort.almacen alm ");
+		hql.append("where alm.idAlmacen=:idAlmacen and prdcort.estatusConteo=:estatusConteo ");
+		hql.append("order by prdcort.fecha desc ");
 
 		Query query = getSession().createQuery(hql.toString());
-		query.setParameter("idPuntoVenta", idPuntoVenta);
+		query.setParameter("idAlmacen", idAlmacen);
 		query.setParameter("estatusConteo",estatusConteo);
 		
-		List<ArticulosCorte> articulosCorte = query.list();
+		List<ProductosCorte> productosCorte = query.list();
 		
-		return articulosCorte;
+		return productosCorte;
 	}
 
 	@Override
-	public Integer updateEstatusConteoByEstatus(Integer idPuntoVenta,Integer estatusActual,Integer estatusFinal, Integer usuario) {
+	public Integer updateEstatusConteoByEstatus(Integer idAlmacen,Integer estatusActual,Integer estatusFinal, Integer usuario) {
 		StringBuilder hql = new StringBuilder();
-		hql.append("update ArticulosCorte set estatusConteo=:estatusFinal, usuarioModificacion.idUsuario=:usuario, ultimaModificacion=:fechaModificacion where puntoVenta.idPuntoVenta=:idPuntoVenta and estatusConteo=:estatusActual");
+		hql.append("update ProductosCorte set estatusConteo=:estatusFinal, usuarioModificacion.idUsuario=:usuario, ultimaModificacion=:fechaModificacion where almacen.idAlmacen=:idAlmacen and estatusConteo=:estatusActual");
 
 		Query query = getSession().createQuery(hql.toString());
-		query.setParameter("idPuntoVenta", idPuntoVenta);
+		query.setParameter("idAlmacen", idAlmacen);
 		query.setParameter("estatusActual",estatusActual);
 		query.setParameter("estatusFinal",estatusFinal);
 		query.setParameter("usuario",usuario);

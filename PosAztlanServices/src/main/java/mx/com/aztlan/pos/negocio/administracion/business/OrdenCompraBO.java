@@ -149,7 +149,7 @@ public class OrdenCompraBO {
 	@Transactional(readOnly = true)
 	public OrdenCompraVO obtenerOrdenCompra(FiltrosVO filtrosVO) throws BusinessGlobalException  {
 		 
-		Integer idOrdenCompra = ordenCompraDAO.getId(filtrosVO.getIdEmpresa(), filtrosVO.getOrdenCompra());
+		Integer idOrdenCompra = ordenCompraDAO.getId(filtrosVO.getIdEmpresa(), filtrosVO.getIdOrdenCompra());
 	
 		OrdenCompra ordenCompra = ordenCompraDAO.findByIdOrdenCompra(idOrdenCompra).get(0);
 	

@@ -7,18 +7,23 @@ import org.springframework.stereotype.Service;
 
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Inventario;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.MovimientoInventario;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.vo.ProductoExistenciaVO;
 import mx.com.aztlan.pos.infraservices.servicios.BusinessGlobalException;
 import mx.com.aztlan.pos.negocio.administracion.business.OrdenCompraBO;
+import mx.com.aztlan.pos.negocio.administracion.vo.FiltrosVO;
 import mx.com.aztlan.pos.negocio.administracion.vo.OrdenCompraVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.ProductoVO;
 import mx.com.aztlan.pos.negocio.dulceria.vo.TipoMovimientoInvVO;
-import mx.com.aztlan.pos.negocio.inventarios.business.ArticulosCorteBO;
 import mx.com.aztlan.pos.negocio.inventarios.business.CatalogoTipoMovimientoInvBO;
 import mx.com.aztlan.pos.negocio.inventarios.business.InventarioBO;
+import mx.com.aztlan.pos.negocio.inventarios.business.ProductosCorteBO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ArticulosCorteVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ArticulosXPuntoVentaVO;
+import mx.com.aztlan.pos.negocio.inventarios.vo.ConteoVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.InventarioVO;
+import mx.com.aztlan.pos.negocio.inventarios.vo.ParametrosBusquedaVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ParametrosInventarioVO;
+import mx.com.aztlan.pos.negocio.inventarios.vo.ProductosCorteVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.SalidaVO;
 import mx.com.aztlan.pos.servicios.util.Constantes;
 
@@ -32,7 +37,7 @@ public class InventarioController {
 	private OrdenCompraBO ordenCompraBO;
 	
 	@Autowired
-	private ArticulosCorteBO articulosCorteBO;
+	private ProductosCorteBO productosCorteBO;
 	
 	@Autowired
 	private CatalogoTipoMovimientoInvBO catalogoTipoMovimientoInvBO;
@@ -42,8 +47,9 @@ public class InventarioController {
     	this.inventarioBO.enviarNotificacionesPuntoReorden();
 	}
 	
-	public List<ArticulosXPuntoVentaVO> getArticulosPuntoVenta(Integer idPuntoVenta, String nombreArticulo) throws BusinessGlobalException {
-		return inventarioBO.getArticulosPuntoVenta(idPuntoVenta,nombreArticulo);
+	public List<ProductoExistenciaVO> getProductosConteo(ParametrosBusquedaVO parametrosBusquedaVO) throws BusinessGlobalException {
+		
+		return inventarioBO.getProductosConteo(parametrosBusquedaVO);
 	}
 	
 	public List<ProductoVO> getProductos(String nombre, Integer idEmpresa) throws BusinessGlobalException {
@@ -54,13 +60,13 @@ public class InventarioController {
 		return inventarioBO.getProductosXsku(sku, idEmpresa);
 	}
 	
-	public List<InventarioVO> getArticulosInventario(Integer idPuntoVenta, String nombreArticulo) throws BusinessGlobalException {
-		return inventarioBO.getArticulosInventario(idPuntoVenta,nombreArticulo);
+	public List<InventarioVO> getProductosInventario(Integer idAlmacen, String nombreProducto) throws BusinessGlobalException {
+		return inventarioBO.getProductosInventario(idAlmacen,nombreProducto);
 	}
 	
 
-	public List<InventarioVO> getExistenciaArticuloPorProveedores(Integer idPuntoVenta, Integer idArticulo) throws BusinessGlobalException {
-		return inventarioBO.getExistenciaArticuloPorProveedores(idPuntoVenta,idArticulo);
+	public List<InventarioVO> getExistenciaProductoPorProveedores(Integer idAlmacen, Integer idProducto) throws BusinessGlobalException {
+		return inventarioBO.getExistenciaProductoPorProveedores(idAlmacen,idAlmacen);
 	}
 	
 	public Integer createSalida(ParametrosInventarioVO movimientoInventarioVO,Integer idCanal,Integer idAlmacen,Integer idUsuario) throws BusinessGlobalException {
@@ -118,49 +124,49 @@ public class InventarioController {
 		return catalogoTipoMovimientoInvBO.findByClave(clave);
 	}
 	
-	public List<InventarioVO> getArticulosInventarioSinConteo(Integer idCine, String nombreArticulo) throws BusinessGlobalException {
-		return inventarioBO.getArticulosInventarioSinConteo(idCine,nombreArticulo);
+	public List<InventarioVO> getProductosInventarioSinConteo(Integer idCanal, String nombreProducto) throws BusinessGlobalException {
+		return inventarioBO.getProductosInventarioSinConteo(idCanal,nombreProducto);
 	}
 	
-	public Integer createArticulosCorte(ArticulosCorteVO articulosCorteVO,Integer idCine,Integer idPuntoVenta,Integer idUsuario) throws BusinessGlobalException {
-		return articulosCorteBO.createArticulosCorte(articulosCorteVO,idCine,idPuntoVenta,idUsuario);
+	public Integer createProductosCorte(ProductosCorteVO productosCorteVO,Integer idCanal,Integer idAlmacen,Integer idUsuario) throws BusinessGlobalException {
+		return productosCorteBO.createProductosCorte(productosCorteVO,idCanal,idAlmacen,idUsuario);
 	}
 	
-	public Integer updateArticulosCorte(ArticulosCorteVO articulosCorteVO,Integer idCine,Integer idPuntoVenta,Integer idUsuario) throws BusinessGlobalException {
-		return articulosCorteBO.updateArticulosCorte(articulosCorteVO,idCine,idPuntoVenta,idUsuario);
+	public Integer updateProductosCorte(ProductosCorteVO productosCorteVO,Integer idCanal,Integer idAlmacen,Integer idUsuario) throws BusinessGlobalException {
+		return productosCorteBO.updateProductosCorte(productosCorteVO,idCanal,idAlmacen,idUsuario);
 	}
 	
-	public Integer updateArticulosCorteMovimiento(ArticulosCorteVO articulosCorteVO,Integer idCine,Integer idPuntoVenta,Integer idUsuario) throws BusinessGlobalException {
+	public Integer updateProductosCorteMovimiento(ProductosCorteVO productosCorteVO,Integer idCanal,Integer idAlmacen,Integer idUsuario) throws BusinessGlobalException {
 		List<MovimientoInventario> listMovimientosAjuste = null;
-		ArticulosCorteVO articulosCorte = articulosCorteVO;
+		ProductosCorteVO productosCorte = productosCorteVO;
 		ParametrosInventarioVO inventarioVO = new ParametrosInventarioVO();	
 		TipoMovimientoInvVO tipoMovimientoInvVO = new TipoMovimientoInvVO();
 		
-		int idArticulosCorte = 0;
-		long existenciaSistemaInicial = articulosCorte.getExistenciaSistema();
+		int idProductosCorte = 0;
+		long existenciaSistemaInicial = productosCorte.getExistenciaSistema();
 		boolean isEntrada = false;
-		inventarioVO.setIdProducto(articulosCorte.getArticulo().getIdArticulo());
-		inventarioVO.setIdAutorizacion(articulosCorte.getAutorizacion().getIdAutorizacion());
+		inventarioVO.setIdProducto(productosCorte.getProducto().getIdProducto());
+		inventarioVO.setIdAutorizacion(productosCorte.getAutorizacion().getIdAutorizacion());
 		
 		long cantidad = 0;
 		
-		if(articulosCorte.getExistenciaSistema() < articulosCorte.getExistenciaFisica() ){
+		if(productosCorte.getExistenciaSistema() < productosCorte.getExistenciaFisica() ){
 			//Realiza ajuste de entrada
 			isEntrada  = true;
-			cantidad = articulosCorte.getExistenciaFisica() - articulosCorte.getExistenciaSistema();
+			cantidad = productosCorte.getExistenciaFisica() - productosCorte.getExistenciaSistema();
 			inventarioVO.setCantidad(Integer.valueOf(cantidad+""));
-			articulosCorte.setExistenciaSistema(articulosCorte.getExistenciaSistema() + cantidad);
+			productosCorte.setExistenciaSistema(productosCorte.getExistenciaSistema() + cantidad);
 			//Obtiene el tipo de movimiento
 			tipoMovimientoInvVO = inventarioBO.geTipoMovimientoPorClave(Constantes.ENTRADA_X_AJUSTE_MANUAL);
 			inventarioVO.setIdTipoMovimiento(tipoMovimientoInvVO.getIdTipoMovimientoInv());
 			inventarioVO.setClaveTipoMovimiento(tipoMovimientoInvVO.getClave());
-			listMovimientosAjuste  = inventarioBO.createEntradaAjuste(inventarioVO,idCine,idPuntoVenta,idUsuario);
-		}else if( articulosCorte.getExistenciaSistema() > articulosCorte.getExistenciaFisica()){
+			listMovimientosAjuste  = inventarioBO.createEntradaAjuste(inventarioVO,idCanal,idAlmacen,idUsuario);
+		}else if( productosCorte.getExistenciaSistema() > productosCorte.getExistenciaFisica()){
 			//Realiza ajuste de salida
 			isEntrada  = false;
-			cantidad = articulosCorte.getExistenciaSistema() - articulosCorte.getExistenciaFisica();
+			cantidad = productosCorte.getExistenciaSistema() - productosCorte.getExistenciaFisica();
 			inventarioVO.setCantidad(Integer.valueOf(cantidad+""));
-			articulosCorte.setExistenciaSistema(articulosCorte.getExistenciaSistema() - cantidad);
+			productosCorte.setExistenciaSistema(productosCorte.getExistenciaSistema() - cantidad);
 			//Obtiene el tipo de movimiento
 			tipoMovimientoInvVO = inventarioBO.geTipoMovimientoPorClave(Constantes.SALIDA_X_AJUSTE_MANUAL);
 			inventarioVO.setIdTipoMovimiento(tipoMovimientoInvVO.getIdTipoMovimientoInv());
@@ -178,27 +184,45 @@ public class InventarioController {
 			}
 			//cantidad actualizada
 			if(isEntrada){
-				articulosCorte.setExistenciaSistema(existenciaSistemaInicial + cantidad);
+				productosCorte.setExistenciaSistema(existenciaSistemaInicial + cantidad);
 			}else{
-				articulosCorte.setExistenciaSistema(existenciaSistemaInicial - cantidad);
+				productosCorte.setExistenciaSistema(existenciaSistemaInicial - cantidad);
 			}
 			//Realiza relacion del corte de articulo con los movimientos de ajuste
-			numAjuste = articulosCorteBO.createArticulosCorteAjuste(articulosCorte, listMovimientosAjuste, idUsuario);
+			numAjuste = productosCorteBO.createProductosCorteAjuste(productosCorte, listMovimientosAjuste, idUsuario);
 			//Actualiza el corte de articulo
-			idArticulosCorte = articulosCorteBO.updateArticulosCorte(articulosCorte,idCine,idPuntoVenta,idUsuario);
+			idProductosCorte = productosCorteBO.updateProductosCorte(productosCorte,idCanal,idAlmacen,idUsuario);
 		}
-		return idArticulosCorte;
+		return idProductosCorte;
 	}
 	
-	public Integer removeArticulosCorte(Integer idArticuloCorte,Integer idCine,Integer idPuntoVenta,Integer idUsuario) throws BusinessGlobalException {
-		return articulosCorteBO.removeArticulosCorte(idArticuloCorte,idCine,idPuntoVenta,idUsuario);
+	public Integer removeProductosCorte(Integer idProductoCorte,Integer idCanal,Integer idAlmacen,Integer idUsuario) throws BusinessGlobalException {
+		return productosCorteBO.removeProductosCorte(idProductoCorte,idCanal,idAlmacen,idUsuario);
 	}
 	
-	 public List<ArticulosCorteVO> getArticulosCorteEnConteo(Integer idPuntoVenta){
-		return articulosCorteBO.getArticulosCorteEnConteo(idPuntoVenta);
+	 public List<ProductosCorteVO> getProductosCorteEnConteo(Integer idAlmacen){
+		return productosCorteBO.getProductosCorteEnConteo(idAlmacen);
 	}
 	 
-	 public Integer finalizarConteo(Integer idCine,Integer idPuntoVenta,Integer idUsuario){
-		 return articulosCorteBO.finalizarConteo(idCine, idPuntoVenta, idUsuario);
+	 public Integer finalizarConteo(Integer idCanal,Integer idAlmacen,Integer idUsuario){
+		 return productosCorteBO.finalizarConteo(idCanal, idAlmacen, idUsuario);
+	 }
+	 
+	 public ConteoVO obtenerConteo(ParametrosBusquedaVO parametrosBusquedaVO) throws BusinessGlobalException {
+		 return inventarioBO.obtenerConteo(parametrosBusquedaVO.getIdEmpresa(), parametrosBusquedaVO.getFolio());
+	 }
+	 
+	 public Integer guardarConteo(ConteoVO conteoVO) throws BusinessGlobalException {
+		 return inventarioBO.guardarConteo(conteoVO);
+	 }
+	 
+	 public Integer autorizarConteo(ConteoVO conteoVO) throws BusinessGlobalException {
+		 Integer folio = 0;
+		 
+		 this.inventarioBO.autorizarConteo(conteoVO);
+		 
+		 folio = this.inventarioBO.actualizarConteo(conteoVO);
+		 
+		 return folio;
 	 }
 }

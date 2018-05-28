@@ -235,11 +235,11 @@
 				</value>
 				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Documento
 				</value>
-				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ArticulosCorte
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ProductosCorte
 				</value>
 				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Inventario
 				</value>
-				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ArticulosCorteAjuste
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ProductosCorteAjuste
 				</value>
 				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ReportesCineXDistribuidora
 				</value>
@@ -271,6 +271,13 @@
 				</value>
 				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.EstatusOrdenCompra
 				</value>
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.InventarioConteo
+				</value>
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.InventarioConteoDetalle
+				</value>
+				<value>mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.EstatusConteo
+				</value>
+				
 			</list>
 		</property>
 	</bean>

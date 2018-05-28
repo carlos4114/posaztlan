@@ -18,6 +18,30 @@ import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.PuntoVenta;
 @Repository 
 public class InventarioDAO extends GlobalHibernateDAO<Inventario> implements InventarioDAOI {
 
+
+	@Override
+	public List<Inventario> findByAlmacen(Integer idAlmacen) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select inv from Inventario inv where inv.almacen.idAlmacen=:idAlmacen ");
+		hql.append("order by inv.producto.nombre");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setParameter("idAlmacen", idAlmacen);
+
+		return query.list();
+	}
+	
+	@Override
+	public List<Inventario> findByCanal(Integer idCanal) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select inv from Inventario inv where inv.almacen.canal.idCanal=:idCanal ");
+		hql.append("order by inv.producto.nombre");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setParameter("idCanal", idCanal);
+		
+		return query.list();	
+	}
 	
 	@Override
 	public List<Inventario> findByIdPuntoVentaAndNameArticulo(Integer idPuntoVenta, String nameArticulo) {
@@ -159,17 +183,17 @@ public class InventarioDAO extends GlobalHibernateDAO<Inventario> implements Inv
 	}
 	
 	@Override
-	public List<Inventario> findByIdPuntoVentaWithOutCount(Integer idPuntoVenta, String nameArticulo) {
+	public List<Inventario> findByIdPuntoVentaWithOutCount(Integer idAlmacen, String nameProducto) {
 		StringBuilder hql = new StringBuilder();
-		hql.append("select inv.articulo,sum(inv.cantidad),avg(inv.importe),sum(inv.existenciaActual),inv.puntoVenta from Inventario inv  ");		
-		hql.append("where inv.puntoVenta.idPuntoVenta = :idPuntoVenta and  inv.articulo.nombre like :nameArticulo " );
-		hql.append("and inv.articulo not in (select ac.articulo from ArticulosCorte ac where ac.estatusConteo = 0) ");
-		hql.append("group by inv.articulo.idArticulo ");
-		hql.append("order by inv.articulo.nombre");
+		hql.append("select inv.producto,sum(inv.cantidad),avg(inv.importe),sum(inv.existenciaActual),inv.almacen from Inventario inv  ");		
+		hql.append("where inv.almacen.idAlmacen= :idAlmacen and  inv.producto.nombre like :nameProducto " );
+		hql.append("and inv.producto not in (select ac.producto from ProductosCorte ac where ac.estatusConteo = 0) ");
+		hql.append("group by inv.producto.idProducto ");
+		hql.append("order by inv.producto.nombre");
 
 		Query query = getSession().createQuery(hql.toString());
-		query.setParameter("idPuntoVenta", idPuntoVenta);
-		query.setParameter("nameArticulo", "%"+nameArticulo+"%");
+		query.setParameter("idAlmacen", idAlmacen);
+		query.setParameter("nameProducto", "%"+nameProducto+"%");
 		
 		List result = query.list();		
 		

@@ -2,7 +2,7 @@ package mx.com.aztlan.pos.negocio.administracion.vo;
 
 public class FiltrosVO {
 	private Integer idEmpresa;
-	private Integer ordenCompra;
+	private Integer idOrdenCompra;
 	private Integer idFamilia;
 	private Integer idMarca;
 	private Integer idTipoProducto;
@@ -12,6 +12,7 @@ public class FiltrosVO {
 	private Integer idCanal;
 	private String sku;
 	private Integer idAlmacen;
+	
 	
 	public Integer getIdEmpresa() {
 		return idEmpresa;
@@ -74,12 +75,11 @@ public class FiltrosVO {
 		this.idAlmacen = idAlmacen;
 	}
 
-	public Integer getOrdenCompra() {
-		return ordenCompra;
+	public Integer getIdOrdenCompra() {
+		return idOrdenCompra;
 	}
-	public void setOrdenCompra(Integer ordenCompra) {
-		this.ordenCompra = ordenCompra;
+	public void setIdOrdenCompra(Integer idOrdenCompra) {
+		this.idOrdenCompra = idOrdenCompra;
 	}
-	
 	
 }

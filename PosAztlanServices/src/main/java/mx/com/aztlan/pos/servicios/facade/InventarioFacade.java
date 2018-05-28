@@ -7,8 +7,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,45 +16,39 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import io.jsonwebtoken.Claims;
-import mx.com.aztlan.pos.infraservices.negocio.seguridad.vo.HttpResponseVO;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.enumeration.ClaimsEnum;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.vo.ProductoExistenciaVO;
 import mx.com.aztlan.pos.infraservices.servicios.BusinessGlobalException;
 import mx.com.aztlan.pos.infraservices.servicios.NotFoundException;
 import mx.com.aztlan.pos.negocio.administracion.vo.OrdenCompraVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.ProductoVO;
 import mx.com.aztlan.pos.negocio.dulceria.vo.TipoMovimientoInvVO;
-import mx.com.aztlan.pos.negocio.inventarios.vo.ArticulosCorteVO;
-import mx.com.aztlan.pos.negocio.inventarios.vo.ArticulosXPuntoVentaVO;
+import mx.com.aztlan.pos.negocio.inventarios.vo.ConteoVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ParametrosBusquedaVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.InventarioVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ParametrosInventarioVO;
+import mx.com.aztlan.pos.negocio.inventarios.vo.ProductosCorteVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.SalidaVO;
 import mx.com.aztlan.pos.servicios.inventarios.controller.InventarioController;
 
 @Service
 public class InventarioFacade implements InventarioFacadeI {
-	private static final Logger logger = LoggerFactory.getLogger(InventarioFacade.class);
 
 	@Autowired
 	InventarioController inventarioController;
 
 	@Override
-	public ResponseEntity<List<ArticulosXPuntoVentaVO>> getarticulosXPuntoVentaByNombre(HttpServletRequest request,
-			String nombre) throws BusinessGlobalException, NotFoundException {
+	@Transactional(readOnly = true)
+	public ResponseEntity<List<ProductoExistenciaVO>> getProductosConteo(@RequestBody ParametrosBusquedaVO parametroBusquedaVO) 
+			throws BusinessGlobalException, NotFoundException {
 		
-		Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
-		Integer idCine = (Integer) claims.get(ClaimsEnum.CINE);
-		Integer idPuntoVenta=(Integer) claims.get(ClaimsEnum.PUNTO_VENTA);
+		List<ProductoExistenciaVO> productosConteo = inventarioController.getProductosConteo(parametroBusquedaVO);
 		
-		logger.info("GetArticulosInventario:::IdCine[{}]:::IdPuntoVenta[{}]",idCine,idPuntoVenta);
-		
-		List<ArticulosXPuntoVentaVO>  articulosPuntoVenta = inventarioController.getArticulosPuntoVenta(idPuntoVenta, nombre);
-		
-		if (articulosPuntoVenta == null || articulosPuntoVenta.isEmpty()) {
+		if (productosConteo == null || productosConteo.isEmpty()) {
 			throw new NotFoundException("No encontrado");
 		}
 
-		return new ResponseEntity<List<ArticulosXPuntoVentaVO> >(articulosPuntoVenta, HttpStatus.OK);
+		return new ResponseEntity<List<ProductoExistenciaVO> >(productosConteo, HttpStatus.OK);
 	}
 	
 	@Override
@@ -89,15 +81,12 @@ public class InventarioFacade implements InventarioFacadeI {
 	
 	
 	@Override
-	public ResponseEntity<List<InventarioVO> > getArticulosInventario(HttpServletRequest request, String nombreArticulo) throws BusinessGlobalException, NotFoundException {
+	public ResponseEntity<List<InventarioVO> > getArticulosInventario(HttpServletRequest request, String nombreProducto) throws BusinessGlobalException, NotFoundException {
 		
 		Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
-		Integer idCine = (Integer) claims.get(ClaimsEnum.CINE);
-		Integer idPuntoVenta=(Integer) claims.get(ClaimsEnum.PUNTO_VENTA);
+		Integer idAlmacen=(Integer) claims.get(ClaimsEnum.ALMACEN);
 		
-		logger.info("GetArticulosInventario:::IdCine[{}]:::IdPuntoVenta[{}]",idCine,idPuntoVenta);
-		
-		List<InventarioVO>  articulosInventario = inventarioController.getArticulosInventario(idPuntoVenta, nombreArticulo);
+		List<InventarioVO>  articulosInventario = inventarioController.getProductosInventario(idAlmacen, nombreProducto);
 
 		if (articulosInventario == null || articulosInventario.isEmpty()) {
 			throw new NotFoundException("No encontrado");
@@ -107,22 +96,19 @@ public class InventarioFacade implements InventarioFacadeI {
 	}
 	
 	@Override
-	public ResponseEntity<List<InventarioVO>> getExistenciaArticuloPorProveedor(HttpServletRequest request,
-			Integer idArticulo) throws BusinessGlobalException, NotFoundException {
+	public ResponseEntity<List<InventarioVO>> getExistenciaProductoPorProveedor(HttpServletRequest request,
+			Integer idProducto) throws BusinessGlobalException, NotFoundException {
 		
 			Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
-			Integer idCine = (Integer) claims.get(ClaimsEnum.CINE);
-			Integer idPuntoVenta=(Integer) claims.get(ClaimsEnum.PUNTO_VENTA);
+			Integer idAlmacen=(Integer) claims.get(ClaimsEnum.ALMACEN);
 			
-			logger.info("GetArticulosInventario:::IdCine[{}]:::IdPuntoVenta[{}]",idCine,idPuntoVenta);
-			
-			List<InventarioVO>  articulosInventario = inventarioController.getExistenciaArticuloPorProveedores(idPuntoVenta, idArticulo);
+			List<InventarioVO>  productosInventario = inventarioController.getExistenciaProductoPorProveedores(idAlmacen, idProducto);
 	
-			if (articulosInventario == null || articulosInventario.isEmpty()) {
+			if (productosInventario == null || productosInventario.isEmpty()) {
 				throw new NotFoundException("No encontrado");
 			}
 	
-			return new ResponseEntity<List<InventarioVO> >(articulosInventario, HttpStatus.OK);
+			return new ResponseEntity<List<InventarioVO> >(productosInventario, HttpStatus.OK);
 	}
 
 	@Override	
@@ -217,116 +203,145 @@ public class InventarioFacade implements InventarioFacadeI {
 	}
 
 	@Override
-	public ResponseEntity<List<InventarioVO> > getArticulosInventarioSinConteo(HttpServletRequest request, String nombreArticulo) throws BusinessGlobalException, NotFoundException {
+	public ResponseEntity<List<InventarioVO> > getProductosInventarioSinConteo(HttpServletRequest request, String nombreProducto) throws BusinessGlobalException, NotFoundException {
 		
 		Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
-		Integer idCine = (Integer) claims.get(ClaimsEnum.CINE);
-		Integer idPuntoVenta=(Integer) claims.get(ClaimsEnum.PUNTO_VENTA);
+		Integer idCanal = (Integer) claims.get(ClaimsEnum.CANAL);
+		Integer idAlmacen=(Integer) claims.get(ClaimsEnum.ALMACEN);
 		
-		logger.info("GetArticulosInventario:::IdCine[{}]:::IdPuntoVenta[{}]",idCine,idPuntoVenta);
-		
-		List<InventarioVO>  articulosInventario = inventarioController.getArticulosInventarioSinConteo(idPuntoVenta, nombreArticulo);
+		List<InventarioVO>  productosInventario = inventarioController.getProductosInventarioSinConteo(idAlmacen, nombreProducto);
 
-		if (articulosInventario == null || articulosInventario.isEmpty()) {
+		if (productosInventario == null || productosInventario.isEmpty()) {
 			throw new NotFoundException("No encontrado");
 		}
 
-		return new ResponseEntity<List<InventarioVO> >(articulosInventario, HttpStatus.OK);
+		return new ResponseEntity<List<InventarioVO> >(productosInventario, HttpStatus.OK);
 	}
 	
 	@Override
-	public ResponseEntity<Integer> createArticulosCorte(HttpServletRequest request,
-			@RequestBody ArticulosCorteVO articulosCorteVO) throws BusinessGlobalException, NotFoundException {
+	public ResponseEntity<Integer> createProductosCorte(HttpServletRequest request,
+			@RequestBody ProductosCorteVO productosCorteVO) throws BusinessGlobalException, NotFoundException {
 		
 		int response = 0;
 		
 		Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
-		Integer idCine = (Integer) claims.get(ClaimsEnum.CINE);
-		Integer idPuntoVenta = (Integer) claims.get(ClaimsEnum.PUNTO_VENTA);
+		Integer idCanal= (Integer) claims.get(ClaimsEnum.CANAL);
+		Integer idAlmacen = (Integer) claims.get(ClaimsEnum.ALMACEN);
 		Integer idUsuario = (Integer) claims.get(ClaimsEnum.USUARIO);
-		logger.info("createArticulosCorte:::IdCine[{}]:::IdPuntoVenta[{}]",idCine,idPuntoVenta);
-		response = inventarioController.createArticulosCorte(articulosCorteVO,idCine,idPuntoVenta,idUsuario);
+		
+		response = inventarioController.createProductosCorte(productosCorteVO,idCanal,idAlmacen,idUsuario);
 		
 		return new ResponseEntity<Integer>(response, HttpStatus.CREATED);
 	}
 
 	@Override
-	public ResponseEntity<Integer> updateArticulosCorte(HttpServletRequest request,
-			@RequestBody ArticulosCorteVO articulosCorteVO) throws BusinessGlobalException, NotFoundException {
+	public ResponseEntity<Integer> updateProductosCorte(HttpServletRequest request,
+			@RequestBody ProductosCorteVO productosCorteVO) throws BusinessGlobalException, NotFoundException {
 		
 		int response = 0;
 		
 		Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
-		Integer idCine = (Integer) claims.get(ClaimsEnum.CINE);
-		Integer idPuntoVenta = (Integer) claims.get(ClaimsEnum.PUNTO_VENTA);
+		Integer idCanal = (Integer) claims.get(ClaimsEnum.CANAL);
+		Integer idAlmacen = (Integer) claims.get(ClaimsEnum.ALMACEN);
 		Integer idUsuario = (Integer) claims.get(ClaimsEnum.USUARIO);
-		logger.info("updateArticulosCorte:::IdCine[{}]:::IdPuntoVenta[{}]",idCine,idPuntoVenta);
-		response = inventarioController.updateArticulosCorte(articulosCorteVO,idCine,idPuntoVenta,idUsuario);
+		
+		response = inventarioController.updateProductosCorte(productosCorteVO,idCanal,idAlmacen,idUsuario);
 		return new ResponseEntity<Integer>(response, HttpStatus.OK);
 	}
 	
 	@Override
-	public ResponseEntity<Integer> updateArticulosCorteMovimiento(HttpServletRequest request,
-			@RequestBody ArticulosCorteVO articulosCorteVO) throws BusinessGlobalException, NotFoundException {
+	public ResponseEntity<Integer> updateProductosCorteMovimiento(HttpServletRequest request,
+			@RequestBody ProductosCorteVO productosCorteVO) throws BusinessGlobalException, NotFoundException {
 		
 		int response = 0;
 		
 		Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
-		Integer idCine = (Integer) claims.get(ClaimsEnum.CINE);
-		Integer idPuntoVenta = (Integer) claims.get(ClaimsEnum.PUNTO_VENTA);
+		Integer idCanal = (Integer) claims.get(ClaimsEnum.CANAL);
+		Integer idAlmacen = (Integer) claims.get(ClaimsEnum.ALMACEN);
 		Integer idUsuario = (Integer) claims.get(ClaimsEnum.USUARIO);
-		logger.info("updateArticulosCorteMovimiento:::IdCine[{}]:::IdPuntoVenta[{}]",idCine,idPuntoVenta);
-		response = inventarioController.updateArticulosCorteMovimiento(articulosCorteVO,idCine,idPuntoVenta,idUsuario);
+		
+		response = inventarioController.updateProductosCorteMovimiento(productosCorteVO,idCanal,idAlmacen,idUsuario);
 		return new ResponseEntity<Integer>(response, HttpStatus.OK);
 	}
 
 	@Override
-	public ResponseEntity<Integer> removeArticulosCorte(HttpServletRequest request, Integer idArticuloCorte)
+	public ResponseEntity<Integer> removeProductosCorte(HttpServletRequest request, Integer idProductoCorte)
 			throws BusinessGlobalException, NotFoundException {
 		
 		int response = 0;
 		
 		Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
-		Integer idCine = (Integer) claims.get(ClaimsEnum.CINE);
-		Integer idPuntoVenta = (Integer) claims.get(ClaimsEnum.PUNTO_VENTA);
+		Integer idCanal = (Integer) claims.get(ClaimsEnum.CANAL);
+		Integer idAlmacen = (Integer) claims.get(ClaimsEnum.ALMACEN);
 		Integer idUsuario = (Integer) claims.get(ClaimsEnum.USUARIO);
-		logger.info("updateArticulosCorte:::IdCine[{}]:::IdPuntoVenta[{}]",idCine,idPuntoVenta);
-		response = inventarioController.removeArticulosCorte(idArticuloCorte,idCine,idPuntoVenta,idUsuario);
+		
+		response = inventarioController.removeProductosCorte(idProductoCorte,idCanal,idAlmacen,idUsuario);
 		return new ResponseEntity<Integer>(response, HttpStatus.OK);
 	}
 
 	@Override
-	public ResponseEntity<List<ArticulosCorteVO>> getArticulosCorte(HttpServletRequest request, String fecha)
+	public ResponseEntity<List<ProductosCorteVO>> getProductosCorte(HttpServletRequest request, String fecha)
 			throws BusinessGlobalException, NotFoundException,ParseException {
 		
 		Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
-		Integer idCine = (Integer) claims.get(ClaimsEnum.CINE);
-		Integer idPuntoVenta = (Integer) claims.get(ClaimsEnum.PUNTO_VENTA);
+		Integer idCanal = (Integer) claims.get(ClaimsEnum.CANAL);
+		Integer idAlmacen = (Integer) claims.get(ClaimsEnum.ALMACEN);
 		Integer idUsuario = (Integer) claims.get(ClaimsEnum.USUARIO);
-		
-		logger.info("getArticulosCorte:::IdCine[{}]:::IdPuntoVenta[{}]",idCine,idPuntoVenta);
 		
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		Date fechaFormatter = formatter.parse(fecha);
 		
-		List<ArticulosCorteVO> articulosCorteVO = inventarioController.getArticulosCorteEnConteo(idPuntoVenta);
+		List<ProductosCorteVO> productosCorteVO = inventarioController.getProductosCorteEnConteo(idAlmacen);
 		
-		return new ResponseEntity<List<ArticulosCorteVO>>(articulosCorteVO, HttpStatus.OK);
+		return new ResponseEntity<List<ProductosCorteVO>>(productosCorteVO, HttpStatus.OK);
 	}
 	
 	@Override
-	public ResponseEntity<Integer> updateArticulosCorteFinConteo(HttpServletRequest request,Integer estatusConteo ) 
+	public ResponseEntity<Integer> updateProductosCorteFinConteo(HttpServletRequest request,Integer estatusConteo ) 
 			 throws BusinessGlobalException, NotFoundException{
 		
 		Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
-		Integer idCine = (Integer) claims.get(ClaimsEnum.CINE);
-		Integer idPuntoVenta = (Integer) claims.get(ClaimsEnum.PUNTO_VENTA);
+		Integer idCanal = (Integer) claims.get(ClaimsEnum.CANAL);
+		Integer idAlmacen= (Integer) claims.get(ClaimsEnum.ALMACEN);
 		Integer idUsuario = (Integer) claims.get(ClaimsEnum.USUARIO);
 		
 		int response = 0;
 		
-		logger.info("updateArticulosCorteFinConteo:::IdCine[{}]:::IdPuntoVenta[{}]",idCine,idPuntoVenta);
-		response = inventarioController.finalizarConteo(idCine,idPuntoVenta,idUsuario);
+		response = inventarioController.finalizarConteo(idCanal,idAlmacen,idUsuario);
+		
+		return new ResponseEntity<Integer>(response, HttpStatus.OK);
+	}
+	
+	@Override
+	public ResponseEntity<ConteoVO> obtenerConteo(@RequestBody ParametrosBusquedaVO parametrosBusquedaVO) throws BusinessGlobalException, NotFoundException
+	{
+		ConteoVO response = inventarioController.obtenerConteo(parametrosBusquedaVO);
+		
+		return new ResponseEntity<ConteoVO>(response, HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<Integer> guardarConteo(HttpServletRequest request, @RequestBody ConteoVO conteoVO) throws BusinessGlobalException, NotFoundException
+	{
+		Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
+		Integer idUsuario=(Integer) claims.get(ClaimsEnum.USUARIO);
+		
+		conteoVO.setIdUsuarioCreador(idUsuario);
+		
+		Integer response = inventarioController.guardarConteo(conteoVO);
+		
+		return new ResponseEntity<Integer>(response, HttpStatus.OK);
+	}
+	
+	@Override
+	public ResponseEntity<Integer> autorizarConteo(HttpServletRequest request, @RequestBody ConteoVO conteoVO) throws BusinessGlobalException, NotFoundException
+	{
+		Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
+		Integer idUsuario=(Integer) claims.get(ClaimsEnum.USUARIO);
+		
+		conteoVO.setIdUsuarioAutorizador(idUsuario);
+		
+		Integer response = this.inventarioController.autorizarConteo(conteoVO);
 		
 		return new ResponseEntity<Integer>(response, HttpStatus.OK);
 	}

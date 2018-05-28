@@ -10,18 +10,18 @@ angular.module('indexModule').service('inventarioService', ['$http','GlobalFacto
 		 return $http.post(config.baseUrl+"/inventario/buscarProductoXsku", parametrosBusquedaVO);
 	 }
 	
-	 this.busquedaArticulosInventario = function(nombreArticulo){		 
-		 return $http.get(config.baseUrl+"/inventario/articulo", {
+	 this.busquedaProductosInventario = function(nombreProducto){		 
+		 return $http.get(config.baseUrl+"/inventario/producto", {
 			 params : {
-				 "nombreArticulo" : nombreArticulo
+				 "nombreProducto" : nombreProducto
 			 }
 		});
 	 }
 	 
-	 this.busquedaArticulosExistencia = function(idArticulo){		 
-		 return $http.get(config.baseUrl+"/inventario/articulo/existencia", {
+	 this.busquedaProductosExistencia = function(idProducto){		 
+		 return $http.get(config.baseUrl+"/inventario/producto/existencia", {
 			 params : {
-				 "idArticulo" : idArticulo
+				 "idProducto" : idProducto
 			 }
 		});
 	 }	 
@@ -59,56 +59,56 @@ angular.module('indexModule').service('inventarioService', ['$http','GlobalFacto
 	 }
 	 
 	this.registrarSalida = function(parametrosInventario){		 
-		 if (parametrosInventario.idPuntoVentaConsigna == null){parametrosInventario.idPuntoVentaConsigna = 0}
-		 return $http.post(config.baseUrl + "/inventario/articulo/salida",parametrosInventario);
+		 if (parametrosInventario.idAlmacenConsigna == null){parametrosInventario.idAlmacenConsigna = 0}
+		 return $http.post(config.baseUrl + "/inventario/producto/salida",parametrosInventario);
 	}
 
 	this.registrarEntrada = function(parametrosInventario){
 			 return $http.post(config.baseUrl + "/inventario/producto/entrada",parametrosInventario);
 	}
 	
-	this.registrarConteo = function(conteoArticulo){
-		 return $http.post(config.baseUrl + "/inventario/articulosCorte",conteoArticulo);
+	this.registrarConteo = function(conteoProducto){
+		 return $http.post(config.baseUrl + "/inventario/productosCorte",conteoProducto);
 	}
 	
-	this.actualizarConteo = function(conteoArticulo ){
-		 return $http.put(config.baseUrl + "/inventario/articulosCorte",conteoArticulo);
+	this.actualizarConteo = function(conteoProducto ){
+		 return $http.put(config.baseUrl + "/inventario/productosCorte",conteoProducto);
 	}
 	
-	this.actualizarConteoMovimiento = function(conteoArticulo ){
-		 return $http.put(config.baseUrl + "/inventario/articulosCorteMovimiento",conteoArticulo);
+	this.actualizarConteoMovimiento = function(conteoProducto){
+		 return $http.put(config.baseUrl + "/inventario/productosCorteMovimiento",conteoProducto);
 	}
 	
-	this.eliminarConteo = function(idConteoArticulo){
-		 return $http.delete(config.baseUrl + "/inventario/articulosCorte",idConteoArticulo);
+	this.eliminarConteo = function(idConteoProducto){
+		 return $http.delete(config.baseUrl + "/inventario/productosCorte",idConteoProducto);
 	}	 
 	
-	this.busquedaArticulosSinConteo = function(nombreArticulo){		 
-		 return $http.get(config.baseUrl+"/inventario/articulosSinConteo", {
+	this.busquedaProductosSinConteo = function(nombreProducto){		 
+		 return $http.get(config.baseUrl+"/inventario/productosSinConteo", {
 			 params : {
-				 "nombreArticulo" : nombreArticulo
+				 "nombreProducto" : nombreProducto
 			 }
 		});
 	 }
 	
 	this.finalizarConteoInventario = function(){		 
-		 return $http.put(config.baseUrl+"/inventario/articulosFinConteo", {
+		 return $http.put(config.baseUrl+"/inventario/productosFinConteo", {
 			 params : {
 				 "estatusConteo" : 1
 			 }
 		});
 	 }
 	
-	this.busquedaConteoArticulos = function(fecha){		 
-		 return $http.get(config.baseUrl+"/inventario/articulosCorte", {
+	this.busquedaConteoProductos = function(fecha){		 
+		 return $http.get(config.baseUrl+"/inventario/productosCorte", {
 			 params : {
 				 "fecha" : fecha
 			 }
 		});
 	 }
 	
-	this.consultarPuntosVenta = function(){		
-		return $http.get(config.baseUrl+"/catalogo/puntosVenta");
+	this.consultarAlmacenes = function(){		
+		return $http.get(config.baseUrl+"/catalogo/almacenes");
 	}
 
 	this.consultarProveedores = function(idEmpresa){

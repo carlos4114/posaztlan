@@ -5,13 +5,26 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Almacen;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Canal;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.EstatusConteo;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Inventario;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.InventarioConteo;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.InventarioConteoDetalle;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.InventarioConteoDetalleId;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.OrdenCompra;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.OrdenCompraDetalle;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Producto;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Proveedor;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.TipoMovimientoInv;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Usuario;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.enumeration.EstatusConteoEnum;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.vo.ProductoExistenciaVO;
 import mx.com.aztlan.pos.negocio.configuracion.assembler.ProductoAssembler;
+import mx.com.aztlan.pos.negocio.configuracion.vo.ProductoVO;
 import mx.com.aztlan.pos.negocio.dulceria.assembler.TipoMovimientoInvAssembler;
 import mx.com.aztlan.pos.negocio.dulceria.assembler.UsuarioAssembler;
+import mx.com.aztlan.pos.negocio.inventarios.vo.ConteoVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.InventarioVO;
 
 public class InventarioAssembler {
@@ -96,7 +109,7 @@ public class InventarioAssembler {
 		
 		return inventarioVO;
 	}
-	
+		
 	public static List<InventarioVO> getInventariosVO(List<Inventario> inventarios){
 
 		if(inventarios==null || inventarios.isEmpty())
@@ -111,5 +124,84 @@ public class InventarioAssembler {
 		return movimientosInventarioVO;
 	}	
 
+
+	public static ConteoVO getConteoVO(InventarioConteo conteo,List<InventarioConteoDetalle> detalle){
+
+		if(conteo==null)
+			return null;
+		
+		ConteoVO conteoVO = new ConteoVO();
+		
+		conteoVO.setIdConteo(conteo.getIdConteo());
+		conteoVO.setFolio(conteo.getFolio());
+		conteoVO.setIdAlmacen(conteo.getAlmacen().getIdAlmacen());
+		conteoVO.setIdCanal(conteo.getCanal().getIdCanal());
+		conteoVO.setIdEstatusConteo(conteo.getEstatusConteo().getIdEstatusConteo());
+		conteoVO.setIdUsuarioAutorizador(conteo.getUsuarioCreador().getIdUsuario());
+		conteoVO.setIdUsuarioCreador(conteo.getUsuarioCreador().getIdUsuario());
+		conteoVO.setProductos(getProductos(detalle));
+		
+		return conteoVO;
+		
+	}	
+
+	public static List<ProductoExistenciaVO> getProductos(List<InventarioConteoDetalle> detalle) {
+		List<ProductoExistenciaVO> productos = new ArrayList<ProductoExistenciaVO>();
+		
+		for(InventarioConteoDetalle producto : detalle) {
+			ProductoExistenciaVO productoVO = new ProductoExistenciaVO();
+			productoVO.setIdProducto(producto.getId().getIdProducto());
+			productoVO.setNombre(producto.getProducto().getNombre());
+			productoVO.setFamilia(producto.getProducto().getFamilia().getNombre());
+			productoVO.setMarca(producto.getProducto().getMarca().getNombre());
+			productoVO.setMedida(producto.getProducto().getMedida().getNombre());
+			productoVO.setTipoProducto(producto.getProducto().getTipoProducto().getNombre());
+			productoVO.setUnidadMedida(producto.getProducto().getUnidadMedida().getNombre());
+			productoVO.setExistencia(producto.getExistenciaSistema());
+			productoVO.setExistenciaFisica(producto.getExistenciaFisica());			
+			productos.add(productoVO);
+		}
+		
+		return productos;
+	}
+
+
+	public static InventarioConteo getInventarioConteo(ConteoVO conteoVO, Integer folio){
+
+		if(conteoVO==null)
+			return null;
+		
+		if(conteoVO.getEsParcial()) {
+			conteoVO.setIdEstatusConteo(EstatusConteoEnum.PARCIAL);
+		}else {
+			conteoVO.setIdEstatusConteo(EstatusConteoEnum.CERRADO);
+		}
+		
+		InventarioConteo inventarioConteo = new InventarioConteo();
+		inventarioConteo.setAlmacen(conteoVO.getIdAlmacen() == null?null:new Almacen(conteoVO.getIdAlmacen()));
+		inventarioConteo.setCanal(new Canal(conteoVO.getIdCanal()));
+		inventarioConteo.setEstatusConteo(new EstatusConteo(conteoVO.getIdEstatusConteo()));
+		inventarioConteo.setUsuarioCreador(new Usuario(conteoVO.getIdUsuarioCreador()));
+		inventarioConteo.setIdConteo(conteoVO.getIdConteo());
+		inventarioConteo.setFolio(folio);
+		inventarioConteo.setFechaHora(new Date());
+		return inventarioConteo;
+		
+	}	
 	
+	public static InventarioConteoDetalle getInventarioConteoDetalle(ProductoExistenciaVO producto, ConteoVO conteoVO, Integer idConteo){
+
+		if(conteoVO==null)
+			return null;
+		
+		InventarioConteoDetalle inventarioConteoDetalle = new InventarioConteoDetalle();
+	
+		inventarioConteoDetalle.setId(new InventarioConteoDetalleId(idConteo, producto.getIdProducto()));
+		inventarioConteoDetalle.setProducto(new Producto(producto.getIdProducto()));
+		inventarioConteoDetalle.setExistenciaSistema(producto.getExistencia());
+		inventarioConteoDetalle.setExistenciaFisica(producto.getExistenciaFisica());
+		
+		return inventarioConteoDetalle;
+	}	
 }
+

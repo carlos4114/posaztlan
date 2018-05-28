@@ -15,17 +15,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import mx.com.aztlan.pos.infraservices.negocio.seguridad.vo.HttpResponseVO;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.vo.ProductoExistenciaVO;
 import mx.com.aztlan.pos.infraservices.servicios.BusinessGlobalException;
 import mx.com.aztlan.pos.infraservices.servicios.NotFoundException;
+import mx.com.aztlan.pos.negocio.administracion.vo.FiltrosVO;
 import mx.com.aztlan.pos.negocio.administracion.vo.OrdenCompraVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.ArticuloVO;
 import mx.com.aztlan.pos.negocio.configuracion.vo.ProductoVO;
 import mx.com.aztlan.pos.negocio.dulceria.vo.TipoMovimientoInvVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ArticulosCorteVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ArticulosXPuntoVentaVO;
+import mx.com.aztlan.pos.negocio.inventarios.vo.ConteoVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ParametrosBusquedaVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.InventarioVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ParametrosInventarioVO;
+import mx.com.aztlan.pos.negocio.inventarios.vo.ProductosCorteVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.SalidaVO;
 
 @RestController
@@ -33,13 +37,9 @@ import mx.com.aztlan.pos.negocio.inventarios.vo.SalidaVO;
 @RequestMapping("/inventario")
 public interface InventarioFacadeI {
 	
-	@RequestMapping(value = "/puntoVenta/articulo", method = RequestMethod.GET)
-	ResponseEntity<List<ArticulosXPuntoVentaVO>> getarticulosXPuntoVentaByNombre(HttpServletRequest request,@RequestParam(value = "nombre") String nombre)
+	@RequestMapping(value = "/productosConteo", method = RequestMethod.POST)
+	ResponseEntity<List<ProductoExistenciaVO>> getProductosConteo(@RequestBody ParametrosBusquedaVO parametroBusquedaVO)
 			throws BusinessGlobalException, NotFoundException;
-	
-	/*@RequestMapping(value = "/buscarProducto", method = RequestMethod.GET)
-	ResponseEntity<List<ProductoVO>> getProductosByNombre(@RequestParam(value = "nombre") String nombre)
-			throws BusinessGlobalException, NotFoundException;*/
 	
 	@RequestMapping(value = "/buscarProducto", method = RequestMethod.POST)
 	ResponseEntity<List<ProductoVO>> getProductosByNombre(@RequestBody ParametrosBusquedaVO parametroBusquedaVO)
@@ -49,8 +49,8 @@ public interface InventarioFacadeI {
 	ResponseEntity<List<ProductoVO>> getProductosBySku(@RequestBody ParametrosBusquedaVO parametroBusquedaVO)
 			throws BusinessGlobalException, NotFoundException;
 	
-	@RequestMapping(value = "/articulo/existencia", method = RequestMethod.GET)
-	ResponseEntity<List<InventarioVO>> getExistenciaArticuloPorProveedor(HttpServletRequest request,@RequestParam(value = "idArticulo") Integer idArticulo)
+	@RequestMapping(value = "/producto/existencia", method = RequestMethod.GET)
+	ResponseEntity<List<InventarioVO>> getExistenciaProductoPorProveedor(HttpServletRequest request,@RequestParam(value = "idArticulo") Integer idArticulo)
 			throws BusinessGlobalException, NotFoundException;
 	
 	@RequestMapping(value = "/producto/salida", method = RequestMethod.POST)
@@ -77,32 +77,32 @@ public interface InventarioFacadeI {
 	ResponseEntity<List<TipoMovimientoInvVO>> getTipoMovimientoInvByClave(HttpServletRequest request,@RequestParam(value = "clave") String clave)
 			throws BusinessGlobalException, NotFoundException;
 	
-	@RequestMapping(value = "/articulosCorte", method = RequestMethod.POST)
-	ResponseEntity<Integer> createArticulosCorte(HttpServletRequest request,@RequestBody ArticulosCorteVO articulosCorteVO)			
+	@RequestMapping(value = "/productosCorte", method = RequestMethod.POST)
+	ResponseEntity<Integer> createProductosCorte(HttpServletRequest request,@RequestBody ProductosCorteVO productosCorteVO)			
 			throws BusinessGlobalException, NotFoundException;
 	
-	@RequestMapping(value = "/articulosCorte", method = RequestMethod.PUT)
-	ResponseEntity<Integer> updateArticulosCorte(HttpServletRequest request,@RequestBody ArticulosCorteVO articulosCorteVO)			
+	@RequestMapping(value = "/productosCorte", method = RequestMethod.PUT)
+	ResponseEntity<Integer> updateProductosCorte(HttpServletRequest request,@RequestBody ProductosCorteVO productosCorteVO)			
 			throws BusinessGlobalException, NotFoundException;
 	
-	@RequestMapping(value = "/articulosCorteMovimiento", method = RequestMethod.PUT)
-	ResponseEntity<Integer> updateArticulosCorteMovimiento(HttpServletRequest request,@RequestBody ArticulosCorteVO articulosCorteVO)			
+	@RequestMapping(value = "/productosCorteMovimiento", method = RequestMethod.PUT)
+	ResponseEntity<Integer> updateProductosCorteMovimiento(HttpServletRequest request,@RequestBody ProductosCorteVO productosCorteVO)			
 			throws BusinessGlobalException, NotFoundException;
 	
-	@RequestMapping(value = "/articulosCorte", method = RequestMethod.DELETE)
-	ResponseEntity<Integer> removeArticulosCorte(HttpServletRequest request,@RequestParam(value = "idArticuloCorte") Integer idArticuloCorte)			
+	@RequestMapping(value = "/productosCorte", method = RequestMethod.DELETE)
+	ResponseEntity<Integer> removeProductosCorte(HttpServletRequest request,@RequestParam(value = "idProductoCorte") Integer idProductoCorte)			
 			throws BusinessGlobalException, NotFoundException;
 	
-	@RequestMapping(value = "/articulosCorte", method = RequestMethod.GET)
-	ResponseEntity<List<ArticulosCorteVO>> getArticulosCorte(HttpServletRequest request,@RequestParam(value = "fecha") String fecha)			
+	@RequestMapping(value = "/productosCorte", method = RequestMethod.GET)
+	ResponseEntity<List<ProductosCorteVO>> getProductosCorte(HttpServletRequest request,@RequestParam(value = "fecha") String fecha)			
 			throws BusinessGlobalException, NotFoundException,ParseException;
 	
-	@RequestMapping(value = "/articulosSinConteo", method = RequestMethod.GET)
-	 ResponseEntity<List<InventarioVO> > getArticulosInventarioSinConteo(HttpServletRequest request, @RequestParam(value = "nombreArticulo") String nombreArticulo) 
+	@RequestMapping(value = "/productosSinConteo", method = RequestMethod.GET)
+	 ResponseEntity<List<InventarioVO> > getProductosInventarioSinConteo(HttpServletRequest request, @RequestParam(value = "nombreProducto") String nombreArticulo) 
 			 throws BusinessGlobalException, NotFoundException; 
 	
-	@RequestMapping(value = "/articulosFinConteo", method = RequestMethod.PUT)
-	 ResponseEntity<Integer> updateArticulosCorteFinConteo(HttpServletRequest request,@RequestParam(value = "estatusConteo") Integer estatusConteo ) 
+	@RequestMapping(value = "/productosFinConteo", method = RequestMethod.PUT)
+	 ResponseEntity<Integer> updateProductosCorteFinConteo(HttpServletRequest request,@RequestParam(value = "estatusConteo") Integer estatusConteo ) 
 			 throws BusinessGlobalException, NotFoundException; 
 	
 	@RequestMapping(value = "/entradaOrdenCompra", method = RequestMethod.POST)
@@ -110,5 +110,17 @@ public interface InventarioFacadeI {
 	
 	@RequestMapping(value = "/consultaTipoMovimientoInv/{isEntrada}", method = RequestMethod.GET)
 	ResponseEntity<List<TipoMovimientoInvVO>> getTipoMovimientoInv(HttpServletRequest request, @PathVariable("isEntrada") Boolean isEntrada)
+			throws BusinessGlobalException, NotFoundException;
+	
+	@RequestMapping(value = "/obtenerConteo", method = RequestMethod.POST)
+	ResponseEntity<ConteoVO> obtenerConteo(@RequestBody ParametrosBusquedaVO parametrosBusquedaVO)
+			throws BusinessGlobalException, NotFoundException;
+
+	@RequestMapping(value = "/guardarConteo", method = RequestMethod.POST)
+	ResponseEntity<Integer> guardarConteo(HttpServletRequest request,@RequestBody ConteoVO conteoVO)
+			throws BusinessGlobalException, NotFoundException;
+	
+	@RequestMapping(value = "/autorizarConteo", method = RequestMethod.POST)
+	ResponseEntity<Integer> autorizarConteo(HttpServletRequest request,@RequestBody ConteoVO conteoVO)
 			throws BusinessGlobalException, NotFoundException;
 }

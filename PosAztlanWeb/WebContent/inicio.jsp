@@ -318,6 +318,7 @@
             <script src="<c:url value='/resources/js/aplicacion/inventarios/controller/entradasController.js' />"></script>
             <script src="<c:url value='/resources/js/aplicacion/inventarios/controller/salidasDulceriaController.js' />"></script>
             <script src="<c:url value='/resources/js/aplicacion/inventarios/controller/conteoInventarioController.js' />"></script>
+            <script src="<c:url value='/resources/js/aplicacion/inventarios/service/conteoInventarioService.js' />"></script>
             <script src="<c:url value='/resources/js/aplicacion/inventarios/service/inventarioAngularService.js' />"></script>
             <script src="<c:url value='/resources/js/aplicacion/inventarios/controller/salidasController.js' />"></script>
             <script src="<c:url value='/resources/js/aplicacion/inventarios/service/salidasService.js' />"></script>

@@ -82,7 +82,7 @@ angular.module('indexModule').controller("EntradaOrdenCompraController",['$scope
 	 $scope.inicializarValores = function(){
 		 $scope.seleccionarTodosCh = false;
 		 $scope.listaProductos = null;
-		 $scope.filtrosVO = {idEmpresa: idEmpresa, ordenCompra: null};
+		 $scope.filtrosVO = {idEmpresa: idEmpresa, idOrdenCompra: null};
 		 $scope.productoVO = {idEmpresa: idEmpresa, idProducto:null, nombre:'', descripcion:'', 
 	    		 idFamilia:null, nombreFamilia:null, idTipoProducto:null, nombreTipoProducto:null, 
 	    		 idMedida: null, nombreMedida:null, idUnidadMedida:null, nombreUnidadMedida:null,
@@ -96,7 +96,7 @@ angular.module('indexModule').controller("EntradaOrdenCompraController",['$scope
 	 $scope.limpiarFormulario = function(){  
 		 $scope.seleccionarTodosCh = false;
 		 $scope.listaProductos = null;
-	 	 $scope.filtrosVO = {idEmpresa: idEmpresa, ordenCompra: null};
+	 	 $scope.filtrosVO = {idEmpresa: idEmpresa, idOrdenCompra: null};
 	 	 $scope.productoVO = {idEmpresa: idEmpresa, idProducto:null, nombre:'', descripcion:'', 
 	    		 idFamilia:null, nombreFamilia:null, idTipoProducto:null, nombreTipoProducto:null, 
 	    		 idMedida: null, nombreMedida:null, idUnidadMedida:null, nombreUnidadMedida:null,

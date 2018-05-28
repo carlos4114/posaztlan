@@ -1,82 +1,56 @@
 'use strict';
 
-var ConteoInventarioController = angular.module('indexModule').controller("ConteoInventarioController", function($scope,$controller,$filter,ModalService,dulceriaService,inventarioService,PropertiesFactory){
+angular.module('indexModule').controller("ConteoInventarioController",['$scope','GlobalFactory', 'ConteoInventarioService', 'ModalService','DataUtils','ErrorFactory', 
+    function($scope,GlobalFactory, ConteoInventarioService,ModalService,DataUtils,ErrorFactory){	 			
+	 var idEmpresa = GlobalFactory.getIdEmpresa();  
+	 var idCanal = GlobalFactory.getIdCanal();  
+	 var idAlmacen = GlobalFactory.getIdAlmacen();  
+	 
+	 $scope.fileUrl = null;
+	 $scope.isAdminGral = GlobalFactory.getIsAdminGral();
+	 $scope.isAdminGralEmpresa = GlobalFactory.getIsAdminGralEmpresa();
+	 $scope.isAdminCanal = GlobalFactory.getIsAdminCanal();	 
 
-	$controller('modalController',{$scope : $scope });
-	$scope.parametroBusqueda = {articulo: ""};	
-	$scope.tipoSalida = {};
-	$scope.listaArticulos = [];
-	$scope.listaConteoArticulos = [];
-	$scope.listaTiposMovimientosAjuste = [] ;	
-	$scope.listaPuntosVenta = [];
-	$scope.movimientoInventario = {};
-	$scope.conteoArticuloTmp = {};
-	$scope.nombreArticulo = "";
-	$scope.unidadMedida = "";
-	$scope.resultado = "";		
-	$scope.isNew = false;
-	$scope.parametrosInventario = {};
-	$scope.showFormConteoArticuloCreate = false;
-	
-	$scope.limpiarParametrosMovimiento = function() {
-			$scope.tipoSalida = {};				
-			$scope.movimientoInventario = {};
-			$scope.nombreArticulo = "";
-			$scope.unidadMedida = "";
-			$scope.resultado = "";
-			$scope.conteoArticuloTmp = {};
-			$scope.isNew = false;
-			$scope.showFormConteoArticuloCreate = false;
-	}
-	
-	$scope.consultarTiposMovimiento = function() {
-		inventarioService.consultarTiposMovimientosAjuste().success(function(data) {
-			$scope.listaTiposMovimientosAjuste = data;
-		}).error(function(data) {
+	 function base64toBlob(base64Data, contentType) {
+		    contentType = contentType || '';
+		    var sliceSize = 1024;
+		    var byteCharacters = atob(base64Data);
+		    var bytesLength = byteCharacters.length;
+		    var slicesCount = Math.ceil(bytesLength / sliceSize);
+		    var byteArrays = new Array(slicesCount);
 
-			
-		});
-	}
+		    for (var sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
+		        var begin = sliceIndex * sliceSize;
+		        var end = Math.min(begin + sliceSize, bytesLength);
+
+		        var bytes = new Array(end - begin);
+		        for (var offset = begin, i = 0 ; offset < end; ++i, ++offset) {
+		            bytes[i] = byteCharacters[offset].charCodeAt(0);
+		        }
+		        byteArrays[sliceIndex] = new Uint8Array(bytes);
+		    }
+
+		    var blob = new Blob(byteArrays, {type: contentType});
+		    return blob;
+		}
 		
-	$scope.buscarArticulos = function() {
-		inventarioService.busquedaArticulosSinConteo($scope.parametroBusqueda.articulo).success(function(data) {
-			$scope.listaArticulos = data;
-			$scope.showFormConteoArticuloCreate = false;
-		}).error(function(data) {
-
-		});
-	}	
-	
-	$scope.buscarConteoArticulos = function() {
-		$scope.fecha = moment(new Date()).format('DD/MM/YYYY');
-		inventarioService.busquedaConteoArticulos($scope.fecha).success(function(data) {
-			$scope.listaConteoArticulos = data;		
-		}).error(function(data) {
-
-		});
-	}	
-	
-	$scope.setDatosConteoArticuloCreate = function(movimientoInventarioVO){
-		$scope.movimientoInventario = movimientoInventarioVO;
-		$scope.nombreArticulo = $scope.movimientoInventario.articulo.nombre;
-		$scope.unidadMedida =  $scope.movimientoInventario.articulo.unidadMedidaVO.nombre;
-		$scope.parametrosInventario.idArticulo = movimientoInventarioVO.articulo.idArticulo;
-		$scope.parametrosInventario.existenciaFisica = null;
-		$scope.isNew = true;
-		$scope.showFormConteoArticuloCreate = true;
-		$scope.formConteo.$setPristine();		
-	}
-	
-	$scope.setDatosConteoArticuloUpdate = function(conteoArticulo){
-		$scope.parametrosInventario.existenciaFisica = conteoArticulo.existenciaFisica;
-		$scope.conteoArticuloTmp = conteoArticulo;
-		$scope.nombreArticulo = conteoArticulo.articulo.nombre;
-		$scope.unidadMedida =  conteoArticulo.articulo.unidadMedidaVO.nombre;
-		$scope.showFormConteoArticuloCreate = true;
-		$scope.isNew = false;
-	}
-	
-	$scope.confirmacionMovimiento = function(conteoArticulo){
+	    
+	    
+	    $scope.guardarReporte=function(data, fileName) {
+		 	var blob = new base64toBlob(data, "application/vnd.ms-excel" );
+	 
+	        if (window.navigator.msSaveOrOpenBlob) { // For IE:
+	            navigator.msSaveBlob(blob, fileName);
+	        } else { // For other browsers:
+	            var link = document.createElement('a');
+	            link.href = window.URL.createObjectURL(blob);
+	            link.download = fileName;
+	            link.click();
+	            window.URL.revokeObjectURL(link.href);
+	        }
+	    }
+	 
+	 $scope.confirmarNuevo = function(){
 		 /* Modal Confirmacion */
 			$scope.showConfirmacion = function(messageTo){
 				ModalService.showModal({
@@ -87,196 +61,196 @@ var ConteoInventarioController = angular.module('indexModule').controller("Conte
 			        modal.element.modal();
 			        modal.close.then(function(result) {
 			        	if(result){
-			        		$scope.showAuthorization(conteoArticulo);			     				        	
+			        		$scope.limpiarFormulario();        				    	        
 			        	}
 			        }); 
 			    });
-			};			
-						
-			$scope.showConfirmacion ("Est\u00e1 seguro de realizar el movimiento de inventario?");
+			};
 			
+		   $scope.showConfirmacion ("Se va a actualizar la pantalla. ¿Est\u00e1 seguro que desea continuar?");
 	};
+
+
+	$scope.guardarParcial = function() {
+		 $scope.conteoVO.esParcial = true;
+		 $scope.guardar();
+	}
 	
-	 $scope.showAuthorization = function(conteoArticulo){
-		 var tipoMovimiento;
-		 
-		 if (conteoArticulo.existenciaSistema > conteoArticulo.existenciaFisica){
-			 tipoMovimiento = "ajusteSalidaManual";
-		 }else if (conteoArticulo.existenciaSistema < conteoArticulo.existenciaFisica){
-			 tipoMovimiento = "ajusteEntradaManual";
-		 }
-  			  
-			ModalService.showModal({
-		    	templateUrl: 'vistas/templatemodal/templateModalAutorizacion.html',
-	        	controller: 'authorizationModalController',
-	        	inputs:{ tipoAutorizacion: PropertiesFactory.getTipoAutorizacion(tipoMovimiento)}
-		      }).then(function(modal) {
-		        modal.element.modal();
-		        modal.close.then(function(result) {
-		        	conteoArticulo.autorizacion = result;
-		        	$scope.guardarMovimiento(conteoArticulo);
-		        }); 
-	 	      });
-				 
+	$scope.guardar = function() {
+		
+		 $scope.errorGeneral='';
+		 $scope.mensajeGeneral='';
+		 $scope.conteoVO.idEmpresa = idEmpresa;
+		 $scope.conteoVO.idAlmacen = idAlmacen;
+		 $scope.conteoVO.idCanal = idCanal;
+		 $scope.conteoVO.productos = $scope.listaProductos;
+		 ConteoInventarioService.guardar($scope.conteoVO)
+		 .then(
+	      function(d) {
+	    	  if(d.errorCode){
+	        	  $scope.errorGeneral = d.message;
+	    	  }else{	 
+		 		  $scope.limpiarFormulario();
+		 		  $scope.mensajeGeneral = 'Se ha guardado el conteo con el folio ' + d;
+	    	  }
+	      },
+         function(errResponse){
+  		   		$scope.errorGeneral = "No se pudo guardar el conteo. "+ErrorFactory.getErrorMessage(errResponse.status);
+         });
+    }
+	
+	$scope.autorizar = function() {
+		
+		 $scope.errorGeneral='';
+		 $scope.mensajeGeneral='';
+		 $scope.conteoVO.idEmpresa = idEmpresa;
+		 $scope.conteoVO.idAlmacen = idAlmacen;
+		 $scope.conteoVO.idCanal = idCanal;
+		 $scope.conteoVO.productos = $scope.listaProductos;
+		 ConteoInventarioService.autorizarConteo($scope.conteoVO)
+		 .then(
+	      function(d) {
+	    	  if(d.errorCode){
+	        	  $scope.errorGeneral = d.message;
+	    	  }else{	 
+		 		  $scope.limpiarFormulario();
+		 		  $scope.mensajeGeneral = 'Se ha autorizado el conteo con el folio ' + d;
+	    	  }
+	      },
+        function(errResponse){
+ 		   		$scope.errorGeneral = "No se pudo guardar el conteo. "+ErrorFactory.getErrorMessage(errResponse.status);
+        });
+   }
+	
+	 $scope.consultaEmpresas = function() {
+		 ConteoInventarioService.consultaEmpresas()
+		 .then(
+	      function(d) {
+        	  $scope.listaEmpresas = d;
+	      },
+          function(errResponse){
+          });
+     }
+	 
+	 $scope.consultaCanales = function(idEmpresa) {
+		 ConteoInventarioService.consultaCanales(idEmpresa)
+		 .then(
+	      function(d) {
+        	  $scope.listaCanales = d;
+	      },
+          function(errResponse){
+          });
+     }
+	 
+	 $scope.consultaAlmacenes = function(idCanal) {
+		 ConteoInventarioService.consultaAlmacenes(idCanal)
+		 .then(
+	      function(d) {
+        	  $scope.listaAlmacenes = d;
+	      },
+          function(errResponse){
+          });
+     }
+ 
+	 $scope.obtenerConteo = function(){
+		 $scope.parametrosBusquedaVO.idEmpresa = idEmpresa;
+		 ConteoInventarioService.obtenerConteo($scope.parametrosBusquedaVO)
+		 .then(
+		  function(d) {
+			  $scope.listaProductos = d.productos;
+		  },
+		  function(errResponse){
+		  });
 	 }
 
-	$scope.guardarMovimiento= function(conteoArticulo) {
-		
-		if(conteoArticulo.autorizacion.status==1){
-			conteoArticulo.fecha = new Date();
-				inventarioService.actualizarConteoMovimiento(conteoArticulo).success(function(data) {		
-							if(data>0){
-								$scope.resultado = data;																
-								$scope.showAviso("El movimiento se realizo correctamente.");
-								$scope.limpiarParametrosMovimiento();
-								$scope.buscarConteoArticulos();
-							}else if(data == 0){
-								$scope.showAviso("La cantidad del movimiento es invalida");
-							}
-				}).error(function(data) {
-					$scope.showAviso("No fue posible realizar movimiento.");
-				});
-		}else{
-			$scope.showAviso(conteoArticulo.autorizacion.descripcion);
-		}
-	}
-	
-	$scope.guardaConteoArticulo = function(){
-		if($scope.isNew){
-			$scope.creaConteoArticulo();
-		}else{
-			$scope.actualizaConteoArticulo();
-		}		
-	}
-	
-	$scope.creaConteoArticulo = function(){
-		var conteoArticulo = {articulo: $scope.movimientoInventario.articulo,
-				  existenciaFisica: $scope.parametrosInventario.existenciaFisica,
-				  existenciaSistema: $scope.movimientoInventario.existenciaActual, 
-				  fecha: new Date(), puntoVenta: $scope.movimientoInventario.puntoVentaVO,
-				  movimientoInventario: $scope.movimientoInventario
-				 };
-
-			if($scope.validaFormConteo()){
-				inventarioService.registrarConteo(conteoArticulo).success(function(data) {					
-					$scope.resultado = data;
-						if($scope.resultado > 0){
-							$scope.buscarConteoArticulos();							
-						}else{
-							$scope.showAviso("No fue posible guardar la información.");							
-						}
-				}).error(function(data) {
-						$scope.showAviso("Error, no fue posible guardar la información.");
-				});
-			}
-	}
-	
-	$scope.actualizaConteoArticulo = function(){
-		$scope.conteoArticuloTmp.existenciaFisica = $scope.parametrosInventario.existenciaFisica;
-		if($scope.validaFormConteo()){
-				inventarioService.actualizarConteo($scope.conteoArticuloTmp).success(function(data) {					
-					$scope.resultado = data;
-						if($scope.resultado > 0){
-							$scope.buscarConteoArticulos();							
-						}else{
-							$scope.showAviso("No fue posible guardar la información.");							
-						}
-				}).error(function(data) {
-						$scope.showAviso("Error, no fue posible guardar la información.");
-				});			
-		}
-		
-	}
-	
-	$scope.finalizaConteoArticulo = function(){
-		
-				inventarioService.finalizarConteoInventario().success(function(data) {					
-					$scope.resultado = data;
-						if($scope.resultado > 0){
-							$scope.buscarConteoArticulos();
-							$scope.cerrar();
-						}else{
-							$scope.showAviso("No fue posible actualizar la información.");							
-						}
-				}).error(function(data) {
-						$scope.showAviso("Error, no fue posible actualizar la información.");
-				});			
-		
-		
-	}
-	
-	$scope.confirmacionFinalizaConteoArticulo = function(){
-		 /* Modal Confirmacion */
-			$scope.showConfirmacion = function(messageTo){
-				ModalService.showModal({
-			    	templateUrl: 'vistas/templatemodal/templateModalConfirmacion.html',
-			        controller: 'mensajeModalController',
-			        	inputs:{ message: messageTo}
-			    }).then(function(modal) {
-			        modal.element.modal();
-			        modal.close.then(function(result) {
-			        	if(result){
-			        		$scope.finalizaConteoArticulo();			     				        	
-			        	}
-			        }); 
-			    });
-			};			
-			
-			if($scope.validaFinalizarConteo()){
-				$scope.showConfirmacion ("Est\u00e1 seguro de finalizar el conteo de inventario?");
-			}else{
-				$scope.showAviso("No es posible finalizar el conteo, existen ajustes de inventario pendientes de realizar.");
-			}
-	};
-	
-	$scope.validaFormConteo = function(){		
-		if ($scope.formConteo.$invalid) {            
-            angular.forEach($scope.formConteo.$error, function (field) {
-              angular.forEach(field, function(errorField){
-            	  errorField.$setDirty();
-              })
-            });                        
-            return false;
-        }else{
-			return true;
-		}
-	}
-	
-	$scope.validaFormMovimiento = function(conteoArticulo){
-		$(".type-mov").removeClass("has-error");
-		conteoArticulo.error = false;
-		if(conteoArticulo.tipoMovimiento == null){
-			 $("#tipoMovimiento_"+conteoArticulo.idArticuloCorte).attr("class","type-mov form-group has-error");		          
-			   conteoArticulo.error = true;
-			   return false;
-		}else{
-			return true;
-		}
-	}
-	
-	$scope.validaFinalizarConteo = function(){		
-		var bandera =  true;
+	 $scope.obtenerProductosConteo = function(){
 		 
-		angular.forEach($scope.listaConteoArticulos, function (conteo, key){
-		    if (conteo.existenciaSistema != conteo.existenciaFisica) {
-		    	bandera = false;
-		     }
-		});
-		              
-        return bandera;
-	}
+		 ConteoInventarioService.obtenerProductosConteo($scope.parametrosBusquedaVO)
+		 .then(
+		  function(d) {
+			  $scope.listaProductos = d;
+		  },
+		  function(errResponse){
+		  });
+	 }
 
-	$scope.cerrar = function(){
-		$('.modal').hide();
-		$('.modal-backdrop').remove();
-	};  
-    
-	$scope.init =function(){
-		 $scope.consultarTiposMovimiento();		 
-		 $scope.buscarConteoArticulos();
+	 $scope.buscar = function(){
+		 
+		if($scope.parametrosBusquedaVO.folio == null || $scope.parametrosBusquedaVO.folio == ""){
+			$scope.obtenerProductosConteo();
+		}else{
+			$scope.obtenerConteo();
+		}
+	 }
+	
+	 $scope.inicializarValores = function(){
+		 $scope.seleccionarTodosCh = false;
+		 $scope.listaProductos = null;
+		 $scope.listaEmpresas = null;
+	 	 $scope.listaCanales = null;
+	 	 $scope.listaAlmacenes = null;
+	 	 $scope.parametrosBusquedaVO = {idEmpresa:idEmpresa,idCanal:idCanal, idAlmacen:idAlmacen};
+	 	 $scope.productoVO = {idAlmacen: idAlmacen, idProducto:null, nombre:'', descripcion:'', 
+	    		 idFamilia:null, nombreFamilia:null, idTipoProducto:null, nombreTipoProducto:null, 
+	    		 idMedida: null, nombreMedida:null, idUnidadMedida:null, nombreUnidadMedida:null,
+	    		 idMarca:null, nombreMarca:null, precioUnitario:null, nacional:null, cantidad:null,
+	    		 existencia: null, seleccionado:null, existenciaSistema:null, existenciaFisica:null };
+	 	$scope.conteoVO = {idEmpresa: null, idCanal: null, idAlmacen: null, idConteo:null, folio:null, 
+	 			 idEstatusConteo:null, esParcial:false, productos: []};
+	     $scope.errorGeneral='';
+		 $scope.mensajeGeneral='';
+	 }	 
+	 
+	 $scope.limpiarFormulario = function(){  
+		 $scope.errorGeneral='';
+		 $scope.mensajeGeneral='';
+		 $scope.seleccionarTodosCh = false;
+		 $scope.listaProductos = null;
+		 $scope.listaEmpresas = null;
+	 	 $scope.listaCanales = null;
+	 	 $scope.listaAlmacenes = null;
+	 	 
+	 	 if($scope.isAdminGral=="true")
+	 		 $scope.consultaEmpresas();
+	 	 if($scope.isAdminGralEmpresa =="true" && idEmpresa != null)
+	 		 $scope.consultaCanales(idEmpresa);
+	 	 if($scope.isAdminCanal=="true" && idCanal != null)
+	 		 $scope.consultaAlmacenes(idCanal);
+
+	 	 $scope.parametrosBusquedaVO = {idEmpresa:idEmpresa, idCanal:idCanal, idAlmacen:idAlmacen, folio:null};
+	 	 $scope.productoVO = {idAlmacen: idAlmacen, idProducto:null, nombre:'', descripcion:'', 
+	    		 idFamilia:null, nombreFamilia:null, idTipoProducto:null, nombreTipoProducto:null, 
+	    		 idMedida: null, nombreMedida:null, idUnidadMedida:null, nombreUnidadMedida:null,
+	    		 idMarca:null, nombreMarca:null, precioUnitario:null, nacional:null, cantidad:null,
+	    		 existencia: null, seleccionado:null, existenciaSistema:null, existenciaFisica:null };
+	 	 $scope.conteoVO = {idEmpresa: null, idCanal: null, idAlmacen: null, idConteo:null, folio:null, 
+	 			 idEstatusConteo:null, esParcial:false, productos: []};
 	 }
 	 
-	 $scope.init();
-	
-});
-
+	 $scope.cambiarEmpresa = function(){
+		 idEmpresa = $scope.parametrosBusquedaVO.idEmpresa;
+		 $scope.consultaCanales(idEmpresa);
+	 	 $scope.listaAlmacenes = null;
+	 }
+	 
+	 $scope.cambiarCanal = function(){
+		 idCanal = $scope.parametrosBusquedaVO.idCanal;
+		 $scope.consultaAlmacenes(idCanal);
+	 }
+	 
+	 
+	 $scope.cambiarAlmacen = function(){
+		 idAlmacen = $scope.parametrosBusquedaVO.idAlmacen;
+	 }
+	 		
+	 $scope.inicializarValores();	
+	 
+	 if($scope.isAdminGral=="true")
+		 $scope.consultaEmpresas();
+	 
+	 if(idEmpresa!=null)
+		 $scope.consultaCanales(idEmpresa);
+	 if(idCanal!=null)
+		 $scope.consultaAlmacenes(idCanal);
+	 
+}]);

@@ -13,7 +13,7 @@
 		                        </label>
 								<div class="col-md-2 col-sm-2 col-xs-2">
 		                          <input type="text" id="ordencompra" class="form-control col-md-7 col-xs-12"
-		                          ng-model="filtrosVO.ordenCompra">
+		                          ng-model="filtrosVO.idOrdenCompra">
 		                        </div>
 		                        
 		                        <div class="col-md-5 col-sm-5 col-xs-5">

@@ -19,6 +19,7 @@ public class ProductoExistenciaVO implements Serializable {
 	private String medida;
 	private String unidadMedida;
 	private Integer existencia;
+	private Integer existenciaFisica;
 	private BigDecimal precio;
 	private boolean validarExistencia;
 	
@@ -88,7 +89,11 @@ public class ProductoExistenciaVO implements Serializable {
 	public void setValidarExistencia(boolean validarExistencia) {
 		this.validarExistencia = validarExistencia;
 	}
-	
-
+	public Integer getExistenciaFisica() {
+		return existenciaFisica;
+	}
+	public void setExistenciaFisica(Integer existenciaFisica) {
+		this.existenciaFisica = existenciaFisica;
+	}
 	
 }
