@@ -10,7 +10,7 @@ public interface InventarioDAOI extends GlobalHibernateDAOI<Inventario>{
 		
 	List<Inventario> findByIdPuntoVentaAndNameArticulo(Integer idPuntoVenta, String nombreArticulo);
 	List<Inventario> findByIdArticuloAndFirtsIn(Integer idPuntoVenta, Integer idArticulo);
-	List<Inventario> findByIdArticuloAndLastOut(Integer idPuntoVenta,Integer idArticulo);
+	List<Inventario> findByIdProductoAndLastOut(Integer idAlmacen,Integer idProducto);
 	List<Inventario> findByArticuloByProveedor(Integer idPuntoVenta,Integer idArticulo,Integer idProveedor);
 	BigDecimal getCostoUltimasSalidasByArticulo(Integer idPuntoVenta, Integer idArticulo);
 	List<Inventario> findByIdPuntoVentaWithOutCount(Integer idPuntoVenta, String nombreArticulo);

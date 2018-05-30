@@ -22,7 +22,22 @@ public class ProductoExistenciaVO implements Serializable {
 	private Integer existenciaFisica;
 	private BigDecimal precio;
 	private boolean validarExistencia;
+	private Integer idAlmacen;
+	private Integer diferencia;
 	
+	
+	public Integer getDiferencia() {
+		return diferencia;
+	}
+	public void setDiferencia(Integer diferencia) {
+		this.diferencia = diferencia;
+	}
+	public Integer getIdAlmacen() {
+		return idAlmacen;
+	}
+	public void setIdAlmacen(Integer idAlmacen) {
+		this.idAlmacen = idAlmacen;
+	}
 	public Integer getIdProducto() {
 		return idProducto;
 	}

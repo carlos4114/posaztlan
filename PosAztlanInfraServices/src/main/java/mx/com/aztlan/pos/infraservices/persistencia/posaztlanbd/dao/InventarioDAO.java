@@ -124,16 +124,16 @@ public class InventarioDAO extends GlobalHibernateDAO<Inventario> implements Inv
 	}
 	
 	@Override
-	public List<Inventario> findByIdArticuloAndLastOut(Integer idPuntoVenta,Integer idArticulo) {
+	public List<Inventario> findByIdProductoAndLastOut(Integer idAlmacen,Integer idProducto) {
 		StringBuilder hql = new StringBuilder();
 		hql.append("select inv from Inventario inv  ");
-		hql.append("where inv.puntoVenta.idPuntoVenta = :idPuntoVenta and  inv.articulo.idArticulo = :idArticulo " );
+		hql.append("where inv.almacen.idAlmacen=:idAlmacen and  inv.producto.idProducto=:idProducto " );
 		hql.append("and inv.existenciaActual < inv.cantidad ");
 		hql.append("order by inv.fecha desc");
 
 		Query query = getSession().createQuery(hql.toString());
-		query.setParameter("idPuntoVenta", idPuntoVenta);
-		query.setParameter("idArticulo", idArticulo);
+		query.setParameter("idAlmacen", idAlmacen);
+		query.setParameter("idProducto", idProducto);
 				
 		List<Inventario> inventarios = query.list();
 						

@@ -29,6 +29,7 @@ import mx.com.aztlan.pos.negocio.inventarios.vo.InventarioVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ParametrosInventarioVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ProductosCorteVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.SalidaVO;
+import mx.com.aztlan.pos.negocio.reportes.vo.HttpResponseOcVO;
 import mx.com.aztlan.pos.servicios.inventarios.controller.InventarioController;
 
 @Service
@@ -236,7 +237,7 @@ public class InventarioFacade implements InventarioFacadeI {
 
 	@Override
 	public ResponseEntity<Integer> updateProductosCorte(HttpServletRequest request,
-			@RequestBody ProductosCorteVO productosCorteVO) throws BusinessGlobalException, NotFoundException {
+			@RequestBody ProductoExistenciaVO productosCorteVO) throws BusinessGlobalException, NotFoundException {
 		
 		int response = 0;
 		
@@ -251,7 +252,7 @@ public class InventarioFacade implements InventarioFacadeI {
 	
 	@Override
 	public ResponseEntity<Integer> updateProductosCorteMovimiento(HttpServletRequest request,
-			@RequestBody ProductosCorteVO productosCorteVO) throws BusinessGlobalException, NotFoundException {
+			@RequestBody ProductoExistenciaVO productoExistenciaVO) throws BusinessGlobalException, NotFoundException {
 		
 		int response = 0;
 		
@@ -260,7 +261,7 @@ public class InventarioFacade implements InventarioFacadeI {
 		Integer idAlmacen = (Integer) claims.get(ClaimsEnum.ALMACEN);
 		Integer idUsuario = (Integer) claims.get(ClaimsEnum.USUARIO);
 		
-		response = inventarioController.updateProductosCorteMovimiento(productosCorteVO,idCanal,idAlmacen,idUsuario);
+		//response = inventarioController.updateProductosCorteMovimiento(productoExistenciaVO,idCanal,idAlmacen,idUsuario);
 		return new ResponseEntity<Integer>(response, HttpStatus.OK);
 	}
 
@@ -344,6 +345,15 @@ public class InventarioFacade implements InventarioFacadeI {
 		Integer response = this.inventarioController.autorizarConteo(conteoVO);
 		
 		return new ResponseEntity<Integer>(response, HttpStatus.OK);
+	}
+	
+	@Override
+	@Transactional(readOnly = false)
+	public ResponseEntity<HttpResponseOcVO> obtenerReporte(@RequestBody ConteoVO conteoVO, HttpServletRequest request) throws BusinessGlobalException, Exception{
+		 Claims claims = (Claims) request.getAttribute(ClaimsEnum.CLAIMS_ID);
+		 Integer idUsuario = (Integer) claims.get(ClaimsEnum.USUARIO);
+		 
+		 return new ResponseEntity<HttpResponseOcVO>(this.inventarioController.obtenerReporte(conteoVO, idUsuario), HttpStatus.OK);
 	}
 	
 }

@@ -1,15 +1,20 @@
 package mx.com.aztlan.pos.negocio.inventarios.business;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
+
+import javax.servlet.ServletContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.app.VelocityEngine;
+import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -33,6 +38,7 @@ import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.ProductoDAOI
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.PropiedadConfigDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.ProveedorDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.TipoMovimientoInvDAOI;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Almacen;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ArticulosXPuntoVenta;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Autorizacion;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.AutorizacionMovimiento;
@@ -57,6 +63,7 @@ import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.vo.ProductoExist
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.enumeration.TipoMovimientoEnum;
 import mx.com.aztlan.pos.infraservices.servicios.BusinessGlobalException;
 import mx.com.aztlan.pos.infraservices.servicios.CorreoElectronicoBO;
+import mx.com.aztlan.pos.infraservices.servicios.NotFoundException;
 import mx.com.aztlan.pos.negocio.administracion.assembler.OrdenCompraAssembler;
 import mx.com.aztlan.pos.negocio.administracion.vo.FiltrosVO;
 import mx.com.aztlan.pos.negocio.administracion.vo.OrdenCompraVO;
@@ -75,13 +82,23 @@ import mx.com.aztlan.pos.negocio.inventarios.vo.InventarioVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ParametrosBusquedaVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ParametrosInventarioVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.SalidaVO;
+import mx.com.aztlan.pos.negocio.reportes.business.ReporteJasperBO;
+import mx.com.aztlan.pos.negocio.reportes.vo.ArchivoExcelVO;
+import mx.com.aztlan.pos.negocio.reportes.vo.ReporteJasperVO;
 import mx.com.aztlan.pos.servicios.util.Constantes;
+import net.sf.jasperreports.engine.JRException;
 
 @Service
 @Transactional
 public class InventarioBO {
 	final static Log log = LogFactory.getLog(InventarioBO.class);
 
+	@Autowired
+	ServletContext context;
+	
+	@Autowired
+	private ReporteJasperBO reporteJasperBO;
+	
 	@Autowired
 	private InventarioDAOI inventarioDAO;
 
@@ -197,10 +214,18 @@ public class InventarioBO {
 	public List<ProductoExistenciaVO> getProductosConteo(ParametrosBusquedaVO parametrosBusquedaVO)
 			throws BusinessGlobalException {
 
-		List<ProductoExistenciaVO> productosConteoVO;
+		List<ProductoExistenciaVO> productosConteoVO = new ArrayList<ProductoExistenciaVO>();
 		
 		if (parametrosBusquedaVO.getIdAlmacen() == null) {
-			productosConteoVO = this.inventarioIbatisDAO.getProductosPorCanal(parametrosBusquedaVO.getIdCanal());
+			List<Almacen> almacenes = almacenDAO.findByIdCanal(parametrosBusquedaVO.getIdCanal());
+			
+			for(Almacen almacen : almacenes) {
+				List<ProductoExistenciaVO> productos = this.inventarioIbatisDAO.getProductosPorAlmacen(almacen.getIdAlmacen());
+				for(ProductoExistenciaVO producto: productos) {
+					producto.setIdAlmacen(almacen.getIdAlmacen());
+					productosConteoVO.add(producto);
+				}
+			}
 		}
 		else {
 			productosConteoVO = this.inventarioIbatisDAO.getProductosPorAlmacen(parametrosBusquedaVO.getIdAlmacen());
@@ -482,13 +507,21 @@ public class InventarioBO {
 		}
 	}
 	
-	public Inventario createEntrada(ParametrosInventarioVO inventarioVO, Integer idUsuario) throws BusinessGlobalException {
+	public MovimientoInventario createEntrada(ParametrosInventarioVO inventarioVO, Integer idUsuario) throws BusinessGlobalException {
 		//Nota: Para las salidas se considero el metodo de costo promedio de exitencia actual
 		int idInventarioEntrada = 0;
 		
 		Integer idAlmacen = almacenDAO.getAlmacenCentral(inventarioVO.getIdEmpresa());
-		Proveedor proveedor = proveedorDAO.getById(inventarioVO.getIdProveedor());
-
+		Proveedor proveedor;
+		
+		if(inventarioVO.getIdTipoMovimiento() == TipoMovimientoEnum.AJUSTE_MANUAL_CONTEO_ENTRADA) {
+			proveedor = null;
+			idAlmacen = inventarioVO.getIdAlmacen();
+		}else
+		{
+			proveedor = proveedorDAO.getById(inventarioVO.getIdProveedor());
+		}
+	
 		// Obtiene tipo de movimiento		
 		TipoMovimientoInv tipoMovimientoInvEntrada = TipoMovimientoInvAssembler.getTipoMovimientoInv(inventarioVO.getIdTipoMovimiento()); 
 		tipoMovimientoInvEntrada.setClave(inventarioVO.getClaveTipoMovimiento());
@@ -523,10 +556,10 @@ public class InventarioBO {
 
 		idInventarioEntrada = inventarioEntrada.getIdInventario();
 
-		return inventarioEntrada;
+		return movInventarioEntrada;
 
 	}
-	public List<MovimientoInventario> createEntradaAjuste(ParametrosInventarioVO parametrosVO,Integer idcanal, Integer idAlmacen,
+	/*public List<MovimientoInventario> createEntradaAjuste(ParametrosInventarioVO parametrosVO,Integer idcanal, Integer idAlmacen,
 			Integer idUsuario) throws BusinessGlobalException {
 		//Nota: Para las salidas se considero el metodo de costo promedio de exitencia actual
 		List<MovimientoInventario> movimientosInventario = new ArrayList<MovimientoInventario>();
@@ -549,6 +582,89 @@ public class InventarioBO {
 		tipoMovimientoInv.setClave(parametrosVO.getClaveTipoMovimiento());
 		//Obtiene las existencias del articulo en inventario ordenadas por primeras entradas
 		inventarios = inventarioDAO.findByIdArticuloAndLastOut(idAlmacen, parametrosVO.getIdProducto());
+			
+			// Realiza ajuste de articulos aplicando PEPS
+			for (Inventario inventario : inventarios){
+				
+				disponibilidad = inventario.getCantidad() - inventario.getExistenciaActual();
+				
+				//Valida si ya se cubrio la cantidad solicitada
+				if(cantidadTotal != parametrosVO.getCantidad()){
+					//Valida la existencia del inventario por cada entrada					
+					if(disponibilidad !=0 ){
+						
+						if(disponibilidad > parametrosVO.getCantidad() - cantidadTotal){
+							cantidad = parametrosVO.getCantidad() - cantidadTotal;
+						}else{					
+							cantidad  = disponibilidad; 
+						}
+						
+							cantidadTotal = cantidadTotal + cantidad;					
+							existenciaActual = inventario.getExistenciaActual() + cantidad;
+									
+							// Actuliza existencia de inventario
+							inventario.setExistenciaActual(existenciaActual);
+							inventario.setUltimoMovimiento(new Date());
+							inventario.setUsuarioUltimoMovimiento(UsuarioAssembler.getUsuario(idUsuario));
+							inventarioDAO.update(inventario);
+							
+							importeEntrada = new BigDecimal(0);
+							importeEntrada = importeEntrada.add(inventario.getImporte());
+							importeEntrada = importeEntrada.divide(new BigDecimal(inventario.getCantidad()), 3, BigDecimal.ROUND_HALF_EVEN);
+							importeEntrada = importeEntrada.multiply(new BigDecimal(cantidad));
+							
+							// Guarda movimiento de entrada
+							movimientoInventario = movimientoInventarioDAO.save(
+									MovimientoInventarioAssembler.getMovimientoInventario(inventario.getProducto().getIdProducto(),
+											inventario.getProveedor(), tipoMovimientoInv, idUsuario,
+											Long.valueOf(cantidad),importeEntrada,
+											inventario.getExistenciaActual(), idAlmacen, 0,
+											inventario.getIdInventario()));
+							
+							// Guarda autorizacion
+							autorizacionMovimiento = new AutorizacionMovimiento();
+							autorizacionMovimientoId = new AutorizacionMovimientoId();
+							autorizacionMovimientoId.setIdAutorizacion(autorizacion.getIdAutorizacion());
+							autorizacionMovimientoId.setIdMovimientoInventario(movimientoInventario.getIdMovimiento());
+							autorizacionMovimiento.setId(autorizacionMovimientoId);
+							autorizacionMovimiento.setMovimientoInventario(movimientoInventario);
+							autorizacionMovimiento.setAutorizacion(autorizacion);
+							autorizacionMovimientoDAO.save(autorizacionMovimiento);
+							
+							movimientosInventario.add(movimientoInventario);	
+					}//Termina if diponibilidad == 0
+				}else{
+					break;
+				}
+				
+			}
+			
+		return movimientosInventario;
+
+	}*/
+	
+	public List<MovimientoInventario> createEntradaAjuste(ParametrosInventarioVO parametrosVO,Integer idcanal, Integer idAlmacen,
+			Integer idUsuario) throws BusinessGlobalException {
+		//Nota: Para las salidas se considero el metodo de costo promedio de exitencia actual
+		List<MovimientoInventario> movimientosInventario = new ArrayList<MovimientoInventario>();
+		List<Inventario> inventarios = null;		
+		AutorizacionMovimiento autorizacionMovimiento = null;
+		AutorizacionMovimientoId autorizacionMovimientoId = null;
+		TipoMovimientoInv tipoMovimientoInv = null;
+		MovimientoInventario movimientoInventario = null;		
+		BigDecimal importeEntrada = new BigDecimal(0);
+		long cantidad = 0;
+		long cantidadTotal = 0;
+		long existenciaActual = 0;
+		long disponibilidad = 0;
+				
+		Autorizacion autorizacion = AutorizacionAssembler.getAutorizacion(parametrosVO.getIdAutorizacion());
+		
+		//Obtiene el tipo de movimiento solicitado				
+		tipoMovimientoInv = TipoMovimientoInvAssembler.getTipoMovimientoInv(parametrosVO.getIdTipoMovimiento()); 
+		tipoMovimientoInv.setClave(parametrosVO.getClaveTipoMovimiento());
+		//Obtiene las existencias del articulo en inventario ordenadas por primeras entradas
+		inventarios = inventarioDAO.findByIdProductoAndLastOut(idAlmacen, parametrosVO.getIdProducto());
 			
 			// Realiza ajuste de articulos aplicando PEPS
 			for (Inventario inventario : inventarios){
@@ -635,25 +751,46 @@ public class InventarioBO {
 
 
 	public Integer guardarConteo(ConteoVO conteoVO) throws BusinessGlobalException {
-		
-		FolioSecuencia folioSecuencia = this.folioSecuenciaDAO.getById(conteoVO.getIdEmpresa());
 		Integer folio = null;
-		if(folioSecuencia==null){
-			folio = 1;
-			this.folioSecuenciaDAO.save(new FolioSecuencia(conteoVO.getIdEmpresa(),1));
-		}else{
-			folio = folioSecuencia.getUltimoFolioConteo()+1;
-			folioSecuencia.setUltimoFolioConteo(folio);
-			this.folioSecuenciaDAO.update(folioSecuencia);
+		
+		if(conteoVO.getIdConteo() == null) {
+			FolioSecuencia folioSecuencia = this.folioSecuenciaDAO.getById(conteoVO.getIdEmpresa());
+			
+			if(folioSecuencia==null){
+				folio = 1;
+				this.folioSecuenciaDAO.save(new FolioSecuencia(conteoVO.getIdEmpresa(),1));
+			}else{
+				folio = folioSecuencia.getUltimoFolioConteo()+1;
+				folioSecuencia.setUltimoFolioConteo(folio);
+				this.folioSecuenciaDAO.update(folioSecuencia);
+			}
+			
+			InventarioConteo inventarioConteo = InventarioAssembler.getInventarioConteo(conteoVO, folio); 
+		
+			inventarioConteo = this.inventarioConteoDAO.save(inventarioConteo);
+			
+			this.guardarConteoDetalle(conteoVO, inventarioConteo.getIdConteo());
+			
+			return inventarioConteo.getFolio();
+
+		}else {
+			InventarioConteo inventarioConteo = inventarioConteoDAO.getById(conteoVO.getIdConteo());
+			inventarioConteo.setEstatusConteo(new EstatusConteo(conteoVO.getIdEstatusConteo()));
+			inventarioConteoDAO.update(inventarioConteo);
+			
+			for(ProductoExistenciaVO producto: conteoVO.getProductos()) {
+				InventarioConteoDetalle detalle = inventarioConteoDetalleDAO.getById(
+						new InventarioConteoDetalleId(conteoVO.getIdConteo(), producto.getIdProducto(), producto.getIdAlmacen()));
+				
+				detalle.setExistenciaFisica(producto.getExistenciaFisica());
+				detalle.setDiferencia(producto.getDiferencia());
+				
+				inventarioConteoDetalleDAO.update(detalle);
+			}
+			
+			return conteoVO.getFolio();
 		}
 		
-		InventarioConteo inventarioConteo = InventarioAssembler.getInventarioConteo(conteoVO, folio); 
-	
-		inventarioConteo = this.inventarioConteoDAO.save(inventarioConteo);
-		
-		this.guardarConteoDetalle(conteoVO, inventarioConteo.getIdConteo());
-		
-		return inventarioConteo.getFolio();
 	}
 	
 	@Transactional(readOnly = false)
@@ -670,15 +807,6 @@ public class InventarioBO {
 	@Transactional(readOnly = false)
 	public Integer actualizarConteo(ConteoVO conteoVO) throws BusinessGlobalException  {
 		
-		/*List<ProductoExistenciaVO> productos = conteoVO.getProductos();
-		
-		for(ProductoExistenciaVO productoExistenciaVO : productos) {
-			InventarioConteoDetalle detalle = inventarioConteoDetalleDAO.getById(new InventarioConteoDetalleId(conteoVO.getIdConteo(),
-					productoExistenciaVO.getIdProducto()));
-			detalle.setExistenciaFisica(productoExistenciaVO.getExistenciaFisica());
-			inventarioConteoDetalleDAO.update(detalle);
-		}*/
-		
 		InventarioConteo inventarioConteo = inventarioConteoDAO.getById(conteoVO.getIdConteo());
 		inventarioConteo.setEstatusConteo(new EstatusConteo(EstatusConteoEnum.AUTORIZADO));
 	
@@ -688,13 +816,12 @@ public class InventarioBO {
 	}
 	
 	@Transactional(readOnly = false)
-	public void autorizarConteo(ConteoVO conteoVO) throws BusinessGlobalException  {
+	public Integer autorizarConteo(ConteoVO conteoVO) throws BusinessGlobalException  {
 		Integer cantidad = 0;
 		String clave;
 		List<ProductoExistenciaVO> productos = conteoVO.getProductos();
 		
 		for(ProductoExistenciaVO productoExistenciaVO : productos) {
-			ParametrosInventarioVO inventarioVO = new ParametrosInventarioVO();
 			
 			if(productoExistenciaVO.getExistencia() != productoExistenciaVO.getExistenciaFisica()) {
 				if(productoExistenciaVO.getExistencia() < productoExistenciaVO.getExistenciaFisica()) {
@@ -706,12 +833,22 @@ public class InventarioBO {
 					movimientoInventarioVO.setCantidad(cantidad);
 					movimientoInventarioVO.setIdProducto(productoExistenciaVO.getIdProducto());
 					movimientoInventarioVO.setImporte(new Float(0));
-					movimientoInventarioVO.setIdProveedor(1);
-					movimientoInventarioVO.setIdAutorizacion(0);
+					movimientoInventarioVO.setIdProveedor(null);
+					movimientoInventarioVO.setIdAutorizacion(1);
 					movimientoInventarioVO.setIdEmpresa(conteoVO.getIdEmpresa());
 					movimientoInventarioVO.setIdTipoMovimiento(TipoMovimientoEnum.AJUSTE_MANUAL_CONTEO_ENTRADA);
 					movimientoInventarioVO.setClaveTipoMovimiento(clave);
-					//this.createEntradaAjuste(movimientoInventarioVO, conteoVO.getIdCanal(), conteoVO.getIdAlmacen(), conteoVO.getIdUsuarioAutorizador());
+					movimientoInventarioVO.setIdAlmacen(productoExistenciaVO.getIdAlmacen());
+					
+					 MovimientoInventario movimiento = this.createEntrada(movimientoInventarioVO, conteoVO.getIdUsuarioAutorizador());
+					
+					InventarioConteoDetalle detalle = inventarioConteoDetalleDAO.findById(
+							new InventarioConteoDetalleId(conteoVO.getIdConteo(), 
+									productoExistenciaVO.getIdProducto(), 
+									productoExistenciaVO.getIdAlmacen()));
+					
+					detalle.setMovimientoInventario(new MovimientoInventario(movimiento.getIdMovimiento()));
+					inventarioConteoDetalleDAO.update(detalle);
 					
 				}else {
 					//SALIDA
@@ -724,18 +861,54 @@ public class InventarioBO {
 					movimientoInventarioVO.setCantidad(cantidad);
 					movimientoInventarioVO.setIdProducto(productoExistenciaVO.getIdProducto());
 					movimientoInventarioVO.setImporte(new Float(0));
-					movimientoInventarioVO.setIdProveedor(1);
-					movimientoInventarioVO.setIdAutorizacion(0);
+					movimientoInventarioVO.setIdProveedor(null);
+					movimientoInventarioVO.setIdAutorizacion(1);
 					movimientoInventarioVO.setIdEmpresa(conteoVO.getIdEmpresa());
 					movimientoInventarioVO.setIdTipoMovimiento(TipoMovimientoEnum.AJUSTE_MANUAL_CONTEO_SALIDA);
 					movimientoInventarioVO.setClaveTipoMovimiento(clave);
-					this.createSalida(movimientoInventarioVO,conteoVO.getIdCanal(), conteoVO.getIdAlmacen(), conteoVO.getIdUsuarioAutorizador());
+					MovimientoInventario movimiento = this.createSalida(movimientoInventarioVO,conteoVO.getIdCanal(), productoExistenciaVO.getIdAlmacen(), conteoVO.getIdUsuarioAutorizador()).get(0);
+					
+					InventarioConteoDetalle detalle = inventarioConteoDetalleDAO.findById(
+							new InventarioConteoDetalleId(conteoVO.getIdConteo(), 
+									productoExistenciaVO.getIdProducto(), 
+									productoExistenciaVO.getIdAlmacen()));
+					
+					detalle.setMovimientoInventario(new MovimientoInventario(movimiento.getIdMovimiento()));
+					inventarioConteoDetalleDAO.update(detalle);
 				}
 				
 			}
 			
 		}
 		
+		this.actualizarConteo(conteoVO);
+		return conteoVO.getFolio();
+	}
+	
+	@Transactional(readOnly = true)
+	public ArchivoExcelVO crearXlsConteo(Integer idAlmacen) throws BusinessGlobalException  {
+		ArchivoExcelVO archivoExcelVO = new ArchivoExcelVO("ConteoInventarioAlmacen");
+		
+		ResourceBundle cfg = ResourceBundle.getBundle("config");
+		String rutaJasper = cfg.getString("reporte.inventarioconteo.nueva.jasper");
+		//String rutaReporteXls = context.getRealPath(cfg.getString("reporte.conteoinventario.nueva.xls"));
+			  	 
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("ID_ALMACEN", idAlmacen);
+ 
+		ReporteJasperVO reporteJasperVO = new ReporteJasperVO();
+		reporteJasperVO.setRutaReporte(rutaJasper);
+		//reporteJasperVO.setRutaPdf(rutaReporteXls);
+		reporteJasperVO.setParametros(params);
+		 
+		try {
+			archivoExcelVO.setArchivo(reporteJasperBO.getReporteXls(reporteJasperVO));
+		} catch (HibernateException | BusinessGlobalException | NotFoundException | IOException | JRException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return archivoExcelVO;
 	}
 	
 }

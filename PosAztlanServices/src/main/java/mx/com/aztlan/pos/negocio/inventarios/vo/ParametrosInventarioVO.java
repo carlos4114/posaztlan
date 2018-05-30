@@ -21,6 +21,15 @@ public class ParametrosInventarioVO {
 	private Integer sizeArchivo;
 	private Integer idAlmacenConsigna;
 	private Integer idOrdenCompra; 
+	private Integer idAlmacen;
+	
+	
+	public Integer getIdAlmacen() {
+		return idAlmacen;
+	}
+	public void setIdAlmacen(Integer idAlmacen) {
+		this.idAlmacen = idAlmacen;
+	}
 	public Integer getIdInventario() {
 		return idInventario;
 	}

@@ -11,6 +11,7 @@ angular.module('indexModule').service("ConteoInventarioService", ['$http', '$q',
 		var URI_OBTENER_CONTEO = URI_SERVICIO + "/inventario/obtenerConteo";
 		var URI_GUARDAR_CONTEO = URI_SERVICIO + "/inventario/guardarConteo";
 		var URI_AUTORIZAR_CONTEO = URI_SERVICIO + "/inventario/autorizarConteo";
+		var URI_OBTENER_REPORTE_ALMACEN = URI_SERVICIO + "/inventario/obtenerReporteAlmacen";
 		
 	    var factory = {
 	        consultaEmpresas: consultaEmpresas,
@@ -19,7 +20,8 @@ angular.module('indexModule').service("ConteoInventarioService", ['$http', '$q',
 	        obtenerProductosConteo: obtenerProductosConteo,
 	        guardar:guardar,
 	        autorizarConteo:autorizarConteo,
-	        obtenerConteo: obtenerConteo
+	        obtenerConteo: obtenerConteo,
+	        obtenerReporteAlmacen: obtenerReporteAlmacen
 	    };
 	 
 	    return factory;
@@ -93,5 +95,9 @@ angular.module('indexModule').service("ConteoInventarioService", ['$http', '$q',
 	    
 	    function autorizarConteo(conteoVO) {	    	
 	        return invocarServicioPost(URI_AUTORIZAR_CONTEO,conteoVO);	    				 	        
+	    }
+	    
+	    function obtenerReporteAlmacen(conteoVO) {	    	
+	        return invocarServicioPost(URI_OBTENER_REPORTE_ALMACEN,conteoVO);	    				 	        
 	    }
 }]);

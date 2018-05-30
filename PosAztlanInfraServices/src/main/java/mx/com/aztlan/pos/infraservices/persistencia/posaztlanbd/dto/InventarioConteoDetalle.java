@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -22,6 +23,10 @@ public class InventarioConteoDetalle implements java.io.Serializable {
 	private Producto producto;
 	private Integer existenciaSistema;	
 	private Integer existenciaFisica;
+	private String sku;
+	private MovimientoInventario movimientoInventario;
+	private Almacen almacen;
+	private Integer diferencia;
 	
 	public InventarioConteoDetalle() {
 	}
@@ -41,7 +46,8 @@ public class InventarioConteoDetalle implements java.io.Serializable {
 
 	@AttributeOverrides({
 			@AttributeOverride(name = "idConteo", column = @Column(name = "id_conteo", nullable = false)),
-			@AttributeOverride(name = "idProducto", column = @Column(name = "id_producto", nullable = false)) })
+			@AttributeOverride(name = "idProducto", column = @Column(name = "id_producto", nullable = false)),
+			@AttributeOverride(name = "idAlmacen", column = @Column(name = "id_almacen", nullable = false))})
 	public InventarioConteoDetalleId getId() {
 		return this.id;
 	}
@@ -68,6 +74,24 @@ public class InventarioConteoDetalle implements java.io.Serializable {
 		this.existenciaFisica = existenciaFisica;
 	}
 
+	@Column(name = "diferencia", nullable = true)
+	public Integer getDiferencia() {
+		return this.diferencia;
+	}
+
+	public void setDiferencia(Integer diferencia) {
+		this.diferencia = diferencia;
+	}
+	
+	@Column(name = "sku", nullable = false)
+	public String getSku() {
+		return this.sku;
+	}
+
+	public void setSku(String sku) {
+		this.sku = sku;
+	}
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_producto", nullable = false, insertable = false, updatable = false)
 	public Producto getProducto() {
@@ -76,5 +100,25 @@ public class InventarioConteoDetalle implements java.io.Serializable {
 
 	public void setProducto(Producto producto) {
 		this.producto = producto;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_movimiento_inventario", nullable = true)
+	public MovimientoInventario getMovimientoInventario() {
+		return this.movimientoInventario;
+	}
+
+	public void setMovimientoInventario(MovimientoInventario movimientoInventario) {
+		this.movimientoInventario = movimientoInventario;
+	}
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_almacen", nullable = false, insertable = false, updatable = false)
+	public Almacen getAlmacen() {
+		return this.almacen;
+	}
+
+	public void setAlmacen(Almacen almacen) {
+		this.almacen = almacen;
 	}
 }

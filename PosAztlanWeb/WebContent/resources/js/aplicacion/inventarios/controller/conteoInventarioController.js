@@ -76,6 +76,11 @@ angular.module('indexModule').controller("ConteoInventarioController",['$scope',
 		 $scope.guardar();
 	}
 	
+	$scope.cerrarConteo = function() {
+		 $scope.conteoVO.esParcial = false;
+		 $scope.guardar();
+	}
+	
 	$scope.guardar = function() {
 		
 		 $scope.errorGeneral='';
@@ -153,10 +158,17 @@ angular.module('indexModule').controller("ConteoInventarioController",['$scope',
      }
  
 	 $scope.obtenerConteo = function(){
+		 $scope.conteoVO = {idEmpresa: null, idCanal: null, idAlmacen: null, idConteo:null, folio:null, 
+	 			 idEstatusConteo:null, esParcial:false, productos: []};
+		 
 		 $scope.parametrosBusquedaVO.idEmpresa = idEmpresa;
 		 ConteoInventarioService.obtenerConteo($scope.parametrosBusquedaVO)
 		 .then(
 		  function(d) {
+			  $scope.conteoVO = d;
+			  if($scope.conteoVO == "AUTORIZADO"){
+				  $scope.errorGeneral='Este folio ya fue autorizado anteriormente';
+			  }
 			  $scope.listaProductos = d.productos;
 		  },
 		  function(errResponse){
@@ -164,6 +176,8 @@ angular.module('indexModule').controller("ConteoInventarioController",['$scope',
 	 }
 
 	 $scope.obtenerProductosConteo = function(){
+		 $scope.conteoVO = {idEmpresa: null, idCanal: null, idAlmacen: null, idConteo:null, folio:null, 
+	 			 idEstatusConteo:null, esParcial:false, productos: []};
 		 
 		 ConteoInventarioService.obtenerProductosConteo($scope.parametrosBusquedaVO)
 		 .then(
@@ -173,16 +187,7 @@ angular.module('indexModule').controller("ConteoInventarioController",['$scope',
 		  function(errResponse){
 		  });
 	 }
-
-	 $scope.buscar = function(){
-		 
-		if($scope.parametrosBusquedaVO.folio == null || $scope.parametrosBusquedaVO.folio == ""){
-			$scope.obtenerProductosConteo();
-		}else{
-			$scope.obtenerConteo();
-		}
-	 }
-	
+	 
 	 $scope.inicializarValores = function(){
 		 $scope.seleccionarTodosCh = false;
 		 $scope.listaProductos = null;
@@ -227,6 +232,27 @@ angular.module('indexModule').controller("ConteoInventarioController",['$scope',
 	 			 idEstatusConteo:null, esParcial:false, productos: []};
 	 }
 	 
+	 $scope.obtenerReporte = function() {
+			
+		 $scope.errorGeneral='';
+		 $scope.mensajeGeneral='';
+		 $scope.conteoVO.idEmpresa = idEmpresa;
+		 $scope.conteoVO.idAlmacen = idAlmacen;
+		 
+		 ConteoInventarioService.obtenerReporteAlmacen($scope.conteoVO)
+		 .then(
+	      function(d) {
+	    	  if(d.errorCode){
+	        	  $scope.errorGeneral = d.message;
+	    	  }else{	 
+		 		  $scope.guardarReporte(d.archivoExcelVO.archivo,d.archivoExcelVO.nombre);
+	    	  }
+	      },
+         function(errResponse){
+  		   		$scope.errorGeneral = "No se pudo obtener el reporte. "+ErrorFactory.getErrorMessage(errResponse.status);
+         });
+    }
+	 
 	 $scope.cambiarEmpresa = function(){
 		 idEmpresa = $scope.parametrosBusquedaVO.idEmpresa;
 		 $scope.consultaCanales(idEmpresa);
@@ -242,7 +268,16 @@ angular.module('indexModule').controller("ConteoInventarioController",['$scope',
 	 $scope.cambiarAlmacen = function(){
 		 idAlmacen = $scope.parametrosBusquedaVO.idAlmacen;
 	 }
-	 		
+	 
+	 $scope.calcularDiferencia = function(producto){
+		 if(producto.existenciaFisica < producto.existencia){
+			 producto.diferencia = producto.existencia - producto.existenciaFisica;
+		 }else{
+			 producto.diferencia =  producto.existenciaFisica - producto.existencia;
+		 }
+			 
+	 }
+	 
 	 $scope.inicializarValores();	
 	 
 	 if($scope.isAdminGral=="true")
@@ -250,7 +285,5 @@ angular.module('indexModule').controller("ConteoInventarioController",['$scope',
 	 
 	 if(idEmpresa!=null)
 		 $scope.consultaCanales(idEmpresa);
-	 if(idCanal!=null)
-		 $scope.consultaAlmacenes(idCanal);
 	 
 }]);

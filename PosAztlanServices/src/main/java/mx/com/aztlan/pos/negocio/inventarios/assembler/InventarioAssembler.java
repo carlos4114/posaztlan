@@ -44,7 +44,7 @@ public class InventarioAssembler {
 			TipoMovimientoInv tipoMovimientoInv, Integer idUsuario ,  long cantidad, BigDecimal importe, 
 			long existenciaActual,Integer idAlmacen, Integer idOrdenCompra ) {
 		
-		if(idProducto==null  || provedor == null || tipoMovimientoInv==null || idUsuario==null || idAlmacen==null )
+		if(idProducto==null  || tipoMovimientoInv==null || idUsuario==null || idAlmacen==null )
 			return null;
 
 		Inventario inventario= new Inventario();
@@ -134,13 +134,14 @@ public class InventarioAssembler {
 		
 		conteoVO.setIdConteo(conteo.getIdConteo());
 		conteoVO.setFolio(conteo.getFolio());
-		conteoVO.setIdAlmacen(conteo.getAlmacen().getIdAlmacen());
+		//conteoVO.setIdAlmacen(conteo.getAlmacen().getIdAlmacen());
 		conteoVO.setIdCanal(conteo.getCanal().getIdCanal());
 		conteoVO.setIdEstatusConteo(conteo.getEstatusConteo().getIdEstatusConteo());
 		conteoVO.setIdUsuarioAutorizador(conteo.getUsuarioCreador().getIdUsuario());
 		conteoVO.setIdUsuarioCreador(conteo.getUsuarioCreador().getIdUsuario());
 		conteoVO.setProductos(getProductos(detalle));
-		
+		conteoVO.setNombreEstatus(conteo.getEstatusConteo().getNombre());
+
 		return conteoVO;
 		
 	}	
@@ -159,6 +160,9 @@ public class InventarioAssembler {
 			productoVO.setUnidadMedida(producto.getProducto().getUnidadMedida().getNombre());
 			productoVO.setExistencia(producto.getExistenciaSistema());
 			productoVO.setExistenciaFisica(producto.getExistenciaFisica());			
+			productoVO.setSku(producto.getSku());
+			productoVO.setIdAlmacen(producto.getAlmacen().getIdAlmacen());
+			productoVO.setDiferencia(producto.getDiferencia());
 			productos.add(productoVO);
 		}
 		
@@ -185,6 +189,7 @@ public class InventarioAssembler {
 		inventarioConteo.setIdConteo(conteoVO.getIdConteo());
 		inventarioConteo.setFolio(folio);
 		inventarioConteo.setFechaHora(new Date());
+		
 		return inventarioConteo;
 		
 	}	
@@ -196,10 +201,13 @@ public class InventarioAssembler {
 		
 		InventarioConteoDetalle inventarioConteoDetalle = new InventarioConteoDetalle();
 	
-		inventarioConteoDetalle.setId(new InventarioConteoDetalleId(idConteo, producto.getIdProducto()));
+		inventarioConteoDetalle.setId(new InventarioConteoDetalleId(idConteo, producto.getIdProducto(), producto.getIdAlmacen()));
 		inventarioConteoDetalle.setProducto(new Producto(producto.getIdProducto()));
 		inventarioConteoDetalle.setExistenciaSistema(producto.getExistencia());
 		inventarioConteoDetalle.setExistenciaFisica(producto.getExistenciaFisica());
+		inventarioConteoDetalle.setSku(producto.getSku());
+		inventarioConteoDetalle.setAlmacen(new Almacen(producto.getIdAlmacen()));
+		inventarioConteoDetalle.setDiferencia(producto.getDiferencia());
 		
 		return inventarioConteoDetalle;
 	}	

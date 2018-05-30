@@ -12,13 +12,15 @@ public class InventarioConteoDetalleId implements java.io.Serializable {
 
 	private int idConteo;
 	private int idProducto;
+	private int idAlmacen;
 
 	public InventarioConteoDetalleId() {
 	}
 
-	public InventarioConteoDetalleId(int idConteo, int idProducto) {
+	public InventarioConteoDetalleId(int idConteo, int idProducto, int idAlmacen) {
 		this.idConteo = idConteo;
 		this.idProducto = idProducto;
+		this.idAlmacen = idAlmacen;
 	}
 
 	@Column(name = "id_conteo", nullable = false)
@@ -35,10 +37,19 @@ public class InventarioConteoDetalleId implements java.io.Serializable {
 		return this.idProducto;
 	}
 
+	public void setIdAlmacen(int idAlmacen) {
+		this.idAlmacen = idAlmacen;
+	}
+
+	@Column(name = "id_almacen", nullable = false)
+	public int getIdAlmacen() {
+		return this.idAlmacen;
+	}
+
 	public void setIdProducto(int idProducto) {
 		this.idProducto = idProducto;
 	}
-
+	
 	public boolean equals(Object other) {
 		if ((this == other))
 			return true;
@@ -49,7 +60,8 @@ public class InventarioConteoDetalleId implements java.io.Serializable {
 		InventarioConteoDetalleId castOther = (InventarioConteoDetalleId) other;
 
 		return (this.getIdConteo() == castOther.getIdConteo())
-				&& (this.getIdProducto() == castOther.getIdProducto());
+				&& (this.getIdProducto() == castOther.getIdProducto())
+					&& (this.getIdAlmacen() == castOther.getIdAlmacen());
 	}
 
 	public int hashCode() {
@@ -57,6 +69,7 @@ public class InventarioConteoDetalleId implements java.io.Serializable {
 
 		result = 37 * result + this.getIdConteo();
 		result = 37 * result + this.getIdProducto();
+		result = 37 * result + this.getIdAlmacen();
 		return result;
 	}
 

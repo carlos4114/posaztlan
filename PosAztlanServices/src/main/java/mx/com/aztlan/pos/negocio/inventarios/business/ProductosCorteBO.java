@@ -14,6 +14,7 @@ import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.ProductosCor
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.MovimientoInventario;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ProductosCorte;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.ProductosCorteAjuste;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.vo.ProductoExistenciaVO;
 import mx.com.aztlan.pos.infraservices.servicios.BusinessGlobalException;
 import mx.com.aztlan.pos.negocio.dulceria.assembler.UsuarioAssembler;
 import mx.com.aztlan.pos.negocio.dulceria.vo.UsuarioVO;
@@ -49,11 +50,11 @@ public class ProductosCorteBO {
 		return 0;
 	}
 	
-	public Integer updateProductosCorte(ProductosCorteVO productosCorteVO,Integer idCanal,Integer idAlmacen,Integer idUsuario) throws BusinessGlobalException {		
-		ProductosCorte productosCorte = productosCorteDAO.getById(productosCorteVO.getIdProductoCorte());
-		productosCorte.setExistenciaSistema(productosCorteVO.getExistenciaSistema());
+	public Integer updateProductosCorte(ProductoExistenciaVO productosCorteVO,Integer idCanal,Integer idAlmacen,Integer idUsuario) throws BusinessGlobalException {		
+		ProductosCorte productosCorte = productosCorteDAO.getById(productosCorteVO.getIdProducto());
+		productosCorte.setExistenciaSistema(productosCorteVO.getExistencia());
 		productosCorte.setExistenciaFisica(productosCorteVO.getExistenciaFisica());
-		productosCorte.setUsuarioModificacion(UsuarioAssembler.getUsuario(productosCorteVO.getUsuario().getIdUsuario()));
+		productosCorte.setUsuarioModificacion(UsuarioAssembler.getUsuario(idUsuario));
 		productosCorte.setUltimaModificacion(new Date());		
 		productosCorte = productosCorteDAO.update(productosCorte);		
 		if(productosCorte.getIdProductoCorte() >= 0){
@@ -62,13 +63,13 @@ public class ProductosCorteBO {
 		return 0;
 	}
 	
-	public Integer createProductosCorteAjuste(ProductosCorteVO productosCorteVO, List<MovimientoInventario> movimientosInventario,Integer idUsuario){
+	public Integer createProductosCorteAjuste(ProductoExistenciaVO productosCorteVO, List<MovimientoInventario> movimientosInventario,Integer idUsuario){
 		int count = 0;
 		ProductosCorteAjuste productosCorteAjuste;
 		
 		//Crea ajuste de corte de Productos
 		for (MovimientoInventario movimientoInventario: movimientosInventario){			
-			productosCorteAjuste = new ProductosCorteAjuste(null, ProductosCorteAssembler.getProductosCorte(productosCorteVO),
+			productosCorteAjuste = new ProductosCorteAjuste(null, ProductosCorteAssembler.getProductosCorte(productosCorteVO.getIdProducto()),
 								UsuarioAssembler.getUsuario(idUsuario), new Date(), movimientoInventario);
 			productosCorteAjuste = productosCorteAjusteDAO.save(productosCorteAjuste);
 			count++;

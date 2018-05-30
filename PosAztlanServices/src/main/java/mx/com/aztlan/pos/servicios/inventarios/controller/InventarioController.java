@@ -4,9 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Inventario;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.MovimientoInventario;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.enumeration.EstatusConteoEnum;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.vo.ProductoExistenciaVO;
 import mx.com.aztlan.pos.infraservices.servicios.BusinessGlobalException;
 import mx.com.aztlan.pos.negocio.administracion.business.OrdenCompraBO;
@@ -25,6 +28,7 @@ import mx.com.aztlan.pos.negocio.inventarios.vo.ParametrosBusquedaVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ParametrosInventarioVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ProductosCorteVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.SalidaVO;
+import mx.com.aztlan.pos.negocio.reportes.vo.HttpResponseOcVO;
 import mx.com.aztlan.pos.servicios.util.Constantes;
 
 @Service
@@ -94,10 +98,10 @@ public class InventarioController {
 
 	public Integer createEntrada(ParametrosInventarioVO movimientoInventarioVO, Integer idUsuario) throws BusinessGlobalException {
 			
-		Inventario movimientoInventario = inventarioBO.createEntrada(movimientoInventarioVO,idUsuario);
+		MovimientoInventario movimientoInventario = inventarioBO.createEntrada(movimientoInventarioVO,idUsuario);
 			
 		if(movimientoInventario!=null){
-			return movimientoInventario.getIdInventario();
+			return movimientoInventario.getIdMovimiento();
 			
 		}else{
 			return 0;
@@ -132,11 +136,75 @@ public class InventarioController {
 		return productosCorteBO.createProductosCorte(productosCorteVO,idCanal,idAlmacen,idUsuario);
 	}
 	
-	public Integer updateProductosCorte(ProductosCorteVO productosCorteVO,Integer idCanal,Integer idAlmacen,Integer idUsuario) throws BusinessGlobalException {
+	public Integer updateProductosCorte(ProductoExistenciaVO productosCorteVO,Integer idCanal,Integer idAlmacen,Integer idUsuario) throws BusinessGlobalException {
 		return productosCorteBO.updateProductosCorte(productosCorteVO,idCanal,idAlmacen,idUsuario);
 	}
 	
-	public Integer updateProductosCorteMovimiento(ProductosCorteVO productosCorteVO,Integer idCanal,Integer idAlmacen,Integer idUsuario) throws BusinessGlobalException {
+	public void ajustePorConteo(ConteoVO conteoVO, Integer idUsuario) throws BusinessGlobalException {
+		for(ProductoExistenciaVO productoExistenciaVO : conteoVO.getProductos()) {
+			this.updateProductosCorteMovimiento(conteoVO, productoExistenciaVO, idUsuario);
+		}
+	}
+	public Integer updateProductosCorteMovimiento(ConteoVO conteoVO, ProductoExistenciaVO productoExistenciaVO,Integer idUsuario) throws BusinessGlobalException {
+		List<MovimientoInventario> listMovimientosAjuste = null;
+		ProductoExistenciaVO productosCorte = productoExistenciaVO;
+		ParametrosInventarioVO inventarioVO = new ParametrosInventarioVO();	
+		TipoMovimientoInvVO tipoMovimientoInvVO = new TipoMovimientoInvVO();
+		
+		int idProductosCorte = 0;
+		Integer existenciaSistemaInicial = productosCorte.getExistencia();
+		boolean isEntrada = false;
+		inventarioVO.setIdProducto(productosCorte.getIdProducto());
+		//inventarioVO.setIdAutorizacion(productosCorte.getAutorizacion().getIdAutorizacion());
+		
+		Integer cantidad = 0;
+		
+		if(productosCorte.getExistencia() < productosCorte.getExistenciaFisica() ){
+			//Realiza ajuste de entrada
+			isEntrada  = true;
+			cantidad = productosCorte.getExistenciaFisica() - productosCorte.getExistencia();
+			inventarioVO.setCantidad(Integer.valueOf(cantidad+""));
+			productosCorte.setExistencia(productosCorte.getExistencia() + cantidad);
+			//Obtiene el tipo de movimiento
+			tipoMovimientoInvVO = inventarioBO.geTipoMovimientoPorClave(Constantes.ENTRADA_X_AJUSTE_MANUAL);
+			inventarioVO.setIdTipoMovimiento(tipoMovimientoInvVO.getIdTipoMovimientoInv());
+			inventarioVO.setClaveTipoMovimiento(tipoMovimientoInvVO.getClave());
+			listMovimientosAjuste  = inventarioBO.createEntradaAjuste(inventarioVO,conteoVO.getIdCanal(),conteoVO.getIdAlmacen(),idUsuario);
+		}else if( productosCorte.getExistencia() > productosCorte.getExistenciaFisica()){
+			//Realiza ajuste de salida
+			isEntrada  = false;
+			cantidad = productosCorte.getExistencia() - productosCorte.getExistenciaFisica();
+			inventarioVO.setCantidad(Integer.valueOf(cantidad+""));
+			productosCorte.setExistencia(productosCorte.getExistencia() - cantidad);
+			//Obtiene el tipo de movimiento
+			tipoMovimientoInvVO = inventarioBO.geTipoMovimientoPorClave(Constantes.SALIDA_X_AJUSTE_MANUAL);
+			inventarioVO.setIdTipoMovimiento(tipoMovimientoInvVO.getIdTipoMovimientoInv());
+			inventarioVO.setClaveTipoMovimiento(tipoMovimientoInvVO.getClave());
+		//	listMovimientosAjuste  = inventarioBO.createSalida(inventarioVO,idCine,idPuntoVenta,idUsuario);
+		}
+		
+		int numAjuste = 0; 
+		cantidad = 0;
+		
+		if (listMovimientosAjuste !=null && !listMovimientosAjuste.isEmpty()){
+			
+			for(MovimientoInventario movimiento : listMovimientosAjuste){				
+				cantidad = cantidad + Integer.valueOf((int)movimiento.getCantidad());
+			}
+			//cantidad actualizada
+			if(isEntrada){
+				productosCorte.setExistencia(existenciaSistemaInicial + cantidad);
+			}else{
+				productosCorte.setExistencia(existenciaSistemaInicial - cantidad);
+			}
+			//Realiza relacion del corte de articulo con los movimientos de ajuste
+			numAjuste = productosCorteBO.createProductosCorteAjuste(productosCorte, listMovimientosAjuste, idUsuario);
+			//Actualiza el corte de articulo
+			idProductosCorte = productosCorteBO.updateProductosCorte(productosCorte,conteoVO.getIdCanal(),conteoVO.getIdAlmacen(),idUsuario);
+		}
+		return idProductosCorte;
+	}
+	/*public Integer updateProductosCorteMovimiento(ProductosCorteVO productosCorteVO,Integer idCanal,Integer idAlmacen,Integer idUsuario) throws BusinessGlobalException {
 		List<MovimientoInventario> listMovimientosAjuste = null;
 		ProductosCorteVO productosCorte = productosCorteVO;
 		ParametrosInventarioVO inventarioVO = new ParametrosInventarioVO();	
@@ -194,7 +262,7 @@ public class InventarioController {
 			idProductosCorte = productosCorteBO.updateProductosCorte(productosCorte,idCanal,idAlmacen,idUsuario);
 		}
 		return idProductosCorte;
-	}
+	}*/
 	
 	public Integer removeProductosCorte(Integer idProductoCorte,Integer idCanal,Integer idAlmacen,Integer idUsuario) throws BusinessGlobalException {
 		return productosCorteBO.removeProductosCorte(idProductoCorte,idCanal,idAlmacen,idUsuario);
@@ -213,16 +281,32 @@ public class InventarioController {
 	 }
 	 
 	 public Integer guardarConteo(ConteoVO conteoVO) throws BusinessGlobalException {
+		 
+		 if(conteoVO.getEsParcial()) {
+			 conteoVO.setIdEstatusConteo(EstatusConteoEnum.PARCIAL);
+		 }else {
+			 conteoVO.setIdEstatusConteo(EstatusConteoEnum.CERRADO);
+		 }
+		 
 		 return inventarioBO.guardarConteo(conteoVO);
 	 }
 	 
 	 public Integer autorizarConteo(ConteoVO conteoVO) throws BusinessGlobalException {
 		 Integer folio = 0;
 		 
-		 this.inventarioBO.autorizarConteo(conteoVO);
-		 
-		 folio = this.inventarioBO.actualizarConteo(conteoVO);
+		 folio = this.inventarioBO.autorizarConteo(conteoVO);
 		 
 		 return folio;
+	 }
+	 
+	 
+	 @Transactional(readOnly = true, isolation = Isolation.SERIALIZABLE)
+	 public HttpResponseOcVO obtenerReporte(ConteoVO conteoVO, Integer idUsuario) throws BusinessGlobalException, Exception{
+	
+		 HttpResponseOcVO responseVO = new HttpResponseOcVO();
+		 
+		 responseVO.setArchivoExcelVO(this.inventarioBO.crearXlsConteo(conteoVO.getIdAlmacen()));
+		 
+		 return responseVO;
 	 }
 }

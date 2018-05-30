@@ -31,6 +31,7 @@ import mx.com.aztlan.pos.negocio.inventarios.vo.InventarioVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ParametrosInventarioVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.ProductosCorteVO;
 import mx.com.aztlan.pos.negocio.inventarios.vo.SalidaVO;
+import mx.com.aztlan.pos.negocio.reportes.vo.HttpResponseOcVO;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -82,11 +83,11 @@ public interface InventarioFacadeI {
 			throws BusinessGlobalException, NotFoundException;
 	
 	@RequestMapping(value = "/productosCorte", method = RequestMethod.PUT)
-	ResponseEntity<Integer> updateProductosCorte(HttpServletRequest request,@RequestBody ProductosCorteVO productosCorteVO)			
+	ResponseEntity<Integer> updateProductosCorte(HttpServletRequest request,@RequestBody ProductoExistenciaVO productoExistenciaVO)			
 			throws BusinessGlobalException, NotFoundException;
 	
 	@RequestMapping(value = "/productosCorteMovimiento", method = RequestMethod.PUT)
-	ResponseEntity<Integer> updateProductosCorteMovimiento(HttpServletRequest request,@RequestBody ProductosCorteVO productosCorteVO)			
+	ResponseEntity<Integer> updateProductosCorteMovimiento(HttpServletRequest request,@RequestBody ProductoExistenciaVO productosCorteVO)			
 			throws BusinessGlobalException, NotFoundException;
 	
 	@RequestMapping(value = "/productosCorte", method = RequestMethod.DELETE)
@@ -123,4 +124,8 @@ public interface InventarioFacadeI {
 	@RequestMapping(value = "/autorizarConteo", method = RequestMethod.POST)
 	ResponseEntity<Integer> autorizarConteo(HttpServletRequest request,@RequestBody ConteoVO conteoVO)
 			throws BusinessGlobalException, NotFoundException;
+	
+	@RequestMapping(value = "/obtenerReporteAlmacen", method = RequestMethod.POST)
+	public ResponseEntity<HttpResponseOcVO> obtenerReporte(@RequestBody ConteoVO conteoVO, HttpServletRequest request) throws BusinessGlobalException, Exception;
+	
 }

@@ -45,6 +45,10 @@ public class MovimientoInventario implements java.io.Serializable {
 	public MovimientoInventario() {
 	}
 
+	public MovimientoInventario (Integer idMovimiento) {
+		this.idMovimiento = idMovimiento;
+	}
+	
 	public MovimientoInventario(Producto producto, TipoMovimientoInv tipoMovimientoInv, Usuario usuario, long cantidad,
 			Date fecha, BigDecimal importe, long existenciaActual) {
 		this.producto = producto;

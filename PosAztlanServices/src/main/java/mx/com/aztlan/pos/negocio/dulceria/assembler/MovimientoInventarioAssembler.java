@@ -19,7 +19,7 @@ public class MovimientoInventarioAssembler {
 	public static MovimientoInventario getMovimientoInventario(Integer idProducto, Proveedor provedor,
 			TipoMovimientoInv tipoMovimientoInv, Integer idUsuario ,  long cantidad, BigDecimal importe, long existenciaActual,Integer idAlmacen,Integer idAlmacenConsigna,Integer idInventario ) {
 		
-		if(idProducto==null  || provedor == null || tipoMovimientoInv==null || idUsuario==null || idAlmacen==null )
+		if(idProducto==null  || tipoMovimientoInv==null || idUsuario==null || idAlmacen==null )
 			return null;
 
 		MovimientoInventario movimientoInventario= new MovimientoInventario();
@@ -33,7 +33,7 @@ public class MovimientoInventarioAssembler {
 		movimientoInventario.setDocumentoRespaldo(null);
 		movimientoInventario.setExistenciaActual(existenciaActual);
 		movimientoInventario.setAlmacen(new Almacen(idAlmacen));
-		movimientoInventario.setAlmacenConsigna(idAlmacenConsigna == null ? null : new Almacen(idAlmacenConsigna));		
+		movimientoInventario.setAlmacenConsigna(idAlmacenConsigna == null || idAlmacenConsigna == 0 ? null : new Almacen(idAlmacenConsigna));		
 		movimientoInventario.setInventario(InventarioAssembler.getInventario(idInventario));
 		return movimientoInventario;
 	}

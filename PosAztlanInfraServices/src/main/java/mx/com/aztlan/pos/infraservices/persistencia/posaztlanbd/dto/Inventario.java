@@ -93,7 +93,7 @@ public class Inventario implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_proveedor")
+	@JoinColumn(name = "id_proveedor", nullable = true)
 	public Proveedor getProveedor() {
 		return this.proveedor;
 	}

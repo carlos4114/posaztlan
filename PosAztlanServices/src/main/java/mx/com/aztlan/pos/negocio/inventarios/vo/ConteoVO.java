@@ -25,7 +25,23 @@ public class ConteoVO implements Serializable{
 	private Integer idUsuarioAutorizador;
 	private Boolean esParcial;
 	private Integer idEmpresa; 
+	private String nombreEstatus;
+	private Integer diferencia;
 	
+	
+	
+	public Integer getDiferencia() {
+		return diferencia;
+	}
+	public void setDiferencia(Integer diferencia) {
+		this.diferencia = diferencia;
+	}
+	public String getNombreEstatus() {
+		return nombreEstatus;
+	}
+	public void setNombreEstatus(String nombreEstatus) {
+		this.nombreEstatus = nombreEstatus;
+	}
 	public Integer getIdConteo() {
 		return idConteo;
 	}
@@ -87,7 +103,5 @@ public class ConteoVO implements Serializable{
 	public void setIdEmpresa(Integer idEmpresa) {
 		this.idEmpresa = idEmpresa;
 	}
-	
-	
 	
 }
