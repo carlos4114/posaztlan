@@ -28,6 +28,10 @@ public class TipoAutorizacion implements java.io.Serializable {
 	public TipoAutorizacion() {
 	}
 
+	public TipoAutorizacion(Integer idTipoAutorizacion) {
+		this.idTipoAutorizacion = idTipoAutorizacion;
+	}
+	
 	public TipoAutorizacion(String nombre, boolean activo) {
 		this.nombre = nombre;
 		this.activo = activo;
