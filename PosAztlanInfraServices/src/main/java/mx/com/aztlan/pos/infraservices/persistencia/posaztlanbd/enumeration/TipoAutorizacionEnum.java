@@ -12,4 +12,5 @@ public class TipoAutorizacionEnum implements java.io.Serializable {
 	public static int DEVOLUCION_DE_CLIENTE = 2;
 	public static int CANCELACION = 3;
 	public static int AJUSTE_CONTEO_INVENTARIO = 7;
+
 }
