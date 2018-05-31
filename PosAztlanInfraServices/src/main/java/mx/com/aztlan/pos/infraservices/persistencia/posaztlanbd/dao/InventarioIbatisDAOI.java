@@ -41,7 +41,7 @@ public interface InventarioIbatisDAOI {
 			})
 	List<ProductoExistenciaVO> getProductosPorCanal(@Param("idCanal")Integer idCanal);
 	
-	@Select("select p.id_producto,#{idAlmacen} as id_almacen, p.sku,p.nombre, f.nombre as familia, m.nombre as marca, t.nombre as tipo_producto, "+ 
+	@Select("select p.id_producto, p.sku,p.nombre, f.nombre as familia, m.nombre as marca, t.nombre as tipo_producto, "+ 
 			" me.nombre as medida, um.nombre as unidad_medida,  ifnull(sum(i.existencia_actual),0) as existencia, "+
        " ifnull((select pxc.precio "+
          " from precio_x_canal pxc inner join almacen al on pxc.id_canal=al.id_Canal "+
@@ -57,7 +57,6 @@ public interface InventarioIbatisDAOI {
         " group by p.id_producto")
 	@Results(value = {
 			@Result(property="idProducto", column="id_producto"),
-			@Result(property="idAlmacen", column="id_almacen"),
 			@Result(property="sku", column="sku"),
 			@Result(property="nombre", column="nombre"),
 			@Result(property="familia", column="familia"),

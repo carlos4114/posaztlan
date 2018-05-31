@@ -163,6 +163,7 @@ public class InventarioAssembler {
 			productoVO.setSku(producto.getSku());
 			productoVO.setIdAlmacen(producto.getAlmacen().getIdAlmacen());
 			productoVO.setDiferencia(producto.getDiferencia());
+			productoVO.setNombreAlmacen(producto.getAlmacen().getNombre());
 			productos.add(productoVO);
 		}
 		

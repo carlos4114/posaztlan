@@ -24,8 +24,16 @@ public class ProductoExistenciaVO implements Serializable {
 	private boolean validarExistencia;
 	private Integer idAlmacen;
 	private Integer diferencia;
+	private String nombreAlmacen;
 	
 	
+	
+	public String getNombreAlmacen() {
+		return nombreAlmacen;
+	}
+	public void setNombreAlmacen(String nombreAlmacen) {
+		this.nombreAlmacen = nombreAlmacen;
+	}
 	public Integer getDiferencia() {
 		return diferencia;
 	}

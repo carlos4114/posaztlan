@@ -117,7 +117,7 @@
 											
 											<td class="text-center">{{producto.sku}}</td>
 											<td class="text-center">{{producto.nombre}}</td>
-											<td class="text-center">{{producto.idAlmacen}}</td>
+											<td class="text-center">{{producto.nombreAlmacen}}</td>
 											<td>{{producto.familia}}</td>
 											<td>{{producto.marca}}</td>
 											<td>{{producto.tipoProducto}}</td>
@@ -140,10 +140,10 @@
 		                        <div ng-if="isAutorizadorConteo == 'false'">
 			                      
 			                      	<div class="col-md-6 col-sm-6 col-xs-6 col-md-offset-0 text-right">
-			                          <button type="button" ng-click="guardarParcial()" class="btn btn-success" ><i class="fa fa-save"></i>Guardar Parcial</button>
+			                          <button type="button" ng-click="guardarParcial()" ng-disabled="listaProductos.length == 0 || listaProductos == null" class="btn btn-success" ><i class="fa fa-save"></i>Guardar Parcial</button>
 			                        </div>
 			                        <div class="col-md-6 col-sm-6 col-xs-6 col-md-offset-0 text-left">
-			                          <button type="button" ng-click="cerrarConteo()" class="btn btn-success" ><i class="fa fa-save"></i>Cerrar Conteo</button>
+			                          <button type="button" ng-click="cerrarConteo()" ng-disabled="listaProductos.length == 0 || listaProductos == null" class="btn btn-success" ><i class="fa fa-save"></i>Cerrar Conteo</button>
 			                        </div>
 			                    </div>     
 			                        

@@ -161,13 +161,15 @@ angular.module('indexModule').controller("ConteoInventarioController",['$scope',
 	 $scope.obtenerConteo = function(){
 		 $scope.conteoVO = {idEmpresa: null, idCanal: null, idAlmacen: null, idConteo:null, folio:null, 
 	 			 idEstatusConteo:null, esParcial:false, productos: []};
+		 $scope.errorGeneral='';
+		 $scope.mensajeGeneral='';
 		 
 		 $scope.parametrosBusquedaVO.idEmpresa = idEmpresa;
 		 ConteoInventarioService.obtenerConteo($scope.parametrosBusquedaVO)
 		 .then(
 		  function(d) {
 			  $scope.conteoVO = d;
-			  if($scope.conteoVO == "AUTORIZADO"){
+			  if($scope.conteoVO.nombreEstatus == "AUTORIZADO"){
 				  $scope.errorGeneral='Este folio ya fue autorizado anteriormente';
 			  }
 			  $scope.listaProductos = d.productos;
@@ -179,6 +181,8 @@ angular.module('indexModule').controller("ConteoInventarioController",['$scope',
 	 $scope.obtenerProductosConteo = function(){
 		 $scope.conteoVO = {idEmpresa: null, idCanal: null, idAlmacen: null, idConteo:null, folio:null, 
 	 			 idEstatusConteo:null, esParcial:false, productos: []};
+		 $scope.errorGeneral='';
+		 $scope.mensajeGeneral='';
 		 
 		 ConteoInventarioService.obtenerProductosConteo($scope.parametrosBusquedaVO)
 		 .then(
@@ -271,12 +275,18 @@ angular.module('indexModule').controller("ConteoInventarioController",['$scope',
 	 }
 	 
 	 $scope.calcularDiferencia = function(producto){
-		 if(producto.existenciaFisica < producto.existencia){
+		/* if(producto.existenciaFisica < producto.existencia){
 			 producto.diferencia = producto.existencia - producto.existenciaFisica;
 		 }else{
 			 producto.diferencia =  producto.existenciaFisica - producto.existencia;
+		 }*/
+		
+		 producto.diferencia =  producto.existenciaFisica - producto.existencia;
+		 
+		 if(producto.existenciaFisica == null || producto.existenciaFisica == "")
+		 {
+			 producto.diferencia = "";
 		 }
-			 
 	 }
 	 
 	 $scope.inicializarValores();	

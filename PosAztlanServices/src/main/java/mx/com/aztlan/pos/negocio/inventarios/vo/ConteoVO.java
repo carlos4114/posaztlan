@@ -29,7 +29,6 @@ public class ConteoVO implements Serializable{
 	private Integer diferencia;
 	
 	
-	
 	public Integer getDiferencia() {
 		return diferencia;
 	}

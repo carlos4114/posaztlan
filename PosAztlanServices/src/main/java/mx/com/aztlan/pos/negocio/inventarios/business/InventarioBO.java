@@ -231,12 +231,20 @@ public class InventarioBO {
 				List<ProductoExistenciaVO> productos = this.inventarioIbatisDAO.getProductosPorAlmacen(almacen.getIdAlmacen());
 				for(ProductoExistenciaVO producto: productos) {
 					producto.setIdAlmacen(almacen.getIdAlmacen());
+					producto.setNombreAlmacen(almacen.getNombre());
 					productosConteoVO.add(producto);
 				}
 			}
 		}
 		else {
+			Almacen almacen = this.almacenDAO.getById(parametrosBusquedaVO.getIdAlmacen());
+			
 			productosConteoVO = this.inventarioIbatisDAO.getProductosPorAlmacen(parametrosBusquedaVO.getIdAlmacen());
+			
+			for(ProductoExistenciaVO producto: productosConteoVO) {
+				producto.setIdAlmacen(almacen.getIdAlmacen());
+				producto.setNombreAlmacen(almacen.getNombre());
+			}
 		}
 
 		return productosConteoVO;
