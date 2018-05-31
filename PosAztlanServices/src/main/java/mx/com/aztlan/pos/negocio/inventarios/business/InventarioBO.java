@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.AlmacenDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.ArticuloIbatisDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.ArticulosXPuntoVentaDAO;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.AutorizacionDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.AutorizacionMovimientoDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.CineDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.DocumentoDAO;
@@ -56,9 +57,12 @@ import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.OrdenCompra;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Producto;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.PropiedadConfig;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Proveedor;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.TipoAutorizacion;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.TipoMovimientoInv;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Usuario;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.enumeration.EstatusConteoEnum;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.enumeration.PropiedadConfigEnum;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.enumeration.TipoAutorizacionEnum;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.vo.ProductoExistenciaVO;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.enumeration.TipoMovimientoEnum;
 import mx.com.aztlan.pos.infraservices.servicios.BusinessGlobalException;
@@ -103,6 +107,9 @@ public class InventarioBO {
 	private InventarioDAOI inventarioDAO;
 
 	@Autowired
+	private AutorizacionDAOI autorizacionDAO;
+	
+	@Autowired
 	private FolioSecuenciaDAOI folioSecuenciaDAO;
 	
 	@Autowired
@@ -146,6 +153,7 @@ public class InventarioBO {
 	
 	@Autowired
 	private ProductoDAOI productoDAO;
+	
 	
 	@Autowired
 	@Qualifier("appMailSender")
@@ -478,7 +486,8 @@ public class InventarioBO {
 		return movimientosInventario;
 
 	}
-		public void createEntradaOrdenCompra(OrdenCompraVO ordenCompraVO, Integer idUsuario) throws BusinessGlobalException {
+		
+	public void createEntradaOrdenCompra(OrdenCompraVO ordenCompraVO, Integer idUsuario) throws BusinessGlobalException {
 		Double importe;
 		
 		String clave = tipoMovimientoInvDAO.getById(TipoMovimientoEnum.COMPRA).getClave();
@@ -809,6 +818,7 @@ public class InventarioBO {
 		
 		InventarioConteo inventarioConteo = inventarioConteoDAO.getById(conteoVO.getIdConteo());
 		inventarioConteo.setEstatusConteo(new EstatusConteo(EstatusConteoEnum.AUTORIZADO));
+		inventarioConteo.setUsuarioAutorizador(new Usuario(conteoVO.getIdUsuarioAutorizador()));
 	
 		inventarioConteo = inventarioConteoDAO.update(inventarioConteo);
 		
@@ -820,6 +830,15 @@ public class InventarioBO {
 		Integer cantidad = 0;
 		String clave;
 		List<ProductoExistenciaVO> productos = conteoVO.getProductos();
+		
+		Autorizacion autorizacion = new Autorizacion();
+		autorizacion.setTipoAutorizacion(new TipoAutorizacion(TipoAutorizacionEnum.AJUSTE_CONTEO_INVENTARIO));
+		autorizacion.setComentarios("Autorizacion de conteo.");
+		autorizacion.setUsuario(new Usuario(conteoVO.getIdUsuarioAutorizador()));
+		
+		autorizacion.setFecha(new Date());
+		
+		autorizacion = autorizacionDAO.save(autorizacion);
 		
 		for(ProductoExistenciaVO productoExistenciaVO : productos) {
 			
@@ -834,7 +853,7 @@ public class InventarioBO {
 					movimientoInventarioVO.setIdProducto(productoExistenciaVO.getIdProducto());
 					movimientoInventarioVO.setImporte(new Float(0));
 					movimientoInventarioVO.setIdProveedor(null);
-					movimientoInventarioVO.setIdAutorizacion(1);
+					movimientoInventarioVO.setIdAutorizacion(autorizacion.getIdAutorizacion());
 					movimientoInventarioVO.setIdEmpresa(conteoVO.getIdEmpresa());
 					movimientoInventarioVO.setIdTipoMovimiento(TipoMovimientoEnum.AJUSTE_MANUAL_CONTEO_ENTRADA);
 					movimientoInventarioVO.setClaveTipoMovimiento(clave);
@@ -848,7 +867,14 @@ public class InventarioBO {
 									productoExistenciaVO.getIdAlmacen()));
 					
 					detalle.setMovimientoInventario(new MovimientoInventario(movimiento.getIdMovimiento()));
+					
 					inventarioConteoDetalleDAO.update(detalle);
+					
+					AutorizacionMovimiento autorizacionMov = new AutorizacionMovimiento();
+					autorizacionMov.setAutorizacion(autorizacion);
+					autorizacionMov.setId(new AutorizacionMovimientoId(autorizacion.getIdAutorizacion(), movimiento.getIdMovimiento()));
+					autorizacionMov.setMovimientoInventario(movimiento);
+					autorizacionMovimientoDAO.save(autorizacionMov);
 					
 				}else {
 					//SALIDA
@@ -862,7 +888,7 @@ public class InventarioBO {
 					movimientoInventarioVO.setIdProducto(productoExistenciaVO.getIdProducto());
 					movimientoInventarioVO.setImporte(new Float(0));
 					movimientoInventarioVO.setIdProveedor(null);
-					movimientoInventarioVO.setIdAutorizacion(1);
+					movimientoInventarioVO.setIdAutorizacion(autorizacion.getIdAutorizacion());
 					movimientoInventarioVO.setIdEmpresa(conteoVO.getIdEmpresa());
 					movimientoInventarioVO.setIdTipoMovimiento(TipoMovimientoEnum.AJUSTE_MANUAL_CONTEO_SALIDA);
 					movimientoInventarioVO.setClaveTipoMovimiento(clave);
