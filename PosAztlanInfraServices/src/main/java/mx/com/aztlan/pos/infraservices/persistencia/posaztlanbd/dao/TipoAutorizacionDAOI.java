@@ -6,4 +6,5 @@ import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.TipoAutoriza
 public interface TipoAutorizacionDAOI extends GlobalHibernateDAOI<TipoAutorizacion>{
 
 	long getAutorizacionMovimiento(String correo, String contrasenia, Integer idTipoAutorizacion);
+	long countAutorizacionUsrPorTipo(Integer idUsuario, Integer idTipoAutorizacion);
 }

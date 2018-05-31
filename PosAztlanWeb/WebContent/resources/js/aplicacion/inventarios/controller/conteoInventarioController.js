@@ -10,6 +10,7 @@ angular.module('indexModule').controller("ConteoInventarioController",['$scope',
 	 $scope.isAdminGral = GlobalFactory.getIsAdminGral();
 	 $scope.isAdminGralEmpresa = GlobalFactory.getIsAdminGralEmpresa();
 	 $scope.isAdminCanal = GlobalFactory.getIsAdminCanal();	 
+	 $scope.isAutorizadorConteo = GlobalFactory.getIsAutorizadorConteo();  
 
 	 function base64toBlob(base64Data, contentType) {
 		    contentType = contentType || '';

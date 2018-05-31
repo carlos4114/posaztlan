@@ -38,6 +38,24 @@ public class TipoAutorizacionDAO extends GlobalHibernateDAO<TipoAutorizacion> im
 		}
 		return result ;
 	}
+	
+	@Override
+	public long countAutorizacionUsrPorTipo(Integer idUsuario, Integer idTipoAutorizacion) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("select count(*)  from TipoAutorizacion ta join ta.tipoAutorizacionXPerfils taxp ");
+		hql.append("join taxp.perfil  prf join prf.perfilesXUsuarios pxu join pxu.usuario usr ");
+		hql.append("where ta.idTipoAutorizacion=:idTipoAutorizacion and usr.idUsuario=:idUsuario " );
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setParameter("idUsuario", idUsuario);
+		query.setParameter("idTipoAutorizacion", idTipoAutorizacion);
+		Long result=(Long) query.uniqueResult();
+		
+		if (result==null){
+			return 0;
+		}
+		return result ;
+	}
 
 
 }

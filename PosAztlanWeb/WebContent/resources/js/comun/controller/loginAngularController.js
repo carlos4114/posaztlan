@@ -57,6 +57,7 @@ angular.module('loginModule').controller('LoginController', ['LoginService','$sc
                         GlobalFactory.setIsAdminGral(responseLogin.adminGral);
                         GlobalFactory.setIsAdminGralEmpresa(responseLogin.adminGralEmpresa);
                         GlobalFactory.setIsAdminCanal(responseLogin.adminCanal);
+                        GlobalFactory.setIsAutorizadorConteo(responseLogin.autorizadorConteo);
                         
             			$window.location.href = '/'+CONTEXT_PATH+"/"+MAIN_PAGE;
                 	}

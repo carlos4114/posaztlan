@@ -13,11 +13,13 @@ import mx.com.aztlan.pos.infraservices.negocio.seguridad.vo.RecursoVO;
 import mx.com.aztlan.pos.infraservices.negocio.seguridad.vo.UserDetailsVO;
 import mx.com.aztlan.pos.infraservices.negocio.seguridad.vo.UsuarioLoginVO;
 import mx.com.aztlan.pos.infraservices.negocio.seguridad.vo.UsuarioVO;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dao.TipoAutorizacionDAOI;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Perfil;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.dto.Usuario;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.enumeration.ClaimsEnum;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.enumeration.ErroresSeguridadEnum;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.enumeration.EstatusEmpresaEnum;
+import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.enumeration.TipoAutorizacionEnum;
 import mx.com.aztlan.pos.infraservices.persistencia.posaztlanbd.enumeration.UsuarioEstatusEnum;
 import mx.com.aztlan.pos.infraservices.persistencia.utileria.business.FechasUtilsBO;
 import mx.com.aztlan.pos.infraservices.servicios.BusinessGlobalException;
@@ -56,7 +58,9 @@ public class UsuarioBO extends GlobalService{
 	@Autowired
 	RecursoIbatisDAOI recursoIbatisDAO;
 	@Autowired
-	RecursoDAOI recursoDAO;		
+	RecursoDAOI recursoDAO;	
+	@Autowired
+	TipoAutorizacionDAOI tipoAutorizacionDAO;
 	
 	/**
      * Servicio para validar la contraseña actual de un usuario
@@ -123,10 +127,12 @@ public class UsuarioBO extends GlobalService{
 		        return new LoginResponseVO(ErroresSeguridadEnum.USUARIO_INACTIVO);	
 		 
 		 List<Integer> roles = PerfilAssembler.getPerfilesId(usuario.getPerfils());
+		 Long contTipoAutorizacion = this.tipoAutorizacionDAO.countAutorizacionUsrPorTipo(usuario.getIdUsuario(), TipoAutorizacionEnum.AJUSTE_CONTEO_INVENTARIO);
 		 
 		 boolean isAdminGral = usuario.getEmpresa()==null;
 		 boolean isAdminEmpresa = usuario.getEmpresa()!=null&&usuario.getCanal()==null;
 		 boolean isAdminCanal = usuario.getEmpresa()!=null&&usuario.getCanal()!=null&&usuario.getAlmacen()==null;
+		 boolean isAutorizadorConteo = contTipoAutorizacion != 0;
 		 
 		 String pwdEncryptor = env.getProperty("jwt.password");
 		 Integer expirationMinutes = new Integer(env.getProperty("jwt.expiration.minutes"));
@@ -157,6 +163,7 @@ public class UsuarioBO extends GlobalService{
 				       ,isAdminGral
 				       ,isAdminEmpresa
 				       ,isAdminCanal
+				       ,isAutorizadorConteo
 				 );
 	}
 	

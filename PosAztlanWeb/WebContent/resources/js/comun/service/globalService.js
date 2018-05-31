@@ -115,6 +115,12 @@ angular.module('globalModule').factory('GlobalFactory',['$window','$location','$
         getIsAdminCanal: function(){        		        	
             return localStorage.getItem("isAdminCanal");
         }, 
+        setIsAutorizadorConteo: function(isAutorizadorConteo){        	
+            localStorage.setItem("isAutorizadorConteo", isAutorizadorConteo);
+        },
+        getIsAutorizadorConteo: function(){        		        	
+            return localStorage.getItem("isAutorizadorConteo");
+        }, 
         setFotoUsuario: function(fotoUsuario){        	
             localStorage.setItem("fotoUsuario", fotoUsuario);
         },

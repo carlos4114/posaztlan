@@ -15,11 +15,12 @@ public class LoginResponseVO implements Serializable{
         private byte[] fotoUsuario;
         private boolean isAdminGral;
         private boolean isAdminGralEmpresa;
-        private boolean isAdminCanal;        
+        private boolean isAdminCanal;
+        private boolean isAutorizadorConteo;
 
         public LoginResponseVO(Integer idEmpresa,Integer idCanal, Integer idAlmacen, String nombreCompletoUsuario, String token, 
         		byte[] logoEmpresa, boolean isAdminGral, 
-        		boolean isAdminGralEmpresa, boolean isAdminCanal){
+        		boolean isAdminGralEmpresa, boolean isAdminCanal, boolean isAutorizadorConteo){
         	this.idCanal = idCanal;
         	this.idAlmacen = idAlmacen;
         	this.idEmpresa = idEmpresa;
@@ -137,6 +138,14 @@ public class LoginResponseVO implements Serializable{
 
 		public void setIdAlmacen(Integer idAlmacen) {
 			this.idAlmacen = idAlmacen;
+		}
+
+		public boolean isAutorizadorConteo() {
+			return isAutorizadorConteo;
+		}
+
+		public void setAutorizadorConteo(boolean isAutorizadorConteo) {
+			this.isAutorizadorConteo = isAutorizadorConteo;
 		}
 		
 		

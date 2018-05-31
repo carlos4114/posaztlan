@@ -137,15 +137,20 @@
 		                   </div>
 	    	                 
 		                      <div class="form-group">
-		                      	<div class="col-md-6 col-sm-6 col-xs-6 col-md-offset-0 text-right">
-		                          <button type="button" ng-click="guardarParcial()" class="btn btn-success" ><i class="fa fa-save"></i>Guardar Parcial</button>
-		                        </div>
-		                        <div class="col-md-6 col-sm-6 col-xs-6 col-md-offset-0 text-left">
-		                          <button type="button" ng-click="cerrarConteo()" class="btn btn-success" ><i class="fa fa-save"></i>Cerrar Conteo</button>
-		                        </div>
-		                        
-		                        <div class="col-md-12 col-sm-12 col-xs-12 col-md-offset-0 text-center">
-		                          <button type="button" ng-click="autorizar()" ng-disabled="conteoVO.nombreEstatus == 'AUTORIZADO'" class="btn btn-success" ><i class="fa fa-save"></i>Autorizar Conteo</button>
+		                        <div ng-if="isAutorizadorConteo == 'false'">
+			                      
+			                      	<div class="col-md-6 col-sm-6 col-xs-6 col-md-offset-0 text-right">
+			                          <button type="button" ng-click="guardarParcial()" class="btn btn-success" ><i class="fa fa-save"></i>Guardar Parcial</button>
+			                        </div>
+			                        <div class="col-md-6 col-sm-6 col-xs-6 col-md-offset-0 text-left">
+			                          <button type="button" ng-click="cerrarConteo()" class="btn btn-success" ><i class="fa fa-save"></i>Cerrar Conteo</button>
+			                        </div>
+			                    </div>     
+			                        
+		                        <div ng-if="isAutorizadorConteo == 'true' && conteoVO.nombreEstatus == 'CERRADO'">
+			                        <div class="col-md-12 col-sm-12 col-xs-12 col-md-offset-0 text-center">
+			                          <button type="button" ng-click="autorizar()" ng-disabled="conteoVO.nombreEstatus == 'AUTORIZADO'" class="btn btn-success" ><i class="fa fa-save"></i>Autorizar Conteo</button>
+			                        </div>
 		                        </div>
 		                        
 			                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-md-offset-0 text-center">
