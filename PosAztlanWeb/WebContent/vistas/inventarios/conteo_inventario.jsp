@@ -113,8 +113,7 @@
 		                   			</thead>
 		                   			
 		                   			<tbody>
-										<tr ng-repeat="producto in listaProductos">
-											
+		                   			<tr dir-paginate="producto in listaProductos |  filter: filterSearch |itemsPerPage: 10">								
 											<td class="text-center">{{producto.sku}}</td>
 											<td class="text-center">{{producto.nombre}}</td>
 											<td class="text-center">{{producto.nombreAlmacen}}</td>
@@ -133,6 +132,7 @@
 										</tr>
 										
 									</tbody>
+									<dir-pagination-controls></dir-pagination-controls>
 		                   		</table>
 		                   </div>
 	    	                 

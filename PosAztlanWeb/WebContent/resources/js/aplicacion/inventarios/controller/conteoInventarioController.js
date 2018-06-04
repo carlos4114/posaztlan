@@ -79,7 +79,22 @@ angular.module('indexModule').controller("ConteoInventarioController",['$scope',
 	
 	$scope.cerrarConteo = function() {
 		 $scope.conteoVO.esParcial = false;
-		 $scope.guardar();
+		 var completo = true;
+		 
+		 for(var i = 0; i < $scope.listaProductos.length; i++){
+			 if($scope.listaProductos[i].existenciaFisica == null
+					 || $scope.listaProductos[i].existenciaFisica.length == 0){
+				 
+				 completo = false;
+			 }		 
+		 }
+		 
+		 if(completo){
+			 $scope.guardar();
+		 }else{
+			 $scope.errorGeneral='El conteo no puede cerrarse si no esta completo. ';
+		 }
+		 
 	}
 	
 	$scope.guardar = function() {
